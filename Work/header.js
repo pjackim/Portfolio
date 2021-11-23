@@ -1,5 +1,5 @@
 $(document).ready(loadHeader);
 
 function loadHeader() {
-    $("#header-section").load("../html/header.html");
+    $("#headersection").load("header.html").change();
 }
