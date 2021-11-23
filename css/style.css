@@ -549,8 +549,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	 transform: scale(2);
 }
 .portfolio_single_content img{
-	width: 100%;
 	position: relative;
+	object-fit: cover;
+	width: 500px;
+	height: 500px;
+	max-height: max-content;
 	top: 0;
 	left: 0;
 	z-index: 6;
@@ -596,7 +599,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	transform:scale(1);
 	opacity:1;
 }
-.portfolio_single_content div a{
+.portfolio_single_content div p{
 	color: #FFFFFF;
 	display: block;
 	font-size: 18px;
@@ -614,6 +617,61 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	padding: 0;
 	text-transform: uppercase;
 }
+
+.portfolio_children div{
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:10;
+	width:30%;
+	height:99.8%;
+	transform: scale(0);
+	transition:all .6s;
+	opacity: 0;
+	color: #FFF;
+	text-align: left;
+	padding-left: 10px;
+	background: none repeat scroll 0 0 rgba( 54, 57, 64, 0.95);
+}
+
+.portfolio_children div span {
+	position:absolute;
+	left:10%;
+	top: 5%;
+}
+
+.portfolio_children div span h3 {
+	margin-bottom: 10px;
+}
+
+.portfolio_children div span p {
+	margin: 0px;
+}
+.portfolio_children:hover div{
+	transform:scale(1);
+	opacity:1;
+}
+
+.portfolio_children img{
+	width: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: 6;
+	cursor:pointer;
+	-moz-transition:all 1s;
+	-webkit-transition:all 1s;
+	-o-transition:all 1s;
+	-ms-transition:all 1s;
+	transition:all 1s;
+}
+
+.portfolio_entry * {
+	line-height: 0;
+	/* margin-top: 36px; */
+    overflow: hidden;
+}
+
 .portfolio_content{}
 .portfolio_content{
     margin-top: 36px;
