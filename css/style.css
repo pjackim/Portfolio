@@ -129,6 +129,7 @@ section {
 /* ===== Begin text colors ===== */
 .text-main { color: #363940; } /* Theme main color */
 .text-white { color: #FFF; }
+.text-orange {color: #F28F38;}
 .text-off-white { color: #e7e7e7;}
 .text-dark { color: #000; }
 
@@ -151,21 +152,30 @@ section {
 
 /* Navbar brand (logo) */
 .navbar-brand {
+	
 	background-repeat: no-repeat;
 	background-position: left center;
-	width: 150px;
+	width: auto;
 	height: auto;
 	padding: 24px 0;
-	text-indent: -99999px;
+	/* text-indent: -99999px; */
 	font-size: 24px;
 	font-weight: 600;
 	line-height: 20px;
-	letter-spacing: 4px;
+	letter-spacing: auto;
 	-webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	-ms-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
+}
+
+.navbar-header h1 {
+	color: #fde1d1;
+	padding: 15px 0;
+	margin: 0;
+	letter-spacing: 2px;
+	font-family: 'Poiret One', cursive;
 }
 
 
@@ -267,7 +277,7 @@ section {
 }
 #text-carousel-intro-section .caption {
 	position: relative;
-	top: 50%;
+	top: 75%;
 	margin-top: -70px;
 }
 #text-carousel-intro-section .caption h1 {
@@ -519,7 +529,16 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
     text-decoration: none;
     text-transform: uppercase;
 }
-.portfolio_content{}
+.portfolio_content{
+	width: 90%;
+	text-align: center;
+	align-content: center;
+
+	margin-right: 5%;
+	margin-left: 5%;
+}
+
+
 .portfolio_single_content{
 	position: relative;
 	top: 0;
@@ -607,42 +626,62 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	text-transform: uppercase;
 }
 
-.portfolio_children div{
-	position:absolute;
-	top:0;
-	left:0;
-	z-index:10;
+.portfolio_container {
+	display: flex;
+}
+
+
+
+.portfolio_container div#image_caption{
+	float: left;
+	position: relative;
+	z-index:1;
 	width:30%;
-	height:99.8%;
+
+	margin-right: -30%;
+	padding-left: 5%;
+	padding-top: 1%;
+
 	transform: scale(0);
 	transition:all .6s;
 	opacity: 0;
 	color: #FFF;
 	text-align: left;
-	padding-left: 10px;
-	background: none repeat scroll 0 0 rgba( 54, 57, 64, 0.95);
+
+	/* background: none repeat scroll 0 0 rgba( 54, 57, 64, 0.95); */
 }
 
-.portfolio_children div span {
-	position:absolute;
+.portfolio_container:hover div#image_caption{
+	transform:scale(1);
+	opacity:1;
+}
+.portfolio_container div#image_caption span {
+	/* position:absolute; */
 	left:10%;
 	top: 5%;
 }
 
-.portfolio_children div span h3 {
+.portfolio_container div#image_caption span h3 {
 	margin-bottom: 10px;
 }
 
-.portfolio_children div span p {
+.portfolio_container div#image_caption span p {
 	margin: 0px;
 }
-.portfolio_children:hover div{
-	transform:scale(1);
-	opacity:1;
+
+
+.portfolio_container #port_image {
+		/* float: left; */
+	position: relative;
+	max-width: 100%;
+	height: auto;
+	background: yellow;
+	/* padding: .5rem; */
 }
 
-.portfolio_children img{
-	width: 100%;
+.portfolio_container #port_image img{
+	max-width: 100%;
+	height: auto;
 	position: relative;
 	top: 0;
 	left: 0;
@@ -1036,7 +1075,7 @@ p.subtitle {
 	background: rgba(0, 0, 0, 0);
 	width: 14px;
 	height: 14px;
-	border: 3px solid #fff;
+	border: 3px solid #f28f38c2;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -1044,7 +1083,7 @@ p.subtitle {
 }
 .owl-theme .owl-controls .owl-page.active span, .owl-theme .owl-controls.clickable .owl-page:hover span {
 	background: rgba(0, 0, 0, 0);
-	border: 3px solid #fff;
+	border: 3px solid #F28F38;
 }
 .owl-buttons {
 	position: absolute;
@@ -1101,8 +1140,8 @@ p.subtitle {
 
 /* Button blank */
 .btn-blank {
-	border: 2px solid #fff;
-	color: #fff;
+	border: 2px solid #F28F38;
+	color: #F28F38;
 	padding: 8px 12px;
 	display: inline-block;
 	vertical-align: middle;
