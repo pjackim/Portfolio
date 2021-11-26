@@ -148,10 +148,9 @@ a, a:hover, a:focus {
 	background: #F26B1D !important;
 	color: #fff !important;
 }
-.portfolio_single_content div{
-	background: none repeat scroll 0 0 rgba( 242, 107, 29, 0.95);
+.portfolio_container div#image_caption, .portfolio_container div#image_caption_r{
+	background: none repeat scroll 0 0 rgba( 242, 107, 29, 0.4);
 }
-
 
 
 /* === Team === */
