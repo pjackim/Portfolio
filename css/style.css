@@ -91,6 +91,11 @@ section {
 	z-index: 99999;
 	background: #FFF url(../img/page-loader.gif) center center no-repeat;
 }
+.invert{
+	filter: invert(1);
+}
+
+
 .devider {
 	width: 100%;
 	height: 23px;
@@ -129,6 +134,7 @@ section {
 /* ===== Begin text colors ===== */
 .text-main { color: #363940; } /* Theme main color */
 .text-white { color: #FFF; }
+.text-orange {color: #F28F38;}
 .text-off-white { color: #e7e7e7;}
 .text-dark { color: #000; }
 
@@ -151,34 +157,32 @@ section {
 
 /* Navbar brand (logo) */
 .navbar-brand {
+	
 	background-repeat: no-repeat;
 	background-position: left center;
-	width: 150px;
+	width: auto;
 	height: auto;
 	padding: 24px 0;
-	text-indent: -99999px;
+	/* text-indent: -99999px; */
 	font-size: 24px;
 	font-weight: 600;
 	line-height: 20px;
-	letter-spacing: 4px;
+	letter-spacing: auto;
 	-webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	-ms-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
-.navbar-default .navbar-brand {
-	background-image: url(../img/logo.png);
+
+.navbar-header h1 {
+	color: #fde1d1;
+	padding: 15px 0;
+	margin: 0;
+	letter-spacing: 2px;
+	font-family: 'Poiret One', cursive;
 }
-.navbar-shrink .navbar-brand {
-	background-image: url(../img/logo.png);
-}
-.navbar-transparent .navbar-brand {
-	background-image: url(../img/logo.png);
-}
-.navbar-inverse .navbar-brand {
-	background-image: url(../img/logo.png);
-}
+
 
 /* Navbar links */
 .navbar-nav > li > a {
@@ -278,7 +282,7 @@ section {
 }
 #text-carousel-intro-section .caption {
 	position: relative;
-	top: 50%;
+	top: 75%;
 	margin-top: -70px;
 }
 #text-carousel-intro-section .caption h1 {
@@ -530,7 +534,16 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
     text-decoration: none;
     text-transform: uppercase;
 }
-.portfolio_content{}
+.portfolio_content{
+	width: 90%;
+	text-align: center;
+	align-content: center;
+
+	margin-right: 5%;
+	margin-left: 5%;
+}
+
+
 .portfolio_single_content{
 	position: relative;
 	top: 0;
@@ -539,14 +552,17 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	z-index: 5;
 	margin-bottom:30px;
 	overflow:hidden;
-	
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .portfolio_single_content:hover img{
-	 -o-transform: scale(2);
-	 -webkit-transform: scale(2);
-	 -moz-transform: scale(2);
-	 -ms-transform: scale(2);
-	 transform: scale(2);
+	 -o-transform: scale(1.25);
+	 -webkit-transform: scale(1.25);
+	 -moz-transform: scale(1.25);
+	 -ms-transform: scale(1.25);
+	 transform: scale(1.25);
+	 filter:blur(1px);
 }
 .portfolio_single_content img{
 	position: relative;
@@ -598,6 +614,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 .portfolio_single_content:hover div{
 	transform:scale(1);
 	opacity:1;
+	background: none repeat scroll 0 0 rgba( 242, 107, 29, 0.4);
 }
 .portfolio_single_content div p{
 	color: #FFFFFF;
@@ -618,52 +635,104 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	text-transform: uppercase;
 }
 
-.portfolio_children div{
-	position:absolute;
-	top:0;
-	left:0;
-	z-index:10;
+.portfolio_container {
+	display: flex;
+	justify-content: center;
+}
+
+.row .portfolio_container {
+	margin-bottom: 40px;
+}
+
+.portfolio_container div#image_caption{
+	float: left;
+	position: relative;
+	z-index:1;
 	width:30%;
-	height:99.8%;
+
+	margin-right: -30%;
+	padding-left: 5%;
+	padding-top: 1%;
+
 	transform: scale(0);
 	transition:all .6s;
 	opacity: 0;
 	color: #FFF;
 	text-align: left;
-	padding-left: 10px;
-	background: none repeat scroll 0 0 rgba( 54, 57, 64, 0.95);
+	backdrop-filter: blur(5px);
 }
 
-.portfolio_children div span {
-	position:absolute;
+.portfolio_container div#image_caption_r{
+	float: right;
+	position: relative;
+	z-index:1;
+	width:30%;
+
+	margin-left: -30%;
+	padding-left: 2.5%;
+	padding-top: 1%;
+
+	transform: scale(0);
+	transition:all .6s;
+	opacity: 0;
+	color: #FFF;
+	text-align: left;
+	backdrop-filter: blur(5px);
+}
+
+.portfolio_container:hover div#image_caption, .portfolio_container:hover div#image_caption_r{
+	transform:scale(1);
+	opacity:1;
+}
+.portfolio_container div#image_caption span {
+	/* position:absolute; */
 	left:10%;
 	top: 5%;
 }
 
-.portfolio_children div span h3 {
+.portfolio_container div#image_caption_r div {
+	margin-right: 5%;
+}
+
+.portfolio_container div#image_caption div {
 	margin-bottom: 10px;
 }
 
-.portfolio_children div span p {
+.portfolio_container div#image_caption span p {
 	margin: 0px;
 }
-.portfolio_children:hover div{
-	transform:scale(1);
-	opacity:1;
-}
 
-.portfolio_children img{
-	width: 100%;
+
+.portfolio_container #port_image {
+	max-width: 100%;
+	height: auto;
 	position: relative;
 	top: 0;
 	left: 0;
-	z-index: 6;
+	z-index: 0;
 	cursor:pointer;
 	-moz-transition:all 1s;
 	-webkit-transition:all 1s;
 	-o-transition:all 1s;
 	-ms-transition:all 1s;
 	transition:all 1s;
+	object-fit: cover;
+}
+
+
+#port_video{
+	position: relative;
+	width: 100%;
+	padding-bottom: 56.25%; 
+	height: 0;
+}
+
+#port_video iframe{
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .portfolio_entry * {
@@ -884,32 +953,34 @@ ul.social-list li a i {
 #contact-section h4 {
 	font-weight: 400;
 }
-#contact-section .cover {
-	background-color: rgba(5, 8, 11, 0.93);
+#contact-section .cover, #social-section .cover {
+	background-color: rgba(5, 8, 11, 0.8);
 }
-#contact-section .contact .contact-form {
+ .contact-form .contact-form {
 	margin-bottom: 40px;
 }
-#contact-section .contact .contact-form h4 {
+ .contact-form .contact-form h4 {
 	margin-bottom: 25px;
 }
-#contact-section .contact .contact-form .input-lg {
+ .contact-form .contact-form .input-lg {
 	font-size: 14px;
 }
-#contact-section .contact .contact-form button {
+ .contact .contact-form button {
 	width: 100%;
 	height: 40px;
 }
-#contact-section .contact .contact-form button:hover {
+ .contact-form .contact-form button:hover {
 	color: #fff;
 }
-#contact-section .contact .form-control {
+.contact-form .form-control {
 	background-color: rgba(255, 255, 255, 0.06);
 	border-color: #2A2A2A;
+	color: #EEE;
 }
-#contact-section .contact .form-control:focus {
-	background-color: #171717;
-	box-shadow: none;
+
+
+.contact-form button {
+	background-color: rgba( 242, 107, 29, 0.7);
 }
 
 ul.contact-address {
@@ -1047,7 +1118,7 @@ p.subtitle {
 	background: rgba(0, 0, 0, 0);
 	width: 14px;
 	height: 14px;
-	border: 3px solid #fff;
+	border: 3px solid #f28f38c2;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -1055,7 +1126,7 @@ p.subtitle {
 }
 .owl-theme .owl-controls .owl-page.active span, .owl-theme .owl-controls.clickable .owl-page:hover span {
 	background: rgba(0, 0, 0, 0);
-	border: 3px solid #fff;
+	border: 3px solid #F28F38;
 }
 .owl-buttons {
 	position: absolute;
@@ -1112,8 +1183,8 @@ p.subtitle {
 
 /* Button blank */
 .btn-blank {
-	border: 2px solid #fff;
-	color: #fff;
+	border: 2px solid #F28F38;
+	color: #F28F38;
 	padding: 8px 12px;
 	display: inline-block;
 	vertical-align: middle;
