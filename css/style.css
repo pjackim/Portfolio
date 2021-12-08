@@ -643,64 +643,135 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	margin-bottom: 40px;
 }
 
-.portfolio_container div#image_caption{
-	float: left;
-	position: relative;
-	z-index:1;
-	width:30%;
 
-	margin-right: -30%;
-	padding-left: 5%;
-	padding-top: 1%;
+@supports (backdrop-filter: brightness(50%) blur(10px)) {
+	div#image_caption{
+		float: left;
+		position: relative;
+		z-index:1;
+		width: 30vw;
+	
+		margin-right: -30vw;
+	
+		transform: scale(0);
+		transform:translate(-30vw, 0);
+		transition:all .6s;
+		opacity: 0;
+		color: #FFF;
+		text-align: left;
+		backdrop-filter:  blur(15px);
+		background: rgba( 242, 107, 29, 0.3) repeat scroll 0 0;
+	}
 
-	transform: scale(0);
-	transition:all .6s;
-	opacity: 0;
-	color: #FFF;
-	text-align: left;
-	backdrop-filter: blur(5px);
+	.portfolio_container:active div#image_caption{
+		transform:scale(1);
+		transform: translate(0, 0);
+		opacity:1;
+	}
+	
+	.portfolio_container:active div#image_caption.right {
+		transform:scale(1);
+		transform: translate(-31vw, 0);
+		opacity:1;
+	}
+
+	::marker {
+		content: "› ";
+		font-size: 1.5em;
+		margin: 0px 5vw 0px 1vw;
+		color: #F28F38;
+	}
 }
 
-.portfolio_container div#image_caption_r{
-	float: right;
-	position: relative;
-	z-index:1;
-	width:30%;
+@supports not (backdrop-filter: brightness(50%) blur(10px)) {
+	div#image_caption{
+		float: left;
+		position: relative;
+		z-index:1;
+		width: 30vw;
+	
+		margin-right: -30vw;
+	
+		transform: scale(0);
+		transform:translate(-30vw, 0);
+		transition:all .6s;
+		opacity: 0;
+		color: #FFF;
+		text-align: left;
+		background: linear-gradient(to bottom right, rgba( 23, 23, 23, 1), rgba( 23, 23, 23, .7), rgba( 23, 23, 23, 0)) repeat scroll 0 0;
+	}
 
-	margin-left: -30%;
-	padding-left: 2.5%;
-	padding-top: 1%;
+	.portfolio_container:active div#image_caption{
+		transform:scale(1);
+		transform: translate(0, 0);
+		opacity:1;
+	}
+	
+	.portfolio_container:active div#image_caption.right {
+		transform:scale(1);
+		transform: translate(-31vw, 0);
+		opacity:1;
+	}
 
-	transform: scale(0);
-	transition:all .6s;
-	opacity: 0;
-	color: #FFF;
-	text-align: left;
-	backdrop-filter: blur(5px);
+	::marker {
+		content: "› ";
+		font-size: 1.5em;
+		margin: 0px 5vw 0px 1vw;
+		color: #F28F38;
+	}
 }
 
-.portfolio_container:hover div#image_caption, .portfolio_container:hover div#image_caption_r{
-	transform:scale(1);
-	opacity:1;
-}
-.portfolio_container div#image_caption span {
-	/* position:absolute; */
-	left:10%;
-	top: 5%;
+
+#image_caption.right {
+	transform:translate(30vw, 0);
 }
 
-.portfolio_container div#image_caption_r div {
-	margin-right: 5%;
+
+
+
+
+
+#image_caption div ul, #image_caption div ul ul{
+	margin-left: 1.5em;
 }
 
-.portfolio_container div#image_caption div {
-	margin-bottom: 10px;
+#image_caption div {
+	padding: 15px 3% 10px 8%;
+	height: 100%;
+	width: 100%;
+	font-size: large;
 }
 
-.portfolio_container div#image_caption span p {
-	margin: 0px;
+#image_caption div p {
+	text-indent: 1.5em;
+	padding-bottom: 1.5em;
+	font-size: inherit;
 }
 
+#image_caption div h3::before{
+	content: "› ";
+	font-size: 1em;
+	color: #F28F38;
+}
+
+.portfolio_content h2 {
+	color: #F28F38;
+	text-transform: uppercase;
+}
+
+#instruct-section {
+	padding-top: 10vh;
+	padding-bottom: 5vh;
+	background: #f8f8f8 url('../img/pat-bg.png') repeat;
+}
+
+#portfolio-section {
+	padding-top: 0;
+}
+
+.instruct {
+	text-align: center;
+}
 
 .portfolio_container #port_image {
 	max-width: 100%;
