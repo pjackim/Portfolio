@@ -726,11 +726,6 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	transform:translate(30vw, 0);
 }
 
-
-
-
-
-
 #image_caption div ul, #image_caption div ul ul{
 	margin-left: 1.5em;
 }
@@ -744,7 +739,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 #image_caption div p {
 	text-indent: 1.5em;
-	padding-bottom: 1.5em;
+	padding-bottom: .5em;
 	font-size: inherit;
 }
 
