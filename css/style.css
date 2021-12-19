@@ -48,10 +48,10 @@ body .body {
 
 /* Begin Fonts */
 body {
-	font-family: 'Roboto', Helvetica, Arial, sans-serif;
+	font-family: 'Didact Gothic', Helvetica, Arial, sans-serif;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Roboto', Helvetica, Arial, sans-serif;
+	font-family: 'Didact Gothic', Helvetica, Arial, sans-serif;
 	font-weight: 700;
 	margin-bottom: 10px;
 }
@@ -71,10 +71,10 @@ h5 {
 	font-size: 18px;
 }
 p {
-	font: 14px/1.5em "Roboto";
+	font: 14px/1.5em "Didact Gothic";
 }
 .navbar-nav > li > a {
-	font-family: "Lato", Helvetica, Arial, sans-serif;
+	font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
 }
 /* End Fonts */
 
@@ -126,7 +126,18 @@ section {
   	background-size: cover;
 }
 
+.parallax .dots{
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100%;
+}
+
+h6 {
+	text-align: center;
+}
+
 #header {
+	color: #FFFFFF;
 	/* height: 98px; */
 }
 
@@ -134,7 +145,7 @@ section {
 /* ===== Begin text colors ===== */
 .text-main { color: #363940; } /* Theme main color */
 .text-white { color: #FFF; }
-.text-orange {color: #F28F38;}
+.text-orange {color: #f26b1d;}
 .text-off-white { color: #e7e7e7;}
 .text-dark { color: #000; }
 
@@ -187,7 +198,7 @@ section {
 .navbar-nav > li > a {
 	padding: 24px 0;
 	margin-left: 25px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	font-size: 13px;
 	font-weight: 600;
 }
@@ -209,7 +220,7 @@ section {
 }
 .dropdown-menu > li > a {
 	padding: 4px 20px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a.active, .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
 	text-decoration: none;
@@ -288,7 +299,7 @@ section {
 	margin-top: 0;
 	margin-bottom: 5px;
 	font-size: 60px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
 #text-carousel-intro-section .caption p {
@@ -531,7 +542,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
     margin: 4px;
     padding: 8px 10px;
     text-decoration: none;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 .portfolio_content{
 	width: 90%;
@@ -623,7 +634,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	margin-top: 40%;
 	padding-bottom: 10px;
 	text-decoration: none;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 .portfolio_single_content div span{
 	color: #FFFFFF;
@@ -631,7 +642,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	font-weight: normal;
 	margin: 0;
 	padding: 0;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 
 .portfolio_container {
@@ -751,7 +762,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 .portfolio_content h2 {
 	color: #F28F38;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 
 #instruct-section {
@@ -799,6 +810,10 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	position: relative;
 }
 
+.particular, .loader {
+	z-index: -999;
+}
+
 .experienceList { 	
 	display: flex;
 	justify-content: center;
@@ -807,6 +822,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 .experienceList ul {
 	text-align: left !important;
 	margin-left: 1.5em;
+	font-family: "Didact Gothic";
 }
 
  .line {
@@ -1218,7 +1234,7 @@ ul.imp-links li a {
 	border: none;
 }
 .page-header h2 {
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 p.subtitle {
 	letter-spacing: 2px;
@@ -1258,7 +1274,7 @@ p.subtitle {
 	background: rgba(0, 0, 0, 0);
 	width: 14px;
 	height: 14px;
-	border: 3px solid #f28f38c2;
+	border: 3px solid #F28F38c2;
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -1323,8 +1339,8 @@ p.subtitle {
 
 /* Button blank */
 .btn-blank {
-	border: 2px solid #F28F38;
-	color: #F28F38;
+	border: 2px solid #f26b1d;
+	color: #f26b1d;
 	padding: 8px 12px;
 	display: inline-block;
 	vertical-align: middle;
