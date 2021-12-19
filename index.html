@@ -21,7 +21,7 @@
         <!-- Google Fonts  -->
 		<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'> <!-- Body font -->
 		<link href='https://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'> <!-- Navbar font -->
-        <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet" type="text/css">
 
 		<!-- Libs and Plugins CSS -->
 		<link rel="stylesheet" href="inc/bootstrap/css/bootstrap.min.css">
@@ -88,15 +88,20 @@
                 </nav>
             </header>
             
-            
+            <div class="loader" style="display: none;">
+                <div id="movingBallG">
+                    <div class="movingBallLineG"></div>
+                    <div id="movingBallG_1" class="movingBallG"></div>
+                </div>
+            </div>
             
         	<!-- Begin text carousel intro section -->
-			<section id="text-carousel-intro-section" class="parallax" data-stellar-background-ratio="0.5" style="background-image: url(Images/Over\ The\ Rainbow/over_the_rainbow.png);">
+			<section id="text-carousel-intro-section" class="parallax" data-stellar-background-ratio="0.5">
 				
-				<div class="container">
-					<div class="caption text-center text-orange" data-stellar-ratio="0.7">
+				<div class="container dots">
+					<div class="caption text-center text-white" data-stellar-ratio="0.7">
 
-						<div id="owl-intro-text" class="owl-carousel">
+						<div id="owl-intro-text" class="owl-carousel ">
 							<div class="item">
 								<h1>I'm Parker Jackim</h1>
                                 <div class="extra-space-l"></div>
@@ -115,6 +120,7 @@
 						</div>
 
 					</div> <!-- /.caption -->
+                    <canvas class="particular" width="1900" height="800"></canvas>
 				</div> <!-- /.container -->
 
 			</section>
@@ -198,7 +204,7 @@
                                         <h6>C++</h6>
                                     </div>
                                     <div class="progress">
-                                      <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 85%;">
+                                      <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100" style="width: 85%;">
                                       </div>
                                     </div>
                                 </div>
@@ -368,7 +374,7 @@
           </div>
         </section>
                             <!-- Begin social section -->
-			<section id="social-section" class="page text-white parallax" data-stellar-background-ratio="0.5" style="background: url(Images/Over\ The\ Rainbow/over_the_rainbow.png) 50% 150px, center;">
+			<section id="social-section" class="page text-white parallax" data-stellar-background-ratio="0.5" >
                 <div class="cover"></div>
                  <!-- Begin page header-->
                 <div class="page-header-wrapper">
@@ -468,6 +474,7 @@
 
         <script src="./js/loader.js"></script>
         <script src="./js/sendemail.js"></script>
+        <script type="text/javascript" src="./js/script.js"></script>
     </body> 
         
     <footer id="bottom">
