@@ -1315,6 +1315,10 @@ p.subtitle {
 	background-position: center !important;
 	left: 0;
 }
+
+.owl-wrapper {
+	transition-duration: 500ms !important;
+}
 /* ===== End OWL carousel ===== */
 
 
