@@ -760,11 +760,86 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	background: #f8f8f8 url('../img/pat-bg.png') repeat;
 }
 
+#details-section {
+	padding-top: 10vh;
+	padding-bottom: 5vh;
+	background: #f8f8f8 url('../img/pat-bg.png') repeat;
+}
+
+#details-section .cta .container .row {
+	font: small-caption !important;
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.experience {
+	font: small-caption;
+	margin-top: 1.5%;
+	padding-top: 1.5%;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+#details-section {
+	font-size: large;
+}
+
+
+#details-section * h1{
+	display: inline-block;
+	width: fit-content;
+	text-align: center;
+	padding-bottom: .5%;
+	border-bottom: 1px solid #F28F38;
+	position: relative;
+}
+
+.experienceList { 	
+	display: flex;
+	justify-content: center;
+}
+
+.experienceList ul {
+	text-align: left !important;
+	margin-left: 1.5em;
+}
+
+ .line {
+	padding-right: 2.5%;
+	height: 100%;
+	border-right: 1px solid black;
+	position: relative;
+}
+
+.noline {
+	margin-left: -2.5% !important;
+	padding-left: 2.5%;
+}
+
+
 #portfolio-section {
 	padding-top: 70px;
 }
 
+.descript {
+	width: 50%;
+	text-align: center;
+	font-size: large;
+}
+
+.descript p, .experienceList, .instruct p {
+	font-size: large;
+}
+
 .instruct {
+	margin-top: 1.5%;
+	padding-top: 1.5%;
+	width: 100%;
 	text-align: center;
 }
 
