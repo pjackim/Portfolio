@@ -1,3 +1,16 @@
+function setBounds() {
+    var canvas = document.getElementsByClassName("particular")[0];
+    var wrapper = document.getElementById("text-carousel-intro-section").firstElementChild;
+    
+    // console.log("Width:\t", window.getComputedStyle(wrapper).width);
+    // console.log("Height:\t", window.getComputedStyle(wrapper).height);
+
+    // canvas.setAttribute("width", window.getComputedStyle(wrapper).width);
+    canvas.setAttribute("width", 1920);
+    canvas.setAttribute("height", window.getComputedStyle(wrapper).height);
+}
+
+
 $(window).load(function() {
 	// "use strict";
     $(".loader").fadeOut(500, function() {
@@ -6,13 +19,12 @@ $(window).load(function() {
         }, 500);
  
     });
+    // setBounds();
 });
-    function a() {
-    }
-    a();
-	$(window).resize(function() {
-       a(); 
-    });
+
+
+
+
 $(".box li a").on("mouseenter", function() {
 		var goTo = $(this).attr("href");
 		$(".iframe-holder iframe").attr("src",goTo);
@@ -132,13 +144,14 @@ $(".box li a").on("mouseenter", function() {
                 star.create();
             }
 
-            star.line();
-            star.animate();
+            if (star != null) {
+                star.line();
+                star.animate();
+            }
         };
 
         this.setCanvas = function () {
-            canvas.width = $('.particular').width();
-            canvas.height = config.height;
+            setBounds();
         };
 
         this.setContext = function () {
@@ -163,6 +176,7 @@ $(".box li a").on("mouseenter", function() {
         };
 
         this.init = function () {
+            setBounds();
             this.setCanvas();
             this.setContext();
             this.loop(this.createStars);
@@ -186,3 +200,32 @@ $(".box li a").on("mouseenter", function() {
         },
         radius: 250
     });	
+
+
+    function a() {
+        // var canvas = document.getElementsByClassName("particular")[0];
+        var wrapper = document.getElementById("text-carousel-intro-section").firstElementChild;
+        var length = parseInt(window.getComputedStyle(wrapper).width, 10);
+        length = parseInt(length / 3, 10);
+        // console.log("Width:\t", window.getComputedStyle(wrapper).width);
+        // console.log("Height:\t", window.getComputedStyle(wrapper).height);
+    
+        // canvas.setAttribute("width", window.getComputedStyle(wrapper).width);
+        // canvas.setAttribute("height", window.getComputedStyle(wrapper).height);
+
+        console.log("Length: ", length);
+        $(".particular").constellation({
+            star: {
+                width: 2
+            },
+            line: {
+                color: "rgba(242, 143, 56, .5)"
+            },
+            radius: 250
+            // length: $(length)
+        });	
+    }
+    a();
+    $(window).resize(function() {
+       a(); 
+    });
