@@ -210,12 +210,10 @@ h6 {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 30vw;
-	height: 30vw;
+	width: 15vw;
+	height: 15vw;
 
-	margin-left: -80%;
-	margin-top: -20%;
-    float: left;
+
 
     object-fit: cover;
 }
