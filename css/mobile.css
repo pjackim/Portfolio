@@ -6,7 +6,7 @@
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
-    
+
 }
 
 /* Extra Small Devices, Phones */ 
@@ -38,6 +38,44 @@
 
 /*==========  Non-Mobile First Method  ==========*/
 
+@media only screen and (max-width : 1920px) {
+	:root {
+		--fontSize: calc(1.5vw)
+	}
+
+	body {
+		font-size: var(--fontSize);
+	}
+
+	h1 {
+		font-size: calc(var(--fontSize) * 1.4);
+	}
+	h2 {
+		font-size: calc(var(--fontSize) * 1.3);;
+	}
+	h3 {
+		font-size: calc(var(--fontSize) * 1.2);;
+	}
+	h4 {
+		font-size: calc(var(--fontSize) * 1.1);;
+	}
+	h5 {
+		font-size: calc(var(--fontSize) * 1.05);;
+	}
+	li,
+	p {
+		font-size: var(--fontSize) !important;
+		line-height: 1.4em;
+		font-family: "Didact Gothic";
+	}
+	.navbar-nav > li > a {
+		font-size: var(--fontSize);
+		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
+	}
+}
+
+
+
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 
@@ -62,11 +100,42 @@
 		font-size: 14px;
 	}
 
+	:root {
+		--fontSize: calc(1vw)
+	}
+	body {
+		font-size: var(--fontSize);
+	}
+
+	h1 {
+		font-size: calc(var(--fontSize) * 1.8);
+	}
+	h2 {
+		font-size: calc(var(--fontSize) * 1.6);;
+	}
+	h3 {
+		font-size: calc(var(--fontSize) * 1.45);;
+	}
+	h4 {
+		font-size: calc(var(--fontSize) * 1.3);;
+	}
+	h5 {
+		font-size: calc(var(--fontSize) * 1.1);;
+	}
+	li,
+	p {
+		font-size: var(--fontSize) !important;
+		line-height: 1.4em;
+		font-family: "Didact Gothic";
+	}
+	.navbar-nav > li > a {
+		font-size: var(--fontSize);
+		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
+	}
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
-
 
 	/* Team */
 	.team-item .team-triangle {
@@ -271,9 +340,84 @@
         width: 100%;
     }
 
+	.portfolio_content{
+		width: 100%;
+		text-align: center;
+		align-content: center;
+	
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	#image_caption div ul li,
+	#image_caption div p{
+		font-size: 4vw;
+	}
+
+	.port.col-md-12{
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+
+	}
+
+	.descript a{
+		color: #f238f2;
+		background: transparent;
+		display: inline-block;
+		text-decoration: none;
+	}
+
+	#port_video iframe{
+		position: relative;
+		top:0;
+		left: 0;
+		width: 97vw;
+		height: 87vh;
+	}
+
+	.portfolio_container #port_image {
+		width: 100vw;
+		height: auto;
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		cursor:pointer;
+		-moz-transition:all 1s;
+		-webkit-transition:all 1s;
+		-o-transition:all 1s;
+		-ms-transition:all 1s;
+		transition:all 1s;
+		object-fit:scale-down;
+	}
+
+	div#image_caption{
+		width: 100vw;
+		margin-right: -100vw;
+		transform:translate(-100vw, 0);
+	}
+
+	/* .portfolio_container {
+		justify-content: center;
+	} */
+
+	.portfolio_container:active div#image_caption{
+		transform:scale(1);
+		transform: translate(0, 0);
+		opacity:1;
+	}
+
+	.portfolio_container:active div#image_caption.right {
+		transform:scale(1);
+		transform: translate(-101vw, 0);
+		opacity:1;
+	}
+
 }
 
 /* Custom, iPhone Retina */ 
 @media only screen and (max-width : 320px) {
     
+
+
 }
