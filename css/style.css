@@ -899,7 +899,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	display: flex;
     min-width: 52vw;
     max-width: 80vw;
-
+    max-height: 80vh;
 	z-index: 0;
 	cursor:pointer;
 	-moz-transition:all 1s;
@@ -921,8 +921,9 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	position: relative;
 	top:0;
 	left: 0;
-	width: 97vw;
-	height: 87vh;
+    min-width: 52vw;
+    max-width: 80vw;
+    max-height: 80vh;
 }
 
 .portfolio_entry * {
