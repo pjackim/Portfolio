@@ -4,6 +4,11 @@
 
 /*==========  Mobile First Method  ==========*/
 
+:root{
+	/* --captionSize: calc(30vw);
+	--captionOffset: calc(var(--captionSize) * -1); */
+}
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
 
@@ -40,33 +45,9 @@
 
 @media only screen and (max-width : 1920px) {
 	:root {
-		--fontSize: calc(1.5vw)
-	}
-
-	body {
-		font-size: var(--fontSize);
-	}
-
-	h1 {
-		font-size: calc(var(--fontSize) * 1.4);
-	}
-	h2 {
-		font-size: calc(var(--fontSize) * 1.3);;
-	}
-	h3 {
-		font-size: calc(var(--fontSize) * 1.2);;
-	}
-	h4 {
-		font-size: calc(var(--fontSize) * 1.1);;
-	}
-	h5 {
-		font-size: calc(var(--fontSize) * 1.05);;
-	}
-	li,
-	p {
-		font-size: var(--fontSize) !important;
-		line-height: 1.4em;
-		font-family: "Didact Gothic";
+		--fontSize: calc(2.5vh);
+		--captionSize: calc(50vw);
+		--captionOffset: calc(var(--captionSize) * -1);
 	}
 	.navbar-nav > li > a {
 		font-size: var(--fontSize);
@@ -78,6 +59,12 @@
 
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
+
+	:root {
+		--fontSize: calc(2vw);
+		--captionSize: calc(50vw);
+		--captionOffset: calc(var(--captionSize) * -1);
+	}
 
 	/* Text Carousel */
 	#text-carousel-intro-section .caption h1 {
@@ -101,33 +88,11 @@
 	}
 
 	:root {
-		--fontSize: calc(1vw)
-	}
-	body {
-		font-size: var(--fontSize);
+		--fontSize: calc(2vw);
+		--captionSize: calc(80vw);
+		--captionOffset: calc(var(--captionSize) * -1);
 	}
 
-	h1 {
-		font-size: calc(var(--fontSize) * 1.8);
-	}
-	h2 {
-		font-size: calc(var(--fontSize) * 1.6);;
-	}
-	h3 {
-		font-size: calc(var(--fontSize) * 1.45);;
-	}
-	h4 {
-		font-size: calc(var(--fontSize) * 1.3);;
-	}
-	h5 {
-		font-size: calc(var(--fontSize) * 1.1);;
-	}
-	li,
-	p {
-		font-size: var(--fontSize) !important;
-		line-height: 1.4em;
-		font-family: "Didact Gothic";
-	}
 	.navbar-nav > li > a {
 		font-size: var(--fontSize);
 		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
@@ -207,12 +172,21 @@
 	.counter-up .fact-inner .fa-3x {
 		font-size: 36px;
 	}
-
+	:root {
+		--fontSize: calc(2vw);
+		--captionSize: calc(80vw);
+		--captionOffset: calc(var(--captionSize) * -1);
+	}
 }
 
 /* Small Devices, Tablets */
 @media only screen and (max-width : 767px) {
 
+	:root {
+		--captionSize: calc(80vw);
+		--captionOffset: calc(var(--captionSize) * -1);
+		--fontSize: calc(2vw);
+	}
 	/* Navbar brand */
 	.navbar-brand, .navbar-brand:focus {
 		margin-left: 10px;
@@ -330,6 +304,8 @@
 		display: none !important;
 	}
 
+
+	
 }
 
 /* Extra Small Devices, Phones */ 
@@ -367,7 +343,7 @@
 		text-decoration: none;
 	}
 
-	#port_video iframe{
+	/* #port_video iframe{
 		position: relative;
 		top:0;
 		left: 0;
@@ -389,13 +365,13 @@
 		-ms-transition:all 1s;
 		transition:all 1s;
 		object-fit:scale-down;
-	}
+	} */
 
-	div#image_caption{
+	/* div#image_caption{
 		width: 100vw;
 		margin-right: -100vw;
 		transform:translate(-100vw, 0);
-	}
+	} */
 
 	/* .portfolio_container {
 		justify-content: center;
@@ -407,15 +383,17 @@
 		opacity:1;
 	}
 
-	.portfolio_container:active div#image_caption.right {
+	/* .portfolio_container:active div#image_caption.right {
 		transform:scale(1);
 		transform: translate(-101vw, 0);
 		opacity:1;
-	}
+	} */
 
 
 	:root {
-		--fontSize: calc(5vw)
+		--fontSize: calc(5vw);
+		--captionSize: calc(100vw);
+		--captionOffset: calc(var(--captionSize) * -1);
 	}
 	body {
 		font-size: var(--fontSize);
@@ -452,6 +430,9 @@
 /* Custom, iPhone Retina */ 
 @media only screen and (max-width : 320px) {
     
-
+	:root {
+		--captionSize: calc(100vw);
+		--captionOffset: calc(var(--captionSize) * -1);
+	}
 
 }
