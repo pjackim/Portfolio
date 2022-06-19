@@ -10,6 +10,10 @@ Master Stylesheet
 
 ---------------------------------------------------------------------------------*/
 
+:root {
+	/* --captionSize: calc(-30vw); */
+}
+
 html {
 	height: 100% !important;
 }
@@ -22,7 +26,7 @@ body {
 body .body {
 	height: 100%;
 }
-.cover {
+.cover {	
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -693,12 +697,13 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 		float: left;
 		position: relative;
 		z-index:1;
-		width: 30vw;
-	
-		margin-right: -30vw;
-	
+		width: var(--captionSize);
+		/* margin-right: calc(var(--captionSize) * -2vw); */
+		margin-right: var(--captionOffset);
+
 		transform: scale(0);
-		transform:translate(-30vw, 0);
+		/* transform:translate(calc(var(--captionSize) * -2vw), 0); */
+		transform: translate(var(--captionOffset), 0);
 		transition:all .6s;
 		opacity: 0;
 		color: #FFF;
@@ -715,7 +720,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	
 	.portfolio_container:active div#image_caption.right {
 		transform:scale(1);
-		transform: translate(-31vw, 0);
+		transform: translate(var(--captionOffset), 0);
 		opacity:1;
 	}
 
@@ -732,12 +737,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 		float: left;
 		position: relative;
 		z-index:1;
-		width: 30vw;
-	
-		margin-right: -30vw;
+		width: var(--captionSize);
+		margin-right: var(--captionOffset);
 	
 		transform: scale(0);
-		transform:translate(-30vw, 0);
+		transform: translate(var(--captionOffset), 0);
 		transition:all .6s;
 		opacity: 0;
 		color: #FFF;
@@ -753,7 +757,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	
 	.portfolio_container:active div#image_caption.right {
 		transform:scale(1);
-		transform: translate(-31vw, 0);
+		transform: translate(var(--captionOffset), 0);
 		opacity:1;
 	}
 
@@ -767,7 +771,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 
 #image_caption.right {
-	transform:translate(30vw, 0);
+	transform:translate(var(--captionSize), 0);
 }
 
 #image_caption div ul, #image_caption div ul ul{
@@ -897,7 +901,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 .portfolio_container #port_image {
 	display: flex;
-    min-width: 52vw;
+    /* min-width: 52vw; */
     max-width: 80vw;
     max-height: 80vh;
 	z-index: 0;
@@ -1466,3 +1470,30 @@ p.subtitle {
 	transform: rotate(-45deg);
 }
 /* ===== End buttons ===== */
+
+
+
+body {
+	font-size: calc(var(--fontSize) * 2.2);
+}
+
+h1 {
+	font-size: calc(var(--fontSize) * 1.8);
+}
+h2 {
+	font-size: calc(var(--fontSize) * 1.6);;
+}
+h3 {
+	font-size: calc(var(--fontSize) * 1.45);;
+}
+h4 {
+	font-size: calc(var(--fontSize) * 1.3);;
+}
+h5 {
+	font-size: calc(var(--fontSize) * 1.1);;
+}
+li, p {
+	font-size: calc(var(--fontSize) * 1.3) !important;
+	line-height: 1.4em;
+	font-family: "Didact Gothic";
+}
