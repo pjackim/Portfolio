@@ -896,11 +896,10 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 }
 
 .portfolio_container #port_image {
-	width: 97vw;
-	height: 87vh;
-	position: relative;
-	top: 0;
-	left: 0;
+	display: flex;
+    min-width: 52vw;
+    max-width: 80vw;
+
 	z-index: 0;
 	cursor:pointer;
 	-moz-transition:all 1s;
@@ -908,7 +907,6 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	-o-transition:all 1s;
 	-ms-transition:all 1s;
 	transition:all 1s;
-	object-fit: cover;
 }
 
 
