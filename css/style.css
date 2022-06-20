@@ -206,13 +206,13 @@ h6 {
 }
 
 .personalPhoto {
-	/* display: inline-block; */
+	display: inline-block;
+	align-items: center;
 	width: 15vw;
 	height: 15vw;
 	margin-top: -158px;
 	overflow: hidden;
 	border-radius: 50% !important;
-
 	border: 2px solid #f26b1d;
 }
 
@@ -222,9 +222,6 @@ h6 {
 	margin-right: auto;
 	width: 15vw;
 	height: 15vw;
-
-
-
     object-fit: cover;
 }
 
@@ -1158,17 +1155,15 @@ ul.social-list li a i {
 #contact-section {
 	position: relative;
 }
-#contact-section h4 {
+#contact-section h5 {
 	font-weight: 400;
 }
 #contact-section .cover, #social-section .cover {
 	background-color: rgba(5, 8, 11, 0.8);
 }
- .contact-form .contact-form {
-	margin-bottom: 40px;
-}
- .contact-form .contact-form h4 {
-	margin-bottom: 25px;
+ .contact-form {
+	/* margin-bottom: 20px; */
+	height: 100%;
 }
  .contact-form .contact-form .input-lg {
 	font-size: 14px;
@@ -1184,11 +1179,20 @@ ul.social-list li a i {
 	background-color: rgba(255, 255, 255, 0.06);
 	border-color: #2A2A2A;
 	color: #EEE;
+	height: 100%;
 }
 
+.email-msg {
+
+	height: 100% !important;
+}
 
 .contact-form button {
 	background-color: rgba( 242, 107, 29, 0.7);
+}
+
+.contact-info {
+	margin: auto !important;
 }
 
 ul.contact-address {
@@ -1208,6 +1212,7 @@ ul.contact-address li:last-child {
 ul.contact-address li i {
 	margin-right: 10px;
 }
+
 /* ===== End contact ===== */
 
 
