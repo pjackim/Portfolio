@@ -43,15 +43,19 @@
 
 /*==========  Non-Mobile First Method  ==========*/
 
-@media only screen and (max-width : 1920px) {
+@media only screen and (min-width : 1920px) {
 	:root {
 		--fontSize: calc(2.5vh);
 		--captionSize: calc(50vw);
 		--captionOffset: calc(var(--captionSize) * -1);
 	}
-	.navbar-nav > li > a {
-		font-size: var(--fontSize);
-		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
+}
+
+@media only screen and (max-width : 1920px) {
+	:root {
+		--fontSize: calc(2.5vh);
+		--captionSize: calc(50vw);
+		--captionOffset: calc(var(--captionSize) * -1);
 	}
 }
 
@@ -91,11 +95,6 @@
 		--fontSize: calc(2vw);
 		--captionSize: calc(80vw);
 		--captionOffset: calc(var(--captionSize) * -1);
-	}
-
-	.navbar-nav > li > a {
-		font-size: var(--fontSize);
-		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
 	}
 }
 
@@ -395,7 +394,7 @@
 		--captionSize: calc(100vw);
 		--captionOffset: calc(var(--captionSize) * -1);
 	}
-	body {
+	/* body {
 		font-size: var(--fontSize);
 	}
 
@@ -418,12 +417,10 @@
 	p {
 		font-size: var(--fontSize) !important;
 		line-height: 1.4em;
-		font-family: "Didact Gothic";
 	}
 	.navbar-nav > li > a {
 		font-size: var(--fontSize);
-		font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
-	}
+	} */
 
 }
 
@@ -431,7 +428,16 @@
 @media only screen and (max-width : 320px) {
     
 	:root {
-		--captionSize: calc(100vw);
+		--captionSize: calc(12vw);
+		--captionOffset: calc(var(--captionSize) * -1);
+	}
+
+}
+
+@media only screen and (max-width : 0) {
+    
+	:root {
+		--captionSize: calc(12vw);
 		--captionOffset: calc(var(--captionSize) * -1);
 	}
 
