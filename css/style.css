@@ -52,10 +52,10 @@ body .body {
 
 /* Begin Fonts */
 body {
-	font-family: 'Didact Gothic', Helvetica, Arial, sans-serif;
+	font-family: 'Darker Grotesque', sans-serif;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Didact Gothic', Helvetica, Arial, sans-serif;
+	font-family: 'Darker Grotesque', sans-serif;
 	font-weight: 700;
 	margin-bottom: 10px;
 }
@@ -75,11 +75,10 @@ h5 {
 	font-size: 18px;
 }
 p {
-	font: 14px/1.5em "Didact Gothic";
+	font: 14px/1.5em 'Darker Grotesque', sans-serif;
 }
 .navbar-nav > li > a {
-	font-size: large;
-	font-family: "Didact Gothic", Helvetica, Arial, sans-serif;
+	font-family: 'Darker Grotesque', sans-serif;
 }
 /* End Fonts */
 
@@ -193,10 +192,17 @@ h6 {
 }
 
 .navbar-header h1 {
-	color: #fde1d1;
-	padding: 15px 0;
+	position: absolute;
+	top: 10px;
+	/* bottom: 0px; */
+	font-family: 'Sacramento', cursive;
+	color: #FFFFFF;
+	/* color: #fde1d1; */
+	/* padding: 5px 0; */
 	margin: 0;
-	letter-spacing: 1px;
+	font-size: 5vh;
+	letter-spacing: 2px;
+	/* transform: rotate(-3deg); */
 }
 
 .personalPhoto {
@@ -248,12 +254,14 @@ h6 {
 	padding: 10px 0;
 }
 .dropdown-menu > li > a {
+	
 	padding: 4px 20px;
 	/* text-transform: uppercase; */
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a.active, .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
 	text-decoration: none;
 	background-color: transparent;
+	
 }
 
 /* Navbar inverse dropdown */
@@ -288,6 +296,7 @@ h6 {
 .navbar-default.navbar-fixed-top.navbar-shrink .navbar-nav > li > a {
 	padding-top: 24px;
 	padding-bottom: 24px;
+	
 }
 
 /* Navbar transparent */
@@ -303,9 +312,11 @@ h6 {
 	padding-bottom: 30px;
 }
 .navbar-transparent .navbar-nav > li > a {
+	
 	color: #FFF;
 }
 .navbar-transparent .navbar-brand, .navbar-transparent .navbar-brand:focus {
+	
 	color: #FFF;
 }
 /* ===== End navbar ===== */
@@ -422,13 +433,13 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	transition: all 0.2s ease-in-out;
 }
 .rotate-box-1 h4, .rotate-box-2 h4 {
-	font-weight: 400;
+	font-weight: 600;
 }
 .rotate-box-1 p {
 	padding: 0 10px;
 }
 .rotate-box-1 .rotate-box-info {
-	padding-left: 60px;
+	padding-left: 0px;
 }
 
 /* End rotate box-1 */
@@ -725,6 +736,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	}
 
 	::marker {
+		font-family: "Didact Gothic";
 		content: "› ";
 		font-size: 1.5em;
 		margin: 0px 5vw 0px 1vw;
@@ -762,6 +774,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	}
 
 	::marker {
+		font-family: "Didact Gothic";
 		content: "› ";
 		font-size: 1.5em;
 		margin: 0px 5vw 0px 1vw;
@@ -792,6 +805,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 }
 
 #image_caption div h3::before{
+	font-family: "Didact Gothic";
 	content: "› ";
 	font-size: 1em;
 	color: #F28F38;
@@ -862,7 +876,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 .experienceList ul {
 	text-align: left !important;
 	margin-left: 1.5em;
-	font-family: "Didact Gothic";
+	font-family: 'Darker Grotesque', sans-serif;
 }
 
  .line {
@@ -1492,8 +1506,18 @@ h4 {
 h5 {
 	font-size: calc(var(--fontSize) * 1.1);;
 }
+h6 {
+	font-size: calc(var(--fontSize) * 0.9);;
+}
+.btn-lg {
+	font-size: calc(var(--fontSize) * 1);;
+}
 li, p {
 	font-size: calc(var(--fontSize) * 1.3) !important;
 	line-height: 1.4em;
-	font-family: "Didact Gothic";
+	font-family: 'Darker Grotesque', sans-serif;
+}
+.navbar-nav > li > a {
+	font-size: calc(var(--fontSize) * 1.5);
+	text-decoration: none
 }
