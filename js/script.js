@@ -11,16 +11,16 @@ function setBounds() {
 }
 
 
-$(window).load(function() {
-	// "use strict";
-    $(".loader").fadeOut(500, function() {
-        $(".particular").animate({
-            opacity: "1"
-        }, 500);
+// $(window).load(function() {
+// 	// "use strict";
+//     $(".loader").fadeOut(500, function() {
+//         $(".particular").animate({
+//             opacity: "1"
+//         }, 500);
  
-    });
-    // setBounds();
-});
+//     });
+//     // setBounds();
+// });
 
 
 

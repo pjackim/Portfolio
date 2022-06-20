@@ -9,10 +9,20 @@ Master Stylesheet
 	Version:	1.0	
 
 ---------------------------------------------------------------------------------*/
+@import '../inc/animations/css/animate.min.css';
 
 :root {
-	/* --captionSize: calc(-30vw); */
+	--speed: 0.2s;
+	--speedmed: calc(var(--speed) + 0.4s);
+	--speedslow: calc(var(--speed) + 0.8s);
+
+	--trans-type: ease-in-out;
 }
+
+.wow {
+	/* animation-duration: 0s; */
+}
+
 
 html {
 	height: 100% !important;
@@ -111,11 +121,11 @@ section {
 	margin-bottom: 20px;
 	background-color: #FFF;
 	border: 1px solid #DDD;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 .form-control {
 	-webkit-box-shadow: none;
@@ -159,37 +169,17 @@ h6 {
 .navbar {
 	margin: 0;
 	border: none;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 .navbar .container {
 	padding-left: 50px;
 	padding-right: 50px;
 }
 
-
-/* Navbar brand (logo) */
-.navbar-brand {
-	
-	background-repeat: no-repeat;
-	background-position: left center;
-	width: auto;
-	height: auto;
-	padding: 24px 0;
-	/* text-indent: -99999px; */
-	font-size: 24px;
-	font-weight: 600;
-	line-height: 20px;
-	letter-spacing: auto;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
-}
 
 .navbar-header h1 {
 	position: absolute;
@@ -255,10 +245,21 @@ h6 {
 	padding: 4px 20px;
 	/* text-transform: uppercase; */
 }
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a.active, .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+h1 > a, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a.active, .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
 	text-decoration: none;
 	background-color: transparent;
-	
+}
+
+h1 > a:hover {
+	text-decoration: underline;
+	text-underline-offset: .3vh;
+	text-decoration-thickness: 2px;
+	text-decoration-color: white;
+	-webkit-text-decoration-color:white;
+}
+
+h1 > a:focus {
+	text-decoration: none;
 }
 
 /* Navbar inverse dropdown */
@@ -268,11 +269,11 @@ h6 {
 
 /* Navbar fixed */
 .navbar-fixed-top .container {
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 
 .navbar-shrink {
@@ -352,11 +353,11 @@ h6 {
 .rotate-box-1, .rotate-box-2 {
 	display: inline-block;
 	margin: 30px 0;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 a.rotate-box-1, a.rotate-box-2 {
 	text-decoration: none;
@@ -372,11 +373,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	margin-right: 25px;
 	margin-top: 10px;
 	float:left;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 .rotate-box-1.square-icon .rotate-box-icon, .rotate-box-2.square-icon .rotate-box-icon {
 	width: 45px;
@@ -405,11 +406,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	transform: rotate(0deg);
 }
 .rotate-box-1.square-icon .rotate-box-icon .fa, .rotate-box-2.square-icon .rotate-box-icon .fa{
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 	-webkit-transform: rotate(-45deg);
 	-moz-transform: rotate(-45deg);
 	-o-transform: rotate(-45deg);
@@ -423,11 +424,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 }
 
 .rotate-box-1 .rotate-box-info a, .rotate-box-2 .rotate-box-info a {
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 .rotate-box-1 h4, .rotate-box-2 h4 {
 	font-weight: 600;
@@ -447,11 +448,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	display: inline-block;
 	text-align: center;
 	margin-bottom: 15px;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
+	-webkit-transition: all var(--speed) var(--trans-type);
+	-moz-transition: all var(--speed) var(--trans-type);
+	-o-transition: all var(--speed) var(--trans-type);
+	-ms-transition: all var(--speed) var(--trans-type);
+	transition: all var(--speed) var(--trans-type);
 }
 
 .rotate-box-2.square-icon .rotate-box-icon {
@@ -618,6 +619,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	 -ms-transform: scale(1.25);
 	 transform: scale(1.25);
 	 filter:blur(1px);
+	 
 }
 .portfolio_single_content img{
 	position: relative;
@@ -629,11 +631,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	left: 0;
 	z-index: 6;
 	cursor:pointer;
-	-moz-transition:all 1s;
-	-webkit-transition:all 1s;
-	-o-transition:all 1s;
-	-ms-transition:all 1s;
-	transition:all 1s;
+	-moz-transition:all var(--speedslow);
+	-webkit-transition:all var(--speedslow);
+	-o-transition:all var(--speedslow);
+	-ms-transition:all var(--speedslow);
+	transition:all var(--speedslow);
 }
 .portfolio_single_content .canv{
 	width:100% !important;
@@ -663,7 +665,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	height:100%;
 	text-align:center;
 	transform:scale(0);
-	transition:all .6s;
+	transition:all var(--speedmed);
 	opacity:0;
 }
 .portfolio_single_content:hover div{
@@ -712,7 +714,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 		transform: scale(0);
 		/* transform:translate(calc(var(--captionSize) * -2vw), 0); */
 		transform: translate(var(--captionOffset), 0);
-		transition:all .6s;
+		transition:all var(--speedmed);
 		opacity: 0;
 		color: #FFF;
 		text-align: left;
@@ -751,7 +753,7 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	
 		transform: scale(0);
 		transform: translate(var(--captionOffset), 0);
-		transition:all .6s;
+		transition:all var(--speedmed);
 		opacity: 0;
 		color: #FFF;
 		text-align: left;
@@ -917,11 +919,11 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
     max-height: 80vh;
 	z-index: 0;
 	cursor:pointer;
-	-moz-transition:all 1s;
-	-webkit-transition:all 1s;
-	-o-transition:all 1s;
-	-ms-transition:all 1s;
-	transition:all 1s;
+	-moz-transition:all var(--speedslow);
+	-webkit-transition:all var(--speedslow);
+	-o-transition:all var(--speedslow);
+	-ms-transition:all var(--speedslow);
+	transition:all var(--speedslow);
 }
 
 
@@ -1392,11 +1394,11 @@ p.subtitle {
 
 /* Button default */
 .btn-default, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active {
-	-webkit-transition: all 0.6s ease-in-out;
-	-moz-transition: all 0.6s ease-in-out;
-	-o-transition: all 0.6s ease-in-out;
-	-ms-transition: all 0.6s ease-in-out;
-	transition: all 0.6s ease-in-out;
+	-webkit-transition: all 0var(--speedmed) var(--trans-type);
+	-moz-transition: all 0var(--speedmed) var(--trans-type);
+	-o-transition: all 0var(--speedmed) var(--trans-type);
+	-ms-transition: all 0var(--speedmed) var(--trans-type);
+	transition: all 0var(--speedmed) var(--trans-type);
 }
 
 /* Button blank */
