@@ -939,9 +939,8 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	position: relative;
 	top:0;
 	left: 0;
-    width: 70vw;
-    height: 81.3vh;
-    /* max-height: 80vh; */
+    width: 80vw;
+	aspect-ratio: 16 / 9;
 }
 
 .portfolio_entry * {
