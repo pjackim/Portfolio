@@ -147,7 +147,8 @@
 
 	/* Text carousel intro section caption */
 	#text-carousel-intro-section .caption {
-		top: 50% !important; /* Removes parallax on caption */
+		/* Removes parallax on caption */
+		/* top: 50% !important;  */
 	}
 	#text-carousel-intro-section .caption h1 {
 		font-size: 34px;
@@ -597,5 +598,17 @@
 	 .contact-form {
 		margin-top: 20vh;
 		margin-bottom: 10px;
+	}
+}
+
+
+@media (pointer:coarse) {
+	:root {
+		--speed: 0.0s;
+		--speedmed: 0.0s;
+		--speedslow: 0.0s;
+	}
+	.wow {
+		animation-duration: 0s;
 	}
 }
