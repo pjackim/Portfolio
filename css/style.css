@@ -13,14 +13,11 @@ Master Stylesheet
 
 :root {
 	--speed: 0.2s;
+	--speedfast: calc(var(--speed) + 0.2s);
 	--speedmed: calc(var(--speed) + 0.4s);
 	--speedslow: calc(var(--speed) + 0.8s);
 
 	--trans-type: ease-in-out;
-}
-
-.wow {
-	/* animation-duration: 0s; */
 }
 
 
@@ -679,13 +676,13 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	font-size: 18px;
 	font-weight: bold;
 	margin-top: 40%;
-	padding-bottom: 10px;
+	/* padding-bottom: 5px; */
 	text-decoration: none;
 	/* text-transform: uppercase; */
 }
 .portfolio_single_content div span{
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 28px;
 	font-weight: normal;
 	margin: 0;
 	padding: 0;
@@ -1022,8 +1019,8 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 	height: 100%;
 	background: rgba( 103, 109, 117, 0.9);
 	opacity: 0;
-	-webkit-transition: opacity 0.4s ease-in; /* For Safari 3.1 to 6.0 */
-    transition: opacity 0.4s ease-in;
+	-webkit-transition: opacity var(--speedfast) ease-in; /* For Safari 3.1 to 6.0 */
+    transition: opacity var(--speedfast) ease-in;
 }
 .team-item .team-triangle:hover .team-hover {
 	opacity: 1;
@@ -1269,7 +1266,7 @@ ul.imp-links li a {
     font-weight: 300;
     padding: 7px 20px;
     height: 30px;
-    transition: all 0.4s ease-in;
+    transition: all var(--speedfast) ease-in;
 }
 
 /*Widget3: twitter*/
@@ -1394,11 +1391,11 @@ p.subtitle {
 
 /* Button default */
 .btn-default, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active {
-	-webkit-transition: all 0var(--speedmed) var(--trans-type);
-	-moz-transition: all 0var(--speedmed) var(--trans-type);
-	-o-transition: all 0var(--speedmed) var(--trans-type);
-	-ms-transition: all 0var(--speedmed) var(--trans-type);
-	transition: all 0var(--speedmed) var(--trans-type);
+	-webkit-transition: all var(--speedmed) var(--trans-type);
+	-moz-transition: all var(--speedmed) var(--trans-type);
+	-o-transition: all var(--speedmed) var(--trans-type);
+	-ms-transition: all var(--speedmed) var(--trans-type);
+	transition: all var(--speedmed) var(--trans-type);
 }
 
 /* Button blank */

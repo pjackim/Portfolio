@@ -233,7 +233,7 @@
 	:root {
 		--captionSize: calc(80vw);
 		--captionOffset: calc(var(--captionSize) * -1);
-		--fontSize: calc(2vw);
+		--fontSize: calc(4vw);
 		--PFPsize: calc(40vw);
 		--pfptemp: calc(90vw - var(--PFPsize));
 		--PFPoffset: calc(var(--pfptemp) / 2vw);
@@ -605,10 +605,18 @@
 @media (pointer:coarse) {
 	:root {
 		--speed: 0.0s;
+		--speedfast: 0.0s;
 		--speedmed: 0.0s;
 		--speedslow: 0.0s;
 	}
 	.wow {
+		animation-duration: 0s;
+		animation-delay: 0s;
+		animation: none;
+	}
+
+	.page-header {
+		animation-name: fadeInDown;
 		animation-duration: 0s;
 	}
 }
