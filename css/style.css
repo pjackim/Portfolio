@@ -752,8 +752,9 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 	*:is(.experienceList)>ul>li::before
 	{
-		font-family: fontawesome;
-		content: "\f105";
+		content: "-";
+		/* font-family: fontawesome;
+		content: "\f105"; */
 		display: inline-block;
 		color: #F28F38;
 		font-size: 1em;
@@ -763,8 +764,9 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 
 	*:is(.experienceList)>ul>li>ul>li::before
 	{
-		font-family: fontawesome;
-		content: "\f106";
+		content: "|_";
+		/* font-family: fontawesome;
+		content: "\f106"; */
 		display: inline-block;
 		color: #F28F38;
 		font-size: 1em;
