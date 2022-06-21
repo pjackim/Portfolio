@@ -1,10 +1,14 @@
 
+
+
 a, a:hover, a:focus {
 	color: #fff;
-	font-weight: bold;
-	text-decoration: underline #F28F38;
+	font-weight: 100;
+	/* text-decoration: underline #F28F38; */
 }
-
+.navbar-header h1 a{
+	font-weight: 600 !important;
+}
 /* === Navbar === */
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus {
 	color: #F28F38;
@@ -17,6 +21,7 @@ a, a:hover, a:focus {
 }
 .navbar-default .navbar-nav > li > a {
 	color: #fde1d1;
+	font-weight: 300;
 }
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li.active > a, .navbar-default .navbar-nav>.active>a {
 	color: #fff !important;
@@ -250,8 +255,14 @@ a, a:hover, a:focus {
 /* Small Devices, Tablets */
 @media only screen and (max-width : 767px) {
 
+.navbar-header {
+	/* font-weight: 600 !important; */
+	margin: auto !important;
+	text-align: center !important;
+}
+
 .navbar-collapse {
-		background-color: #F28F38;
+		/* background-color: #25282a; */
 		border-color: #fff !important;
 	}
 .navbar-default.navbar-shrink .navbar-nav > li.active > a {
