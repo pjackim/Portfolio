@@ -10,6 +10,7 @@ Master Stylesheet
 
 ---------------------------------------------------------------------------------*/
 @import '../inc/animations/css/animate.min.css';
+@import '../inc/font-awesome/css/font-awesome.min.css';
 
 :root {
 	--speed: 0.2s;
@@ -731,12 +732,44 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 		opacity:1;
 	}
 
-	::marker {
-		font-family: "Didact Gothic";
-		content: "› ";
-		font-size: 1.5em;
-		margin: 0px 5vw 0px 1vw;
+	/* ul:not(.contact-address) > li::before,
+	ul:not(.social-list) > li::before,
+	ul:not(.nav) > li::before,
+	ul:not(.navbar-nav) > li::before,
+	ul:not(.navbar-right) > li::before */
+
+	/* *:is(.experienceList)>ul>li::before */
+	/* ul:is(.contact-address)
+	 {
+		list-style: none;
+		padding: 0;
+	}
+
+	*:is(.experienceList)>ul>li
+	{
+		padding-left: 1.3em;
+	} */
+
+	*:is(.experienceList)>ul>li::before
+	{
+		font-family: fontawesome;
+		content: "\f105";
+		display: inline-block;
 		color: #F28F38;
+		font-size: 1em;
+		margin-right: .5em;
+		/* margin: 0px 5vw 0px 1vw; */
+	}
+
+	*:is(.experienceList)>ul>li>ul>li::before
+	{
+		font-family: fontawesome;
+		content: "\f106";
+		display: inline-block;
+		color: #F28F38;
+		font-size: 1em;
+		margin-right: .5em;
+		/* margin: 0px 5vw 0px 1vw; */
 	}
 }
 
@@ -769,13 +802,13 @@ a.rotate-box-1:hover, a.rotate-box-2:hover {
 		opacity:1;
 	}
 
-	::marker {
+	/* ::marker {
 		font-family: "Didact Gothic";
 		content: "› ";
 		font-size: 1.5em;
 		margin: 0px 5vw 0px 1vw;
 		color: #F28F38;
-	}
+	} */
 }
 
 
@@ -1144,7 +1177,7 @@ ul.social-list li .rotate-box-1 {
 	margin: 0;
 }
 ul.social-list li a i {
-	color: #fff;
+	/* color: #F28F38; */
 	font-size:20px;
 }
 /* ===== End social ===== */
@@ -1192,11 +1225,12 @@ ul.social-list li a i {
 
 .contact-info {
 	margin: auto !important;
+	/* width: 60vw; */
 }
 
 ul.contact-address {
 	float: left;
-	width: 100%;
+	width: 40vw;
 	padding: 0;
 	padding-bottom: -5%;
 	margin: 5% 0 0% 5%;
@@ -1267,6 +1301,10 @@ ul.imp-links li a {
     padding: 7px 20px;
     height: 30px;
     transition: all var(--speedfast) ease-in;
+}
+
+li > i {
+	color: #F28F38;
 }
 
 /*Widget3: twitter*/
@@ -1522,5 +1560,16 @@ li, p {
 }
 .navbar-nav > li > a {
 	font-size: calc(var(--fontSize) * 1.5);
-	text-decoration: none
+	text-decoration: none;
+	font: 'Darker Grotesque', sans-serif;
+}
+
+.navbar-nav > li {
+	font-size: calc(var(--fontSize) * 1.5);
+	text-decoration: none;
+	list-style: none !important;
+}
+
+.navbar-fixed-top {
+	/* filter: drop-shadow(0 0 0.45rem #9e5c21); */
 }
