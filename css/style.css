@@ -965,6 +965,12 @@ a.rotate-box-2:hover {
     background: #f8f8f8 url('../img/pat-bg.png') repeat;
 }
 
+#info-section {
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background: #f8f8f8 url('../img/pat-bg.png') repeat;
+}
+
 #details-section .cta .container .row {
     font: small-caption !important;
     display: flex;
@@ -981,6 +987,13 @@ a.rotate-box-2:hover {
     width: 100%;
     height: 100%;
     text-align: center;
+}
+
+.experience-footer {
+    margin-top: 2%;
+    width: 50%;
+    text-align: center;
+    font-size: large;
 }
 
 #details-section {
