@@ -882,7 +882,16 @@ a.rotate-box-2:hover {
         width: 10px;
         margin-right: .5em;
     }
-    *:is(.experienceList)>ul>li>ul>li::before {}
+    *:is(.experienceList)>ul>li>ul>li::before {
+        display: inline-block;
+        content: "";
+        background-image: url('../img/arrow-gray.svg');
+        background-size: 10px 10px;
+        height: 10px;
+        width: 10px;
+        margin-right: .5em;
+        color: #2D313D;
+    }
 }
 
 @supports not (backdrop-filter: brightness(50%) blur(10px)) {
