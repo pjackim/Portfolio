@@ -15,7 +15,7 @@
  *
  * Targeting reticle (interactions spec §3), the successor to the 2021 hover-reveal: on hover
  * (fine pointers) or keyboard focus, accent corner brackets snap onto the cover, a scanline
- * sweeps it once, and an "Open case study" readout fades in; a soft accent spotlight follows
+ * sweeps it once, and an "Open project" readout fades in; a soft accent spotlight follows
  * the pointer (--mx/--my, written by one delegated listener on the grid). All of it is a
  * decorative `aria-hidden` HUD. Touch screens get the brackets at rest, faint, and nothing else.
  */
@@ -67,7 +67,6 @@ const style = pageStyle(Astro.locals, {
 });
 
 const href = withBase(`work/${id}/`);
-const readout = data.featured ? 'Open case study' : 'Open project';
 // The arrow stays glued to the title's last word (never wraps onto a line of its own).
 const words = data.title.split(' ');
 const titleTail = words.pop();
@@ -91,7 +90,7 @@ const titleHead = words.join(' ');
     <span class="card__hud reticle" aria-hidden="true">
       <span class="card__scan"></span>
       <span class="card__readout">
-        {readout}
+        Open project
         <Arrow />
       </span>
     </span>
