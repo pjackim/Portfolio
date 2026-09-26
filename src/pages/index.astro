@@ -42,7 +42,7 @@ const workHref = withBase('work/');
 
   <section id="about" class="home-section container" aria-labelledby="about-title">
     <span id="about-section" class="legacy-anchor"></span>
-    <SectionHeading index="02" label="About" id="about-title" reveal />
+    <SectionHeading index="02" label="About" id="about-title" />
     <div class="about__bio">
       {site.about.map((paragraph) => (
         <p>{paragraph}</p>
@@ -52,7 +52,7 @@ const workHref = withBase('work/');
   </section>
 
   <section id="experience" class="home-section container" aria-labelledby="experience-title">
-    <SectionHeading index="03" label="Experience" id="experience-title" reveal />
+    <SectionHeading index="03" label="Experience" id="experience-title" />
     <ExperienceList entries={site.experience} />
   </section>
 
@@ -62,7 +62,6 @@ const workHref = withBase('work/');
       label="Earlier work"
       id="earlier-work-title"
       action={{ href: workHref, text: 'Full index →' }}
-      reveal
     />
     <ArchiveList items={archive} limit={6} />
   </section>
@@ -73,7 +72,7 @@ const workHref = withBase('work/');
     aria-labelledby="contact-title"
   >
     <span id="social-section" class="legacy-anchor"></span>
-    <SectionHeading index="05" label="Contact" id="contact-title" reveal />
+    <SectionHeading index="05" label="Contact" id="contact-title" />
     <ContactBlock />
   </section>
 </BaseLayout>

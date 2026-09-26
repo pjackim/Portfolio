@@ -138,25 +138,26 @@ const href = (project: Project) => withBase(`work/${project.id}/`);
     }
   }
 
+  /* Motion (the gate, global.css): the arrow nudges toward where it points. */
   @media (prefers-reduced-motion: no-preference) {
-    .prev-next__label :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .prev-next__label :global(.arrow) {
       transition: translate var(--dur-base) var(--ease-out);
     }
 
-    .prev-next__link--prev:focus-visible :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .prev-next__link--prev:focus-visible :global(.arrow) {
       translate: -2px 0;
     }
 
-    .prev-next__link--next:focus-visible :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .prev-next__link--next:focus-visible :global(.arrow) {
       translate: 2px 0;
     }
 
     @media (hover: hover) {
-      .prev-next__link--prev:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .prev-next__link--prev:hover :global(.arrow) {
         translate: -2px 0;
       }
 
-      .prev-next__link--next:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .prev-next__link--next:hover :global(.arrow) {
         translate: 2px 0;
       }
     }

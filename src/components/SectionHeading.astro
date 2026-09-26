@@ -5,8 +5,17 @@
  * The mono index is decorative (`aria-hidden`); the `<h2 id>` is what the section's
  * `aria-labelledby` points at. The action's trailing arrow is drawn by the component — a
  * trailing → in `action.text` is dropped (the Latin Geist subset has no → glyph).
+ *
+ * Entering view the first time (interactions spec §3, all behind the motion gate; driven by one
+ * IntersectionObserver in src/scripts/interactions.ts): the hairline draws out from the label,
+ * the index counts up from 00 and the label flickers — about a third of its glyphs glitch and
+ * settle, a signal flicker rather than a full decrypt. It plays on an `aria-hidden` layer laid
+ * over the h2, so the heading's text and accessible name never change. Only a
+ * heading that was below the fold when the script arrived draws its rule (it was hidden, unseen,
+ * until then); one already on screen keeps it.
  */
 import Arrow from './Arrow.astro';
+import MotionLayer from './MotionLayer.astro';
 
 interface Props {
   /** Zero-padded section number, e.g. "01". */
@@ -16,19 +25,17 @@ interface Props {
   id: string;
   /** Internal link on the right of the rule; hover-prefetched (Ruling R24). */
   action?: { href: string; text: string };
-  /** Fade/slide in on scroll (below-the-fold headings only; spec §4). */
-  reveal?: boolean;
   class?: string;
 }
 
-const { index, label, id, action, reveal = false, class: className } = Astro.props;
+const { index, label, id, action, class: className } = Astro.props;
 const actionText = action?.text.replace(/\s*→\s*$/u, '');
 ---
 
-<div class:list={['section-heading', className]} data-reveal={reveal || undefined}>
+<div class:list={['section-heading', className]} data-section-heading>
   <div class="section-heading__label">
     <span class="section-heading__index" aria-hidden="true">
-      {index}
+      <span data-count>{index}</span>
       <span class="section-heading__slash">/</span>
     </span>
     <h2 class="section-heading__title" id={id}>
@@ -43,6 +50,7 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
     </a>
   )}
 </div>
+<MotionLayer />
 
 <style>
   .section-heading {
@@ -81,9 +89,31 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
   }
 
   .section-heading__title {
+    position: relative;
     min-inline-size: 0;
     color: var(--text);
     text-wrap: balance;
+  }
+
+  /* Decrypting (src/scripts/interactions.ts): the h2's own glyphs go transparent under an
+     aria-hidden layer on exactly the same box, so the scrambled line wraps exactly like the
+     real one and nothing moves. */
+  .section-heading__title[data-decrypt] {
+    color: transparent;
+  }
+
+  .section-heading__title :global(.section-heading__decrypt) {
+    position: absolute;
+    inset: 0;
+    color: var(--text);
+  }
+
+  /* Forced colours override `transparent` with the system text colour, so the real h2 stays
+     visible there — and the layer, which would print over it, goes. */
+  @media (forced-colors: active) {
+    .section-heading__title :global(.section-heading__decrypt) {
+      display: none;
+    }
   }
 
   /* The hairline runs from the label to the action (or to the container edge). */
@@ -121,15 +151,43 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
     }
   }
 
+  /* Motion (the gate, global.css). */
   @media (prefers-reduced-motion: no-preference) {
-    .section-heading__action :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .section-heading__action :global(.arrow) {
       transition: translate var(--dur-base) var(--ease-out);
     }
 
     @media (hover: hover) {
-      .section-heading__action:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .section-heading__action:hover :global(.arrow) {
         translate: 2px 0;
       }
+    }
+  }
+
+  /* The rule draw (src/scripts/interactions.ts): an armed rule — below the fold when the script
+     arrived — waits undrawn; on arrival it draws out from the label once, and the state goes.
+     Screen only, so print always shows the rule. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @keyframes section-rule-draw {
+      from {
+        scale: 0 1;
+      }
+    }
+
+    :global(:root:not([data-motion='off']))
+      .section-heading[data-rule='armed']
+      .section-heading__rule {
+      scale: 0 1;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .section-heading[data-rule='draw']
+      .section-heading__rule {
+      transform-origin: 0 50%;
+      animation-name: section-rule-draw;
+      animation-duration: 700ms;
+      animation-timing-function: var(--ease-out);
+      animation-fill-mode: backwards;
     }
   }
 </style>

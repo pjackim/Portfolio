@@ -1,7 +1,8 @@
 ---
 /**
  * One page per published project: `/work/<slug>/` (spec-architecture §2). The Markdown body is
- * rendered with the content layer's `render()` and slotted into ProjectLayout.
+ * rendered with the content layer's `render()` and slotted into ProjectLayout, with its headings
+ * (for the case study's section index).
  */
 import { render } from 'astro:content';
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
@@ -17,9 +18,9 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { Content } = await render(project);
+const { Content, headings } = await render(project);
 ---
 
-<ProjectLayout project={project}>
+<ProjectLayout project={project} headings={headings}>
   <Content />
 </ProjectLayout>

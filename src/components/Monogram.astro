@@ -5,6 +5,10 @@
  * with the favicon and OG card); at the default size (18px tall) every stem lands on whole
  * pixels. The x-height band is vertically centred in the box, so `align-items: center` next to
  * Geist caps lines the bowl up with the cap height.
+ *
+ * Caret (interactions spec §2): with `.is-blinking` (added by SiteHeader's script on the first
+ * page load of a session only) the accent block blinks like a terminal caret — hard steps,
+ * five 1 s cycles — then stays solid. Behind the motion gate.
  */
 import { MONOGRAM } from '../lib/monogram';
 
@@ -53,5 +57,17 @@ const { cursor } = MONOGRAM;
 
   .monogram__cursor {
     fill: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes monogram-caret {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    :global(:root:not([data-motion='off'])) .monogram.is-blinking .monogram__cursor {
+      animation: monogram-caret 1s steps(1, end) 5;
+    }
   }
 </style>

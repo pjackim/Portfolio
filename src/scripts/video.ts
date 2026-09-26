@@ -3,10 +3,16 @@
  * `[data-video][data-autoplay]` wrapper rendered by LoopVideo:
  * - swaps the native controls for one visible Pause / Play toggle (WCAG 2.2.2);
  * - plays while at least half the video is on screen, pauses it when it leaves;
- * - never autoplays under `prefers-reduced-motion: reduce` (tracked live) or Save-Data;
- * - a video the user paused stays paused until they press Play again;
+ * - never autoplays while motion isn't allowed — `prefers-reduced-motion: reduce` or the site's
+ *   Motion toggle off (`<html data-motion="off">`), both tracked live: switching motion off
+ *   pauses a playing loop, switching it back on resumes it — or with Save-Data;
+ * - a video the user paused stays paused until they press Play again (motion coming back on
+ *   doesn't override that);
  * - a rejected `play()` (e.g. iOS Low Power Mode) just leaves the paused state showing.
  * Click-to-play videos (no `data-autoplay`) keep their native controls and are left alone.
+ *
+ * Import-free on purpose, so Astro inlines it (no request); the motion check mirrors
+ * motionAllowed() in src/scripts/motion.ts, and `motion:change` is that module's event.
  */
 interface Loop {
   video: HTMLVideoElement;
@@ -21,7 +27,8 @@ interface Loop {
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const saveData =
   (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
-const mayAutoplay = () => !reducedMotion.matches && !saveData;
+const mayAutoplay = () =>
+  !reducedMotion.matches && document.documentElement.dataset.motion !== 'off' && !saveData;
 
 const ICON =
   '<svg class="video-toggle__icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">' +
@@ -89,10 +96,14 @@ if (loops.size > 0) {
   );
   for (const video of loops.keys()) observer.observe(video);
 
-  reducedMotion.addEventListener('change', () => {
+  // Motion switched off (the OS setting or the site's toggle) pauses every loop; back on, the
+  // ones on screen that the user hadn't paused play again.
+  const onMotionChange = () => {
     for (const loop of loops.values()) {
       if (mayAutoplay()) autoplay(loop);
       else pause(loop);
     }
-  });
+  };
+  reducedMotion.addEventListener('change', onMotionChange);
+  document.addEventListener('motion:change', onMotionChange);
 }

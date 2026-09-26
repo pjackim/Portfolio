@@ -1,25 +1,62 @@
 ---
 /**
- * Home hero (spec-design-content §2, §5a): masked 64px grid texture, mono eyebrow, display
- * h1, lede, CTA row, status strip. Copy comes from `src/data/site.ts` unchanged.
+ * Home hero (spec-design-content §2, §5a; interactions spec §2) — "the site as a live
+ * instrument": masked 64px grid texture with the attack-path graph canvas drifting over it,
+ * mono eyebrow that decrypts once, display h1, lede, typed focus line, CTA row, status strip,
+ * and a rail of rolling readouts with the Motion toggle.
+ *
+ * Nothing here delays LCP: the h1 and lede paint from this HTML and are never mutated; the
+ * canvas, decrypt, typing and reels all start after `load` + idle. Their code (src/scripts/
+ * hero.ts) isn't even fetched before `load`: the motion layer the hero's MotionToggle loads
+ * (src/scripts/motion-layer.ts, one request) imports it then — so this component has no script
+ * of its own.
+ * Every animated piece keeps its real text in the DOM for assistive tech (visually hidden
+ * twins; the animated glyphs are `aria-hidden`), and every one stops or snaps to its final
+ * state when motion is off. Copy comes from `src/data/site.ts`; counts from the collection.
  */
-import { site } from '../data/site';
+import { CREDENTIALS_ANALYZED, FOCUS_AREAS, site } from '../data/site';
+import { pad2 } from '../lib/format';
+import { getFeatured, getProjects } from '../lib/projects';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
+import MotionToggle from './MotionToggle.astro';
+import Readouts from './Readouts.astro';
 import StatusStrip from './StatusStrip.astro';
 
 const eyebrow = site.eyebrow.split(' · ');
+const focus = FOCUS_AREAS.map((area) => area.toLowerCase());
+const focusText = focus.join(' · ');
+
+const [projects, featured] = await Promise.all([getProjects(), getFeatured()]);
+const millions = CREDENTIALS_ANALYZED / 1_000_000;
+const readouts = [
+  { value: pad2(projects.length), label: 'Projects', spoken: `${projects.length} projects` },
+  {
+    value: pad2(featured.length),
+    label: 'Case studies',
+    spoken: `${featured.length} case studies`,
+  },
+  {
+    value: `~${millions}M`,
+    label: 'Credentials analyzed',
+    spoken: `About ${millions} million credentials analyzed`,
+  },
+];
 ---
 
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="hero__backdrop" aria-hidden="true">
+    <canvas class="hero__graph" aria-hidden="true" data-hero-graph></canvas>
+  </div>
   <div class="container hero__inner">
     <p class="hero__eyebrow mono-label">
       <span class="hero__signal" aria-hidden="true"></span>
-      <span>
+      <span class="visually-hidden">{site.eyebrow}</span>
+      <span aria-hidden="true">
         {eyebrow.map((part, i) => (
           <>
             {i > 0 && <span class="hero__eyebrow-sep"> · </span>}
-            <span class="hero__eyebrow-part">{part}</span>
+            <span class="hero__eyebrow-part" data-scramble set:text={part} />
           </>
         ))}
       </span>
@@ -28,6 +65,23 @@ const eyebrow = site.eyebrow.split(' · ');
       {site.name}
     </h1>
     <p class="hero__lede">{site.lede}</p>
+    <p class="hero__focus" data-focus-line>
+      <span class="visually-hidden">Focus: {focus.join(', ')}</span>
+      <span class="hero__focus-stack" aria-hidden="true">
+        <span class="hero__focus-static" data-focus-static>
+          <span class="hero__focus-key">Focus ›</span>
+          <span class="hero__focus-body">
+            <span class="hero__focus-text" set:text={focusText} />
+          </span>
+        </span>
+        <span class="hero__focus-live">
+          <span class="hero__focus-key">Focus ›</span>
+          <span class="hero__focus-body">
+            <span class="hero__focus-text" data-focus-typed data-text={focusText}></span>
+          </span>
+        </span>
+      </span>
+    </p>
 
     <div class="hero__actions">
       <div class="hero__buttons">
@@ -65,6 +119,10 @@ const eyebrow = site.eyebrow.split(' · ');
     </div>
 
     <StatusStrip class="hero__status" entries={site.status} />
+    <div class="hero__rail">
+      <Readouts items={readouts} />
+      <MotionToggle class="hero__motion" />
+    </div>
   </div>
 </section>
 
@@ -82,13 +140,14 @@ const eyebrow = site.eyebrow.split(' · ');
 
   /* Decorative 64px grid of --line hairlines, fading out from the upper right. The tiles
      start whole cells left of the container edge, so a vertical line runs just left of the
-     text column; the mask reaches zero before the box's bottom edge. */
+     text column; the mask reaches zero before the box's bottom edge. Painted beneath the graph
+     canvas (z-index −2 vs −1, both in the hero's isolated stacking context). */
   .hero__inner::before {
     --cell: 64px;
     --bleed: calc(var(--cell) * 8);
     content: '';
     position: absolute;
-    z-index: -1;
+    z-index: -2;
     inset-block: calc(-1 * clamp(3.5rem, 2rem + 6vw, 7.5rem) - var(--cell)) 0;
     inset-inline: calc(-1 * var(--bleed));
     background-image:
@@ -113,6 +172,63 @@ const eyebrow = site.eyebrow.split(' · ');
         #000 0%,
         transparent 100%
       );
+    }
+  }
+
+  /* ── Attack-path graph (src/scripts/hero-graph.ts) ──
+     Fills the hero box behind the content, masked like the grid: brightest over the empty
+     upper right, gone well before it reaches the text column. Transparent until the script has
+     drawn its first frame. */
+  .hero__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Only opacity ever transitions (the fade-in): the safety nets give every property a
+     transition duration, and the colour probe in hero-graph.ts must read tokens, not start
+     values. */
+  .hero__graph {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    opacity: 0;
+    transition-property: opacity;
+    mask-image: radial-gradient(
+      ellipse min(36rem, 48vw) 78% at calc(50% + min(36rem, 50% - var(--gutter))) 12%,
+      #000 0%,
+      rgb(0 0 0 / 0.85) 35%,
+      transparent 88%
+    );
+  }
+
+  .hero__graph.is-ready {
+    opacity: 1;
+  }
+
+  /* Narrower screens: text fills the column, so the graph keeps to the free corner — a band
+     along the top (the hero's padding, above the eyebrow) and a strip down the right edge,
+     beside the eyebrow and the h1 but clear of their ends — and never crosses a line of text.
+     The canvas is only that top band, not the whole (tall) phone hero, so no pixels are pushed
+     that the mask would hide. */
+  @media (width < 60rem) {
+    .hero__graph {
+      block-size: 12rem;
+      mask-image:
+        radial-gradient(
+          ellipse 72% 3.25rem at 100% 0%,
+          #000 0%,
+          rgb(0 0 0 / 0.7) 45%,
+          transparent 100%
+        ),
+        radial-gradient(
+          ellipse 32% 11rem at 100% 0%,
+          #000 0%,
+          rgb(0 0 0 / 0.7) 40%,
+          transparent 92%
+        );
     }
   }
 
@@ -160,6 +276,98 @@ const eyebrow = site.eyebrow.split(' · ');
     color: var(--text-muted);
     font-size: var(--step-1);
     line-height: 1.55;
+  }
+
+  /* ── Typed focus line (src/scripts/focus-line.ts) ──
+     Two layers share one grid cell: the static line (final text — the no-JS, motion-off and
+     settled state, and always the height reserve) and the live layer the script types into. */
+  .hero__focus {
+    margin-block-start: var(--space-s);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .hero__focus-stack {
+    display: grid;
+  }
+
+  /* Each layer: the key, then the text in its own column, so a wrapped line hangs under the
+     text like a terminal prompt (and no whitespace node sits between them to collapse). */
+  .hero__focus-stack > * {
+    display: flex;
+    grid-area: 1 / 1;
+    column-gap: 0.6em;
+  }
+
+  .hero__focus-body {
+    min-inline-size: 0;
+  }
+
+  .hero__focus-key {
+    flex: none;
+    color: var(--text-subtle);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero__focus-live {
+    visibility: hidden;
+  }
+
+  .hero__focus[data-state='typing'] .hero__focus-static {
+    visibility: hidden;
+  }
+
+  .hero__focus[data-state='typing'] .hero__focus-live {
+    visibility: visible;
+  }
+
+  /* Terminal caret: a 3/8 block in the accent colour, painted as a background in the text
+     span's end padding. The span only grows as it's typed; a separate caret box would move with
+     every character, and each move would count as a layout shift. Both layers carry the
+     padding, so they wrap identically; only the live layer lights it. */
+  .hero__focus-text {
+    padding-inline-end: 0.625em;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 0 0;
+  }
+
+  .hero__focus-live .hero__focus-text {
+    background-size: 0.5em 100%;
+  }
+
+  /* ── Rail: readouts + Motion toggle, bottom right of the hero ── */
+  .hero__rail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-m);
+    padding-block: var(--space-s);
+  }
+
+  /* The chip's slot is its widest state from first paint (MotionToggle), so whether it shares
+     the readouts' line or wraps below them is settled before it appears; either way it keeps
+     to the right edge. */
+  .hero__rail > :global(.hero__motion) {
+    margin-inline-start: auto;
+  }
+
+  /* Phones: the chip gets its own row under the readouts. */
+  @media (width < 30rem) {
+    .hero__rail {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero__rail > :global(.hero__motion) {
+      align-self: flex-end;
+    }
   }
 
   /* ── Actions ── */
@@ -233,21 +441,131 @@ const eyebrow = site.eyebrow.split(' · ');
     margin-block-start: clamp(3rem, 2rem + 4vw, 5rem);
   }
 
-  /* ── Motion: arrows nudge toward where they point ── */
+  /* ── Motion (behind the global gate: OS allows it and the toggle isn't off) ── */
 
   @media (prefers-reduced-motion: no-preference) {
-    .hero :global(.arrow) {
+    @keyframes hero-caret {
+      50% {
+        background-size: 0 100%;
+      }
+    }
+
+    /* Arrows nudge toward where they point. */
+    :global(:root:not([data-motion='off'])) .hero :global(.arrow) {
       transition: translate var(--dur-base) var(--ease-out);
     }
 
     @media (hover: hover) {
-      .button--primary:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .button--primary:hover :global(.arrow) {
         translate: 0 2px;
       }
 
-      .button--secondary:hover :global(.arrow),
-      .hero__links a:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .button--secondary:hover :global(.arrow),
+      :global(:root:not([data-motion='off'])) .hero__links a:hover :global(.arrow) {
         translate: 2px -2px;
+      }
+    }
+
+    /* The graph fades in over its first frame. */
+    :global(:root:not([data-motion='off'])) .hero__graph {
+      transition-duration: 600ms;
+      transition-timing-function: var(--ease-out);
+    }
+  }
+
+  /* Before the script starts, a waiting prompt: the live layer shows just `FOCUS ›` and a
+     blinking caret. Failsafe: if the script hasn't run within 6 s (it never loads, or the
+     connection is that slow), the static line returns — and a late script then leaves it. */
+  @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    @keyframes hero-focus-failsafe-show {
+      to {
+        visibility: visible;
+      }
+    }
+
+    @keyframes hero-focus-failsafe-hide {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    :global(:root:not([data-motion='off'])) .hero__focus:not([data-state]) .hero__focus-static {
+      visibility: hidden;
+      animation: hero-focus-failsafe-show 1ms 6s forwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .hero__focus:not([data-state]) .hero__focus-live {
+      visibility: visible;
+      animation: hero-focus-failsafe-hide 1ms 6s forwards;
+    }
+
+    /* The caret blinks (steps, 1 s) while waiting and while holding on an area; it is solid
+       while typing. Every blink run is finite, and the whole sequence ends inside 5 s. */
+    :global(:root:not([data-motion='off'])) .hero__focus:not([data-state]) .hero__focus-text,
+    :global(:root:not([data-motion='off'])) .hero__focus.is-holding .hero__focus-text {
+      animation: hero-caret 1s steps(1, end) 5;
+    }
+  }
+
+  /* Scroll: as the hero leaves, its text lifts 24px and dims to 0.4; the grid and the graph
+     lag behind at 0.6× the scroll speed (translate 40% of their height over the hero's
+     exit-crossing, which spans exactly the hero's height). CSS only, compositor-driven.
+     Longhands only next to animation-timeline (R22). */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes hero-exit {
+        to {
+          translate: 0 -24px;
+          opacity: 0.4;
+        }
+      }
+
+      @keyframes hero-lag {
+        to {
+          translate: 0 40%;
+        }
+      }
+
+      /* The grid box is the hero's height plus one cell: subtract that cell's share. */
+      @keyframes hero-lag-grid {
+        to {
+          translate: 0 calc(40% - 0.4 * var(--cell));
+        }
+      }
+
+      /* Inset by the sticky header (not html's scroll-padding, which adds 1rem): progress is
+         exactly 0 at the top of the page and runs over the hero's own height from there. */
+      .hero {
+        view-timeline-name: --hero;
+        view-timeline-axis: block;
+        view-timeline-inset: var(--header-h) 0;
+      }
+
+      :global(:root:not([data-motion='off'])) .hero__eyebrow,
+      :global(:root:not([data-motion='off'])) .hero__title,
+      :global(:root:not([data-motion='off'])) .hero__lede,
+      :global(:root:not([data-motion='off'])) .hero__focus {
+        animation-name: hero-exit;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --hero;
+        animation-range: exit-crossing 0% exit-crossing 100%;
+      }
+
+      :global(:root:not([data-motion='off'])) .hero__backdrop {
+        animation-name: hero-lag;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --hero;
+        animation-range: exit-crossing 0% exit-crossing 100%;
+      }
+
+      :global(:root:not([data-motion='off'])) .hero__inner::before {
+        animation-name: hero-lag-grid;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --hero;
+        animation-range: exit-crossing 0% exit-crossing 100%;
       }
     }
   }

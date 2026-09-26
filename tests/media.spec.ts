@@ -1,6 +1,8 @@
 /**
  * Media behaviour: the trip-planner loops (muted, inline, postered, with a visible Pause
- * toggle; play only while on screen; a pause sticks; never play under reduced motion), and
+ * toggle; play only while on screen; a pause sticks; never play under reduced motion or with the
+ * site's Motion toggle off, which pauses a playing loop live and, back on, resumes only a loop
+ * the reader hadn't paused), and
  * the YouTube facade on the-forest (nothing requested from YouTube or ytimg until the click,
  * then a titled, focused player). Runs on desktop Chromium and mobile WebKit.
  */
@@ -95,6 +97,59 @@ test.describe('trip-planner loops', () => {
       await expect(page.locator(`${LOOPS} .video-toggle`).first()).toHaveAccessibleName(
         'Play video',
       );
+    });
+  });
+
+  test.describe('with the site Motion toggle', () => {
+    test.use({ reducedMotion: 'no-preference' });
+
+    /** Flips the footer's Motion chip without scrolling to it (the loop stays on screen). */
+    const toggleMotion = async (page: Page) => {
+      await expect(page.locator('footer [data-motion-toggle]')).not.toBeHidden({ timeout: 10_000 });
+      await page.evaluate(() =>
+        document.querySelector<HTMLButtonElement>('footer [data-motion-toggle]')!.click(),
+      );
+    };
+
+    test('stored off: nothing plays', async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem('motion', 'off'));
+      await gotoRel(page, 'work/trip-planner/');
+      await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+      const video = page.locator(`${LOOPS} video`).first();
+      await center(video);
+      await page.waitForTimeout(SETTLE_MS);
+      expect(await isPaused(video)).toBe(true);
+      await expect(page.locator(LOOPS).first().getByRole('button')).toHaveAccessibleName(
+        'Play video',
+      );
+    });
+
+    test('off pauses a playing loop; back on resumes it, unless the reader paused it', async ({
+      page,
+    }) => {
+      await gotoRel(page, 'work/trip-planner/');
+      const loop = page.locator(LOOPS).first();
+      const video = loop.locator('video');
+      await center(video);
+      await expect.poll(() => isPaused(video), { timeout: 10_000 }).toBe(false);
+
+      await toggleMotion(page);
+      await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+      await expect.poll(() => isPaused(video)).toBe(true);
+      await expect(loop.getByRole('button')).toHaveAccessibleName('Play video');
+
+      await toggleMotion(page);
+      await expect(page.locator('html')).not.toHaveAttribute('data-motion');
+      await expect.poll(() => isPaused(video)).toBe(false);
+
+      // Paused by the reader: motion going off and on again leaves it paused.
+      await loop.getByRole('button').click();
+      await expect.poll(() => isPaused(video)).toBe(true);
+      await toggleMotion(page);
+      await toggleMotion(page);
+      await expect(page.locator('html')).not.toHaveAttribute('data-motion');
+      await page.waitForTimeout(SETTLE_MS);
+      expect(await isPaused(video)).toBe(true);
     });
   });
 });

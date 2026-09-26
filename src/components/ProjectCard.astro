@@ -12,6 +12,12 @@
  *
  * Rows are subgridded by ProjectGrid, so meta, titles, summaries and tags line up across a
  * row of cards. ProjectGrid's odd-last-card rule switches a card to the horizontal layout.
+ *
+ * Targeting reticle (interactions spec §3), the successor to the 2021 hover-reveal: on hover
+ * (fine pointers) or keyboard focus, accent corner brackets snap onto the cover, a scanline
+ * sweeps it once, and an "Open case study" readout fades in; a soft accent spotlight follows
+ * the pointer (--mx/--my, written by one delegated listener on the grid). All of it is a
+ * decorative `aria-hidden` HUD. Touch screens get the brackets at rest, faint, and nothing else.
  */
 import type { CollectionEntry } from 'astro:content';
 import { Picture } from 'astro:assets';
@@ -20,6 +26,7 @@ import { pad2, projectDate } from '../lib/format';
 import { candidateWidths, frameMode, imageFacts } from '../lib/images';
 import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
+import '../styles/reticle.css';
 import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
 import TagList from './TagList.astro';
@@ -30,7 +37,7 @@ interface Props {
   index: number;
   /** Above-the-fold card: load the cover eagerly at high priority. */
   eager?: boolean;
-  /** Scroll-reveal the card (cards below the first row; spec §4). */
+  /** Entrance reveal as it scrolls into view (cards below the first row; spec §4). */
   reveal?: boolean;
   /** The odd last card, which spans both columns from 800px (ProjectGrid): wider cover. */
   wide?: boolean;
@@ -55,9 +62,12 @@ const style = pageStyle(Astro.locals, {
   'view-transition-name': `cover-${id}`,
   '--cover-position': data.coverPosition ?? 'center',
   '--cover-max': `${facts.width}px`,
+  '--cover-w': String(facts.width),
+  '--cover-h': String(facts.height),
 });
 
 const href = withBase(`work/${id}/`);
+const readout = data.featured ? 'Open case study' : 'Open project';
 // The arrow stays glued to the title's last word (never wraps onto a line of its own).
 const words = data.title.split(' ');
 const titleTail = words.pop();
@@ -78,6 +88,13 @@ const titleHead = words.join(' ');
       fetchpriority={eager ? 'high' : undefined}
       class="card__img"
     />
+    <span class="card__hud reticle" aria-hidden="true">
+      <span class="card__scan"></span>
+      <span class="card__readout">
+        {readout}
+        <Arrow />
+      </span>
+    </span>
   </div>
   <div class="card__body">
     <p class="card__meta mono-label">
@@ -108,6 +125,7 @@ const titleHead = words.join(' ');
 <style>
   .card {
     position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-rows: auto auto auto 1fr auto;
     grid-row: span 5;
@@ -162,16 +180,18 @@ const titleHead = words.join(' ');
     object-position: var(--cover-position);
   }
 
-  /* Small or portrait covers: whole image, centred on the panel, never past 1:1. */
+  /* Small or portrait covers: whole image, centred on the panel, never past 1:1. The picture's
+     box is computed from the cover's own ratio (--cover-w / --cover-h) and the panel (a size
+     container), not measured from the file: final from the first paint (Ruling G11). */
   .card__media[data-mode='panel'] {
     padding: clamp(1rem, 4%, 1.75rem);
+    container-type: size;
   }
 
   .card__media[data-mode='panel'] :global(img) {
-    inline-size: auto;
+    inline-size: min(100cqi, var(--cover-max), 100cqb * var(--cover-w) / var(--cover-h));
     block-size: auto;
-    max-inline-size: min(100%, var(--cover-max));
-    max-block-size: 100%;
+    aspect-ratio: var(--cover-w) / var(--cover-h);
     object-fit: contain;
     outline: var(--hairline);
   }
@@ -267,29 +287,241 @@ const titleHead = words.join(' ');
     }
   }
 
+  /* ── Targeting reticle (interactions spec §3) ──
+     A decorative HUD over the cover's whole frame (panel padding included), clipped by it. */
+
+  .card__hud {
+    --inset: 0.625rem;
+    --reticle-inset: var(--inset);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Corner brackets: the shared reticle (src/styles/reticle.css), inset on the frame, hidden
+     until locked on. A page-colour halo keeps the accent legible on any cover: the light
+     scheme's deep teal over dark art, the dark scheme's cyan over pale art. */
+  .card__hud::before,
+  .card__hud::after {
+    filter: drop-shadow(0 0 1px var(--bg)) drop-shadow(0 0 1px var(--bg));
+    opacity: 0;
+  }
+
+  /* Scanline: a 1px accent line with a soft tail above it; the box is the frame, parked one
+     frame-height up, and slides down to rest with the line on the bottom edge. */
+  .card__scan {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to bottom,
+      transparent calc(100% - 1.5rem - 1px),
+      color-mix(in oklch, var(--accent) 20%, transparent) calc(100% - 1px),
+      var(--accent) calc(100% - 1px)
+    );
+    opacity: 0;
+    translate: 0 -100%;
+  }
+
+  .card__readout {
+    position: absolute;
+    inset-inline-start: calc(var(--inset) + 0.5rem);
+    inset-block-end: calc(var(--inset) + 0.5rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625em;
+    padding: 0.5rem 0.625rem;
+    border: var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: color-mix(in oklch, var(--surface) 85%, transparent);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  .card__readout :global(.arrow) {
+    color: var(--accent);
+  }
+
+  /* Locked on: keyboard focus on the card's link, or hover with a fine pointer. */
+  .card:has(a:focus-visible) .card__hud::before,
+  .card:has(a:focus-visible) .card__hud::after,
+  .card:has(a:focus-visible) .card__readout {
+    opacity: 1;
+  }
+
+  .card:has(a:focus-visible) .card__media :global(img) {
+    filter: saturate(1.1);
+  }
+
+  @media (hover: hover) {
+    .card:hover .card__hud::before,
+    .card:hover .card__hud::after,
+    .card:hover .card__readout {
+      opacity: 1;
+    }
+
+    .card:hover .card__media :global(img) {
+      filter: saturate(1.1);
+    }
+  }
+
+  /* Navigating away (pageswap, src/scripts/interactions.ts): the cover morphs into the case
+     study; the chip and scanline stay behind, only the brackets ride the zoom. */
+  :global([data-leaving]) .card__readout,
+  :global([data-leaving]) .card__scan {
+    visibility: hidden;
+  }
+
+  /* Touch screens (no hover): the brackets rest on the frame, quieter; no scan, no spotlight. */
+  @media (hover: none) {
+    .card__hud::before,
+    .card__hud::after {
+      opacity: 0.55;
+    }
+  }
+
+  /* Spotlight: accent light following the pointer (--mx/--my from src/scripts/interactions.ts),
+     under the text and behind the opaque cover — so it lights the card's panel, not its image. */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-image: radial-gradient(
+      circle 18rem at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklch, var(--accent) 8%, transparent),
+      transparent
+    );
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Motion (the gate, global.css): the snap, sweep, fades, zoom and nudges. Without it every
+     state above still applies, instantly. */
   @media (prefers-reduced-motion: no-preference) {
-    .card__media :global(img),
-    .card__arrow :global(.arrow) {
+    @keyframes card-scan {
+      from {
+        opacity: 1;
+        translate: 0 -100%;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+        translate: 0 0;
+      }
+    }
+
+    :global(:root:not([data-motion='off'])) .card__media :global(img) {
       transition:
         scale var(--dur-base) var(--ease-out),
+        filter var(--dur-base) var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .card__arrow :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    /* Brackets wait a little wide of the frame and snap in: 160 ms, the second pair 50 ms
+       behind. Leaving, they let go together. */
+    :global(:root:not([data-motion='off'])) .card__hud::before,
+    :global(:root:not([data-motion='off'])) .card__hud::after {
+      scale: 1.08;
+      transition:
+        opacity 160ms var(--ease-out),
+        scale 160ms var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .card__readout {
+      translate: 0 0.25rem;
+      transition:
+        opacity var(--dur-base) var(--ease-out),
         translate var(--dur-base) var(--ease-out);
     }
 
-    .card:has(a:focus-visible) .card__media :global(img) {
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__media :global(img) {
       scale: 1.02;
     }
 
-    .card:has(a:focus-visible) .card__arrow :global(.arrow) {
+    :global(:root:not([data-motion='off']))
+      .card:has(a:focus-visible)
+      .card__arrow
+      :global(.arrow) {
       translate: 2px 0;
     }
 
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__hud::before,
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__hud::after {
+      scale: 1;
+    }
+
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__hud::after {
+      transition-delay: 50ms;
+    }
+
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__readout {
+      translate: 0 0;
+      transition-delay: 90ms;
+    }
+
+    :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__scan {
+      animation-name: card-scan;
+      animation-duration: 700ms;
+      animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+    }
+
     @media (hover: hover) {
-      .card:hover .card__media :global(img) {
+      :global(:root:not([data-motion='off'])) .card:hover .card__media :global(img) {
         scale: 1.02;
       }
 
-      .card:hover .card__arrow :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .card:hover .card__arrow :global(.arrow) {
         translate: 2px 0;
+      }
+
+      :global(:root:not([data-motion='off'])) .card:hover .card__hud::before,
+      :global(:root:not([data-motion='off'])) .card:hover .card__hud::after {
+        scale: 1;
+      }
+
+      :global(:root:not([data-motion='off'])) .card:hover .card__hud::after {
+        transition-delay: 50ms;
+      }
+
+      :global(:root:not([data-motion='off'])) .card:hover .card__readout {
+        translate: 0 0;
+        transition-delay: 90ms;
+      }
+
+      :global(:root:not([data-motion='off'])) .card:hover .card__scan {
+        animation-name: card-scan;
+        animation-duration: 700ms;
+        animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+      }
+
+      :global(:root:not([data-motion='off'])) .card::before {
+        transition: opacity var(--dur-base) var(--ease-standard);
+      }
+
+      :global(:root:not([data-motion='off'])) .card:hover::before {
+        opacity: 1;
+      }
+    }
+
+    @media (hover: none) {
+      :global(:root:not([data-motion='off'])) .card__hud::before,
+      :global(:root:not([data-motion='off'])) .card__hud::after {
+        scale: 1;
       }
     }
   }

@@ -1,0 +1,40 @@
+---
+/**
+ * The motion layer (MotionLayer), loaded only once the page has loaded, painted and gone idle —
+ * for components whose scripting can wait (the footer's Motion chip and status clock), so that on
+ * a page where nothing else needs the layer early (a case study) its request never joins the ones
+ * the first paint and the LCP image wait on (spec §0.1). The entry's `<script>` sits in a
+ * `<template>`, inert — neither fetched nor run — until the inline loader below moves it into the
+ * page. Where the page loads the layer up front anyway (home, /work/), moving it in again is a
+ * no-op: a module runs once per page, and it is already fetched.
+ */
+import MotionLayer from './MotionLayer.astro';
+---
+
+<template data-motion-layer>
+  <MotionLayer />
+</template>
+
+<script>
+  // After load, the next frame and idle: afterLoadIdle() (src/scripts/motion.ts) — the one
+  // source of that wait for the bundled code — plus the frame the motion layer adds before
+  // fetching the rest of its code. Mirrored rather than imported: this loader must stay
+  // import-free so Astro inlines it, since an import shared with the motion-layer entry would
+  // split into a chunk of its own — a request on every page for this, and one more for the entry.
+  // (Like theme.ts and reveal.ts mirroring motionAllowed().)
+  export {};
+  const load = () => {
+    for (const template of document.querySelectorAll<HTMLTemplateElement>(
+      'template[data-motion-layer]',
+    )) {
+      template.replaceWith(template.content.cloneNode(true));
+    }
+  };
+  const idle = () => {
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(load, { timeout: 300 });
+    else setTimeout(load, 1);
+  };
+  const afterLoad = () => requestAnimationFrame(idle);
+  if (document.readyState === 'complete') afterLoad();
+  else addEventListener('load', afterLoad, { once: true });
+</script>

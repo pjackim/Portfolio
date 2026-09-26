@@ -1,29 +1,55 @@
 ---
 /**
  * One ArchiveList row: year · title link · one-liner · stack (max 3). The title link is
- * stretched over the row (one tab stop); hover/focus light the row and tint the title.
+ * stretched over the row (one tab stop). Hover/focus (interactions spec §3): a surface wash
+ * wipes in from the left, the title slides 4px right and tints, its arrow nudges. Below the
+ * fold the row plays an entrance as it scrolls into view (global.css `[data-reveal]`).
+ * `data-capabilities` lists the project's capability ids for the /work/ filter (WorkFilter);
+ * `named` gives the row its filter-reflow view-transition name, `row-<slug>` (ArchiveList).
  */
 import type { CollectionEntry } from 'astro:content';
 import { projectDate } from '../lib/format';
+import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
 import TagList from './TagList.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  named?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, named = false } = Astro.props;
 const { id, data } = project;
+const style = named ? pageStyle(Astro.locals, { '--vt-name': `row-${id}` }) : undefined;
+// The arrow stays glued to the title's last word (never wraps onto a line of its own).
+const words = data.title.split(' ');
+const titleTail = words.pop();
+const titleHead = words.join(' ');
 ---
 
-<li class="archive-row">
+<li
+  class="archive-row"
+  data-reveal
+  data-capabilities={data.capabilities.join(' ')}
+  data-slug={id}
+  data-style={style}
+>
   <p class="archive-row__year mono-label">
     <DateText text={projectDate(project)} />
   </p>
   <h3 class="archive-row__title">
     <a href={withBase(`work/${id}/`)} data-astro-prefetch>
-      {data.title}
+      <span class="archive-row__name">
+        {titleHead}
+        <span class="archive-row__tail">
+          {titleTail}
+          <span class="archive-row__arrow">
+            <Arrow />
+          </span>
+        </span>
+      </span>
     </a>
   </h3>
   <p class="archive-row__summary">{data.summary}</p>
@@ -47,15 +73,15 @@ const { id, data } = project;
     border-block-end: var(--hairline);
   }
 
-  /* Hover wash, bled slightly past the text edges so hairlines stay on the container grid. */
+  /* Hover wash, bled slightly past the text edges so hairlines stay on the container grid.
+     Clipped away to its left edge at rest; hover/focus unclip it (a wipe, with motion). */
   .archive-row::before {
     content: '';
     position: absolute;
     z-index: -1;
     inset: 0 calc(-1 * var(--space-xs));
     background-color: var(--surface);
-    opacity: 0;
-    transition: opacity var(--dur-fast) var(--ease-standard);
+    clip-path: inset(0 100% 0 0);
   }
 
   .archive-row__title {
@@ -67,6 +93,26 @@ const { id, data } = project;
   .archive-row__title a {
     color: var(--text);
     text-decoration: none;
+  }
+
+  /* An inline-block, so it can slide (the link itself must not move: its ::after is the
+     row's hit area). An inline-block's baseline is its *last* line, and the row aligns on
+     baselines — so a wrapped title would pull the year and summary down to its second line.
+     Top-aligned in the h3's line, the line's baseline is the first line's again (same font and
+     line height). `baseline-source: first` would say it directly, but WebKit ignores it. */
+  .archive-row__name {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .archive-row__tail {
+    white-space: nowrap;
+  }
+
+  .archive-row__arrow {
+    display: inline-block;
+    margin-inline-start: 0.2em;
+    color: var(--text-subtle);
   }
 
   /* Stretched link: the whole row is the target. */
@@ -108,20 +154,62 @@ const { id, data } = project;
   }
 
   .archive-row:has(a:focus-visible)::before {
-    opacity: 1;
+    clip-path: inset(0);
   }
 
-  .archive-row:has(a:focus-visible) .archive-row__title a {
+  .archive-row:has(a:focus-visible) .archive-row__title a,
+  .archive-row:has(a:focus-visible) .archive-row__arrow {
     color: var(--accent);
   }
 
   @media (hover: hover) {
     .archive-row:hover::before {
-      opacity: 1;
+      clip-path: inset(0);
     }
 
-    .archive-row:hover .archive-row__title a {
+    .archive-row:hover .archive-row__title a,
+    .archive-row:hover .archive-row__arrow {
       color: var(--accent);
+    }
+  }
+
+  /* Motion (the gate, global.css): the wipe, the slide and the nudge. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .archive-row::before {
+      transition: clip-path var(--dur-base) var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row__arrow {
+      transition: color var(--dur-fast) var(--ease-standard);
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row__name,
+    :global(:root:not([data-motion='off'])) .archive-row__arrow :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row:has(a:focus-visible) .archive-row__name {
+      translate: 4px 0;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .archive-row:has(a:focus-visible)
+      .archive-row__arrow
+      :global(.arrow) {
+      translate: 2px 0;
+    }
+
+    @media (hover: hover) {
+      :global(:root:not([data-motion='off'])) .archive-row:hover .archive-row__name {
+        translate: 4px 0;
+      }
+
+      :global(:root:not([data-motion='off']))
+        .archive-row:hover
+        .archive-row__arrow
+        :global(.arrow) {
+        translate: 2px 0;
+      }
     }
   }
 </style>
