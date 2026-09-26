@@ -208,6 +208,45 @@ test.describe('archive rows', () => {
   });
 });
 
+test.describe('archive rows, wrapped titles', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test("keep the year and summary on the title's first line", async ({ page }) => {
+    await gotoRel(page, 'work/');
+    // Top and bottom of the first line of text in each cell (a Range over its first text node).
+    const rows = await page.locator('.archive-row').evaluateAll((els) =>
+      els.map((row) => {
+        const firstLine = (el: Element) => {
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+            acceptNode: (n) =>
+              n.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP,
+          });
+          const range = document.createRange();
+          range.selectNodeContents(walker.nextNode()!);
+          const box = range.getClientRects()[0]!;
+          return { top: box.top, middle: (box.top + box.bottom) / 2 };
+        };
+        const name = row.querySelector('.archive-row__name')!;
+        const lineHeight = parseFloat(getComputedStyle(name).lineHeight);
+        return {
+          wrapped: name.getBoundingClientRect().height > lineHeight * 1.5,
+          title: firstLine(row.querySelector('.archive-row__title')!),
+          year: firstLine(row.querySelector('.archive-row__year')!),
+          summary: firstLine(row.querySelector('.archive-row__summary')!),
+        };
+      }),
+    );
+    const wrapped = rows.filter((row) => row.wrapped);
+    expect(wrapped.length, 'wrapped titles at 1440 on /work/').toBeGreaterThan(0);
+    for (const { title, year } of wrapped) {
+      // Baseline-aligned mono year vs sans title: the tops differ only by the fonts' ascents
+      // (4.0 px, as on an unwrapped row); a year pushed to the second line is ~28 px off.
+      expect(Math.abs(year.top - title.top)).toBeLessThanOrEqual(4.5);
+      expect(Math.abs(year.middle - title.middle)).toBeLessThanOrEqual(4);
+    }
+  });
+});
+
 test.describe('section headings, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 

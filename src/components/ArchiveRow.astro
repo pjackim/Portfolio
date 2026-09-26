@@ -85,9 +85,13 @@ const titleHead = words.join(' ');
   }
 
   /* An inline-block, so it can slide (the link itself must not move: its ::after is the
-     row's hit area). */
+     row's hit area). An inline-block's baseline is its *last* line, and the row aligns on
+     baselines — so a wrapped title would pull the year and summary down to its second line.
+     Top-aligned in the h3's line, the line's baseline is the first line's again (same font and
+     line height). `baseline-source: first` would say it directly, but WebKit ignores it. */
   .archive-row__name {
     display: inline-block;
+    vertical-align: top;
   }
 
   .archive-row__tail {
