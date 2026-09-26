@@ -295,12 +295,15 @@ const titleHead = words.join(' ');
   }
 
   /* Corner brackets: each pseudo-element draws one diagonal pair (::before top-left +
-     bottom-right, ::after top-right + bottom-left), so the pairs can land a beat apart. */
+     bottom-right, ::after top-right + bottom-left), so the pairs can land a beat apart. A
+     page-colour halo keeps the accent legible on any cover: the light scheme's deep teal over
+     dark art, the dark scheme's cyan over pale art. */
   .card__hud::before,
   .card__hud::after {
     content: '';
     position: absolute;
     inset: var(--inset);
+    filter: drop-shadow(0 0 1px var(--bg)) drop-shadow(0 0 1px var(--bg));
     background-image:
       linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
       linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent));
@@ -400,11 +403,11 @@ const titleHead = words.join(' ');
     visibility: hidden;
   }
 
-  /* Touch screens (no hover): the brackets rest on the frame, faint; no scan, no spotlight. */
+  /* Touch screens (no hover): the brackets rest on the frame, quieter; no scan, no spotlight. */
   @media (hover: none) {
     .card__hud::before,
     .card__hud::after {
-      opacity: 0.3;
+      opacity: 0.55;
     }
   }
 

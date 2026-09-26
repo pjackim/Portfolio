@@ -125,8 +125,8 @@ test.describe('card reticle', () => {
     await gotoRel(page, '');
     await scrollIntoView(page, '#work', 'start');
     if (!(await finePointer(page))) {
-      // Touch screens: the brackets rest on the frame at 30%, nothing else.
-      expect(await brackets(page)).toEqual([0.3, 0.3]);
+      // Touch screens: the brackets rest on the frame at 55%, nothing else.
+      expect(await brackets(page)).toEqual([0.55, 0.55]);
       expect(await pseudoOpacity(page, CARD, '::before'), 'no spotlight').toBe(0);
       return;
     }
