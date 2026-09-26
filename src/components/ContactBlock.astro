@@ -68,8 +68,10 @@ const links = [
     text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
   }
 
-  .contact__email a:hover {
-    text-decoration-color: currentColor;
+  @media (hover: hover) {
+    .contact__email a:hover {
+      text-decoration-color: currentColor;
+    }
   }
 
   .contact__links {
@@ -101,12 +103,14 @@ const links = [
     transition: text-decoration-color var(--dur-fast) var(--ease-standard);
   }
 
-  .contact__links a:hover {
-    color: var(--text);
-  }
+  @media (hover: hover) {
+    .contact__links a:hover {
+      color: var(--text);
+    }
 
-  .contact__links a:hover .contact__label {
-    text-decoration-color: var(--accent);
+    .contact__links a:hover .contact__label {
+      text-decoration-color: var(--accent);
+    }
   }
 
   .contact__meta {

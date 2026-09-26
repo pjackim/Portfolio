@@ -104,8 +104,10 @@ a {
   transition: color var(--dur-fast) var(--ease-standard);
 }
 
-a:hover {
-  color: var(--accent-hover);
+@media (hover: hover) {
+  a:hover {
+    color: var(--accent-hover);
+  }
 }
 
 /* ── Focus — visible everywhere, never removed; survives forced-colors ──── */
@@ -179,16 +181,8 @@ a:hover {
   color: var(--on-accent);
 }
 
-.button--primary:hover {
-  color: var(--on-accent);
-}
-
 .button--secondary {
   border-color: var(--line-ui);
-  color: var(--text);
-}
-
-.button--secondary:hover {
   color: var(--text);
 }
 
@@ -196,10 +190,12 @@ a:hover {
   .button--primary:hover {
     border-color: var(--accent-hover);
     background-color: var(--accent-hover);
+    color: var(--on-accent);
   }
 
   .button--secondary:hover {
     background-color: var(--surface-2);
+    color: var(--text);
   }
 }
 

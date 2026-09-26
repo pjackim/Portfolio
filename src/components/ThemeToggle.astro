@@ -3,7 +3,8 @@
  * Two-state theme switch (spec-design-content §2). Rendered `hidden`: it only appears once
  * `src/scripts/theme.ts` runs, so without JS the page simply follows the system scheme.
  * The slot reserves the button's box while scripting is enabled, so revealing it never
- * shifts the header. The icon shows the scheme the button switches *to* (matching its label).
+ * shifts the header, and is dropped when scripting is off. The icon shows the scheme the
+ * button switches *to* (matching its label).
  */
 ---
 
@@ -35,6 +36,14 @@
     }
   }
 
+  /* No JS, no button: drop the empty slot too, so it doesn't add a flex gap at the header's
+     end and the nav stays flush with the container edge. */
+  @media (scripting: none) {
+    .theme-toggle-slot {
+      display: none;
+    }
+  }
+
   .theme-toggle {
     position: relative;
     display: grid;
@@ -62,9 +71,11 @@
     inset: calc((var(--size) - 2.75rem) / 2 - 1px);
   }
 
-  .theme-toggle:hover {
-    background-color: var(--surface-2);
-    color: var(--text);
+  @media (hover: hover) {
+    .theme-toggle:hover {
+      background-color: var(--surface-2);
+      color: var(--text);
+    }
   }
 
   .theme-toggle__icon {

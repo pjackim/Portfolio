@@ -207,12 +207,14 @@ const eyebrow = site.eyebrow.split(' · ');
     transition: text-decoration-color var(--dur-fast) var(--ease-standard);
   }
 
-  .hero__links a:hover {
-    color: var(--text);
-  }
+  @media (hover: hover) {
+    .hero__links a:hover {
+      color: var(--text);
+    }
 
-  .hero__links a:hover .hero__link-label {
-    text-decoration-color: var(--accent);
+    .hero__links a:hover .hero__link-label {
+      text-decoration-color: var(--accent);
+    }
   }
 
   .hero__inner > :global(.hero__status) {

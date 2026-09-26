@@ -84,8 +84,10 @@ const links = [
     text-decoration: none;
   }
 
-  .brand:hover {
-    color: var(--text);
+  @media (hover: hover) {
+    .brand:hover {
+      color: var(--text);
+    }
   }
 
   .brand__name {
@@ -122,8 +124,10 @@ const links = [
     transition: color var(--dur-fast) var(--ease-standard);
   }
 
-  .site-nav a:hover {
-    color: var(--text);
+  @media (hover: hover) {
+    .site-nav a:hover {
+      color: var(--text);
+    }
   }
 
   .site-nav a[aria-current='page'] {

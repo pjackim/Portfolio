@@ -123,8 +123,10 @@ const gallery = data.media.filter((item) => item !== heroVideo);
     text-decoration: none;
   }
 
-  .case__back:hover {
-    color: var(--text);
+  @media (hover: hover) {
+    .case__back:hover {
+      color: var(--text);
+    }
   }
 
   .case__header > :global(.case__intro) {

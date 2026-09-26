@@ -138,8 +138,10 @@ const linkList = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[]).flat
     text-underline-offset: 0.2em;
   }
 
-  .project-meta__links a:hover {
-    color: var(--accent);
+  @media (hover: hover) {
+    .project-meta__links a:hover {
+      color: var(--accent);
+    }
   }
 
   /* Wide: one row of cells split by vertical hairlines; Stack takes the leftover width. */

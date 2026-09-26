@@ -155,7 +155,9 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
   }
 
-  .capability__seen a:hover {
-    text-decoration-color: currentColor;
+  @media (hover: hover) {
+    .capability__seen a:hover {
+      text-decoration-color: currentColor;
+    }
   }
 </style>

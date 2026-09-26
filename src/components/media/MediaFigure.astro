@@ -219,8 +219,10 @@ const caption = item.caption;
     white-space: nowrap;
   }
 
-  .figure__full:hover {
-    color: var(--accent);
+  @media (hover: hover) {
+    .figure__full:hover {
+      color: var(--accent);
+    }
   }
 
   /* No caption text: "FIG. nn" and the link share one line. */
