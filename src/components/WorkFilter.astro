@@ -74,8 +74,11 @@ const chips = [
 </div>
 
 <style>
+  /* One column held to the container: the chip strip below bleeds to the screen edges by its
+     own margins, so nothing may widen the column past the container first. */
   .work-filter {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-xs);
   }
 
@@ -99,12 +102,19 @@ const chips = [
     }
   }
 
-  /* FILTER / CAPABILITY ─────────────── SHOWING 07 / 15 */
+  /* FILTER / CAPABILITY ─────────────── SHOWING 07 / 15
+     The narrowest phones (~320px) can't fit it on one line: the count wraps under the label,
+     at the right edge, and the rule fills the rest of the first line. */
   .work-filter__head {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-s);
+    gap: var(--space-2xs) var(--space-s);
     white-space: nowrap;
+  }
+
+  .work-filter__result {
+    margin-inline-start: auto;
   }
 
   .work-filter__slash {
