@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+!img/team/Thumbs.db
+.idea/
+*.log
+# tooling (used by the upcoming Astro rebuild)
+node_modules/
+dist/
+.astro/
+.cache/
+.lighthouseci/
+playwright-report/
+test-results/
+blob-report/
+.env
+.env.*
+!.env.example
+.superpowers/
