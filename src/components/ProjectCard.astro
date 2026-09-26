@@ -32,10 +32,21 @@ interface Props {
   eager?: boolean;
   /** Scroll-reveal the card (cards below the first row; spec §4). */
   reveal?: boolean;
+  /** The odd last card, which spans both columns from 800px (ProjectGrid): wider cover. */
+  wide?: boolean;
 }
 
-const { project, index, eager = false, reveal = false } = Astro.props;
+const { project, index, eager = false, reveal = false, wide = false } = Astro.props;
 const { id, data } = project;
+
+/** `sizes` per layout, from the rendered cover width. From 800px a card is half the
+    container (1152px from ~1230px up), and the full-width horizontal card's cover is 55% of
+    it; 640–799px every card is horizontal (cover 45%); below that the cover is full width. */
+const SIZES = {
+  normal:
+    '(min-width: 1216px) 36rem, (min-width: 800px) calc(50vw - 3rem), (min-width: 640px) 45vw, 100vw',
+  wide: '(min-width: 1216px) 40rem, (min-width: 800px) calc(55vw - 2rem), (min-width: 640px) 45vw, 100vw',
+};
 
 const facts = await imageFacts(data.cover);
 const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
@@ -60,7 +71,7 @@ const titleHead = words.join(' ');
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       widths={widths}
-      sizes="(min-width: 800px) 36rem, (min-width: 640px) 45vw, 100vw"
+      sizes={SIZES[wide ? 'wide' : 'normal']}
       alt=""
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"

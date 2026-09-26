@@ -18,7 +18,13 @@ const { projects, class: className } = Astro.props;
 
 <ol class:list={['project-grid', className]} role="list">
   {projects.map((project, i) => (
-    <ProjectCard project={project} index={i} eager={i === 0} reveal={i >= 2} />
+    <ProjectCard
+      project={project}
+      index={i}
+      eager={i === 0}
+      reveal={i >= 2}
+      wide={i === projects.length - 1 && projects.length % 2 === 1}
+    />
   ))}
 </ol>
 
