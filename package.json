@@ -1,0 +1,42 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "build:only": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "npm run format:check && npm run check && npm run check:media",
+    "check:media": "node scripts/media/check.ts",
+    "media": "node scripts/media/build.ts",
+    "media:migrate": "node scripts/media/migrate.ts",
+    "new": "node scripts/new-project.ts",
+    "test:e2e": "playwright test",
+    "test:lhci": "lhci autorun",
+    "ci": "npm run lint && npm run build:only && npm run test:e2e"
+  },
+  "dependencies": {
+    "astro": "^7.3.5",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "~6",
+    "sharp": "^0.35.4",
+    "prettier": "^3",
+    "prettier-plugin-astro": "^1",
+    "@playwright/test": "^1.63.0",
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@types/node": "^24"
+  }
+}
