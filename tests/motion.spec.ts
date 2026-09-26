@@ -7,7 +7,8 @@
  * - The static frame is drawn in the design tokens' colours (the safety nets turn every
  *   property change into a transition, which once leaked into the canvas colour probe).
  * - Motion on: the canvas animates (pixels change), the h1 is never touched, the focus line
- *   types for at most 5 s and settles on its full text, the reels roll to their values; on a
+ *   types for at most 5 s and settles on its full text, the reels roll to their values — each
+ *   drum turning once in place, from its own digit, never parked on 0 first; on a
  *   connection so slow the CSS failsafe has already shown the line, it isn't retyped.
  * - The toggle: stops everything live (canvas, typing), is keyboard operable, and persists
  *   across a reload; revealing it never shifts the layout (tablet widths, either motion
@@ -23,6 +24,7 @@ declare global {
     __h1Mutations?: number;
     __focusStates?: [string | null, number][];
     __shifts?: { value: number; sources: string[] }[];
+    __rollStates?: (string | null)[];
   }
 }
 
@@ -306,6 +308,65 @@ test.describe('motion on', () => {
       `${String(PROJECT_COUNT).padStart(2, '0')}${String(featured).padStart(2, '0')}120`,
     );
     for (const { digit, steps } of reels) expect(steps).toBe(10 + digit);
+  });
+
+  test('each readout drum turns once in place, never parked on another value', async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__rollStates = [];
+      document.addEventListener('DOMContentLoaded', () => {
+        const list = document.querySelector('[data-readouts]');
+        if (!list) return;
+        new MutationObserver(() =>
+          window.__rollStates!.push(list.getAttribute('data-roll')),
+        ).observe(list, { attributes: true, attributeFilter: ['data-roll'] });
+      });
+    });
+    await gotoRel(page, '');
+    const list = page.locator('[data-readouts]');
+    await list.scrollIntoViewIfNeeded();
+    /** Line boxes each reel is translated up by, as painted now. */
+    const steps = () =>
+      list.locator('[data-digit]').evaluateAll((digits) =>
+        digits.map((el) => {
+          const reel = el.firstElementChild as HTMLElement;
+          const y = parseFloat(getComputedStyle(reel).translate.split(' ')[1] ?? '0');
+          return (0 - y) / el.getBoundingClientRect().height; // (never -0)
+        }),
+      );
+    const digits = await list
+      .locator('[data-digit]')
+      .evaluateAll((els) => els.map((el) => Number((el as HTMLElement).dataset.digit)));
+    // Caught as the turn begins: every drum (those still waiting their stagger too) shows its own
+    // digit, one turn up — the same glyph it rests on.
+    await expect(list).toHaveAttribute('data-roll', 'rolling', { timeout: 10_000 });
+    await list.evaluate((el) => {
+      for (const reel of el.querySelectorAll('[data-reel]')) {
+        for (const animation of reel.getAnimations()) {
+          animation.pause();
+          animation.currentTime = 0;
+        }
+      }
+    });
+    expect((await steps()).map(Math.round)).toEqual(digits);
+    // Mid-turn: somewhere between the two, never below its own digit.
+    await list.evaluate((el) => {
+      for (const reel of el.querySelectorAll('[data-reel]')) {
+        for (const animation of reel.getAnimations()) animation.currentTime = 400;
+      }
+    });
+    const mid = await steps();
+    mid.forEach((s, i) => {
+      expect(s).toBeGreaterThan(digits[i]!);
+      expect(s).toBeLessThan(digits[i]! + 10);
+    });
+    await list.evaluate((el) => {
+      for (const reel of el.querySelectorAll('[data-reel]')) {
+        for (const animation of reel.getAnimations()) animation.play();
+      }
+    });
+    await expect(list).toHaveAttribute('data-roll', 'done', { timeout: 10_000 });
+    expect((await steps()).map(Math.round)).toEqual(digits.map((d) => d + 10));
+    expect(await page.evaluate(() => window.__rollStates)).toEqual(['rolling', 'done']);
   });
 
   test('the Motion toggle stops everything and persists across reload', async ({ page }) => {

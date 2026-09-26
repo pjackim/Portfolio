@@ -1,9 +1,10 @@
 /**
  * Readout reels (interactions spec §2) — successor to the 2021 site's counter-up. Each digit is
  * a clipped column of 0–9 twice over, parked by CSS on its final value (so the SSR, no-JS and
- * motion-off states all read correctly). Here, once the row is on screen, every reel spins up
- * from 0 through a full turn and eases onto its value, staggered left to right (~900 ms in
- * all). The spin itself is a CSS animation on `translate`; this only arms and triggers it.
+ * motion-off states all read correctly). Here, once the row is on screen, every drum turns once
+ * in place — from its own digit a turn up, one full revolution, back onto it — staggered left to
+ * right (~900 ms in all). Until then nothing is touched: no reel is ever parked on another value
+ * first. The turn itself is a CSS animation on `translate`; this only triggers it.
  */
 import { motionAllowed, onMotionChange } from './motion';
 
@@ -30,8 +31,5 @@ export function rollReadouts(list: HTMLElement): void {
     },
     { threshold: 0.75 },
   );
-
-  // Armed: reels wait at 0 until the row is seen (CSS), so the spin is what the reader sees.
-  list.dataset.roll = 'armed';
   observer.observe(list);
 }
