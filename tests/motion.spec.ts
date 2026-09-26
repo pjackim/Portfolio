@@ -196,15 +196,16 @@ test.describe('reduced motion', () => {
     await gotoRel(page, '');
     const toggle = page.locator(TOGGLE);
     await expect(toggle).toBeVisible();
-    await expect(toggle).toHaveAccessibleName('Reduce motion');
-    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    // Named by its visible label (label in name); not pressed: motion is off.
+    await expect(toggle).toHaveAccessibleName('Motion');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await expect(toggle).toHaveAttribute('aria-disabled', 'true');
     await expect(toggle.locator('[data-motion-state]')).toHaveText('Off (system)');
     await expect(toggle).toHaveAccessibleDescription(/device is set to reduce motion/);
     // aria-disabled: Playwright won't treat it as actionable, so force the click through.
     await toggle.click({ force: true });
     await expect(page.locator('html')).not.toHaveAttribute('data-motion');
-    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   });
 });
 
@@ -400,14 +401,15 @@ test.describe('motion on', () => {
     await gotoRel(page, '');
     const html = page.locator('html');
     const toggle = page.locator(TOGGLE);
-    await expect(toggle).toHaveAccessibleName('Reduce motion');
-    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    // "Motion", pressed = motion on: the name starts with the visible label (WCAG 2.5.3).
+    await expect(toggle).toHaveAccessibleName('Motion');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle.locator('[data-motion-state]')).toHaveText('On');
     await graphIs(page, 'running');
 
     await toggle.click();
     await expect(html).toHaveAttribute('data-motion', 'off');
-    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await expect(toggle.locator('[data-motion-state]')).toHaveText('Off');
     // Typing snaps to its final line (it may still have been running).
     await expect(page.locator(FOCUS_LINE)).toHaveAttribute('data-state', 'done');
@@ -425,7 +427,7 @@ test.describe('motion on', () => {
 
     await toggle.click();
     await expect(html).not.toHaveAttribute('data-motion');
-    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
     await graphIs(page, 'running');
     expect(await page.evaluate(() => localStorage.getItem('motion'))).toBeNull();

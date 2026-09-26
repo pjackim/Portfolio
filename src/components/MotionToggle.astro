@@ -1,7 +1,9 @@
 ---
 /**
  * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
- * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. Drop it in
+ * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. A toggle
+ * button named "Motion" — its visible label, so the name starts with what's on screen (WCAG
+ * 2.5.3, label in name) — pressed while motion is on (Ruling G14, amending G3). Drop it in
  * anywhere; every instance on a page drives and mirrors the same setting (see
  * src/scripts/motion-toggle.ts, loaded through the page's one motion-layer entry, MotionLayer).
  *
@@ -33,8 +35,8 @@ const { class: className, deferLayer = false } = Astro.props;
     type="button"
     class="motion-toggle"
     data-motion-toggle
-    aria-label="Reduce motion"
-    aria-pressed="false"
+    aria-label="Motion"
+    aria-pressed="true"
     hidden
   >
     <span>Motion</span>

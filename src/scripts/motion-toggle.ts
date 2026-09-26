@@ -4,9 +4,11 @@
  * reduced motion that wins: the chip reads `MOTION ○ OFF (SYSTEM)`, is `aria-disabled`, and its
  * description says why.
  *
- * Semantics: a toggle button with a constant name, "Reduce motion", pressed while motion is
- * off (ARIA APG: a toggle's label must not change with its state). The chip is rendered
- * `hidden` and only revealed here, so without JS there is no control that can't work.
+ * Semantics: a toggle button named "Motion" — the chip's visible label, so the accessible name
+ * starts with what's on screen (WCAG 2.5.3, label in name) — and pressed while motion is on. The
+ * name never changes with the state (ARIA APG: a toggle's label must not); the visible ON / OFF
+ * is what `aria-pressed` says. The chip is rendered `hidden` and only revealed here, so without
+ * JS there is no control that can't work.
  */
 import {
   motionAllowed,
@@ -24,7 +26,7 @@ function render(): void {
   const state = system ? 'system' : on ? 'on' : 'off';
   for (const button of buttons) {
     button.dataset.state = state;
-    button.setAttribute('aria-pressed', String(!on));
+    button.setAttribute('aria-pressed', String(on));
     if (system) button.setAttribute('aria-disabled', 'true');
     else button.removeAttribute('aria-disabled');
     const label = button.querySelector('[data-motion-state]');
