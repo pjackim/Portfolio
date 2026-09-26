@@ -11,7 +11,8 @@
  * an `aria-hidden` stack of two layers in one grid cell: the static line (the final text; it
  * also reserves the settled height, so typing never shifts anything) and the live layer, whose
  * `[data-focus-typed]` span (final text in `data-text`) this script fills. `data-state` on the
- * line: absent → CSS shows a waiting prompt (when motion is allowed); `typing` → live layer;
+ * line: absent → CSS shows a waiting prompt (when motion is allowed; after 6 s a CSS failsafe
+ * brings the static line back, and then this script leaves it); `typing` → live layer;
  * `done` → back to the static line.
  */
 import { motionAllowed, onMotionChange } from './motion';
@@ -23,9 +24,13 @@ const SEPARATOR = ' · ';
 
 export function typeFocusLine(line: HTMLElement): void {
   const typed = line.querySelector<HTMLElement>('[data-focus-typed]');
+  const staticLine = line.querySelector<HTMLElement>('[data-focus-static]');
   const finalText = typed?.dataset.text ?? '';
   if (!typed || !finalText) return;
-  if (!motionAllowed()) {
+  // Motion off — or a load so slow the CSS failsafe has already brought the static line back
+  // (it only shows while waiting if that has fired): keep the line as it is, never blank it.
+  const failsafeShown = !!staticLine && getComputedStyle(staticLine).visibility === 'visible';
+  if (!motionAllowed() || failsafeShown) {
     line.dataset.state = 'done';
     return;
   }

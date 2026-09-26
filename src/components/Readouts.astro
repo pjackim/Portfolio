@@ -66,10 +66,14 @@ const REEL = [...'01234567890123456789'].join(' ');
     color: var(--text-subtle);
   }
 
+  /* Not selectable: copying the row picks up the visually hidden twins ("15 projects"), not
+     two turns of every drum. */
   .readout__visual {
     display: inline-flex;
     align-items: baseline;
     white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .readout__sep {

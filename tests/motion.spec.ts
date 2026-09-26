@@ -4,10 +4,14 @@
  * - Reduced motion: the attack-path canvas is a decorative (`aria-hidden`) static frame with no
  *   animation loop at all (no requestAnimationFrame calls, pixels stable); every animated
  *   readout shows its final text; the toggle defers to the OS setting.
+ * - The static frame is drawn in the design tokens' colours (the safety nets turn every
+ *   property change into a transition, which once leaked into the canvas colour probe).
  * - Motion on: the canvas animates (pixels change), the h1 is never touched, the focus line
- *   types and settles on its full text within 5.5 s of load, the reels roll to their values.
+ *   types for at most 5 s and settles on its full text, the reels roll to their values; on a
+ *   connection so slow the CSS failsafe has already shown the line, it isn't retyped.
  * - The toggle: stops everything live (canvas, typing), is keyboard operable, and persists
- *   across a reload. The monogram caret blinks on the first page of a session only.
+ *   across a reload; revealing it never shifts the layout (tablet widths, either motion
+ *   state). The monogram caret blinks on the first page of a session only.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -17,6 +21,8 @@ declare global {
   interface Window {
     __rafCalls?: number;
     __h1Mutations?: number;
+    __focusStates?: [string | null, number][];
+    __shifts?: { value: number; sources: string[] }[];
   }
 }
 
@@ -56,6 +62,70 @@ function graphSignature(page: Page): Promise<{ ink: number; hash: number }> {
   });
 }
 
+type Rgb = [number, number, number];
+
+/** Median colour of the canvas's near-opaque pixels: the hosts (drawn at 0.9, edges ≤ 0.45). */
+function graphNodeColor(page: Page): Promise<Rgb> {
+  return page.locator(GRAPH).evaluate((canvas: HTMLCanvasElement) => {
+    const { data } = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height);
+    const channels: number[][] = [[], [], []];
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3]! < 200) continue;
+      for (let c = 0; c < 3; c++) channels[c]!.push(data[i + c]!);
+    }
+    return channels.map((xs) => xs.sort((a, b) => a - b)[xs.length >> 1] ?? -1) as Rgb;
+  });
+}
+
+/** A design token resolved to sRGB bytes, the way a canvas would paint it. */
+function tokenColor(page: Page, token: string): Promise<Rgb> {
+  return page.evaluate((token) => {
+    const probe = document.createElement('span');
+    probe.style.setProperty('color', `var(${token})`);
+    document.body.append(probe);
+    const css = getComputedStyle(probe).color;
+    probe.remove();
+    const ctx = document.createElement('canvas').getContext('2d')!;
+    ctx.fillStyle = css;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return [r!, g!, b!] as Rgb;
+  }, token);
+}
+
+async function expectGraphInTokenColours(page: Page): Promise<void> {
+  const expected = await tokenColor(page, '--text-subtle');
+  const actual = await graphNodeColor(page);
+  for (let c = 0; c < 3; c++) {
+    expect(
+      Math.abs(actual[c]! - expected[c]!),
+      `host colour ${actual} vs --text-subtle ${expected}`,
+    ).toBeLessThanOrEqual(8);
+  }
+}
+
+/** Records the focus line's data-state changes with timestamps, from before scripts run. */
+async function recordFocusStates(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    window.__focusStates = [];
+    document.addEventListener('DOMContentLoaded', () => {
+      const line = document.querySelector('[data-focus-line]');
+      if (!line) return;
+      new MutationObserver(() => {
+        window.__focusStates!.push([line.getAttribute('data-state'), performance.now()]);
+      }).observe(line, { attributes: true, attributeFilter: ['data-state'] });
+    });
+  });
+}
+
+/** Holds back the motion layer (and so the hero code) by `ms`, as a slow connection would. */
+async function delayMotionLayer(page: Page, ms: number): Promise<void> {
+  await page.route('**/_astro/MotionToggle*.js', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, ms));
+    await route.continue();
+  });
+}
+
 /** The graph starts after load + idle; wait until it has drawn and settled into `state`. */
 async function graphIs(page: Page, state: 'running' | 'static'): Promise<void> {
   await expect(page.locator(GRAPH)).toHaveAttribute('data-state', state, { timeout: 10_000 });
@@ -81,6 +151,24 @@ test.describe('reduced motion', () => {
     await expect(graph).toHaveAttribute('aria-hidden', 'true');
     await graphIs(page, 'static');
     await expectFrozen(page);
+  });
+
+  test('the static frame is drawn in the token colours', async ({ page }) => {
+    await gotoRel(page, '');
+    await graphIs(page, 'static');
+    await expectGraphInTokenColours(page);
+    // Re-read after a scheme change (the safety net is still on).
+    await page.locator('header [data-theme-toggle]').click();
+    await expect(page.locator('html')).toHaveAttribute('data-scheme', /light|dark/);
+    await expect
+      .poll(async () => {
+        const [expected, actual] = [
+          await tokenColor(page, '--text-subtle'),
+          await graphNodeColor(page),
+        ];
+        return expected.every((v, c) => Math.abs(v - actual[c]!) <= 8);
+      })
+      .toBe(true);
   });
 
   test('animated readouts show their final text', async ({ page }) => {
@@ -154,9 +242,9 @@ test.describe('motion on', () => {
     expect(await page.evaluate(() => window.__h1Mutations)).toBe(0);
   });
 
-  test('the focus line types, then settles on the full text within 5.5 s', async ({ page }) => {
-    await gotoRel(page, ''); // resolves on `load`
-    const loaded = Date.now();
+  test('the focus line types for at most 5 s, then settles on the full text', async ({ page }) => {
+    await recordFocusStates(page);
+    await gotoRel(page, '');
     const line = page.locator(FOCUS_LINE);
     const typed = line.locator('[data-focus-typed]');
     // The real text is available to assistive tech from the start.
@@ -169,11 +257,29 @@ test.describe('motion on', () => {
     const partial = (await typed.textContent()) ?? '';
     expect(FOCUS_TEXT.startsWith(partial)).toBe(true);
 
-    await expect(line).toHaveAttribute('data-state', 'done', {
-      timeout: 5500 - (Date.now() - loaded),
-    });
+    await expect(line).toHaveAttribute('data-state', 'done', { timeout: 10_000 });
     await expect(typed).toHaveText(FOCUS_TEXT);
     await expect(line.locator('.hero__focus-static')).toBeVisible();
+    // WCAG 2.2.2: from the first typed frame to the settled line (caret stopped) ≤ 5 s.
+    const states = (await page.evaluate(() => window.__focusStates)) ?? [];
+    const started = states.find(([state]) => state === 'typing')?.[1];
+    const settled = states.find(([state]) => state === 'done')?.[1];
+    expect(started).toBeDefined();
+    expect(settled! - started!).toBeLessThanOrEqual(5000);
+  });
+
+  test('on a slow connection the failsafe line is not retyped', async ({ page }) => {
+    test.slow();
+    await recordFocusStates(page);
+    // The hero code arrives after the 6 s CSS failsafe has already shown the static line.
+    await delayMotionLayer(page, 6500);
+    await gotoRel(page, '');
+    const line = page.locator(FOCUS_LINE);
+    await expect(line).toHaveAttribute('data-state', 'done', { timeout: 10_000 });
+    await expect(line.locator('.hero__focus-static')).toBeVisible();
+    await expect(line.locator('.hero__focus-static')).toContainText(FOCUS_TEXT);
+    const states = (await page.evaluate(() => window.__focusStates)) ?? [];
+    expect(states.map(([state]) => state)).toEqual(['done']);
   });
 
   test('the readouts roll onto their values', async ({ page }) => {
@@ -273,3 +379,41 @@ test.describe('motion on', () => {
     expect(await blinking()).toBe(0);
   });
 });
+
+/**
+ * Revealing the Motion chip (hidden until its script runs) never shifts the layout: the slot
+ * reserves the chip's widest box. Tablet widths are where the rail's readouts and chip sit
+ * closest to wrapping; the chip's script is held back so the reveal lands after first paint.
+ */
+for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+  for (const width of [600, 700]) {
+    test.describe(`chip reveal at ${width}px (${reducedMotion})`, () => {
+      test.use({ reducedMotion, viewport: { width, height: 900 } });
+
+      test('causes no layout shift', async ({ page, browserName }) => {
+        test.skip(browserName === 'webkit', 'layout-shift entries are Chromium-only');
+        await page.addInitScript(() => {
+          window.__shifts = [];
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries() as (PerformanceEntry & {
+              value: number;
+              sources?: { node?: Node | null }[];
+            })[]) {
+              window.__shifts!.push({
+                value: entry.value,
+                sources: (entry.sources ?? []).map(
+                  (source) => (source.node as Element | null)?.className?.toString() ?? '#text',
+                ),
+              });
+            }
+          }).observe({ type: 'layout-shift', buffered: true });
+        });
+        await delayMotionLayer(page, 400);
+        await gotoRel(page, '');
+        await expect(page.locator(TOGGLE)).toBeVisible();
+        await page.waitForTimeout(400);
+        expect(await page.evaluate(() => window.__shifts)).toEqual([]);
+      });
+    });
+  }
+}

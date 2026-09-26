@@ -11,7 +11,7 @@
  * come from a uniform grid of LINK-sized cells, and edges are stroked as one path per alpha
  * bucket. The loop runs only while the hero is on screen, the tab is visible and motion is
  * allowed; otherwise the canvas holds one static frame (hosts and edges, no pulses) and no
- * frame is requested at all. Frames are capped near 60 fps, and all motion is time-based.
+ * frame is requested at all. Draws are paced to ~60 fps, and all motion is time-based.
  *
  * Colours come from the design tokens (--line-ui, --text-subtle, --accent), resolved through
  * the canvas's own computed `color`, and are re-read when the scheme changes.
@@ -54,8 +54,14 @@ const CURSOR_BUCKETS = 4;
 const CURSOR_ALPHA = 0.38;
 /** Share of hosts drawn as hollow "asset" squares rather than plain points. */
 const ASSET_SHARE = 0.14;
-/** rAF callbacks closer together than this are skipped: ~60 fps on 90/120 Hz screens. */
-const MIN_FRAME_MS = 12;
+/**
+ * Draws are paced to ~60 fps against a running budget: a display frame draws once the next
+ * 1/60 s slot is due (within FRAME_SLACK_MS of jitter). 60 Hz draws every frame, 90 Hz two in
+ * three, 120 Hz every other, 144 Hz ~62 fps — a fixed minimum gap can't do that (at 90 Hz it
+ * either draws every frame or every other one).
+ */
+const FRAME_MS = 1000 / 60;
+const FRAME_SLACK_MS = 2;
 /** Longest step simulated after a stall, so a hiccup never teleports the hosts. */
 const MAX_STEP_MS = 50;
 const RESIZE_DEBOUNCE_MS = 150;
@@ -165,7 +171,8 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   let nextTraceAt = FIRST_TRACE_MS;
   let running: boolean | null = null; // null until the first update() decides
   let raf = 0;
-  let lastNow = 0;
+  let lastNow = 0; // time of the last drawn frame
+  let nextDraw = 0; // when the next 60 fps slot is due
   let onScreen = false;
 
   let pointerIn = false;
@@ -182,9 +189,13 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   /**
    * Resolves the tokens (light-dark() compositions) to concrete colours in one style pass: each
    * goes into a colour property that paints nothing on a canvas, and is read back computed.
+   * Transitions are switched off for the read: the reduced-motion / Motion-off safety nets give
+   * every property a 0.01ms transition, and a transitioning property reads back its start value
+   * (the inherited text colour), not the token.
    */
   function readColors(): void {
     const { style } = canvas;
+    style.setProperty('transition-property', 'none', 'important');
     style.setProperty('color', 'var(--line-ui)');
     style.setProperty('text-decoration-color', 'var(--text-subtle)');
     style.setProperty('column-rule-color', 'var(--accent)');
@@ -197,6 +208,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     style.removeProperty('color');
     style.removeProperty('text-decoration-color');
     style.removeProperty('column-rule-color');
+    style.removeProperty('transition-property');
   }
 
   function seed(i: number): void {
@@ -646,10 +658,10 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
 
   function frame(now: number): void {
     raf = requestAnimationFrame(frame);
-    const elapsed = now - lastNow;
-    if (elapsed < MIN_FRAME_MS) return;
+    if (now + FRAME_SLACK_MS < nextDraw) return;
+    nextDraw = Math.max(nextDraw + FRAME_MS, now);
+    const dt = Math.min(now - lastNow, MAX_STEP_MS);
     lastNow = now;
-    const dt = Math.min(elapsed, MAX_STEP_MS);
     clock += dt;
     step(dt);
     draw(true);
@@ -666,6 +678,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     if (run) {
       draw(true);
       lastNow = performance.now();
+      nextDraw = lastNow + FRAME_MS;
       raf = requestAnimationFrame(frame);
     } else {
       cancelAnimationFrame(raf);
@@ -683,8 +696,9 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   resize();
 
   // On screen = the canvas itself (on phones only the hero's top band), parallax included.
-  new IntersectionObserver(([entry]) => {
-    onScreen = entry?.isIntersecting ?? false;
+  new IntersectionObserver((entries) => {
+    // Several records can arrive in one batch; the latest is the current state.
+    onScreen = entries[entries.length - 1]?.isIntersecting ?? false;
     update();
   }).observe(canvas);
   document.addEventListener('visibilitychange', update);

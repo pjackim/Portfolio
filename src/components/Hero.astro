@@ -68,7 +68,7 @@ const readouts = [
     <p class="hero__focus" data-focus-line>
       <span class="visually-hidden">Focus: {focus.join(', ')}</span>
       <span class="hero__focus-stack" aria-hidden="true">
-        <span class="hero__focus-static">
+        <span class="hero__focus-static" data-focus-static>
           <span class="hero__focus-key">Focus ›</span>
           <span class="hero__focus-body">
             <span class="hero__focus-text" set:text={focusText} />
@@ -186,12 +186,16 @@ const readouts = [
     pointer-events: none;
   }
 
+  /* Only opacity ever transitions (the fade-in): the safety nets give every property a
+     transition duration, and the colour probe in hero-graph.ts must read tokens, not start
+     values. */
   .hero__graph {
     display: block;
     inline-size: 100%;
     max-inline-size: none;
     block-size: 100%;
     opacity: 0;
+    transition-property: opacity;
     mask-image: radial-gradient(
       ellipse min(36rem, 48vw) 78% at calc(50% + min(36rem, 50% - var(--gutter))) 12%,
       #000 0%,
@@ -338,8 +342,14 @@ const readouts = [
     padding-block: var(--space-s);
   }
 
-  /* Phones: the chip gets its own row, so its width (ON / OFF (SYSTEM)) never re-wraps the
-     readouts; the slot has reserved that row's height before the chip appears. */
+  /* The chip's slot is its widest state from first paint (MotionToggle), so whether it shares
+     the readouts' line or wraps below them is settled before it appears; either way it keeps
+     to the right edge. */
+  .hero__rail > :global(.hero__motion) {
+    margin-inline-start: auto;
+  }
+
+  /* Phones: the chip gets its own row under the readouts. */
   @media (width < 30rem) {
     .hero__rail {
       flex-direction: column;
@@ -449,12 +459,14 @@ const readouts = [
 
     /* The graph fades in over its first frame. */
     :global(:root:not([data-motion='off'])) .hero__graph {
-      transition: opacity 600ms var(--ease-out);
+      transition-duration: 600ms;
+      transition-timing-function: var(--ease-out);
     }
   }
 
   /* Before the script starts, a waiting prompt: the live layer shows just `FOCUS ›` and a
-     blinking caret. Failsafe: if the script never runs, the static line returns after 6 s. */
+     blinking caret. Failsafe: if the script hasn't run within 6 s (it never loads, or the
+     connection is that slow), the static line returns — and a late script then leaves it. */
   @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
     @keyframes hero-focus-failsafe-show {
       to {

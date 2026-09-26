@@ -3,9 +3,13 @@
  * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
  * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. Drop it in
  * anywhere; every instance on a page drives and mirrors the same setting (see
- * src/scripts/motion-toggle.ts, loaded through src/scripts/motion-layer.ts). Rendered `hidden` until that script runs; the slot reserves
- * the chip's height meanwhile, so revealing it never shifts the layout, and collapses when
- * scripting is off.
+ * src/scripts/motion-toggle.ts, loaded through src/scripts/motion-layer.ts).
+ *
+ * No layout shift (spec §0.6): the chip is rendered `hidden` until that script runs, and its
+ * width depends on its state. So the slot holds an invisible, `aria-hidden` ghost of the widest
+ * state in the same grid cell: from first paint the slot is the chip's widest box, and neither
+ * the reveal nor a state change can move or re-wrap anything around it. The chip sits at the
+ * slot's inline end (pass a class to override). With scripting off the slot collapses.
  */
 interface Props {
   class?: string;
@@ -15,6 +19,11 @@ const { class: className } = Astro.props;
 ---
 
 <span class:list={['motion-toggle-slot', className]}>
+  <span class="motion-toggle motion-toggle--ghost" aria-hidden="true">
+    <span>Motion</span>
+    <span class="motion-toggle__dot"></span>
+    <span>Off (system)</span>
+  </span>
   <button
     type="button"
     class="motion-toggle"
@@ -40,14 +49,17 @@ const { class: className } = Astro.props;
 <style>
   .motion-toggle-slot {
     --chip-h: 2rem;
-    display: inline-flex;
+    display: inline-grid;
     align-items: center;
+    justify-items: end;
   }
 
-  @media (scripting: enabled) {
-    .motion-toggle-slot {
-      min-block-size: var(--chip-h);
-    }
+  .motion-toggle-slot > * {
+    grid-area: 1 / 1;
+  }
+
+  .motion-toggle--ghost {
+    visibility: hidden;
   }
 
   @media (scripting: none) {
