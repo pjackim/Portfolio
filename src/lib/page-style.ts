@@ -67,9 +67,18 @@ export function pageStyle(locals: object, declarations: Declarations): string {
   return token;
 }
 
-/** Seals the page's sheet and returns its CSS (empty when nothing was registered). */
+/**
+ * Seals the page's sheet and returns its CSS (empty when nothing was registered). Rules are
+ * emitted sorted by selector token rather than insertion order: components can render
+ * concurrently (e.g. image processing), so the order `pageStyle()` is called in — and thus the
+ * `Map`'s insertion order — isn't guaranteed to match between two builds of the same input.
+ * Sorting keeps the emitted `<style>` (and its hash) byte-identical either way.
+ */
 export function takePageStyle(locals: object): string {
   const sheet = sheetFor(locals);
   sheet.sealed = true;
-  return [...sheet.rules].map(([selector, block]) => `${selector}{${block}}`).join('');
+  return [...sheet.rules]
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .map(([selector, block]) => `${selector}{${block}}`)
+    .join('');
 }
