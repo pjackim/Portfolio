@@ -1,0 +1,89 @@
+---
+/**
+ * All work (spec-design-content §2): every published project as a grouped readout — one
+ * section per group in `GROUPS` order ("Security & systems", "Software", "Design & 3D"),
+ * featured case studies first (by `order`), then the archive (newest first). No thumbnails.
+ * A capability filter (WorkFilter, interactions spec §4) narrows the list; `?capability=<id>`
+ * links straight to a filtered view.
+ */
+import ArchiveList from '../../components/ArchiveList.astro';
+import WorkFilter from '../../components/WorkFilter.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pad2 } from '../../lib/format';
+import { getByGroup } from '../../lib/projects';
+
+const groups = await getByGroup();
+const projects = [...groups.values()].flat();
+const caseStudies = projects.filter((p) => p.data.featured).length;
+---
+
+<BaseLayout
+  title="All work — Parker Jackim"
+  description="Every project by Parker Jackim, grouped by discipline: security and reverse-engineering case studies, software, and design and 3D work."
+>
+  <div class="work container">
+    <header class="work__header">
+      <p class="work__eyebrow mono-label">
+        <span class="work__eyebrow-lead">Index</span>
+        <span aria-hidden="true">·</span>
+        <span class="visually-hidden">, </span>
+        <span>{pad2(projects.length)} projects</span>
+        <span aria-hidden="true">·</span>
+        <span class="visually-hidden">, </span>
+        <span>{pad2(caseStudies)} case studies</span>
+      </p>
+      <h1 class="work__title">All work</h1>
+      <p class="work__intro">
+        Every project in one index, grouped by discipline — case studies first, then earlier work.
+      </p>
+    </header>
+    <WorkFilter class="work__filter" projects={projects} />
+    <ArchiveList class="work__list" items={projects} grouped filterable />
+  </div>
+</BaseLayout>
+
+<style>
+  .work {
+    --readout-rail: 9rem;
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) var(--space-section);
+  }
+
+  .work__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.625em;
+  }
+
+  .work__eyebrow-lead {
+    color: var(--accent);
+  }
+
+  .work__title {
+    margin-block-start: var(--space-s);
+    font-size: var(--step-5);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .work__intro {
+    max-inline-size: 60ch;
+    margin-block-start: var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+
+  .work > :global(.work__filter) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .work > :global(.work__list) {
+    margin-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+
+  /* The filter belongs to the list: closer to it than the intro is. */
+  .work > :global(.work__filter + .work__list) {
+    margin-block-start: clamp(2.5rem, 1.75rem + 3vw, 4rem);
+  }
+</style>

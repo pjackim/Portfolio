@@ -1,0 +1,235 @@
+---
+/**
+ * Sticky site header (spec-design-content §2, §3): monogram + wordmark home link, primary
+ * nav, theme toggle. Pinned across cross-document view transitions (`site-header`).
+ * About/Contact point at the home page anchors so they work from every page.
+ * The monogram's caret blinks on the first page load of a session only (sessionStorage
+ * `caret`); navigations keep the header, so it never re-blinks.
+ */
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+import Monogram from './Monogram.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const home = withBase('');
+const work = withBase('work/');
+const onWorkIndex = Astro.url.pathname === work;
+const onWorkCase = Astro.url.pathname.startsWith(work) && !onWorkIndex;
+
+// `aria-current="page"` only on `/work/` itself; a case-study page is in the Work section but
+// isn't that page, so it gets `aria-current="true"` — same active visual state, correct semantics.
+const links: { href: string; label: string; current: 'page' | 'true' | undefined }[] = [
+  { href: work, label: 'Work', current: onWorkIndex ? 'page' : onWorkCase ? 'true' : undefined },
+  { href: `${home}#about`, label: 'About', current: undefined },
+  { href: `${home}#contact`, label: 'Contact', current: undefined },
+];
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href={home} aria-label={`${site.name} — home`}>
+      <Monogram size={18} />
+      <span class="brand__name">{site.name}</span>
+    </a>
+    <div class="site-header__end">
+      <nav class="site-nav" aria-label="Primary">
+        <ul role="list">
+          {links.map(({ href, label, current }) => (
+            <li>
+              <a href={href} aria-current={current}>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<script>
+  // First page of the session only. Whether it actually blinks is the CSS motion gate's call;
+  // the class goes once the 5 s blink window has passed, so switching motion on later never
+  // starts it. Import-free on purpose: it stays a tiny inline script, not another request.
+  try {
+    const monogram = document.querySelector('.site-header .monogram');
+    if (monogram && !sessionStorage.getItem('caret')) {
+      sessionStorage.setItem('caret', '1');
+      monogram.classList.add('is-blinking');
+      setTimeout(() => monogram.classList.remove('is-blinking'), 5200);
+    }
+  } catch {
+    // Storage blocked: no blink rather than a blink on every page.
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 10;
+    block-size: var(--header-h);
+    background-color: var(--surface);
+    view-transition-name: site-header;
+  }
+
+  /* Hairline drawn inside the header box, so the row keeps the full (even) --header-h and
+     centred items land on whole pixels. Painted first: the active-nav mark sits on top. */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 1px;
+    background-color: var(--line);
+  }
+
+  /* Items are 44px targets centred in the 56px row, so focus rings (3px offset) stay inside
+     the header and every centred box lands on whole pixels. */
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    block-size: 100%;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+    .brand:hover {
+      color: var(--text);
+    }
+  }
+
+  .brand__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .site-header__end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .site-nav ul {
+    display: flex;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: 0.625rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .site-nav a:hover {
+      color: var(--text);
+    }
+  }
+
+  /* `aria-current` is only ever present on the Work link ('page' on /work/ itself, 'true' on a
+     case-study page below it) — either value gets the same active visual state. */
+  .site-nav a[aria-current] {
+    color: var(--text);
+  }
+
+  /* Active mark: an accent segment laid over the header hairline (the link box ends
+     (header-h − 44px) / 2 above the header's bottom edge). */
+  .site-nav a[aria-current]::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.625rem;
+    inset-block-end: calc((2.75rem - var(--header-h)) / 2);
+    block-size: 1px;
+    background-color: var(--accent);
+  }
+
+  /* Hover/focus underline (interactions spec §3): a segment on the same hairline, in the
+     link's own colour, grown from the centre (with motion; otherwise it just appears). The
+     current page keeps its accent mark instead. */
+  .site-nav a:not([aria-current])::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0.625rem;
+    inset-block-end: calc((2.75rem - var(--header-h)) / 2);
+    block-size: 1px;
+    background-color: var(--text-muted);
+    scale: 0 1;
+  }
+
+  .site-nav a:not([aria-current]):focus-visible::before {
+    scale: 1;
+  }
+
+  @media (hover: hover) {
+    .site-nav a:not([aria-current]):hover::before {
+      scale: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .site-nav a::before {
+      transition: scale var(--dur-base) var(--ease-out);
+    }
+  }
+
+  /* Compact row for phones: fits monogram + wordmark + nav + toggle down to 360px with a
+     clear break between the wordmark and the nav; below 360px the wordmark goes. */
+  @media (width < 30rem) {
+    .site-header__inner {
+      gap: 0.75rem;
+    }
+
+    .brand {
+      gap: 0.5rem;
+    }
+
+    .brand__name {
+      font-size: 0.875rem;
+    }
+
+    .site-header__end {
+      gap: 0.25rem;
+    }
+
+    .site-nav a {
+      padding-inline: 0.3125rem;
+      font-size: 0.8125rem;
+    }
+
+    .site-nav a[aria-current]::after,
+    .site-nav a:not([aria-current])::before {
+      inset-inline: 0.3125rem;
+    }
+  }
+
+  @media (width < 360px) {
+    .brand__name {
+      display: none;
+    }
+  }
+</style>

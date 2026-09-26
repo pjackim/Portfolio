@@ -1,0 +1,440 @@
+/*
+ * Global styles: reset, base elements, utilities, motion (spec-design-content §1, §4, §7).
+ * Load after tokens.css.
+ */
+
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+p,
+li,
+dd,
+figcaption,
+blockquote {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+/* ── Document ──────────────────────────────────────────────────────────── */
+
+/* color-scheme lives on :root in tokens.css (system preference, or the data-scheme pin). */
+html {
+  accent-color: var(--accent);
+  scrollbar-color: var(--line-ui) var(--bg); /* never transitioned (WebKit flicker) */
+  scrollbar-width: thin;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Reverse video, as a console marks a selection: a thin accent over the dark ground turns brown,
+   so the selection is the accent itself, with the fill's own text colour (7.8:1 / 5.6:1). */
+::selection {
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* ── Links ─────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  a:hover {
+    color: var(--accent-hover);
+  }
+}
+
+/* ── Focus — visible everywhere, never removed; survives forced-colors ──── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+
+.container {
+  inline-size: min(100% - 2 * var(--gutter), var(--container));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Uppercase mono readout: metadata, indices, eyebrows. */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-subtle);
+}
+
+/* ── Buttons (hero CTAs, 404) — 44px tall ───────────────────────────────── */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-block-size: 2.75rem;
+  padding-inline: 1.125rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-s);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.button--primary {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.button--secondary {
+  border-color: var(--line-ui);
+  color: var(--text);
+}
+
+@media (hover: hover) {
+  .button--primary:hover {
+    border-color: var(--accent-hover);
+    background-color: var(--accent-hover);
+    color: var(--on-accent);
+  }
+
+  .button--secondary:hover {
+    background-color: var(--surface-2);
+    color: var(--text);
+  }
+}
+
+.button__meta {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+/* Skip link: off-screen until focused, then a solid chip over the sticky header. */
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-2xs);
+  inset-inline-start: var(--space-2xs);
+  z-index: 100;
+  padding: var(--space-2xs) var(--space-xs);
+  border: var(--rule-ui);
+  border-radius: var(--radius-s);
+  background-color: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  translate: 0 calc(-100% - var(--space-s));
+}
+
+.skip-link:focus {
+  translate: none;
+}
+
+/* ── Motion (spec §4; interactions spec §1) ──────────────────────────────
+ *
+ * The gate. Motion runs only while the OS allows it AND the site's Motion toggle hasn't
+ * switched it off (<html data-motion="off">, applied before first paint by BaseLayout's
+ * bootstrap; scripts ask the same question via motionAllowed() in src/scripts/motion.ts).
+ * Every motion rule on the site — anything that moves, scales, clips, draws or plays an
+ * animation, arrow nudges included, and every transition of the interaction layer — is
+ * written inside this one pattern:
+ *
+ *   @media (prefers-reduced-motion: no-preference) {
+ *     :root:not([data-motion='off']) .thing { … }
+ *   }
+ *
+ * (In a component's scoped <style>, wrap the gate: `:global(:root:not([data-motion='off']))`.)
+ * Outside it sit only the base styles' plain colour and opacity fades on hover and focus (links,
+ * buttons, the theme toggle, the media controls): feedback, not motion. The safety net at the
+ * end of this file shortens those, and stops anything that slips through, under either. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Smooth scrolling only for a same-page #hash link click (Ruling G9): the class is on <html>
+     for that one scroll (src/scripts/smooth-scroll.ts). Never on the root for good, which would
+     also make the fragment jump of a page loaded at `…#about` a long glide instead of landing. */
+  :root.smooth-scroll:not([data-motion='off']) {
+    scroll-behavior: smooth;
+  }
+
+  /* Cross-document transitions can't be gated by a selector: with the toggle off, the
+     bootstrap's pageswap/pagereveal guard skips them, and the rule below flattens any that
+     start anyway. */
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out);
+}
+
+/* One-shot entrance reveals (interactions spec §3; Ruling G6), below the fold only: cards
+   after the first row, capability boxes, archive rows, case-study figures. src/scripts/reveal.ts
+   marks items that are entirely below the viewport once the page has loaded `pending`, and
+   `in` once one's top edge is a tenth of the viewport into view (any height of item); it plays
+   once, then the state is dropped. Visible by
+   default: without the script, with motion off, in print, the states never apply.
+   The entrance: a clip-path wipe up from the bottom 12%, a fade and a 12px rise. It ends where
+   the item already is (fill `backwards` only), so no inset(0) clip outlives it to cut off a hover
+   wash or a focus ring. `--i` (from :nth-child rules where items share a row) delays an item a
+   beat per column, capped; one-column lists stagger as they scroll in. `data-reveal="contents"`
+   plays on the element's children instead (boxes whose background must never go see-through,
+   like the capability grid, whose hairlines are its background showing through gaps). The /work/
+   filter's arriving rows wipe in on the same keyframes (WorkFilter.astro). */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+      clip-path: inset(0 0 12% 0);
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+      clip-path: inset(0);
+    }
+  }
+
+  :root:not([data-motion='off']) [data-reveal-state='pending']:not([data-reveal='contents']),
+  :root:not([data-motion='off']) [data-reveal='contents'][data-reveal-state='pending'] > * {
+    opacity: 0;
+  }
+
+  :root:not([data-motion='off']) [data-reveal-state='in']:not([data-reveal='contents']),
+  :root:not([data-motion='off']) [data-reveal='contents'][data-reveal-state='in'] > * {
+    animation-name: reveal;
+    animation-duration: 560ms;
+    animation-timing-function: var(--ease-out);
+    animation-delay: min(calc(var(--i, 0) * 90ms), 270ms);
+    animation-fill-mode: backwards;
+  }
+}
+
+/* Theme switch as a scan sweep (interactions spec §3; Ruling G14): src/scripts/theme.ts wraps
+   the scheme change in a same-document view transition, only while motion is allowed, with
+   `vt-theme` on <html> for its duration. The new scheme wipes down over the old one from the top
+   edge, led by a 1px accent scanline with a soft 24px tail — the card reticle's scanline, the
+   full width of the page. The line is `.theme-scan`, an aria-hidden overlay the script adds for
+   the new state only; it is captured on its own (`theme-scan`) and travels exactly with the
+   wipe's edge (same duration and easing: its bottom edge is at e × 100vh as the clip's is), then
+   fades as it reaches the foot. Everything is scoped to `vt-theme`, so cross-document
+   navigations keep their own transitions. While it runs, nothing else is captured on its own
+   (the header and cover morph names would otherwise cross-fade above the wipe); `html:root`
+   outranks the components' scoped rules and the page-style `[data-style]` rules. */
+.theme-scan {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:root.vt-theme:not([data-motion='off']) * {
+    view-transition-name: none;
+  }
+
+  /* The new scheme is already settled wherever the sweep reveals it: no colour easing from the
+     old scheme's values under the live new-state capture. */
+  html:root.vt-theme:not([data-motion='off']) *,
+  html:root.vt-theme:not([data-motion='off']) *::before,
+  html:root.vt-theme:not([data-motion='off']) *::after {
+    transition-duration: 0s;
+  }
+
+  /* Parked above the viewport in the page itself (never a stray line at the top between the
+     transition's end and its clean-up); the transition moves its capture. */
+  html:root.vt-theme:not([data-motion='off']) .theme-scan {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    block-size: calc(1.5rem + 1px);
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklch, var(--accent) 22%, transparent) calc(100% - 1px),
+      var(--accent) calc(100% - 1px)
+    );
+    translate: 0 -100%;
+    pointer-events: none;
+    view-transition-name: theme-scan;
+  }
+
+  @keyframes vt-theme-wipe {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes vt-theme-scan {
+    from {
+      transform: translateY(-100%);
+    }
+
+    85% {
+      opacity: 1;
+    }
+
+    to {
+      transform: translateY(calc(100vh - 100%));
+      opacity: 0;
+    }
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-old(root),
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(root) {
+    animation-name: none;
+    mix-blend-mode: normal;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(root) {
+    animation-name: vt-theme-wipe;
+    animation-duration: 520ms;
+    animation-timing-function: var(--ease-out);
+    animation-fill-mode: both;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-group(theme-scan) {
+    animation-name: vt-theme-scan;
+    animation-duration: 520ms;
+    animation-timing-function: var(--ease-out);
+    animation-fill-mode: both;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(theme-scan) {
+    animation-name: none;
+  }
+}
+
+/* Safety net — the only !important rules in the codebase — for the OS preference and for the
+   Motion toggle alike. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-motion='off'],
+:root[data-motion='off'] *,
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+:root[data-motion='off']::view-transition-group(*),
+:root[data-motion='off']::view-transition-old(*),
+:root[data-motion='off']::view-transition-new(*) {
+  animation: none !important;
+}

@@ -1,0 +1,82 @@
+/**
+ * Cold-load layout stability (Ruling G11). On a first visit to a case study — a fresh browser
+ * context, the HTTP cache off, and images arriving well after the first paint, as they do on a
+ * real connection — nothing moves: not the hero cover, and not the figures further down as the
+ * page is read through. Every picture's box is final from the server-rendered HTML and CSS (the
+ * width/height attributes, or, on the "panel" and "alpha" plates, a box computed from the
+ * image's own ratio), never measured from the file once it arrives.
+ *
+ * Pages: trip-planner and mordhau (small covers shown whole on a plate) and nodes (a
+ * transparent cover on the light plate), at 1440×900 and 412×900. Chromium only: WebKit reports
+ * no layout-shift entries.
+ */
+import { expect, test } from '@playwright/test';
+import { gotoRel } from './helpers/routes.ts';
+
+declare global {
+  interface Window {
+    __layoutShifts?: { value: number; recent: boolean; sources: string[] }[];
+  }
+}
+
+const PAGES = ['work/trip-planner/', 'work/mordhau/', 'work/nodes/'];
+/** How long each image is held back: long after the first paint. */
+const IMAGE_DELAY_MS = 600;
+
+for (const viewport of [
+  { width: 1440, height: 900 },
+  { width: 412, height: 900 },
+]) {
+  test.describe(`cold load at ${viewport.width}×${viewport.height}`, () => {
+    test.use({ viewport });
+
+    for (const path of PAGES) {
+      test(`${path} doesn't shift as its images arrive`, async ({ page, browserName }) => {
+        test.skip(browserName !== 'chromium', 'layout-shift entries are Chromium-only');
+        const cdp = await page.context().newCDPSession(page);
+        await cdp.send('Network.enable');
+        await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
+        await page.route(/\.(?:avif|webp|jpe?g|png)(?:\?|$)/, async (route) => {
+          await new Promise((resolve) => setTimeout(resolve, IMAGE_DELAY_MS));
+          await route.continue();
+        });
+        await page.addInitScript(() => {
+          window.__layoutShifts = [];
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries() as (PerformanceEntry & {
+              value: number;
+              hadRecentInput: boolean;
+              sources?: { node?: Node | null }[];
+            })[]) {
+              window.__layoutShifts!.push({
+                value: entry.value,
+                recent: entry.hadRecentInput,
+                sources: (entry.sources ?? []).map((s) => s.node?.nodeName ?? '#'),
+              });
+            }
+          }).observe({ type: 'layout-shift', buffered: true });
+        });
+
+        await gotoRel(page, path);
+        await page.waitForLoadState('load');
+        // Read the page through (a script scroll isn't user input: any shift still counts),
+        // so the lazy figures load while they are on screen.
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += viewport.height / 2) {
+          await page.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), y);
+          await page.waitForTimeout(120);
+        }
+        await expect
+          .poll(() => page.evaluate(() => [...document.images].every((img) => img.complete)), {
+            timeout: 10_000,
+          })
+          .toBe(true);
+        await page.waitForTimeout(200);
+
+        const shifts = (await page.evaluate(() => window.__layoutShifts)) ?? [];
+        const cls = shifts.filter((s) => !s.recent).reduce((sum, s) => sum + s.value, 0);
+        expect(cls, `layout shifts: ${JSON.stringify(shifts)}`).toBeLessThan(0.005);
+      });
+    }
+  });
+}

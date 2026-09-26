@@ -1,0 +1,146 @@
+---
+/**
+ * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
+ * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. A toggle
+ * button named "Motion" — its visible label, so the name starts with what's on screen (WCAG
+ * 2.5.3, label in name) — pressed while motion is on (Ruling G14, amending G3). Drop it in
+ * anywhere; every instance on a page drives and mirrors the same setting (see
+ * src/scripts/motion-toggle.ts, loaded through the page's one motion-layer entry, MotionLayer).
+ *
+ * No layout shift (spec §0.6): the chip is rendered `hidden` until that script runs, and its
+ * width depends on its state. So the slot holds an invisible, `aria-hidden` ghost of the widest
+ * state in the same grid cell: from first paint the slot is the chip's widest box, and neither
+ * the reveal nor a state change can move or re-wrap anything around it. The chip sits at the
+ * slot's inline end (pass a class to override). With scripting off the slot collapses.
+ */
+import MotionLayer from './MotionLayer.astro';
+import MotionLayerDeferred from './MotionLayerDeferred.astro';
+
+interface Props {
+  class?: string;
+  /** Load the motion layer only after `load` (MotionLayerDeferred): for a chip that can wait. */
+  deferLayer?: boolean;
+}
+
+const { class: className, deferLayer = false } = Astro.props;
+---
+
+<span class:list={['motion-toggle-slot', className]}>
+  <span class="motion-toggle motion-toggle--ghost" aria-hidden="true">
+    <span>Motion</span>
+    <span class="motion-toggle__dot"></span>
+    <span>Off (system)</span>
+  </span>
+  <button
+    type="button"
+    class="motion-toggle"
+    data-motion-toggle
+    aria-label="Motion"
+    aria-pressed="true"
+    hidden
+  >
+    <span>Motion</span>
+    <span class="motion-toggle__dot"></span>
+    <span class="motion-toggle__state" data-motion-state>
+      On
+    </span>
+    <span class="visually-hidden" data-motion-note>
+      Motion is off because your device is set to reduce motion.
+    </span>
+  </button>
+</span>
+
+<!-- Wired by the motion layer, one module per page whatever renders it (src/scripts/motion-toggle.ts). -->
+{deferLayer ? <MotionLayerDeferred /> : <MotionLayer />}
+
+<style>
+  .motion-toggle-slot {
+    --chip-h: 2rem;
+    display: inline-grid;
+    align-items: center;
+    justify-items: end;
+  }
+
+  .motion-toggle-slot > * {
+    grid-area: 1 / 1;
+  }
+
+  .motion-toggle--ghost {
+    visibility: hidden;
+  }
+
+  @media (scripting: none) {
+    .motion-toggle-slot {
+      display: none;
+    }
+  }
+
+  .motion-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-block-size: var(--chip-h);
+    padding-inline: 0.625rem;
+    border: var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: color-mix(in oklch, var(--bg) 85%, transparent);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .motion-toggle[hidden] {
+    display: none;
+  }
+
+  /* 44px-tall hit area around the 32px chip. */
+  .motion-toggle::after {
+    content: '';
+    position: absolute;
+    inset: calc((var(--chip-h) - 2.75rem) / 2 - 1px) -1px;
+  }
+
+  @media (hover: hover) {
+    .motion-toggle:not([aria-disabled='true']):hover {
+      border-color: var(--line-ui);
+      color: var(--text);
+    }
+  }
+
+  .motion-toggle[aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Status LED: lit accent while motion runs, a hollow ring when it's off. */
+  .motion-toggle__dot {
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .motion-toggle[data-state='on'] .motion-toggle__dot {
+    border-color: var(--accent);
+    background-color: var(--accent);
+  }
+
+  .motion-toggle[data-state='on'] .motion-toggle__state {
+    color: var(--text);
+  }
+
+  /* Motion (the gate, global.css): the chip eases its colours on hover — so switching motion
+     off never leaves it easing out of the state it just left. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .motion-toggle {
+      transition:
+        color var(--dur-fast) var(--ease-standard),
+        border-color var(--dur-fast) var(--ease-standard);
+    }
+  }
+</style>

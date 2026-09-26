@@ -1,0 +1,121 @@
+---
+/**
+ * Home (spec-design-content §2): hero → 01 Selected work → 02 About → 03 Experience →
+ * 04 Earlier work → 05 Contact. Each section is labelled by its h2. The empty
+ * `*-section` spans keep the legacy site's deep links (#about-section, #portfolio-section,
+ * #social-section) landing on the matching section.
+ */
+import ArchiveList from '../components/ArchiveList.astro';
+import CapabilityGroups from '../components/CapabilityGroups.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import ExperienceList from '../components/ExperienceList.astro';
+import Hero from '../components/Hero.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { site } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeatured, getHomeArchive } from '../lib/projects';
+import { personJsonLd } from '../lib/seo';
+import { withBase } from '../lib/url';
+
+const [featured, archive] = await Promise.all([getFeatured(), getHomeArchive()]);
+const workHref = withBase('work/');
+---
+
+<BaseLayout
+  title="Parker Jackim — Cyber Security Researcher"
+  description="Portfolio of Parker Jackim: reverse engineering, credential-security ML, Unreal Engine networking, and React engineering."
+  jsonLd={personJsonLd(featured)}
+>
+  <Hero />
+
+  <section id="work" class="home-section container" aria-labelledby="work-title">
+    <span id="portfolio-section" class="legacy-anchor"></span>
+    <SectionHeading
+      index="01"
+      label="Selected work"
+      id="work-title"
+      action={{ href: workHref, text: 'All work →' }}
+    />
+    <ProjectGrid projects={featured} />
+  </section>
+
+  <section id="about" class="home-section container" aria-labelledby="about-title">
+    <span id="about-section" class="legacy-anchor"></span>
+    <SectionHeading index="02" label="About" id="about-title" />
+    <div class="about__bio">
+      {site.about.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+    <CapabilityGroups class="about__capabilities" />
+  </section>
+
+  <section id="experience" class="home-section container" aria-labelledby="experience-title">
+    <SectionHeading index="03" label="Experience" id="experience-title" />
+    <ExperienceList entries={site.experience} />
+  </section>
+
+  <section id="earlier-work" class="home-section container" aria-labelledby="earlier-work-title">
+    <SectionHeading
+      index="04"
+      label="Earlier work"
+      id="earlier-work-title"
+      action={{ href: workHref, text: 'Full index →' }}
+    />
+    <ArchiveList items={archive} limit={6} />
+  </section>
+
+  <section
+    id="contact"
+    class="home-section home-section--last container"
+    aria-labelledby="contact-title"
+  >
+    <span id="social-section" class="legacy-anchor"></span>
+    <SectionHeading index="05" label="Contact" id="contact-title" />
+    <ContactBlock />
+  </section>
+</BaseLayout>
+
+<style>
+  /* --readout-rail: the date column of Experience and Earlier work. On wider screens the
+     About and Contact text starts at the same offset, so the lower half of the page reads
+     down one text edge while headings, rules and grids keep the container edge. */
+  .home-section {
+    --readout-rail: 9rem;
+    --text-edge: calc(var(--readout-rail) + var(--space-m));
+    padding-block-start: var(--space-section);
+    /* In-page jumps (#work, #about, #contact) land just above the heading, not on the
+       section's top padding (html's scroll-padding already clears the sticky header). */
+    scroll-margin-top: calc(var(--space-l) - var(--space-section));
+  }
+
+  .home-section--last {
+    padding-block-end: var(--space-section);
+  }
+
+  .legacy-anchor {
+    display: block;
+  }
+
+  /* Lede-size text: at step-1, 66ch of Geist holds ~95 characters a line; 30em keeps the
+     bio near 60–65. */
+  .about__bio {
+    display: grid;
+    gap: var(--space-s);
+    max-inline-size: 30em;
+    font-size: var(--step-1);
+    line-height: 1.6;
+  }
+
+  @media (width >= 48rem) {
+    .about__bio,
+    .home-section > :global(.contact) {
+      margin-inline-start: var(--text-edge);
+    }
+  }
+
+  .home-section > :global(.about__capabilities) {
+    margin-block-start: var(--space-2xl);
+  }
+</style>

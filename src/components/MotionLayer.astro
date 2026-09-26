@@ -1,0 +1,11 @@
+---
+/**
+ * Loads the motion layer (src/scripts/motion-layer.ts): the one script entry per page for every
+ * motion feature — the Motion toggle chips, the hero instrument, card spotlights and section
+ * heading decrypts (interactions spec §1–§3). Render it from any component that needs the layer;
+ * Astro emits a component's script once per page however often it renders, so a page gets a
+ * single request no matter how many components ask for it — and a page without any gets none.
+ */
+---
+
+<script src="../scripts/motion-layer.ts"></script>

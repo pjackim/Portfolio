@@ -1,0 +1,368 @@
+---
+/**
+ * /work/ capability filter (interactions spec §4), the successor to the 2021 site's Isotope grid:
+ * a chip bar — `ALL 15` and one chip per capability with its project count — above the grouped
+ * archive (ArchiveList `filterable`). Single-select.
+ *
+ * The filter state is one attribute, `<html data-capability="<id>">`, and the hiding is pure CSS
+ * (below): rows without that capability go, and so do groups left empty. The bootstrap in
+ * BaseLayout sets it before first paint from `?capability=`, so a filtered URL is painted
+ * filtered (no layout shift); src/scripts/work-filter.ts sets it on a chip, wrapped in a view
+ * transition while motion is allowed — rows glide to their new places (`--vt-name`,
+ * `row-<slug>`, from page-style.ts), removed rows fade out, new ones wipe in, group headings
+ * glide and cross-fade — and keeps `?capability=` in the URL and announces
+ * "Showing N of 15 projects" in a polite live region, which a mono readout at the end of the bar
+ * mirrors on screen (`SHOWING 07 / 15`).
+ *
+ * Without JS there is no working control, so there is no bar: it collapses under
+ * `scripting: none`, and until the script has wired it, it holds its space invisibly (so it
+ * appearing moves nothing). Every row shows.
+ */
+import { CAPABILITIES, CAPABILITY_LABELS } from '../data/taxonomy';
+import { pad2 } from '../lib/format';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  projects: readonly Project[];
+  class?: string;
+}
+
+const { projects, class: className } = Astro.props;
+
+/** Each chip's name reads its label and count ("Data & ML, 1 project"): it starts with the
+    visible label, and the padded count ("01") isn't read out as digits. */
+const plural = (n: number) => `${n} ${n === 1 ? 'project' : 'projects'}`;
+const chips = [
+  { id: '', label: 'All', count: projects.length },
+  ...CAPABILITIES.map((id) => ({
+    id,
+    label: CAPABILITY_LABELS[id],
+    count: projects.filter((p) => p.data.capabilities.includes(id)).length,
+  })).filter((chip) => chip.count > 0),
+];
+---
+
+<div class:list={['work-filter', className]} data-work-filter>
+  <div class="work-filter__head mono-label" aria-hidden="true">
+    <span class="work-filter__lead">
+      Filter <span class="work-filter__slash">/</span> Capability
+    </span>
+    <span class="work-filter__rule"></span>
+    <span class="work-filter__result">
+      Showing
+      <span class="work-filter__shown">
+        <span data-filter-shown>{pad2(projects.length)}</span> / {pad2(projects.length)}
+      </span>
+    </span>
+  </div>
+  <div class="work-filter__chips" role="group" aria-label="Filter by capability">
+    {chips.map(({ id, label, count }) => (
+      <button
+        type="button"
+        class="work-filter__chip"
+        data-capability={id}
+        aria-pressed={id === '' ? 'true' : 'false'}
+        aria-label={`${label}, ${plural(count)}`}
+      >
+        <span class="work-filter__led" />
+        <span class="work-filter__label">{label}</span>
+        <span class="work-filter__count">{pad2(count)}</span>
+      </button>
+    ))}
+  </div>
+  <p class="visually-hidden" role="status" data-filter-status></p>
+</div>
+
+<style>
+  /* One column held to the container: the chip strip below bleeds to the screen edges by its
+     own margins, so nothing may widen the column past the container first. */
+  .work-filter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xs);
+  }
+
+  /* Until the script has wired it: its space, invisibly (visibility keeps it out of the tab
+     order and the accessibility tree too). With scripting off: nothing at all. */
+  .work-filter:not([data-ready]) {
+    visibility: hidden;
+  }
+
+  /* …and it shows the moment it's wired: nothing in it transitions visibility (the motion-off
+     safety net would otherwise turn the change into a one-frame transition). The chips' colour
+     transitions below name their properties. */
+  :global(.work-filter),
+  :global(.work-filter *) {
+    transition-property: none;
+  }
+
+  @media (scripting: none) {
+    .work-filter {
+      display: none;
+    }
+  }
+
+  /* FILTER / CAPABILITY ─────────────── SHOWING 07 / 15
+     The narrowest phones (~320px) can't fit it on one line: the count wraps under the label,
+     at the right edge, and the rule fills the rest of the first line. */
+  .work-filter__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-s);
+    white-space: nowrap;
+  }
+
+  .work-filter__result {
+    margin-inline-start: auto;
+  }
+
+  .work-filter__slash {
+    color: var(--line-ui);
+  }
+
+  .work-filter__rule {
+    flex: 1 1 var(--space-l);
+    block-size: 1px;
+    background-color: var(--line);
+  }
+
+  .work-filter__shown {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work-filter__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  /* Phones: one row that scrolls sideways, bled to the screen edges (fading out at them), so the
+     list isn't pushed a screen down by six rows of chips. */
+  @media (width < 48rem) {
+    .work-filter__chips {
+      flex-wrap: nowrap;
+      margin-inline: calc(-1 * var(--gutter));
+      padding-block: 0.375rem;
+      padding-inline: var(--gutter);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 var(--gutter),
+        #000 calc(100% - var(--gutter)),
+        transparent
+      );
+    }
+
+    /* Touch screens swipe it; a scrollbar would only crowd the chips. */
+    @media (hover: none) {
+      .work-filter__chips {
+        scrollbar-width: none;
+      }
+
+      .work-filter__chips::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .work-filter__chip {
+      flex: none;
+      white-space: nowrap;
+    }
+  }
+
+  .work-filter__chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625em;
+    min-block-size: 2rem;
+    padding-block: 0.3125rem;
+    padding-inline: 0.625rem;
+    border: var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    text-align: start;
+    text-transform: uppercase;
+  }
+
+  /* Selector LED: a hollow square, filled with the accent when this chip is the filter. */
+  .work-filter__led {
+    flex: none;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border: 1px solid var(--text-subtle);
+  }
+
+  .work-filter__count {
+    color: var(--text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (hover: hover) {
+    .work-filter__chip:hover {
+      border-color: var(--line-ui);
+      color: var(--text);
+    }
+  }
+
+  .work-filter__chip[aria-pressed='true'] {
+    border-color: var(--accent);
+    background-color: color-mix(in oklch, var(--accent) 9%, transparent);
+    color: var(--text);
+  }
+
+  .work-filter__chip[aria-pressed='true'] .work-filter__led {
+    border-color: var(--accent);
+    background-color: var(--accent);
+  }
+
+  .work-filter__chip[aria-pressed='true'] .work-filter__count {
+    color: var(--accent);
+  }
+
+  @media (forced-colors: active) {
+    .work-filter__chip[aria-pressed='true'] {
+      border-color: Highlight;
+    }
+
+    .work-filter__chip[aria-pressed='true'] .work-filter__led {
+      background-color: Highlight;
+    }
+  }
+
+  /* ── The filter: <html data-capability="<id>"> ──
+     A row without that capability goes, and so does a group left with no row. One line per
+     capability in CAPABILITIES (src/data/taxonomy.ts) — the e2e suite checks every chip. An
+     unknown value matches nothing and hides nothing. */
+  :global(
+    html[data-capability='offensive-security']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='offensive-security'])
+  ),
+  :global(
+    html[data-capability='data-ml']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='data-ml'])
+  ),
+  :global(
+    html[data-capability='languages']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='languages'])
+  ),
+  :global(
+    html[data-capability='engineering-practice']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='engineering-practice'])
+  ),
+  :global(
+    html[data-capability='engines-systems']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='engines-systems'])
+  ),
+  :global(
+    html[data-capability='design-3d']
+      [data-filter-list]
+      .archive-row:not([data-capabilities~='design-3d'])
+  ),
+  :global(
+    html[data-capability='offensive-security']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='offensive-security']))
+  ),
+  :global(
+    html[data-capability='data-ml']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='data-ml']))
+  ),
+  :global(
+    html[data-capability='languages']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='languages']))
+  ),
+  :global(
+    html[data-capability='engineering-practice']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='engineering-practice']))
+  ),
+  :global(
+    html[data-capability='engines-systems']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='engines-systems']))
+  ),
+  :global(
+    html[data-capability='design-3d']
+      [data-filter-list]
+      .archive-group:not(:has([data-capabilities~='design-3d']))
+  ) {
+    display: none;
+  }
+
+  /* ── Motion (the gate, global.css) ── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .work-filter__chip,
+    :global(:root:not([data-motion='off'])) .work-filter__led,
+    :global(:root:not([data-motion='off'])) .work-filter__count {
+      transition-property: color, border-color, background-color;
+      transition-duration: var(--dur-fast);
+      transition-timing-function: var(--ease-standard);
+    }
+
+    /* The reflow (src/scripts/work-filter.ts): `vt-filter` is on <html> only while a filter
+       change's view transition runs, so these names never join a cross-document navigation.
+       Each row, each group's heading and each group's list is its own subject. */
+    :global(:root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-row) {
+      view-transition-name: var(--vt-name);
+      view-transition-class: work-row;
+    }
+
+    :global(
+      :root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-group > .section-heading
+    ) {
+      view-transition-name: var(--vt-head);
+    }
+
+    :global(:root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-group > .archive) {
+      view-transition-name: var(--vt-list);
+    }
+
+    @keyframes work-row-out {
+      to {
+        opacity: 0;
+        scale: 0.985;
+      }
+    }
+
+    /* Rows glide a touch slower than the site's transitions: a reflow reads as one motion. */
+    :global(:root.vt-filter::view-transition-group(*)) {
+      animation-duration: 420ms;
+    }
+
+    /* A row leaving fades out where it was; a row arriving wipes in with the entrances' own
+       keyframes (`reveal`, global.css). */
+    :global(:root.vt-filter::view-transition-old(.work-row):only-child) {
+      animation-name: work-row-out;
+      animation-duration: 200ms;
+      animation-timing-function: var(--ease-standard);
+      animation-fill-mode: both;
+    }
+
+    :global(:root.vt-filter::view-transition-new(.work-row):only-child) {
+      animation-name: reveal;
+      animation-duration: 420ms;
+      animation-timing-function: var(--ease-out);
+      animation-delay: 120ms;
+      animation-fill-mode: both;
+    }
+  }
+</style>

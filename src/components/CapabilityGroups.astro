@@ -1,0 +1,179 @@
+---
+/**
+ * Capabilities (spec-design-content §3, §5b): six hairline boxes — mono label, items, and
+ * "Seen in" links to the projects that show the evidence. 3 × 2 on desktop, 2 × 3 on tablets,
+ * one column on phones. Project titles come from the collection; an unknown slug fails the
+ * build (as does `validateProjects`).
+ *
+ * Entrance reveal (interactions spec §3): each box's contents play in once the box scrolls into
+ * view (`data-reveal="contents"`, global.css, src/scripts/reveal.ts) — never the box itself,
+ * whose opaque background is what draws the hairlines. A row lands left to right (`--i`).
+ */
+import { CAPABILITY_GROUPS } from '../data/taxonomy';
+import { getProjects } from '../lib/projects';
+import { withBase } from '../lib/url';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const titles = new Map((await getProjects()).map((p) => [p.id, p.data.title]));
+const groups = CAPABILITY_GROUPS.map((group) => ({
+  ...group,
+  seenIn: group.seenIn.map((slug) => {
+    const title = titles.get(slug);
+    if (title === undefined) {
+      throw new Error(`CapabilityGroups: "${group.id}" seenIn "${slug}" is not a project id`);
+    }
+    return { href: withBase(`work/${slug}/`), title };
+  }),
+}));
+---
+
+<ul class:list={['capabilities', className]} role="list" aria-label="Capabilities">
+  {groups.map(({ label, items, seenIn }) => (
+    <li class="capability" data-reveal="contents">
+      <h3 class="capability__label mono-label">{label}</h3>
+      <ul class="capability__items" role="list">
+        {items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+      {seenIn.length > 0 && (
+        <div class="capability__seen">
+          <p class="mono-label">Seen in</p>
+          <ul role="list">
+            {seenIn.map(({ href, title }) => (
+              <li>
+                <a href={href} data-astro-prefetch>
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* Shared hairlines: the list's background shows through 1px gaps between opaque cells. */
+  .capabilities {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1px;
+    padding: 0;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--line);
+    list-style: none;
+    overflow: hidden;
+  }
+
+  @media (40rem <= width < 64rem) {
+    .capabilities {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .capability:nth-child(even) {
+      --i: 1;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .capabilities {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .capability:nth-child(3n + 2) {
+      --i: 1;
+    }
+
+    .capability:nth-child(3n) {
+      --i: 2;
+    }
+  }
+
+  /* Each box subgrids three rows (label, items, "Seen in"), so labels that wrap to two
+     lines don't push one box's items out of line with its neighbours'. */
+  .capability {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: auto 1fr auto;
+    align-content: start;
+    padding: var(--space-m);
+    background-color: var(--bg);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+    .capability {
+      grid-template-rows: subgrid;
+      row-gap: 0;
+    }
+  }
+
+  .capability__label {
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .capability__items {
+    display: grid;
+    align-content: start;
+    gap: 0.375rem;
+    margin-block-start: var(--space-s);
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    list-style: none;
+  }
+
+  /* Short hairline tick as the marker. */
+  .capability__items li {
+    display: grid;
+    grid-template-columns: 0.875rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+
+  /* Centred on the first line (line box 1.45em). */
+  .capability__items li::before {
+    content: '';
+    inline-size: 0.5rem;
+    block-size: 1px;
+    align-self: start;
+    margin-block-start: 0.725em;
+    background-color: var(--line-ui);
+  }
+
+  .capability__seen {
+    display: grid;
+    align-content: start;
+    gap: 0.375rem;
+    margin-block-start: var(--space-m);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--hairline);
+  }
+
+  .capability__seen ul {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    list-style: none;
+  }
+
+  .capability__seen a {
+    text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+  }
+
+  @media (hover: hover) {
+    .capability__seen a:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+</style>

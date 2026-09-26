@@ -1,0 +1,232 @@
+/*
+ * Figure lightbox (interactions spec §4; markup in src/components/Lightbox.astro, behaviour in
+ * src/scripts/lightbox.ts, which imports this). Loaded with the case-study code after load +
+ * idle, not with the page: nothing here is needed before the lightbox first opens (the closed
+ * <dialog> is display: none by default), so none of it weighs on the case study's first paint.
+ * The targeting brackets are the card reticle's (bundled in from reticle.css).
+ */
+@import './reticle.css';
+
+/* The dialog is the whole viewport: bar, stage (the image, as large as fits), caption. The
+   page behind shows faintly through the backdrop. */
+.lightbox {
+  inline-size: 100%;
+  max-inline-size: none;
+  block-size: 100dvh;
+  max-block-size: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  overflow: hidden;
+}
+
+.lightbox[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.lightbox::backdrop {
+  background-color: color-mix(in oklch, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.lightbox__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+  padding-block: var(--space-2xs);
+  padding-inline: var(--gutter);
+  border-block-end: var(--hairline);
+  background-color: var(--surface);
+}
+
+.lightbox__title {
+  color: var(--accent);
+}
+
+.lightbox__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.lightbox__full,
+.lightbox__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-block-size: 2.75rem;
+  padding-inline: 0.75rem;
+  color: var(--text-subtle);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lightbox__close {
+  border: var(--hairline);
+  border-radius: var(--radius-xs);
+  background-color: transparent;
+  min-block-size: 2rem;
+  color: var(--text-muted);
+}
+
+/* 44px-tall hit area around the 32px chip. */
+.lightbox__close {
+  position: relative;
+}
+
+.lightbox__close::after {
+  content: '';
+  position: absolute;
+  inset: calc((2rem - 2.75rem) / 2 - 1px) -1px;
+}
+
+@media (hover: hover) {
+  .lightbox__full:hover,
+  .lightbox__close:hover {
+    color: var(--text);
+  }
+
+  .lightbox__close:hover {
+    border-color: var(--line-ui);
+  }
+}
+
+.lightbox__key {
+  padding-inline: 0.3125rem;
+  border: var(--hairline);
+  border-radius: var(--radius-xs);
+  color: var(--text-subtle);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+}
+
+/* No keyboard to press it on a touch screen. */
+@media (hover: none) {
+  .lightbox__key {
+    display: none;
+  }
+}
+
+.lightbox__x {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: square;
+}
+
+/* The stage is a size container: the image takes the largest box of its own aspect ratio that
+   fits (never wider than the rendition itself) — its box *is* the picture, so the morph from
+   the thumbnail lines up, and swapping in the full rendition never moves it. */
+.lightbox__stage {
+  display: grid;
+  place-items: center;
+  padding: var(--space-l) clamp(1.5rem, 4vw, 4rem);
+  container-type: size;
+  cursor: zoom-out;
+}
+
+/* Targeting brackets around the image: the card reticle (`reticle`, reticle.css), locked on,
+   just outside the picture. */
+.lightbox__frame {
+  --reticle-inset: -0.625rem;
+  position: relative;
+  display: grid;
+}
+
+.lightbox__frame img {
+  display: block;
+  inline-size: min(
+    calc(var(--lb-w, 1600) * 1px),
+    100cqi,
+    100cqb * var(--lb-w, 16) / var(--lb-h, 10)
+  );
+  block-size: auto;
+  max-inline-size: none;
+  aspect-ratio: var(--lb-w, 16) / var(--lb-h, 10);
+  object-fit: contain;
+  outline: var(--hairline);
+  background-color: var(--surface-2);
+  cursor: default;
+}
+
+.lightbox__frame[data-mode='alpha'] img {
+  background-color: var(--surface-2-l);
+}
+
+@media (forced-colors: active) {
+  .lightbox__frame::before,
+  .lightbox__frame::after {
+    display: none;
+  }
+}
+
+.lightbox__caption {
+  max-inline-size: 72ch;
+  margin-inline: auto;
+  padding: 0 var(--gutter) var(--space-m);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.lightbox__caption:empty {
+  display: none;
+}
+
+/* While it's open the page behind can't scroll; the gutter stays, so nothing shifts sideways. */
+:root.lightbox-open {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* Motion (the gate, global.css): the brackets close in once the image has landed. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes lightbox-lock {
+    from {
+      opacity: 0;
+      scale: 1.06;
+    }
+  }
+
+  :root:not([data-motion='off']) .lightbox[open] .lightbox__frame::before,
+  :root:not([data-motion='off']) .lightbox[open] .lightbox__frame::after {
+    animation-name: lightbox-lock;
+    animation-duration: 200ms;
+    animation-timing-function: var(--ease-out);
+    animation-delay: 340ms;
+    animation-fill-mode: backwards;
+  }
+
+  :root:not([data-motion='off']) .lightbox[open] .lightbox__frame::after {
+    animation-delay: 390ms;
+  }
+
+  :root:not([data-motion='off']) .lightbox__full,
+  :root:not([data-motion='off']) .lightbox__close {
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* The morph (src/scripts/lightbox.ts): `vt-lightbox` is on <html> only while the lightbox
+     opens or closes, and the thumbnail / dialog image carry the one shared name
+     (`lightbox-image`, set through CSSOM). Nothing else is captured on its own — the sticky
+     header or the hero cover would otherwise float above the backdrop until it ends — and
+     `html:root` outranks their own names; the inline name outranks this. */
+  html:root.vt-lightbox:not([data-motion='off']) * {
+    view-transition-name: none;
+  }
+
+  :root.vt-lightbox::view-transition-group(lightbox-image) {
+    animation-duration: 380ms;
+    animation-timing-function: var(--ease-out);
+  }
+}

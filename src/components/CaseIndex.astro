@@ -1,0 +1,162 @@
+---
+/**
+ * Case-study section index (interactions spec §4): a sticky mono index in the left margin of the
+ * body — `01 PROBLEM`, `02 APPROACH`, … `05 FIGURES` — from the Markdown body's `h2`s (the
+ * headings `render()` returns) plus Figures. The numbers match the prose headings' own (01, 02 …)
+ * and are decorative. Links jump to the heading ids (in-page anchors glide while motion is
+ * allowed: src/scripts/smooth-scroll.ts).
+ *
+ * Only from 72rem, where the body's 12-column grid leaves two free columns left of the text
+ * (ProjectLayout places it there); below that it isn't shown at all — one nav, never two.
+ * src/scripts/case-index.ts is the scrollspy: an IntersectionObserver marks the section being
+ * read (`aria-current="true"` on its link) and slides an accent tick along the index's rail to it.
+ */
+import { pad2 } from '../lib/format';
+
+export interface CaseIndexItem {
+  /** The heading's id. */
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items: readonly CaseIndexItem[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<nav class:list={['case-index', className]} aria-label="On this page" data-case-index>
+  <div class="case-index__inner">
+    <p class="case-index__title mono-label" aria-hidden="true">
+      On this page
+    </p>
+    <div class="case-index__track">
+      <ol class="case-index__list" role="list">
+        {items.map(({ id, label }, i) => (
+          <li>
+            <a class="case-index__link" href={`#${id}`}>
+              <span class="case-index__number" aria-hidden="true">
+                {pad2(i + 1)}
+              </span>
+              <span class="case-index__label">{label}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <span class="case-index__tick" aria-hidden="true"></span>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .case-index {
+    display: none;
+  }
+
+  @media (width >= 72rem) {
+    .case-index {
+      display: block;
+    }
+  }
+
+  .case-index__inner {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--space-l));
+  }
+
+  .case-index__title {
+    margin-block-end: var(--space-xs);
+  }
+
+  /* The rail: a hairline down the index's inline start; the tick rides on it. The track is the
+     links' offset parent, so the scrollspy's measurements are in its coordinates. */
+  .case-index__track {
+    position: relative;
+    border-inline-start: var(--hairline);
+  }
+
+  .case-index__list {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  .case-index__link {
+    display: grid;
+    grid-template-columns: 2.5ch minmax(0, 1fr);
+    column-gap: 0.625rem;
+    padding-block: 0.3125rem;
+    padding-inline: 0.875rem 0;
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .case-index__number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (hover: hover) {
+    .case-index__link:hover {
+      color: var(--text);
+    }
+  }
+
+  .case-index__link:focus-visible {
+    outline-offset: 0;
+  }
+
+  .case-index__link[aria-current] {
+    color: var(--text);
+  }
+
+  .case-index__link[aria-current] .case-index__number {
+    color: var(--accent);
+  }
+
+  /* The tick: an accent bar laid over the rail at the current section's link (its offset and
+     height come from the scrollspy, through CSSOM). Nothing is current until the reader reaches
+     the first section. */
+  .case-index__tick {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: -1px;
+    inline-size: 2px;
+    block-size: var(--tick-h, 0);
+    translate: 0 var(--tick-y, 0);
+    background-color: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  [data-spy='on'] .case-index__tick {
+    opacity: 1;
+  }
+
+  @media (forced-colors: active) {
+    .case-index__tick {
+      background-color: Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .case-index__tick {
+      transition:
+        translate var(--dur-slow) var(--ease-out),
+        block-size var(--dur-slow) var(--ease-out),
+        opacity var(--dur-base) var(--ease-standard);
+    }
+
+    :global(:root:not([data-motion='off'])) .case-index__link,
+    :global(:root:not([data-motion='off'])) .case-index__number {
+      transition: color var(--dur-fast) var(--ease-standard);
+    }
+  }
+</style>
