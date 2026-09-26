@@ -1,0 +1,59 @@
+---
+/**
+ * Case-study header (spec-design-content §2, §3): mono eyebrow ("CASE STUDY 01 · SECURITY &
+ * SYSTEMS" or "ARCHIVE · DESIGN & 3D"), the page's h1 at step-4, and the lede.
+ */
+interface Props {
+  /** First eyebrow part, shown in the accent: "Case study 01" or "Archive". */
+  kind: string;
+  /** Second eyebrow part: the group label. */
+  group: string;
+  title: string;
+  lede: string;
+  class?: string;
+}
+
+const { kind, group, title, lede, class: className } = Astro.props;
+---
+
+<div class:list={['case-header', className]}>
+  <p class="case-header__eyebrow mono-label">
+    <span class="case-header__kind">{kind}</span>
+    <span class="case-header__sep" aria-hidden="true">
+      ·
+    </span>
+    <span class="visually-hidden">, </span>
+    <span>{group}</span>
+  </p>
+  <h1 class="case-header__title">{title}</h1>
+  <p class="case-header__lede">{lede}</p>
+</div>
+
+<style>
+  .case-header__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.625em;
+  }
+
+  .case-header__kind {
+    color: var(--accent);
+  }
+
+  .case-header__title {
+    max-inline-size: 22ch;
+    margin-block-start: var(--space-s);
+    font-size: var(--step-4);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  .case-header__lede {
+    max-inline-size: 60ch;
+    margin-block-start: var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+</style>

@@ -1,0 +1,16 @@
+---
+/**
+ * A display date with `<time>` around the parts that are real dates ("Fall <time>2021</time>",
+ * "May–<time datetime="2021-08">Aug 2021</time>"); approximate or undated strings ("c. 2016",
+ * "High school") render as plain text. Inherits all styling from its parent.
+ */
+import { dateParts } from '../lib/format';
+
+interface Props {
+  text: string;
+}
+
+const parts = dateParts(Astro.props.text);
+---
+
+{parts.map(({ text, datetime }) => (datetime ? <time datetime={datetime}>{text}</time> : text))}

@@ -1,0 +1,270 @@
+---
+/**
+ * One case-study figure (spec-design-content §3): `<figure>` + `<figcaption>` reading
+ * "FIG. nn — caption" (just "FIG. nn" without a caption). Alt text comes from the data and is
+ * never repeated in the caption. Dispatches on the media kind:
+ * - image → `<Picture>` (lazy, avif/webp, widths capped at the source). Frame modes from
+ *   `frameMode`: "cover" fills the column; "panel" (smaller than the column, or portrait)
+ *   shows it whole at no more than its own size on a `--surface-2` plate; "alpha" puts
+ *   transparent art on a fixed light plate. Images shown clearly smaller than their source
+ *   (well beyond the column, or portrait plates) get a "Full size" link to a big WebP.
+ * - video → LoopVideo; youtube → YouTubeFacade.
+ * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
+ * grid; this component only marks the figure `figure--wide`).
+ */
+import { getImage, Picture } from 'astro:assets';
+import { pad2 } from '../../lib/format';
+import { candidateWidths, frameMode, imageFacts } from '../../lib/images';
+import type { MediaItem } from '../../lib/media';
+import { pageStyle } from '../../lib/page-style';
+import Arrow from '../Arrow.astro';
+import LoopVideo from './LoopVideo.astro';
+import YouTubeFacade from './YouTubeFacade.astro';
+
+interface Props {
+  projectId: string;
+  item: MediaItem;
+  /** 1-based figure number. */
+  index: number;
+}
+
+const { projectId, item, index } = Astro.props;
+
+/** Rendered width of the two figure columns at the full 72rem container (ProjectLayout). */
+const COLUMN = { normal: 662, wide: 956 };
+/** `sizes` for each column: fixed from the full container, ~54vw / ~78vw on 64–77rem
+    screens (12-column grid), the full container width below 64rem. */
+const SIZES = {
+  normal: '(min-width: 1232px) 662px, (min-width: 1024px) 54vw, 100vw',
+  wide: '(min-width: 1232px) 956px, (min-width: 1024px) 78vw, 100vw',
+};
+
+const wide = item.kind === 'youtube' || (item.kind === 'image' && item.wide);
+const column = wide ? 'wide' : 'normal';
+
+const image =
+  item.kind === 'image'
+    ? await (async () => {
+        const facts = await imageFacts(item.src);
+        const mode = frameMode(facts, COLUMN[column]);
+        // Worth a link only when the figure shows the image clearly smaller than its source:
+        // well beyond the column width, or a portrait plate capped by the viewport height.
+        const full =
+          facts.width > COLUMN[column] * 1.25 || (mode === 'panel' && facts.height > facts.width)
+            ? await getImage({
+                src: item.src,
+                width: Math.min(2400, facts.width),
+                format: 'webp',
+                layout: 'none',
+              })
+            : undefined;
+        return {
+          src: item.src,
+          alt: item.alt,
+          mode,
+          widths: candidateWidths(facts.width, COLUMN[column] * 2),
+          full: full?.src,
+          style: pageStyle(Astro.locals, { '--image-max': `${facts.width}px` }),
+        };
+      })()
+    : undefined;
+
+const number = pad2(index);
+const caption = item.caption;
+---
+
+<figure class:list={['figure', wide && 'figure--wide']} data-kind={item.kind}>
+  {image && (
+    <div class="figure__frame" data-mode={image.mode} data-style={image.style}>
+      <Picture
+        src={image.src}
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        widths={image.widths}
+        sizes={SIZES[column]}
+        alt={image.alt}
+        loading="lazy"
+        decoding="async"
+        class="figure__img"
+      />
+    </div>
+  )}
+  {item.kind === 'video' && (
+    <div class="figure__frame" data-mode="cover">
+      <LoopVideo projectId={projectId} src={item.src} alt={item.alt} autoplay={item.autoplay} />
+    </div>
+  )}
+  {item.kind === 'youtube' && (
+    <YouTubeFacade
+      projectId={projectId}
+      videoId={item.id}
+      title={item.title}
+      start={item.start}
+      sizes={SIZES.wide}
+    />
+  )}
+  <figcaption class="figure__caption">
+    <span class="figure__number">
+      <span aria-hidden="true">
+        {`Fig. ${number}`}
+        {caption && <span class="figure__dash">—</span>}
+      </span>
+      <span class="visually-hidden">{`Figure ${index}${caption ? ': ' : ''}`}</span>
+    </span>
+    {caption && <span class="figure__text">{caption}</span>}
+    {image?.full && (
+      <a class="figure__full" href={image.full}>
+        Full size<span class="visually-hidden"> of figure {index}</span>
+        <Arrow dir="up-right" />
+      </a>
+    )}
+  </figcaption>
+</figure>
+
+<style>
+  .figure {
+    margin: 0;
+  }
+
+  /* ── Frame ── */
+
+  .figure__frame {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface-2);
+  }
+
+  .figure__frame :global(picture) {
+    display: contents;
+  }
+
+  .figure__frame :global(img) {
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  /* Smaller than the column, or portrait: the whole image on a plate, at most its own size,
+     never taller than most of the viewport. */
+  .figure__frame[data-mode='panel'],
+  .figure__frame[data-mode='alpha'] {
+    padding: clamp(1rem, 5%, 2.5rem);
+  }
+
+  .figure__frame[data-mode='panel'] :global(img),
+  .figure__frame[data-mode='alpha'] :global(img) {
+    inline-size: auto;
+    max-inline-size: min(100%, var(--image-max));
+    max-block-size: min(80svh, 44rem);
+    object-fit: contain;
+  }
+
+  .figure__frame[data-mode='panel'] :global(img) {
+    outline: var(--hairline);
+  }
+
+  /* Transparent art: a fixed light plate in both schemes (as the home cards). */
+  .figure__frame[data-mode='alpha'] {
+    background-color: var(--surface-2-l);
+  }
+
+  /* ── Caption: FIG. nn — text · · · Full size ↗ ──
+     Phones: one flowing paragraph, the link on its own line. From 40rem: the number hangs
+     in its own column, the text wraps beside it, the link ends the first line. */
+
+  .figure__caption {
+    margin-block-start: var(--space-xs);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .figure__number {
+    margin-inline-end: 0.25rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .figure__dash {
+    margin-inline-start: 0.5em;
+    color: var(--text-subtle);
+  }
+
+  .figure__text {
+    text-wrap: pretty;
+  }
+
+  .figure__full {
+    display: flex;
+    align-items: center;
+    gap: 0.375em;
+    inline-size: fit-content;
+    min-block-size: 1.5rem;
+    margin-block-start: 0.25rem;
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  @media (hover: hover) {
+    .figure__full:hover {
+      color: var(--accent);
+    }
+  }
+
+  /* No caption text: "FIG. nn" and the link share one line. */
+  .figure__caption:not(:has(.figure__text)) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .figure__caption:not(:has(.figure__text)) .figure__full {
+    margin-block-start: 0;
+  }
+
+  @media (width >= 40rem) {
+    .figure__caption {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      column-gap: 0.625rem;
+      align-items: baseline;
+    }
+
+    .figure__number {
+      margin-inline-end: 0;
+    }
+
+    .figure__full {
+      grid-column: 3;
+      grid-row: 1;
+      margin-block-start: 0;
+      margin-inline-start: var(--space-s);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .figure__full :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      .figure__full:hover :global(.arrow) {
+        translate: 2px -2px;
+      }
+    }
+  }
+</style>

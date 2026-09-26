@@ -1,0 +1,134 @@
+---
+/**
+ * Contact (spec-design-content §2, §5f): one line, the email as a large mono mailto link, then
+ * GitHub · LinkedIn · Résumé. No form, no phone.
+ */
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const links = [
+  { href: site.github, label: 'GitHub' },
+  { href: site.linkedin, label: 'LinkedIn' },
+  { href: withBase(site.resume), label: 'Résumé', meta: 'PDF' },
+];
+---
+
+<div class:list={['contact', className]}>
+  <p class="contact__lead">Email is the fastest way to reach me.</p>
+  <p class="contact__email">
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </p>
+  <ul class="contact__links" role="list">
+    {links.map(({ href, label, meta }) => (
+      <li>
+        <a href={href} rel={meta ? 'noopener' : undefined}>
+          <span class="contact__label">{label}</span>
+          {meta && (
+            <span class="contact__meta">
+              <span aria-hidden="true">·</span> {meta}
+            </span>
+          )}
+          <Arrow dir="up-right" />
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .contact__lead {
+    color: var(--text-muted);
+    font-size: var(--step-1);
+  }
+
+  /* Sized to fit 23 mono characters inside a 320px viewport; breaks anywhere as a last resort. */
+  .contact__email {
+    font-family: var(--font-mono);
+    font-size: clamp(1.1875rem, 0.7rem + 2.6vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__email a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+  }
+
+  @media (hover: hover) {
+    .contact__email a:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  .contact__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-l);
+    margin-block-start: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    min-block-size: 2.75rem;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  /* Only the word is underlined, not the meta or the arrow. */
+  .contact__label {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--line-ui);
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .contact__links a:hover {
+      color: var(--text);
+    }
+
+    .contact__links a:hover .contact__label {
+      text-decoration-color: var(--accent);
+    }
+  }
+
+  .contact__meta {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .contact__links :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      .contact__links a:hover :global(.arrow) {
+        translate: 2px -2px;
+      }
+    }
+  }
+</style>

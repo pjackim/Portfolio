@@ -1,0 +1,160 @@
+---
+/**
+ * Case-study hero (spec-design-content §2, §4): the cover at container width in a 16:10
+ * frame — `id="case-hero"` (the `<link rel="expect">` target) and `view-transition-name:
+ * cover-<slug>`, so the home card's cover morphs into it. Loaded eagerly at high priority.
+ * Frame modes as the home card (`frameMode`): crop, whole on a plate, or on a light plate for
+ * transparent art. When the cover is a YouTube poster (Ruling R21) the hero is that video's
+ * facade instead, in a 16:9 frame, with the entry's caption if it has one.
+ */
+import { Picture } from 'astro:assets';
+import { candidateWidths, frameMode, imageFacts } from '../lib/images';
+import type { YouTubeItem } from '../lib/media';
+import { pageStyle } from '../lib/page-style';
+import type { Project } from '../lib/projects';
+import YouTubeFacade from './media/YouTubeFacade.astro';
+
+interface Props {
+  project: Project;
+  /** The YouTube entry whose poster is the cover (`coverYouTube`), if any. */
+  video?: YouTubeItem | undefined;
+}
+
+const { project, video } = Astro.props;
+const { id, data } = project;
+
+const HERO_ID = 'case-hero';
+const transitionName = `cover-${id}`;
+/** The container: 72rem from 1232px up, the viewport minus gutters below. */
+const SIZES = '(min-width: 1232px) 1152px, 100vw';
+
+const facts = await imageFacts(data.cover);
+const mode = frameMode(facts, 1000);
+const style = video
+  ? undefined
+  : pageStyle(Astro.locals, {
+      'view-transition-name': transitionName,
+      '--cover-position': data.coverPosition ?? 'center',
+      '--cover-max': `${facts.width}px`,
+    });
+---
+
+{video ? (
+  <figure class="case-hero case-hero--video">
+    <YouTubeFacade
+      projectId={id}
+      videoId={video.id}
+      title={video.title}
+      start={video.start}
+      sizes={SIZES}
+      priority
+      frameId={HERO_ID}
+      transitionName={transitionName}
+    />
+    {video.caption && (
+      <figcaption class="case-hero__caption">
+        <span class="case-hero__label" aria-hidden="true">
+          Video <span class="case-hero__dash">—</span>
+        </span>
+        <span class="visually-hidden">Video: </span>
+        {video.caption}
+      </figcaption>
+    )}
+  </figure>
+) : (
+  <div class="case-hero case-hero__frame" id={HERO_ID} data-mode={mode} data-style={style}>
+    <Picture
+      src={data.cover}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      widths={candidateWidths(facts.width, 2400)}
+      sizes={SIZES}
+      alt={data.coverAlt}
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+)}
+
+<style>
+  .case-hero {
+    margin: 0;
+  }
+
+  .case-hero__frame {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface-2);
+  }
+
+  .case-hero__frame :global(picture) {
+    display: contents;
+  }
+
+  .case-hero__frame :global(img) {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    object-fit: cover;
+    object-position: var(--cover-position);
+  }
+
+  /* Small or portrait covers: the whole image on the plate, at most its own size. A shorter
+     plate on wide screens keeps a small cover from floating in a sea of panel. */
+  .case-hero__frame[data-mode='panel'],
+  .case-hero__frame[data-mode='alpha'] {
+    padding: clamp(1rem, 4%, 2.5rem);
+  }
+
+  .case-hero__frame[data-mode='panel'] :global(img),
+  .case-hero__frame[data-mode='alpha'] :global(img) {
+    inline-size: auto;
+    block-size: auto;
+    max-inline-size: min(100%, var(--cover-max));
+    max-block-size: 100%;
+    object-fit: contain;
+  }
+
+  .case-hero__frame[data-mode='panel'] :global(img) {
+    outline: var(--hairline);
+  }
+
+  .case-hero__frame[data-mode='alpha'] {
+    background-color: var(--surface-2-l);
+  }
+
+  @media (width >= 48rem) {
+    .case-hero__frame[data-mode='panel'] {
+      aspect-ratio: 2 / 1;
+    }
+  }
+
+  .case-hero__caption {
+    margin-block-start: var(--space-xs);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .case-hero__label {
+    margin-inline-end: 0.625rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-hero__dash {
+    margin-inline-start: 0.5em;
+    color: var(--text-subtle);
+  }
+</style>

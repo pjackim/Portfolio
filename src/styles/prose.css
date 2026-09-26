@@ -1,0 +1,190 @@
+/*
+ * `.prose` — Markdown bodies on case studies (spec-design-content §2, §3). A 66ch measure,
+ * a steady flow rhythm, and h2s that read as numbered sections: a hairline rule with a mono
+ * accent index (01, 02 …) above each heading.
+ */
+
+.prose {
+  max-inline-size: var(--measure);
+  color: var(--text);
+  counter-reset: prose-section;
+}
+
+/* Flow: one rhythm for everything, larger breaks around sections and figures. */
+.prose > * + * {
+  margin-block-start: 1.25em;
+}
+
+.prose :where(h2) {
+  counter-increment: prose-section;
+  margin-block-start: var(--space-2xl);
+  padding-block-start: var(--space-s);
+  border-block-start: var(--hairline);
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.prose :where(h2)::before {
+  content: counter(prose-section, decimal-leading-zero);
+  content: counter(prose-section, decimal-leading-zero) / ''; /* decorative: not in the name */
+  display: block;
+  margin-block-end: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.prose > :where(h2):first-child {
+  margin-block-start: 0;
+}
+
+.prose :where(h3) {
+  margin-block-start: var(--space-l);
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.prose :where(h2, h3) + * {
+  margin-block-start: var(--space-s);
+}
+
+.prose :where(strong, b) {
+  font-weight: 600;
+}
+
+/* Links in running text are always underlined (accent vs text is < 3:1). */
+.prose :where(a) {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) {
+  .prose :where(a):hover {
+    color: var(--accent-hover);
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Lists. Bullets are accent dashes, matching the case-study Key points ticks. A string
+   marker (not `list-style: none` + a drawn tick) keeps Markdown lists announced as lists. */
+.prose :where(ul) {
+  padding-inline-start: 1.25em;
+  list-style-type: '–  ';
+}
+
+/* Wider indent: mono "1." markers must stay inside the text column. */
+.prose :where(ol) {
+  padding-inline-start: 1.75em;
+}
+
+.prose :where(li) + :where(li) {
+  margin-block-start: 0.5em;
+}
+
+.prose :where(li) > :where(ul, ol) {
+  margin-block-start: 0.5em;
+}
+
+.prose :where(ul) > :where(li)::marker {
+  color: var(--accent);
+}
+
+.prose :where(ol) > :where(li)::marker {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-subtle);
+}
+
+/* Code */
+.prose :where(code) {
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-xs);
+  background-color: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.prose :where(pre) {
+  padding: var(--space-s);
+  overflow-x: auto;
+  border: var(--hairline);
+  border-radius: var(--radius-s);
+  background-color: var(--surface);
+  font-size: var(--step--1);
+  line-height: 1.6;
+}
+
+.prose :where(pre) :where(code) {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+/* Quotes */
+.prose :where(blockquote) {
+  padding-inline-start: var(--space-m);
+  border-inline-start: var(--rule-ui);
+  color: var(--text-muted);
+}
+
+/* Rules & figures */
+.prose :where(hr) {
+  block-size: 0;
+  margin-block: var(--space-xl);
+  border: 0;
+  border-block-start: var(--hairline);
+}
+
+.prose :where(figure) {
+  margin-block: var(--space-xl);
+}
+
+/* A Markdown image on its own line renders as <p><img></p>: give it figure spacing. */
+.prose :where(p:has(> img:only-child)) {
+  margin-block: var(--space-xl);
+}
+
+.prose :where(img, video) {
+  border-radius: var(--radius-s);
+}
+
+.prose :where(figcaption) {
+  margin-block-start: var(--space-xs);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--text-subtle);
+}
+
+/* Tables (rare): hairline rows, mono header. */
+.prose :where(table) {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375em;
+}
+
+.prose :where(th, td) {
+  padding: var(--space-2xs) var(--space-xs) var(--space-2xs) 0;
+  border-block-end: var(--hairline);
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose :where(th) {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}

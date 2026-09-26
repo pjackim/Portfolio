@@ -1,0 +1,25 @@
+---
+/**
+ * One page per published project: `/work/<slug>/` (spec-architecture §2). The Markdown body is
+ * rendered with the content layer's `render()` and slotted into ProjectLayout.
+ */
+import { render } from 'astro:content';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import { getProjects, type Project } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<ProjectLayout project={project}>
+  <Content />
+</ProjectLayout>

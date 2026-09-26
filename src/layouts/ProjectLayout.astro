@@ -1,0 +1,264 @@
+---
+/**
+ * Case-study page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
+ * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → Key points
+ * (featured highlights) → Markdown body (the default slot) → numbered figure gallery →
+ * PrevNext. Featured and archive projects share it; only the eyebrow differs.
+ *
+ * Desktop body grid: 12 columns. Text (key points, prose, section labels, captions) runs in
+ * columns 3–9; `wide` figures break out to 2–11. Below 64rem everything is one column,
+ * media full width.
+ */
+import Arrow from '../components/Arrow.astro';
+import CaseHeader from '../components/CaseHeader.astro';
+import CaseHero from '../components/CaseHero.astro';
+import MediaFigure from '../components/media/MediaFigure.astro';
+import PrevNext from '../components/PrevNext.astro';
+import ProjectMeta from '../components/ProjectMeta.astro';
+import { GROUP_LABELS } from '../data/taxonomy';
+import { pad2 } from '../lib/format';
+import { coverYouTube } from '../lib/media';
+import { getFeatured, getPrevNext, type Project } from '../lib/projects';
+import { coverOgImage, creativeWorkJsonLd } from '../lib/seo';
+import { withBase } from '../lib/url';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { id, data } = project;
+
+const [featured, { prev, next }, heroVideo, ogImage] = await Promise.all([
+  getFeatured(),
+  getPrevNext(id),
+  coverYouTube(project),
+  coverOgImage(project),
+]);
+const position = featured.findIndex((p) => p.id === id);
+const kind = position === -1 ? 'Archive' : `Case study ${pad2(position + 1)}`;
+const keyPoints = data.featured ? data.highlights : [];
+const gallery = data.media.filter((item) => item !== heroVideo);
+---
+
+<BaseLayout
+  title={`${data.title} — Parker Jackim`}
+  description={data.summary}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={creativeWorkJsonLd(project, ogImage)}
+>
+  <link slot="head" rel="expect" href="#case-hero" blocking="render" />
+
+  <article class="case container">
+    <header class="case__header">
+      <a class="case__back mono-label" href={withBase('work/')} data-astro-prefetch>
+        <Arrow dir="left" />
+        All work
+      </a>
+      <CaseHeader
+        class="case__intro"
+        kind={kind}
+        group={GROUP_LABELS[data.group]}
+        title={data.title}
+        lede={data.summary}
+      />
+      <ProjectMeta class="case__meta" project={project} />
+    </header>
+
+    <CaseHero project={project} video={heroVideo} />
+
+    <div class="case__body">
+      {keyPoints.length > 0 && (
+        <section class="case__block case__key-points" aria-labelledby="key-points-title">
+          <h2 class="case__label mono-label" id="key-points-title">
+            Key points
+          </h2>
+          <ul class="key-points" role="list">
+            {keyPoints.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <div class="case__prose prose">
+        <slot />
+      </div>
+
+      {gallery.length > 0 && (
+        <section class="case__block case__gallery" aria-labelledby="figures-title">
+          <h2 class="case__label mono-label" id="figures-title">
+            Figures
+            <span class="case__count">{pad2(gallery.length)}</span>
+          </h2>
+          <div class="case__figures">
+            {gallery.map((item, i) => (
+              <MediaFigure projectId={id} item={item} index={i + 1} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </article>
+
+  <PrevNext class="case__prev-next container" prev={prev} next={next} />
+</BaseLayout>
+
+<style>
+  .case {
+    padding-block-start: var(--space-s);
+  }
+
+  /* ── Header ── */
+
+  /* 44px target; the arrow nudges back on hover. */
+  .case__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-block-size: 2.75rem;
+    color: var(--text-subtle);
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+    .case__back:hover {
+      color: var(--text);
+    }
+  }
+
+  .case__header > :global(.case__intro) {
+    margin-block-start: clamp(var(--space-s), 0.5rem + 2vw, var(--space-l));
+  }
+
+  .case__header > :global(.case__meta) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .case > :global(.case-hero) {
+    margin-block-start: var(--space-l);
+  }
+
+  /* ── Body ── */
+
+  .case__body {
+    display: grid;
+    gap: var(--space-2xl);
+    margin-block-start: var(--space-2xl);
+  }
+
+  /* Block sections (Key points, Figures): a hairline, then a mono label. */
+  .case__block {
+    padding-block-start: var(--space-s);
+    border-block-start: var(--hairline);
+  }
+
+  .case__label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75em;
+    margin-block-end: var(--space-m);
+    color: var(--text);
+  }
+
+  .case__count {
+    color: var(--text-subtle);
+  }
+
+  /* Key points: the skim layer — short accent ticks, as the home capability lists. */
+  .key-points {
+    display: grid;
+    gap: var(--space-xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .key-points li {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* A border rather than a 1px box: borders snap to device pixels, so every tick renders
+     equally crisp whatever its fractional offset. */
+  .key-points li::before {
+    content: '';
+    inline-size: 0.625rem;
+    block-size: 0;
+    margin-block-start: 0.775em;
+    border-block-start: 1px solid var(--accent);
+  }
+
+  /* Row gap only: on desktop this is a subgrid, and a column gap of its own would
+     replace the parent grid's gutters. */
+  .case__figures {
+    display: grid;
+    row-gap: var(--space-xl);
+  }
+
+  :global(.case__prev-next) {
+    margin-block: var(--space-section);
+  }
+
+  /* ── Desktop: 12-column document grid ── */
+
+  @media (width >= 64rem) {
+    .case__body {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--space-m);
+    }
+
+    .case__body > * {
+      grid-column: 3 / 10;
+    }
+
+    .case__body > .case__gallery {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+      padding-block-start: 0;
+      border-block-start: 0;
+    }
+
+    .case__gallery > .case__label {
+      grid-column: 3 / 10;
+      padding-block-start: var(--space-s);
+      border-block-start: var(--hairline);
+    }
+
+    .case__figures {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      row-gap: var(--space-2xl);
+    }
+
+    .case__figures > :global(.figure) {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+
+    .case__figures > :global(.figure) > :global(*) {
+      grid-column: 3 / 10;
+    }
+
+    .case__figures > :global(.figure--wide) > :global(:not(figcaption)) {
+      grid-column: 2 / 12;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .case__back :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      .case__back:hover :global(.arrow) {
+        translate: -2px 0;
+      }
+    }
+  }
+</style>

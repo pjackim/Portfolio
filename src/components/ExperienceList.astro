@@ -1,0 +1,94 @@
+---
+/**
+ * Experience (spec-design-content §2, §5c): an ordered readout table — period · title · org ·
+ * place on hairline rows; on phones the period sits on its own mono line. Periods get
+ * `<time>` where they hold a real date; missing fields are simply left out.
+ */
+import type { ExperienceEntry } from '../data/site';
+import DateText from './DateText.astro';
+
+interface Props {
+  entries: readonly ExperienceEntry[];
+  class?: string;
+}
+
+const { entries, class: className } = Astro.props;
+---
+
+<ol class:list={['experience', className]} role="list">
+  {entries.map(({ period, title, org, place }) => (
+    <li class="experience__row">
+      {period && (
+        <p class="experience__period mono-label">
+          <DateText text={period} />
+        </p>
+      )}
+      <p class="experience__role">
+        <span class="experience__title">{title}</span>
+        {org && (
+          <>
+            <span class="experience__sep" aria-hidden="true">
+              {' · '}
+            </span>
+            <span class="visually-hidden">, </span>
+            <span class="experience__org">{org}</span>
+          </>
+        )}
+      </p>
+      {place && <p class="experience__place mono-label">{place}</p>}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .experience {
+    padding: 0;
+    border-block-start: var(--hairline);
+    list-style: none;
+  }
+
+  .experience__row {
+    display: grid;
+    gap: 0.25rem;
+    padding-block: var(--space-s);
+    border-block-end: var(--hairline);
+  }
+
+  .experience__role {
+    font-size: var(--step-0);
+    line-height: 1.45;
+  }
+
+  .experience__title {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .experience__sep {
+    color: var(--text-subtle);
+  }
+
+  .experience__org {
+    color: var(--text-muted);
+  }
+
+  /* Desktop: period rail | role | place, aligned on the first baseline. The rail width is
+     shared with ArchiveList so both tables' second columns line up. */
+  @media (width >= 48rem) {
+    .experience__row {
+      grid-template-columns: var(--readout-rail, 9rem) minmax(0, 1fr) auto;
+      column-gap: var(--space-m);
+      align-items: baseline;
+      padding-block: 1.125rem;
+    }
+
+    .experience__role {
+      grid-column: 2;
+    }
+
+    .experience__place {
+      grid-column: 3;
+      text-align: end;
+    }
+  }
+</style>

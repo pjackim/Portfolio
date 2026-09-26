@@ -1,0 +1,360 @@
+---
+/**
+ * Featured project card (spec-design-content §2–§4). One tab stop: the title link is
+ * stretched over the whole card; the cover is decorative (`alt=""`, the title names the link).
+ *
+ * Cover frame (16:10) modes (`frameMode`, src/lib/images.ts):
+ * - "cover": `object-fit: cover`, cropped at `coverPosition`;
+ * - "panel": covers narrower than 800px or portrait are shown whole (`contain`) on
+ *   `--surface-2`, never upscaled past their source size;
+ * - "alpha": covers with transparency sit on a fixed light panel in both schemes, so dark
+ *   artwork on a transparent background stays visible in dark mode.
+ *
+ * Rows are subgridded by ProjectGrid, so meta, titles, summaries and tags line up across a
+ * row of cards. ProjectGrid's odd-last-card rule switches a card to the horizontal layout.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import { GROUP_LABELS } from '../data/taxonomy';
+import { pad2, projectDate } from '../lib/format';
+import { candidateWidths, frameMode, imageFacts } from '../lib/images';
+import { pageStyle } from '../lib/page-style';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+import DateText from './DateText.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  /** Position in the rendered list, 0-based (shown as 01, 02 …). */
+  index: number;
+  /** Above-the-fold card: load the cover eagerly at high priority. */
+  eager?: boolean;
+  /** Scroll-reveal the card (cards below the first row; spec §4). */
+  reveal?: boolean;
+  /** The odd last card, which spans both columns from 800px (ProjectGrid): wider cover. */
+  wide?: boolean;
+}
+
+const { project, index, eager = false, reveal = false, wide = false } = Astro.props;
+const { id, data } = project;
+
+/** `sizes` per layout, from the rendered cover width. From 800px a card is half the
+    container (1152px from ~1230px up), and the full-width horizontal card's cover is 55% of
+    it; 640–799px every card is horizontal (cover 45%); below that the cover is full width. */
+const SIZES = {
+  normal:
+    '(min-width: 1216px) 36rem, (min-width: 800px) calc(50vw - 3rem), (min-width: 640px) 45vw, 100vw',
+  wide: '(min-width: 1216px) 40rem, (min-width: 800px) calc(55vw - 2rem), (min-width: 640px) 45vw, 100vw',
+};
+
+const facts = await imageFacts(data.cover);
+const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
+const mode = frameMode(facts, 800);
+const style = pageStyle(Astro.locals, {
+  'view-transition-name': `cover-${id}`,
+  '--cover-position': data.coverPosition ?? 'center',
+  '--cover-max': `${facts.width}px`,
+});
+
+const href = withBase(`work/${id}/`);
+// The arrow stays glued to the title's last word (never wraps onto a line of its own).
+const words = data.title.split(' ');
+const titleTail = words.pop();
+const titleHead = words.join(' ');
+---
+
+<li class="card" data-reveal={reveal || undefined}>
+  <div class="card__media" data-mode={mode} data-style={style}>
+    <Picture
+      src={data.cover}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      widths={widths}
+      sizes={SIZES[wide ? 'wide' : 'normal']}
+      alt=""
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchpriority={eager ? 'high' : undefined}
+      class="card__img"
+    />
+  </div>
+  <div class="card__body">
+    <p class="card__meta mono-label">
+      <span class="card__index">{pad2(index + 1)}</span>
+      <span aria-hidden="true">—</span>
+      <span>
+        <DateText text={projectDate(project)} />
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>{GROUP_LABELS[data.group]}</span>
+    </p>
+    <h3 class="card__title">
+      <a href={href} data-astro-prefetch>
+        {titleHead}
+        <span class="card__title-tail">
+          {titleTail}
+          <span class="card__arrow">
+            <Arrow />
+          </span>
+        </span>
+      </a>
+    </h3>
+    <p class="card__summary">{data.summary}</p>
+    <TagList class="card__tags" tags={data.stack} max={4} label="Stack" />
+  </div>
+</li>
+
+<style>
+  .card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-row: span 5;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+    transition: border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+    .card {
+      grid-template-rows: subgrid;
+      row-gap: 0;
+    }
+  }
+
+  /* The body's children join the card grid (meta, title, summary, tags rows); the horizontal
+     variant turns the body back into a box. */
+  .card__body {
+    display: contents;
+  }
+
+  /* ── Cover ── */
+
+  /* Explicit stretch: an aspect-ratio box would otherwise size to its content ("start").
+     In the horizontal layout this also lets the cover grow when the text is taller. */
+  .card__media {
+    position: relative;
+    display: grid;
+    place-self: stretch;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-block-end: var(--hairline);
+    border-start-start-radius: calc(var(--radius-s) - 1px);
+    border-start-end-radius: calc(var(--radius-s) - 1px);
+    background-color: var(--surface-2);
+  }
+
+  /* <picture> steps aside so the <img> is the grid item. */
+  .card__media :global(picture) {
+    display: contents;
+  }
+
+  .card__media :global(img) {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    object-fit: cover;
+    object-position: var(--cover-position);
+  }
+
+  /* Small or portrait covers: whole image, centred on the panel, never past 1:1. */
+  .card__media[data-mode='panel'] {
+    padding: clamp(1rem, 4%, 1.75rem);
+  }
+
+  .card__media[data-mode='panel'] :global(img) {
+    inline-size: auto;
+    block-size: auto;
+    max-inline-size: min(100%, var(--cover-max));
+    max-block-size: 100%;
+    object-fit: contain;
+    outline: var(--hairline);
+  }
+
+  .card__media[data-mode='alpha'] {
+    background-color: var(--surface-2-l);
+  }
+
+  /* ── Text ── */
+
+  .card__meta,
+  .card__title,
+  .card__summary,
+  .card :global(.card__tags) {
+    margin-inline: var(--space-m);
+  }
+
+  .card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.5em;
+    margin-block-start: var(--space-m);
+  }
+
+  .card__index {
+    color: var(--accent);
+  }
+
+  .card__title {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .card__title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  /* Stretched link: the whole card is the click target (one tab stop). */
+  .card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  .card__title-tail {
+    white-space: nowrap;
+  }
+
+  .card__arrow {
+    display: inline-block;
+    margin-inline-start: 0.1em;
+    color: var(--text-subtle);
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .card__summary {
+    margin-block-start: var(--space-2xs);
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .card :global(.card__tags) {
+    align-self: end;
+    margin-block: var(--space-m);
+  }
+
+  /* ── Hover / focus (spec §4): keyboard focus mirrors hover ── */
+
+  .card:has(a:focus-visible) {
+    border-color: var(--line-ui);
+  }
+
+  .card:has(a:focus-visible) .card__title a,
+  .card:has(a:focus-visible) .card__arrow {
+    color: var(--accent);
+  }
+
+  @media (hover: hover) {
+    .card:hover {
+      border-color: var(--line-ui);
+    }
+
+    .card:hover .card__title a,
+    .card:hover .card__arrow {
+      color: var(--accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card__media :global(img),
+    .card__arrow :global(.arrow) {
+      transition:
+        scale var(--dur-base) var(--ease-out),
+        translate var(--dur-base) var(--ease-out);
+    }
+
+    .card:has(a:focus-visible) .card__media :global(img) {
+      scale: 1.02;
+    }
+
+    .card:has(a:focus-visible) .card__arrow :global(.arrow) {
+      translate: 2px 0;
+    }
+
+    @media (hover: hover) {
+      .card:hover .card__media :global(img) {
+        scale: 1.02;
+      }
+
+      .card:hover .card__arrow :global(.arrow) {
+        translate: 2px 0;
+      }
+    }
+  }
+
+  /* ── Horizontal layout: cover left, text right, text centred on the cover ──
+     Tablets (single column, 640–799px): every card, so a lone column of wide covers doesn't
+     turn the grid into a scroll of posters. From 800px (two columns): only an odd last card,
+     which spans both columns (spec §2). The two blocks are the same apart from the cover
+     share and the selector. */
+
+  @media (40rem <= width < 50rem) {
+    .card {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      grid-template-columns: 45% minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    .card .card__media {
+      border-block-end: 0;
+      border-inline-end: var(--hairline);
+      border-start-end-radius: 0;
+      border-end-start-radius: calc(var(--radius-s) - 1px);
+    }
+
+    .card .card__body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: var(--space-2xs);
+    }
+
+    .card :global(.card__tags) {
+      align-self: auto;
+    }
+  }
+
+  @media (width >= 50rem) {
+    :global(.project-grid) > .card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      grid-template-columns: 55% minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    :global(.project-grid) > .card:last-child:nth-child(odd) .card__media {
+      border-block-end: 0;
+      border-inline-end: var(--hairline);
+      border-start-end-radius: 0;
+      border-end-start-radius: calc(var(--radius-s) - 1px);
+    }
+
+    :global(.project-grid) > .card:last-child:nth-child(odd) .card__body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: var(--space-2xs);
+    }
+
+    :global(.project-grid) > .card:last-child:nth-child(odd) :global(.card__tags) {
+      align-self: auto;
+    }
+
+    :global(.project-grid) > .card:last-child:nth-child(odd) .card__title {
+      font-size: var(--step-2);
+    }
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+/**
+ * Silent screen-recording video (spec-design-content §3). Server-rendered with native
+ * `controls` and `preload="none"`, so it works without JS and costs nothing until played.
+ * `autoplay` loops are enhanced by `src/scripts/video.ts`: a visible Pause / Play toggle
+ * replaces the controls and the loop plays only while on screen (never under reduced motion
+ * or Save-Data). Click-to-play videos keep the native controls and don't loop.
+ * Width/height (and the aspect ratio) come from the poster, so nothing shifts on load.
+ */
+import { getImage } from 'astro:assets';
+import { videoSources } from '../../lib/media';
+import { pageStyle } from '../../lib/page-style';
+
+interface Props {
+  projectId: string;
+  /** Frontmatter `./<name>.mp4`; `.webm` and `.poster.webp` siblings by convention. */
+  src: string;
+  /** Accessible name of the video. */
+  alt: string;
+  autoplay: boolean;
+}
+
+const { projectId, src, alt, autoplay } = Astro.props;
+const { mp4, webm, poster } = videoSources(projectId, src);
+const posterImage = await getImage({
+  src: poster,
+  format: 'webp',
+  width: Math.min(1280, poster.width),
+  layout: 'none',
+});
+const width = Number(posterImage.attributes.width ?? poster.width);
+const height = Number(posterImage.attributes.height ?? poster.height);
+const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` });
+---
+
+<div class="loop-video" data-video data-autoplay={autoplay || undefined}>
+  <video
+    muted
+    loop={autoplay}
+    playsinline
+    preload="none"
+    poster={posterImage.src}
+    controls
+    aria-label={alt}
+    width={width}
+    height={height}
+    data-style={style}
+  >
+    <source src={webm} type='video/webm; codecs="vp9"' />
+    <source src={mp4} type="video/mp4" />
+  </video>
+</div>
+
+<script src="../../scripts/video.ts"></script>
+
+<style>
+  .loop-video {
+    position: relative;
+  }
+
+  video {
+    inline-size: 100%;
+    block-size: auto;
+    background-color: var(--surface-2);
+  }
+
+  /* Toggle added by the script (no scoping attribute): a solid mono chip in the bottom-right
+     corner, 44px tall, same family as the YouTube facade's play chip. */
+  .loop-video :global(.video-toggle) {
+    position: absolute;
+    inset-block-end: var(--space-xs);
+    inset-inline-end: var(--space-xs);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    padding-inline: 0.875rem 1rem;
+    border: var(--rule-ui);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .loop-video :global(.video-toggle__icon) {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .loop-video :global(.video-toggle__play) {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .loop-video :global(.video-toggle[data-state='playing'] .video-toggle__play),
+  .loop-video :global(.video-toggle[data-state='paused'] .video-toggle__pause) {
+    display: none;
+  }
+
+  /* The label has a fixed width, so Pause ⇄ Play never resizes the chip. */
+  .loop-video :global(.video-toggle__label) {
+    min-inline-size: 5ch;
+  }
+
+  @media (hover: hover) {
+    .loop-video :global(.video-toggle:hover) {
+      border-color: var(--accent);
+      background-color: var(--accent);
+      color: var(--on-accent);
+    }
+  }
+</style>
