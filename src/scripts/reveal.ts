@@ -115,17 +115,6 @@ function start(): void {
   });
 }
 
-/** The element the URL's fragment names, if any (a malformed escape is read as written). */
-const fragmentTarget = (): HTMLElement | null => {
-  let id = location.hash.slice(1);
-  try {
-    id = decodeURIComponent(id);
-  } catch {
-    // As the browser does.
-  }
-  return id ? document.getElementById(id) : null;
-};
-
 /** The page is where a fragment jump puts it: the target at the scroll padding, or as close as
     the page can scroll (a target near the top or the foot can't get there). */
 const landedOn = (el: HTMLElement): boolean => {
@@ -140,7 +129,10 @@ const landedOn = (el: HTMLElement): boolean => {
 // for. Only if the jump is still to come (the target isn't where it lands) wait for it to end,
 // or 1.5 s, so what the reader lands on is never held back.
 const begin = () => {
-  const target = fragmentTarget();
+  // The element the URL's fragment names, as the browser resolved it (decoding included) — no
+  // lookup of our own to keep in step with src/scripts/fragment.ts, which this inlined script
+  // can't import.
+  const target = document.querySelector<HTMLElement>(':target');
   if (!target || landedOn(target)) {
     requestAnimationFrame(start);
     return;

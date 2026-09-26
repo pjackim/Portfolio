@@ -76,10 +76,54 @@ export function syncStoredMotion(): void {
   });
 }
 
+/** The latest same-document transition started under each class (see startTransition). */
+const latest = new Map<string, ViewTransition>();
+
+/**
+ * Runs `update` as a same-document view transition with `className` on <html> for its duration
+ * (the class that scopes its styles and names, so they never join a cross-document navigation).
+ * The class goes on before the transition starts — it must be in place when the old state is
+ * captured. The latest transition wins: once one is over, only if no newer one under the same
+ * class has started does it run `after` and drop the class (a newer one owns them now; starting
+ * it skipped this one). Skips and aborts are expected, never reported.
+ *
+ * Returns false — with nothing left behind and `update` not run — when there are no view
+ * transitions or the browser refuses to start one; the caller then applies the change itself.
+ * It doesn't check motionAllowed(): callers decide whether to animate. (theme.ts, inlined and
+ * import-free, keeps its own copy of this guard.)
+ */
+export function startTransition(
+  className: string,
+  update: () => void | Promise<void>,
+  after?: () => void,
+): boolean {
+  if (typeof document.startViewTransition !== 'function') return false;
+  root.classList.add(className);
+  let vt: ViewTransition;
+  try {
+    vt = document.startViewTransition(update);
+  } catch {
+    root.classList.remove(className);
+    return false;
+  }
+  latest.set(className, vt);
+  vt.ready.catch(() => {});
+  vt.finished
+    .catch(() => {})
+    .finally(() => {
+      if (latest.get(className) !== vt) return;
+      latest.delete(className);
+      after?.();
+      root.classList.remove(className);
+    });
+  return true;
+}
+
 /**
  * Runs `task` once the page has finished loading and the main thread is idle, so ambient work
  * never competes with first paint or LCP (spec §0.1). Falls back to a macrotask where
- * `requestIdleCallback` is missing (Safari).
+ * `requestIdleCallback` is missing (Safari). The one source of this wait for bundled code; the
+ * inlined, import-free loader in MotionLayerDeferred.astro mirrors it.
  */
 export function afterLoadIdle(task: () => void, timeout = 800): void {
   const idle = () => {

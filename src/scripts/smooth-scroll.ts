@@ -9,6 +9,7 @@
  * for it, with `smooth-scroll` on <html> (global.css, behind the motion gate), and off again once
  * the scroll ends. Part of the motion-layer entry.
  */
+import { fragmentTarget } from './fragment';
 import { motionAllowed } from './motion';
 
 const root = document.documentElement;
@@ -16,17 +17,6 @@ const CLASS = 'smooth-scroll';
 /** Browsers without `scrollend` (and a click on the fragment already in view) end it here. */
 const FALLBACK_MS = 2000;
 let timer = 0;
-
-/** The element a `#fragment` names — read as written when it isn't valid percent-encoding. */
-function fragmentTarget(hash: string): HTMLElement | null {
-  let id = hash.slice(1);
-  try {
-    id = decodeURIComponent(id);
-  } catch {
-    // A malformed escape (`#%zz`): the browser looks it up as written, and so do we.
-  }
-  return document.getElementById(id);
-}
 
 function end(): void {
   root.classList.remove(CLASS);

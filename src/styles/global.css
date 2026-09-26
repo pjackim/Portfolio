@@ -280,7 +280,8 @@ a {
    wash or a focus ring. `--i` (from :nth-child rules where items share a row) delays an item a
    beat per column, capped; one-column lists stagger as they scroll in. `data-reveal="contents"`
    plays on the element's children instead (boxes whose background must never go see-through,
-   like the capability grid, whose hairlines are its background showing through gaps). */
+   like the capability grid, whose hairlines are its background showing through gaps). The /work/
+   filter's arriving rows wipe in on the same keyframes (WorkFilter.astro). */
 @media screen and (prefers-reduced-motion: no-preference) {
   @keyframes reveal {
     from {

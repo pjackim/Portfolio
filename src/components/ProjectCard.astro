@@ -26,6 +26,7 @@ import { pad2, projectDate } from '../lib/format';
 import { candidateWidths, frameMode, imageFacts } from '../lib/images';
 import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
+import '../styles/reticle.css';
 import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
 import TagList from './TagList.astro';
@@ -87,7 +88,7 @@ const titleHead = words.join(' ');
       fetchpriority={eager ? 'high' : undefined}
       class="card__img"
     />
-    <span class="card__hud" aria-hidden="true">
+    <span class="card__hud reticle" aria-hidden="true">
       <span class="card__scan"></span>
       <span class="card__readout">
         {readout}
@@ -290,50 +291,20 @@ const titleHead = words.join(' ');
      A decorative HUD over the cover's whole frame (panel padding included), clipped by it. */
 
   .card__hud {
-    --arm: 14px;
-    --stroke: 1.5px;
     --inset: 0.625rem;
+    --reticle-inset: var(--inset);
     position: absolute;
     inset: 0;
     pointer-events: none;
   }
 
-  /* Corner brackets: each pseudo-element draws one diagonal pair (::before top-left +
-     bottom-right, ::after top-right + bottom-left), so the pairs can land a beat apart. A
-     page-colour halo keeps the accent legible on any cover: the light scheme's deep teal over
-     dark art, the dark scheme's cyan over pale art. */
+  /* Corner brackets: the shared reticle (src/styles/reticle.css), inset on the frame, hidden
+     until locked on. A page-colour halo keeps the accent legible on any cover: the light
+     scheme's deep teal over dark art, the dark scheme's cyan over pale art. */
   .card__hud::before,
   .card__hud::after {
-    content: '';
-    position: absolute;
-    inset: var(--inset);
     filter: drop-shadow(0 0 1px var(--bg)) drop-shadow(0 0 1px var(--bg));
-    background-image:
-      linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
-      linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent));
-    background-repeat: no-repeat;
-    background-size:
-      var(--arm) var(--stroke),
-      var(--stroke) var(--arm),
-      var(--arm) var(--stroke),
-      var(--stroke) var(--arm);
     opacity: 0;
-  }
-
-  .card__hud::before {
-    background-position:
-      0 0,
-      0 0,
-      100% 100%,
-      100% 100%;
-  }
-
-  .card__hud::after {
-    background-position:
-      100% 0,
-      100% 0,
-      0 100%,
-      0 100%;
   }
 
   /* Scanline: a 1px accent line with a soft tail above it; the box is the frame, parked one

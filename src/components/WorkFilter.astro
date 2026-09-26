@@ -326,20 +326,6 @@ const chips = [
       view-transition-name: var(--vt-list);
     }
 
-    @keyframes work-row-in {
-      from {
-        opacity: 0;
-        translate: 0 12px;
-        clip-path: inset(0 0 12% 0);
-      }
-
-      to {
-        opacity: 1;
-        translate: 0 0;
-        clip-path: inset(0);
-      }
-    }
-
     @keyframes work-row-out {
       to {
         opacity: 0;
@@ -352,7 +338,8 @@ const chips = [
       animation-duration: 420ms;
     }
 
-    /* A row leaving fades out where it was; a row arriving wipes in, as the entrances do. */
+    /* A row leaving fades out where it was; a row arriving wipes in with the entrances' own
+       keyframes (`reveal`, global.css). */
     :global(:root.vt-filter::view-transition-old(.work-row):only-child) {
       animation-name: work-row-out;
       animation-duration: 200ms;
@@ -361,7 +348,7 @@ const chips = [
     }
 
     :global(:root.vt-filter::view-transition-new(.work-row):only-child) {
-      animation-name: work-row-in;
+      animation-name: reveal;
       animation-duration: 420ms;
       animation-timing-function: var(--ease-out);
       animation-delay: 120ms;

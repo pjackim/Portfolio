@@ -16,8 +16,12 @@ import MotionLayer from './MotionLayer.astro';
 </template>
 
 <script>
-  // Import-free, so Astro inlines it (no request of its own). After load, the next frame and
-  // idle: the same wait the motion layer itself uses before fetching the rest of its code.
+  // After load, the next frame and idle: afterLoadIdle() (src/scripts/motion.ts) — the one
+  // source of that wait for the bundled code — plus the frame the motion layer adds before
+  // fetching the rest of its code. Mirrored rather than imported: this loader must stay
+  // import-free so Astro inlines it, since an import shared with the motion-layer entry would
+  // split into a chunk of its own — a request on every page for this, and one more for the entry.
+  // (Like theme.ts and reveal.ts mirroring motionAllowed().)
   export {};
   const load = () => {
     for (const template of document.querySelectorAll<HTMLTemplateElement>(

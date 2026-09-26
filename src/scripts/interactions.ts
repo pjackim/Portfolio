@@ -3,6 +3,7 @@
  * after load + idle on pages that have either. Both only ever re-render decorative pixels or
  * glyphs: the accessible text is never touched.
  */
+import { pad2 } from '../lib/format';
 import { motionAllowed, onMotionChange } from './motion';
 import { scramble } from './scramble';
 
@@ -38,8 +39,6 @@ function trackSpotlight(grid: HTMLElement): void {
     { passive: true },
   );
 }
-
-const pad2 = (n: number) => String(n).padStart(2, '0');
 
 /** `00` → the heading's own index, eased, on tabular digits (so the width never moves). */
 function countUp(el: HTMLElement, duration = 420): void {

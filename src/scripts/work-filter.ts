@@ -16,7 +16,8 @@
  *
  * Part of the motion-layer entry, so the chips work as soon as they show.
  */
-import { motionAllowed } from './motion';
+import { pad2 } from '../lib/format';
+import { motionAllowed, startTransition } from './motion';
 
 const PARAM = 'capability';
 const VT_CLASS = 'vt-filter';
@@ -48,37 +49,13 @@ function wire(bar: HTMLElement, list: HTMLElement): void {
     for (const row of rows) {
       if (row.dataset.revealState === 'pending' && matches(row, id)) delete row.dataset.revealState;
     }
-    if (readout) readout.textContent = String(count(id)).padStart(2, '0');
+    if (readout) readout.textContent = pad2(count(id));
   };
 
-  let running: ViewTransition | null = null;
-
-  /** The change itself: a reflow while motion is allowed, else at once. */
+  /** The change itself: a reflow while motion is allowed (and view transitions exist), else at
+      once. Another click mid-reflow starts a new one; the latest removes `vt-filter`. */
   const transition = (id: string) => {
-    if (!motionAllowed() || typeof document.startViewTransition !== 'function') {
-      apply(id);
-      return;
-    }
-    // The class goes on first: it must be in place when the old state is captured.
-    root.classList.add(VT_CLASS);
-    let vt: ViewTransition;
-    try {
-      vt = document.startViewTransition(() => apply(id));
-    } catch {
-      root.classList.remove(VT_CLASS);
-      apply(id);
-      return;
-    }
-    running = vt;
-    // Skipped (another click, a hidden tab): the update still ran; nothing to report.
-    vt.ready.catch(() => {});
-    vt.finished
-      .catch(() => {})
-      .finally(() => {
-        if (running !== vt) return;
-        running = null;
-        root.classList.remove(VT_CLASS);
-      });
+    if (!motionAllowed() || !startTransition(VT_CLASS, () => apply(id))) apply(id);
   };
 
   let announceTimer = 0;

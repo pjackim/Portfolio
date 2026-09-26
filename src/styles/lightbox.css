@@ -3,7 +3,9 @@
  * src/scripts/lightbox.ts, which imports this). Loaded with the case-study code after load +
  * idle, not with the page: nothing here is needed before the lightbox first opens (the closed
  * <dialog> is display: none by default), so none of it weighs on the case study's first paint.
+ * The targeting brackets are the card reticle's (bundled in from reticle.css).
  */
+@import './reticle.css';
 
 /* The dialog is the whole viewport: bar, stage (the image, as large as fits), caption. The
    page behind shows faintly through the backdrop. */
@@ -130,7 +132,10 @@
   cursor: zoom-out;
 }
 
+/* Targeting brackets around the image: the card reticle (`reticle`, reticle.css), locked on,
+   just outside the picture. */
 .lightbox__frame {
+  --reticle-inset: -0.625rem;
   position: relative;
   display: grid;
 }
@@ -153,42 +158,6 @@
 
 .lightbox__frame[data-mode='alpha'] img {
   background-color: var(--surface-2-l);
-}
-
-/* Targeting brackets around the image: the card reticle's, locked on. */
-.lightbox__frame::before,
-.lightbox__frame::after {
-  --arm: 14px;
-  --stroke: 1.5px;
-  content: '';
-  position: absolute;
-  inset: -0.625rem;
-  background-image:
-    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
-    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-size:
-    var(--arm) var(--stroke),
-    var(--stroke) var(--arm),
-    var(--arm) var(--stroke),
-    var(--stroke) var(--arm);
-  pointer-events: none;
-}
-
-.lightbox__frame::before {
-  background-position:
-    0 0,
-    0 0,
-    100% 100%,
-    100% 100%;
-}
-
-.lightbox__frame::after {
-  background-position:
-    100% 0,
-    100% 0,
-    0 100%,
-    0 100%;
 }
 
 @media (forced-colors: active) {

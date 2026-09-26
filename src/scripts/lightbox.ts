@@ -18,8 +18,9 @@
  * button on open and back to the figure's link on close (the image itself isn't focusable), and
  * <html> is scroll-locked (`lightbox-open`) while it's open.
  */
+import { pad2 } from '../lib/format';
 import stylesheet from '../styles/lightbox.css?url';
-import { motionAllowed } from './motion';
+import { motionAllowed, startTransition } from './motion';
 
 const root = document.documentElement;
 const NAME = 'lightbox-image';
@@ -31,8 +32,6 @@ interface Figure {
   link: HTMLAnchorElement;
   thumb: HTMLImageElement;
 }
-
-const pad2 = (n: number) => String(n).padStart(2, '0');
 
 function setName(el: HTMLElement): void {
   el.style.setProperty('view-transition-name', NAME);
@@ -67,7 +66,6 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
   /** The figure shown, while the dialog is open (or opening). */
   let current: Figure | null = null;
   let closing = false;
-  let running: ViewTransition | null = null;
 
   const canMorph = (thumb: HTMLImageElement) =>
     motionAllowed() &&
@@ -77,30 +75,10 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
     onScreen(thumb);
 
   /** Runs `update` as a view transition with `vt-lightbox` on; `after` once it's over, unless a
-      newer transition took over (whose own update clears what this one named). */
-  const morph = (update: () => void | Promise<void>, after: () => void): boolean => {
-    root.classList.add(VT_CLASS);
-    let vt: ViewTransition;
-    try {
-      vt = document.startViewTransition(update);
-    } catch {
-      root.classList.remove(VT_CLASS);
-      return false;
-    }
-    running = vt;
-    vt.ready.catch(() => {});
-    vt.finished
-      .catch(() => {})
-      .finally(() => {
-        // Superseded — Esc during the opening morph starts the closing one: that transition
-        // owns the names and the class now, and this cleanup would strip the name it needs.
-        if (running !== vt) return;
-        running = null;
-        after();
-        root.classList.remove(VT_CLASS);
-      });
-    return true;
-  };
+      newer transition took over — Esc during the opening morph starts the closing one, which
+      owns the names and the class then, and this cleanup would strip the name it needs. */
+  const morph = (update: () => void | Promise<void>, after: () => void): boolean =>
+    startTransition(VT_CLASS, update, after);
 
   const fill = (item: Figure) => {
     const n = Number(item.figure.dataset.figure) || 0;

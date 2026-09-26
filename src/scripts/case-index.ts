@@ -10,6 +10,8 @@
  * Nothing is current above the first section. The index only shows from 72rem, and the spy only
  * runs while it does.
  */
+import { fragmentTarget } from './fragment';
+
 const WIDE = '(width >= 72rem)';
 /** The reading line, as the share of the viewport below it (rootMargin bottom). */
 const BELOW_LINE = '-70%';
@@ -17,15 +19,7 @@ const BELOW_LINE = '-70%';
 function spy(nav: HTMLElement): void {
   const track = nav.querySelector<HTMLElement>('.case-index__track') ?? nav;
   const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
-  const targets = links.map((link) => {
-    let id = link.hash.slice(1);
-    try {
-      id = decodeURIComponent(id);
-    } catch {
-      // A malformed escape: look it up as written (as the browser does).
-    }
-    return document.getElementById(id);
-  });
+  const targets = links.map((link) => fragmentTarget(link.hash));
   const above = new Set<Element>();
   let current = -2;
   let observer: IntersectionObserver | null = null;

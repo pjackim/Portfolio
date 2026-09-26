@@ -1,0 +1,41 @@
+/*
+ * Targeting brackets (interactions spec §3, §4): four L-shaped accent corners around a box —
+ * the card reticle (ProjectCard.astro) and the lightbox's lock-on around the full-size image
+ * (lightbox.css). Each pseudo-element draws one diagonal pair (::before top-left + bottom-right,
+ * ::after top-right + bottom-left), so the pairs can land a beat apart. Put `reticle` on a
+ * positioned element; tune with --reticle-inset (from the element's edge; negative sits outside
+ * it), --reticle-arm and --reticle-stroke. Zero specificity (`:where`): the component's own rules
+ * add opacity, motion and halo on top.
+ */
+:where(.reticle)::before,
+:where(.reticle)::after {
+  content: '';
+  position: absolute;
+  inset: var(--reticle-inset, 0);
+  background-image:
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size:
+    var(--reticle-arm, 14px) var(--reticle-stroke, 1.5px),
+    var(--reticle-stroke, 1.5px) var(--reticle-arm, 14px),
+    var(--reticle-arm, 14px) var(--reticle-stroke, 1.5px),
+    var(--reticle-stroke, 1.5px) var(--reticle-arm, 14px);
+  pointer-events: none;
+}
+
+:where(.reticle)::before {
+  background-position:
+    0 0,
+    0 0,
+    100% 100%,
+    100% 100%;
+}
+
+:where(.reticle)::after {
+  background-position:
+    100% 0,
+    100% 0,
+    0 100%,
+    0 100%;
+}
