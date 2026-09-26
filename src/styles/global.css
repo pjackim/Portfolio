@@ -312,6 +312,43 @@ a {
   }
 }
 
+/* Theme switch as a circular reveal (interactions spec §3): src/scripts/theme.ts wraps the
+   scheme change in a same-document view transition, only while motion is allowed, with
+   `vt-theme` on <html> for its duration and --vt-x/--vt-y/--vt-r (the toggle's centre and the
+   distance to the farthest viewport corner) set through CSSOM. The new scheme grows out of the
+   toggle over the old one. Everything is scoped to `vt-theme`, so cross-document navigations
+   keep their own transitions. While it runs, nothing else is captured on its own (the header
+   and cover morph names would otherwise cross-fade above the wipe); `html:root` outranks the
+   components' scoped rules and the page-style `[data-style]` rules. */
+@media (prefers-reduced-motion: no-preference) {
+  html:root.vt-theme:not([data-motion='off']) * {
+    view-transition-name: none;
+  }
+
+  @keyframes vt-theme-reveal {
+    from {
+      clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0));
+    }
+
+    to {
+      clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 0));
+    }
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-old(root),
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(root) {
+    animation-name: none;
+    mix-blend-mode: normal;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(root) {
+    animation-name: vt-theme-reveal;
+    animation-duration: 480ms;
+    animation-timing-function: var(--ease-out);
+    animation-fill-mode: both;
+  }
+}
+
 /* Safety net — the only !important rules in the codebase — for the OS preference and for the
    Motion toggle alike. */
 @media (prefers-reduced-motion: reduce) {
