@@ -83,7 +83,7 @@ const gallery = data.media.filter((item) => item !== heroVideo);
         </section>
       )}
 
-      <div class:list={['case__prose', 'prose', data.featured && 'case__prose--standfirst']}>
+      <div class="case__prose prose">
         <slot />
       </div>
 
@@ -190,15 +190,6 @@ const gallery = data.media.filter((item) => item !== heroVideo);
     block-size: 0;
     margin-block-start: 0.775em;
     border-block-start: 1px solid var(--accent);
-  }
-
-  /* Featured case studies open with a one-line standfirst: it reads as a second lede. */
-  .case__prose--standfirst > :global(p:first-child) {
-    color: var(--text);
-    font-size: var(--step-1);
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: -0.01em;
   }
 
   /* Row gap only: on desktop this is a subgrid, and a column gap of its own would

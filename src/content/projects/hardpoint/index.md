@@ -34,8 +34,6 @@ media:
 legacyPaths: [html/Work/mordhaumod.html]
 ---
 
-A replicated Unreal Engine 4 game mode, commissioned by a competitive community and used in its tournaments.
-
 ## Problem
 
 Mordhau's developers were a small team with limited resources, so the game's competitive community hired me to build a Hardpoint game mode.

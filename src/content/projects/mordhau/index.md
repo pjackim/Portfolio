@@ -24,8 +24,6 @@ media:
 legacyPaths: [html/Work/mordhauhack.html]
 ---
 
-Patching a live Unreal Engine 4 game's memory through an injected DLL.
-
 ## Problem
 
 Mordhau's stock client leaves out options players wanted — above all a wider field of view, which proved very popular with users.

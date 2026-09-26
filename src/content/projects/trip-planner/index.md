@@ -51,8 +51,6 @@ media:
 legacyPaths: [html/Work/tripsite.html]
 ---
 
-A team-built React trip planner, developed under CMMI and built to work with any other team's back end.
-
 ## Problem
 
 In CSU's CS 314, teams worked on an existing codebase to build a trip-planning website, with Capability Maturity Model Integration (CMMI) governing the development process. The requirements went beyond features: every team's front end had to work with every other team's back end, and trip optimization had to handle any size trip in under a second.

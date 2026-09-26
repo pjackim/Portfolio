@@ -27,8 +27,6 @@ media:
 legacyPaths: [html/Work/aes.html]
 ---
 
-A recursive AES-256 encryptor for clipboard text, single files, or whole volumes — written at 15.
-
 Designing user interfaces first piqued my interest in programming, and by 15 I was writing software of my own. This program is one of my first substantial independent projects.
 
 ## What I built

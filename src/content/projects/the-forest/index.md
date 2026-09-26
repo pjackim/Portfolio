@@ -32,8 +32,6 @@ media:
 legacyPaths: [html/Work/foresthack.html]
 ---
 
-Mono injection into a Unity game — which became a curriculum I taught.
-
 ## Problem
 
 I wanted to learn the basics of game hacking, and The Forest, a Unity Engine game, became my test bed. It turned into one of my first sizeable independent programming projects.

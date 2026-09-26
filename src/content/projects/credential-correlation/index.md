@@ -43,8 +43,6 @@ media:
 legacyPaths: [html/Work/credential_correlation.html]
 ---
 
-Password checkers grade the password. This grades it against the username.
-
 ## Problem
 
 People often judge an account's security by checking how strong its password is, and a simple "password checker" search is the first trap for inexperienced users. I tested a password that simply repeated its username: one online checker rated it "Strong", and another estimated it would take a computer about 53 million years to crack. Tools like these grade the password in isolation, so they tell users that credentials like these are secure.
