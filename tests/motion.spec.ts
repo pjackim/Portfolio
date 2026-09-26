@@ -11,8 +11,9 @@
  *   drum turning once in place, from its own digit, never parked on 0 first; on a
  *   connection so slow the CSS failsafe has already shown the line, it isn't retyped.
  * - The toggle: stops everything live (canvas, typing), is keyboard operable, and persists
- *   across a reload; revealing it never shifts the layout (tablet widths, either motion
- *   state). The monogram caret blinks on the first page of a session only.
+ *   across a reload — and a navigation made after switching it off has no cross-document view
+ *   transition; revealing it never shifts the layout (tablet widths, either motion state). The
+ *   monogram caret blinks on the first page of a session only.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -25,6 +26,7 @@ declare global {
     __focusStates?: [string | null, number][];
     __shifts?: { value: number; sources: string[] }[];
     __rollStates?: (string | null)[];
+    __reveals?: ('none' | 'skipped' | 'ran')[];
   }
 }
 
@@ -431,6 +433,50 @@ test.describe('motion on', () => {
     await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
     await graphIs(page, 'running');
     expect(await page.evaluate(() => localStorage.getItem('motion'))).toBeNull();
+  });
+
+  test('switched off, the next page arrives without a cross-document transition', async ({
+    page,
+  }) => {
+    // What each page's reveal saw: no transition, one that was skipped, or one that ran.
+    await page.addInitScript(() => {
+      window.__reveals = [];
+      addEventListener('pagereveal', (event) => {
+        const vt = (event as Event & { viewTransition?: ViewTransition | null }).viewTransition;
+        if (!vt) {
+          window.__reveals!.push('none');
+          return;
+        }
+        vt.ready.then(
+          () => window.__reveals!.push('ran'),
+          () => window.__reveals!.push('skipped'),
+        );
+      });
+    });
+    await gotoRel(page, '');
+    // With motion on, a same-origin navigation runs one (where the browser has them at all).
+    await page.locator('.site-nav a', { hasText: 'Work' }).click();
+    await page.waitForURL(/\/work\/$/);
+    await page.waitForLoadState('load');
+    await page.waitForTimeout(600);
+    const supported = (await page.evaluate(() => window.__reveals)) ?? [];
+    test.skip(!supported.includes('ran'), 'no cross-document view transitions here');
+
+    // Switched off on this page, then away: the transition is skipped on both sides.
+    const chip = page.locator('footer [data-motion-toggle]');
+    await expect(chip).not.toBeHidden({ timeout: 10_000 });
+    await page.evaluate(() =>
+      document.querySelector<HTMLButtonElement>('footer [data-motion-toggle]')!.click(),
+    );
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+    await page.locator('.brand').click();
+    await page.waitForURL(/\/Portfolio\/$/);
+    await page.waitForLoadState('load');
+    await page.waitForTimeout(600);
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+    const reveals = (await page.evaluate(() => window.__reveals)) ?? [];
+    expect(reveals.length).toBe(1);
+    expect(['none', 'skipped']).toContain(reveals[0]);
   });
 
   test('switching motion off mid-sequence snaps the focus line', async ({ page }) => {

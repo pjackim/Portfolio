@@ -20,6 +20,8 @@
  *   frozen time under a UTC label — in the same space; the status dot pulses only while it ticks.
  * - A page loaded at a fragment lands on it at once; a same-page anchor click glides with motion
  *   on and jumps with it off, keeping the hash.
+ * - Without view transitions at all, the theme switch, the filter and the lightbox still work,
+ *   with no errors.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import AxeBuilder from '@axe-core/playwright';
@@ -623,6 +625,60 @@ test.describe('figure lightbox', () => {
       expect(response.status()).toBe(200);
       expect(response.headers()['content-type']).toMatch(/^image\/webp/);
     });
+  });
+});
+
+/**
+ * Without view transitions (older browsers; stubbed here), every change the motion layer would
+ * animate still happens, at once and without errors: the theme switch, the /work/ filter and
+ * the figure lightbox.
+ */
+test.describe('without view transitions', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  test('the theme, the filter and the lightbox all still work, with no errors', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      (document as { startViewTransition?: unknown }).startViewTransition = undefined;
+    });
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+    page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(`console.error: ${message.text()}`);
+    });
+    const html = page.locator('html');
+
+    await gotoRel(page, 'work/');
+    await filterReady(page);
+    expect(await page.evaluate(() => typeof document.startViewTransition)).toBe('undefined');
+    // The theme switches, instantly: no transition class, no scanline.
+    const before = await html.getAttribute('data-scheme');
+    await page.locator('header [data-theme-toggle]').click();
+    await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
+    await expect(html).not.toHaveClass(/\bvt-/);
+    await expect(page.locator('.theme-scan')).toHaveCount(0);
+    // The filter applies at once.
+    await chip(page, 'engines-systems').click();
+    await expect(chip(page, 'engines-systems')).toHaveAttribute('aria-pressed', 'true');
+    expect(await shown(page)).toEqual(await expected(page, 'engines-systems'));
+    await expect(html).not.toHaveClass(/\bvt-/);
+
+    // The lightbox opens and closes at once, focus going there and back.
+    await gotoRel(page, 'work/credential-correlation/');
+    await page.waitForLoadState('load');
+    const figure = page.locator('.figure[data-zoomable]').first();
+    await expect(figure).toBeAttached({ timeout: 10_000 });
+    await figure.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await figure.locator('img').click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole('button', { name: 'Close' })).toBeFocused();
+    await expect(html).not.toHaveClass(/\bvt-/);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(figure.locator('a[data-lightbox-trigger]')).toBeFocused();
+    expect(errors).toEqual([]);
   });
 });
 
