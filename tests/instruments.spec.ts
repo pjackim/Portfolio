@@ -24,7 +24,7 @@
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type Route } from '@playwright/test';
-import { twoFrames } from './helpers/motion.ts';
+import { interactionsLoaded, twoFrames } from './helpers/motion.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -33,6 +33,7 @@ declare global {
     __filterShifts?: number[];
     __capability?: (string | null)[];
     __vts?: ViewTransition[];
+    __decrypts?: number;
     __loadYs?: number[];
     __scrollYs?: number[];
   }
@@ -316,6 +317,36 @@ test.describe('/work/ filter, motion on', () => {
     );
     expect(rows.length).toBe((await expected(page, 'design-3d')).rows.length);
     for (const row of rows) expect(row, row.slug).toMatchObject({ state: null, opacity: '1' });
+  });
+
+  test('a group heading the reflow brings on screen arrives settled (no decrypt)', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.__decrypts = 0;
+      new MutationObserver((records) => {
+        for (const r of records) {
+          if ((r.target as Element).hasAttribute('data-decrypt')) window.__decrypts! += 1;
+        }
+      }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-decrypt'] });
+    });
+    await gotoRel(page, 'work/');
+    await page.waitForLoadState('load');
+    await filterReady(page);
+    await expect.poll(() => interactionsLoaded(page)).toBe(true);
+    const design = page.locator('.archive-group[data-group="design"] .section-heading');
+    // Below the fold: armed, its rule undrawn, waiting for its first arrival.
+    await expect(design).toHaveAttribute('data-rule', 'armed');
+    const before = await page.evaluate(() => window.__decrypts);
+    await chip(page, 'design-3d').click();
+    await expect(page.locator('html')).not.toHaveClass(/\bvt-filter\b/);
+    await twoFrames(page);
+    await expect(design).toBeInViewport();
+    await expect(design).not.toHaveAttribute('data-rule');
+    await expect(design.locator('.section-heading__rule')).toHaveCSS('scale', 'none');
+    await expect(design.locator('[data-count]')).toHaveText('03');
+    await expect(design.locator('.section-heading__decrypt')).toHaveCount(0);
+    expect(await page.evaluate(() => window.__decrypts)).toBe(before);
   });
 
   test('the bar appearing shifts nothing', async ({ page, browserName }) => {

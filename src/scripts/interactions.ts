@@ -108,7 +108,8 @@ function drawRule(heading: HTMLElement): void {
 
 /**
  * Each heading plays once, the first time it comes into view with motion allowed: the rule
- * draws (if armed), the index counts up, the label decrypts. One observer drives all three.
+ * draws (if armed), the index counts up, the label decrypts. One observer drives all three. A
+ * heading a /work/ filter change brings into view arrives settled: the reflow is its entrance.
  */
 function watchHeadings(headings: NodeListOf<HTMLElement>): void {
   const seen = new WeakSet<Element>();
@@ -126,7 +127,9 @@ function watchHeadings(headings: NodeListOf<HTMLElement>): void {
           continue;
         }
         observer.unobserve(heading);
-        if (!motionAllowed()) {
+        // Motion off, or arriving in a /work/ filter's reflow (a view transition, `vt-filter`
+        // on <html>, WorkFilter.astro): shown settled — the rule drawn, no count-up, no decrypt.
+        if (!motionAllowed() || document.documentElement.classList.contains('vt-filter')) {
           delete heading.dataset.rule;
           continue;
         }
