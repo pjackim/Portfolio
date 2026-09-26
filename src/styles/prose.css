@@ -60,18 +60,36 @@
   font-weight: 600;
 }
 
-/* Links in running text are always underlined (accent vs text is < 3:1). */
+/* Links in running text are always underlined (accent vs text is < 3:1). At rest the
+   underline is a softer tint of the link colour; hover (or keyboard focus) firms it up and
+   drops it a touch further from the text — eased, with motion (interactions spec §3). */
 .prose :where(a) {
   color: var(--accent);
   text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklch, currentColor 55%, transparent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
+}
+
+.prose :where(a):focus-visible {
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.3em;
 }
 
 @media (hover: hover) {
   .prose :where(a):hover {
     color: var(--accent-hover);
+    text-decoration-color: currentColor;
     text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion='off']) .prose :where(a) {
+    transition-property: color, text-decoration-color, text-underline-offset;
+    transition-duration: var(--dur-base);
+    transition-timing-function: var(--ease-out);
   }
 }
 

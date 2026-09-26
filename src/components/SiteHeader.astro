@@ -168,6 +168,35 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     background-color: var(--accent);
   }
 
+  /* Hover/focus underline (interactions spec §3): a segment on the same hairline, in the
+     link's own colour, grown from the centre (with motion; otherwise it just appears). The
+     current page keeps its accent mark instead. */
+  .site-nav a:not([aria-current])::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0.625rem;
+    inset-block-end: calc((2.75rem - var(--header-h)) / 2);
+    block-size: 1px;
+    background-color: var(--text-muted);
+    scale: 0 1;
+  }
+
+  .site-nav a:not([aria-current]):focus-visible::before {
+    scale: 1;
+  }
+
+  @media (hover: hover) {
+    .site-nav a:not([aria-current]):hover::before {
+      scale: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .site-nav a::before {
+      transition: scale var(--dur-base) var(--ease-out);
+    }
+  }
+
   /* Compact row for phones: fits monogram + wordmark + nav + toggle down to 360px with a
      clear break between the wordmark and the nav; below 360px the wordmark goes. */
   @media (width < 30rem) {
@@ -192,7 +221,8 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
       font-size: 0.8125rem;
     }
 
-    .site-nav a[aria-current]::after {
+    .site-nav a[aria-current]::after,
+    .site-nav a:not([aria-current])::before {
       inset-inline: 0.3125rem;
     }
   }
