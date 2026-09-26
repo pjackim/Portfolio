@@ -57,13 +57,15 @@ const BUCKETS = 9;
  * Resting presence per scheme: edge alpha × gain, and host size (CSS px). Hosts are drawn
  * opaque: on the dark ground a 2.4 px host has ~1.6× the ink of the 2 px, 0.9-alpha host it
  * replaces; the light scheme, where the greys already stand off the ground, gets a smaller bump.
+ * `cursor` is the pointer links' peak alpha: orange thinned over the dark ground reads as brown,
+ * so the dark scheme strokes them stronger (0.5 composites to ~2.7:1 on the bg, the light
+ * scheme's 0.38 to a pale peach).
  */
 const PRESENCE = {
-  dark: { gain: 1.5, node: 2.4 },
-  light: { gain: 1.15, node: 2 },
+  dark: { gain: 1.5, node: 2.4, cursor: 0.5 },
+  light: { gain: 1.15, node: 2, cursor: 0.38 },
 } as const;
 const CURSOR_BUCKETS = 4;
-const CURSOR_ALPHA = 0.38;
 /** Share of hosts drawn as hollow "asset" squares rather than plain points. */
 const ASSET_SHARE = 0.14;
 /**
@@ -655,7 +657,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
           any = true;
         }
         if (!any) continue;
-        ctx.globalAlpha = CURSOR_ALPHA * ((b + 1) / CURSOR_BUCKETS) * cursorAmt;
+        ctx.globalAlpha = presence.cursor * ((b + 1) / CURSOR_BUCKETS) * cursorAmt;
         ctx.stroke();
       }
     }
