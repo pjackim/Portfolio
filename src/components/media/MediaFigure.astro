@@ -71,7 +71,11 @@ const image =
           full: full?.src,
           fullWidth,
           fullHeight: Math.round((fullWidth * facts.height) / facts.width),
-          style: pageStyle(Astro.locals, { '--image-max': `${facts.width}px` }),
+          style: pageStyle(Astro.locals, {
+            '--image-max': `${facts.width}px`,
+            '--image-w': String(facts.width),
+            '--image-h': String(facts.height),
+          }),
         };
       })()
     : undefined;
@@ -165,7 +169,9 @@ const caption = item.caption;
   }
 
   /* Smaller than the column, or portrait: the whole image on a plate, at most its own size,
-     never taller than most of the viewport. */
+     never taller than most of the viewport. The box is computed from the image's own ratio
+     (--image-w / --image-h), not measured from the file, so the plate has its final height
+     before the lazy image arrives and nothing below it moves (Ruling G11). */
   .figure__frame[data-mode='panel'],
   .figure__frame[data-mode='alpha'] {
     padding: clamp(1rem, 5%, 2.5rem);
@@ -173,9 +179,9 @@ const caption = item.caption;
 
   .figure__frame[data-mode='panel'] :global(img),
   .figure__frame[data-mode='alpha'] :global(img) {
-    inline-size: auto;
-    max-inline-size: min(100%, var(--image-max));
-    max-block-size: min(80svh, 44rem);
+    inline-size: min(100%, var(--image-max), min(80svh, 44rem) * var(--image-w) / var(--image-h));
+    block-size: auto;
+    aspect-ratio: var(--image-w) / var(--image-h);
     object-fit: contain;
   }
 

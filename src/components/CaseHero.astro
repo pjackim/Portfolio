@@ -36,6 +36,8 @@ const style = video
       'view-transition-name': transitionName,
       '--cover-position': data.coverPosition ?? 'center',
       '--cover-max': `${facts.width}px`,
+      '--cover-w': String(facts.width),
+      '--cover-h': String(facts.height),
     });
 ---
 
@@ -107,18 +109,22 @@ const style = video
   }
 
   /* Small or portrait covers: the whole image on the plate, at most its own size. A shorter
-     plate on wide screens keeps a small cover from floating in a sea of panel. */
+     plate on wide screens keeps a small cover from floating in a sea of panel.
+     The picture's box is computed, not measured from the file (Ruling G11): the largest box of
+     the cover's own ratio (--cover-w / --cover-h) that fits the plate (a size container, so
+     its content box is known up front) and isn't wider than the cover. So it's final from the
+     first paint, and nothing moves when the file arrives. */
   .case-hero__frame[data-mode='panel'],
   .case-hero__frame[data-mode='alpha'] {
     padding: clamp(1rem, 4%, 2.5rem);
+    container-type: size;
   }
 
   .case-hero__frame[data-mode='panel'] :global(img),
   .case-hero__frame[data-mode='alpha'] :global(img) {
-    inline-size: auto;
+    inline-size: min(100cqi, var(--cover-max), 100cqb * var(--cover-w) / var(--cover-h));
     block-size: auto;
-    max-inline-size: min(100%, var(--cover-max));
-    max-block-size: 100%;
+    aspect-ratio: var(--cover-w) / var(--cover-h);
     object-fit: contain;
   }
 

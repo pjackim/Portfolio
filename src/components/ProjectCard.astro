@@ -61,6 +61,8 @@ const style = pageStyle(Astro.locals, {
   'view-transition-name': `cover-${id}`,
   '--cover-position': data.coverPosition ?? 'center',
   '--cover-max': `${facts.width}px`,
+  '--cover-w': String(facts.width),
+  '--cover-h': String(facts.height),
 });
 
 const href = withBase(`work/${id}/`);
@@ -177,16 +179,18 @@ const titleHead = words.join(' ');
     object-position: var(--cover-position);
   }
 
-  /* Small or portrait covers: whole image, centred on the panel, never past 1:1. */
+  /* Small or portrait covers: whole image, centred on the panel, never past 1:1. The picture's
+     box is computed from the cover's own ratio (--cover-w / --cover-h) and the panel (a size
+     container), not measured from the file: final from the first paint (Ruling G11). */
   .card__media[data-mode='panel'] {
     padding: clamp(1rem, 4%, 1.75rem);
+    container-type: size;
   }
 
   .card__media[data-mode='panel'] :global(img) {
-    inline-size: auto;
+    inline-size: min(100cqi, var(--cover-max), 100cqb * var(--cover-w) / var(--cover-h));
     block-size: auto;
-    max-inline-size: min(100%, var(--cover-max));
-    max-block-size: 100%;
+    aspect-ratio: var(--cover-w) / var(--cover-h);
     object-fit: contain;
     outline: var(--hairline);
   }
