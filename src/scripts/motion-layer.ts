@@ -1,16 +1,24 @@
 /**
  * The motion layer's one entry per page (interactions spec §1–§3), loaded by MotionLayer.astro
- * (Astro emits it once per page however many components render that). It wires every Motion
- * toggle chip straight away and, on a page with the hero, fetches the hero instrument's code only
- * once the page has loaded and painted — everything in it starts after load + idle anyway (spec
- * §0.1), so it never competes with first paint or LCP.
+ * (Astro emits it once per page however many components render that; MotionToggle and
+ * ProjectGrid do). It wires every Motion toggle chip straight away, then — once the page
+ * has loaded and painted, when idle — fetches the code for whatever the page has: the hero
+ * instrument, and the card spotlight. Everything in those starts after
+ * load + idle anyway (spec §0.1), so the requests never compete with first paint or LCP.
  */
 import { afterLoadIdle } from './motion';
 import './motion-toggle';
 
-// After load, after the next paint, when idle — only then fetch the hero instrument, so its
-// request never joins the first paint's (on a fast connection `load` can precede it).
-if (document.querySelector('[data-hero]')) {
-  const fetchHero = () => afterLoadIdle(() => void import('./hero'), 300);
-  afterLoadIdle(() => requestAnimationFrame(fetchHero), 300);
+const hasHero = document.querySelector('[data-hero]') !== null;
+const hasInteractions = document.querySelector('[data-spotlight]') !== null;
+
+// After load, after the next paint, when idle — only then fetch, so these requests never join
+// the first paint's (on a fast connection `load` can precede it).
+if (hasHero || hasInteractions) {
+  const fetchLayer = () =>
+    afterLoadIdle(() => {
+      if (hasHero) void import('./hero');
+      if (hasInteractions) void import('./interactions');
+    }, 300);
+  afterLoadIdle(() => requestAnimationFrame(fetchLayer), 300);
 }

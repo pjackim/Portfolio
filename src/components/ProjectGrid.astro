@@ -3,9 +3,12 @@
  * Featured work grid (spec-design-content §2): an ordered list of ProjectCards, two columns
  * from 800px. An odd last card spans both columns in a horizontal layout (see ProjectCard),
  * so any count looks intentional. Cards are numbered by rendered position; the first cover
- * loads eagerly, and cards below the first row reveal on scroll.
+ * loads eagerly, and cards below the first row reveal on scroll — the second column a beat
+ * after the first (`--i`). The list is the spotlight's delegation root (`data-spotlight`,
+ * src/scripts/interactions.ts via the motion layer).
  */
 import type { CollectionEntry } from 'astro:content';
+import MotionLayer from './MotionLayer.astro';
 import ProjectCard from './ProjectCard.astro';
 
 interface Props {
@@ -16,7 +19,7 @@ interface Props {
 const { projects, class: className } = Astro.props;
 ---
 
-<ol class:list={['project-grid', className]} role="list">
+<ol class:list={['project-grid', className]} role="list" data-spotlight>
   {projects.map((project, i) => (
     <ProjectCard
       project={project}
@@ -27,6 +30,7 @@ const { projects, class: className } = Astro.props;
     />
   ))}
 </ol>
+<MotionLayer />
 
 <style>
   /* No row gap: cards subgrid the rows (see ProjectCard), and a parent row gap would leak
@@ -54,6 +58,11 @@ const { projects, class: className } = Astro.props;
 
     .project-grid > :global(.card:nth-child(n + 3)) {
       margin-block-start: var(--space-xl);
+    }
+
+    /* Reveal stagger: the right-hand card of a row lands a beat after the left. */
+    .project-grid > :global(.card:nth-child(even)) {
+      --i: 1;
     }
   }
 </style>
