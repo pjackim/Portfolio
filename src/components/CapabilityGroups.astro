@@ -4,6 +4,10 @@
  * "Seen in" links to the projects that show the evidence. 3 × 2 on desktop, 2 × 3 on tablets,
  * one column on phones. Project titles come from the collection; an unknown slug fails the
  * build (as does `validateProjects`).
+ *
+ * Scroll reveal (interactions spec §3): each box's contents wipe in on the box's own timeline
+ * (`data-reveal="contents"`, global.css) — never the box itself, whose opaque background is what
+ * draws the hairlines. A row lands left to right (`--i`).
  */
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { getProjects } from '../lib/projects';
@@ -30,7 +34,7 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
 
 <ul class:list={['capabilities', className]} role="list" aria-label="Capabilities">
   {groups.map(({ label, items, seenIn }) => (
-    <li class="capability">
+    <li class="capability" data-reveal="contents">
       <h3 class="capability__label mono-label">{label}</h3>
       <ul class="capability__items" role="list">
         {items.map((item) => (
@@ -69,9 +73,13 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     overflow: hidden;
   }
 
-  @media (width >= 40rem) {
+  @media (40rem <= width < 64rem) {
     .capabilities {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .capability:nth-child(even) {
+      --i: 1;
     }
   }
 
@@ -79,11 +87,20 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     .capabilities {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
+    .capability:nth-child(3n + 2) {
+      --i: 1;
+    }
+
+    .capability:nth-child(3n) {
+      --i: 2;
+    }
   }
 
   /* Each box subgrids three rows (label, items, "Seen in"), so labels that wrap to two
      lines don't push one box's items out of line with its neighbours'. */
   .capability {
+    --reveal-span: 40%;
     display: grid;
     grid-row: span 3;
     grid-template-rows: auto 1fr auto;

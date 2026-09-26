@@ -262,25 +262,52 @@ a {
   animation-timing-function: var(--ease-out);
 }
 
-/* Scroll reveals, below the fold only (cards after the first row, section headings). */
+/* Scroll reveals (interactions spec §3), below the fold only: cards after the first row,
+   capability boxes, archive rows, case-study figures. A clip-path wipe up from the bottom 12%,
+   with a fade and a 12px rise, scrubbed by the element's own entry into the viewport — so
+   whatever is on screen when scrolling stops is (nearly) settled. `--i` (from :nth-child rules
+   where items share a row) moves an item's range later, so a row lands left to right; items in
+   one column are staggered by the layout itself. `--reveal-span`: how much of the entry range
+   the wipe takes. `data-reveal="contents"` reveals the element's children on its timeline
+   instead of the element itself (for boxes whose background must never go see-through, like
+   the capability grid, whose hairlines are its background showing through gaps).
+   Decorative, so no fallback: without scroll-driven animations everything is simply there. */
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: view()) and (animation-range: entry)) {
     @keyframes reveal {
       from {
         opacity: 0;
         translate: 0 12px;
+        clip-path: inset(0 0 12% 0);
+      }
+
+      to {
+        opacity: 1;
+        translate: 0 0;
+        clip-path: inset(0);
       }
     }
 
-    /* = `animation: reveal linear backwards` + timeline/range, written as longhands: the
-       minifier (Lightning CSS) folds a separate animation-timeline into the shorthand,
-       which browsers reject, dropping the whole declaration. */
-    :root:not([data-motion='off']) [data-reveal] {
+    /* = `animation: reveal var(--ease-out) backwards` + timeline/range, written as longhands:
+       the minifier (Lightning CSS) folds a separate animation-timeline into the shorthand,
+       which browsers reject, dropping the whole declaration (Ruling R22). */
+    :root:not([data-motion='off']) [data-reveal],
+    :root:not([data-motion='off']) [data-reveal='contents'] > * {
       animation-name: reveal;
-      animation-timing-function: linear;
+      animation-timing-function: var(--ease-out);
       animation-fill-mode: backwards;
       animation-timeline: view();
-      animation-range: entry 0% entry 40%;
+      animation-range-start: entry calc(var(--i, 0) * 10%);
+      animation-range-end: entry calc(var(--reveal-span, 45%) + var(--i, 0) * 10%);
+    }
+
+    :root:not([data-motion='off']) [data-reveal='contents'] {
+      animation-name: none;
+      view-timeline-name: --reveal;
+    }
+
+    :root:not([data-motion='off']) [data-reveal='contents'] > * {
+      animation-timeline: --reveal;
     }
   }
 }
