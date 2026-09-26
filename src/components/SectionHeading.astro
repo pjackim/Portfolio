@@ -107,6 +107,14 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
     color: var(--text);
   }
 
+  /* Forced colours override `transparent` with the system text colour, so the real h2 stays
+     visible there — and the layer, which would print over it, goes. */
+  @media (forced-colors: active) {
+    .section-heading__title :global(.section-heading__decrypt) {
+      display: none;
+    }
+  }
+
   /* The hairline runs from the label to the action (or to the container edge). */
   .section-heading__rule {
     flex: 1 1 var(--space-l);

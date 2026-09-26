@@ -337,6 +337,15 @@ test.describe('section headings, motion on', () => {
     expect(await first.getAttribute('data-rule')).toBeNull();
     await expect(first.locator('.section-heading__rule')).toHaveCSS('scale', 'none');
   });
+
+  test('forced colours: the decrypt layer never prints over the real heading', async ({ page }) => {
+    await page.emulateMedia({ forcedColors: 'active' });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoRel(page, 'work/');
+    const layer = page.locator('.section-heading__decrypt').first();
+    await layer.waitFor({ state: 'attached', timeout: 10_000 });
+    expect(await layer.evaluate((el) => getComputedStyle(el).display)).toBe('none');
+  });
 });
 
 for (const [name, setup] of [
