@@ -12,12 +12,15 @@
  * slot's inline end (pass a class to override). With scripting off the slot collapses.
  */
 import MotionLayer from './MotionLayer.astro';
+import MotionLayerDeferred from './MotionLayerDeferred.astro';
 
 interface Props {
   class?: string;
+  /** Load the motion layer only after `load` (MotionLayerDeferred): for a chip that can wait. */
+  deferLayer?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, deferLayer = false } = Astro.props;
 ---
 
 <span class:list={['motion-toggle-slot', className]}>
@@ -46,7 +49,7 @@ const { class: className } = Astro.props;
 </span>
 
 <!-- Wired by the motion layer, one module per page whatever renders it (src/scripts/motion-toggle.ts). -->
-<MotionLayer />
+{deferLayer ? <MotionLayerDeferred /> : <MotionLayer />}
 
 <style>
   .motion-toggle-slot {

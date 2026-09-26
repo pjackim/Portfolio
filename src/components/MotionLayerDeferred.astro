@@ -1,0 +1,36 @@
+---
+/**
+ * The motion layer (MotionLayer), loaded only once the page has loaded, painted and gone idle —
+ * for components whose scripting can wait (the footer's Motion chip and status clock), so that on
+ * a page where nothing else needs the layer early (a case study) its request never joins the ones
+ * the first paint and the LCP image wait on (spec §0.1). The entry's `<script>` sits in a
+ * `<template>`, inert — neither fetched nor run — until the inline loader below moves it into the
+ * page. Where the page loads the layer up front anyway (home, /work/), moving it in again is a
+ * no-op: a module runs once per page, and it is already fetched.
+ */
+import MotionLayer from './MotionLayer.astro';
+---
+
+<template data-motion-layer>
+  <MotionLayer />
+</template>
+
+<script>
+  // Import-free, so Astro inlines it (no request of its own). After load, the next frame and
+  // idle: the same wait the motion layer itself uses before fetching the rest of its code.
+  export {};
+  const load = () => {
+    for (const template of document.querySelectorAll<HTMLTemplateElement>(
+      'template[data-motion-layer]',
+    )) {
+      template.replaceWith(template.content.cloneNode(true));
+    }
+  };
+  const idle = () => {
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(load, { timeout: 300 });
+    else setTimeout(load, 1);
+  };
+  const afterLoad = () => requestAnimationFrame(idle);
+  if (document.readyState === 'complete') afterLoad();
+  else addEventListener('load', afterLoad, { once: true });
+</script>

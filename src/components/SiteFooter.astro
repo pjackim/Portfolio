@@ -1,33 +1,96 @@
 ---
-/** Site footer (spec-design-content §2, §3): copyright, build credit, source link. */
+/**
+ * Site footer (spec-design-content §2, §3): a status line, then copyright, build credit and
+ * source link.
+ *
+ * Status line (interactions spec §4): a mono readout, `SYS ● NOMINAL · UTC 14:02:37 · BUILD
+ * a1b2c3d · 2026-09-26`, plus the Motion toggle chip. The commit and date are taken at build
+ * time (src/lib/build-info.ts). The clock is server-rendered as the build time (UTC), which is
+ * what it shows without JS or with motion off; src/scripts/footer-clock.ts (through the motion
+ * layer this component's MotionToggle loads) makes it tick once a second while motion is
+ * allowed, the footer is on screen and the page is visible — and the status dot pulses only
+ * while it does. The whole visual readout is `aria-hidden`: screen readers get "Build a1b2c3d,
+ * September 26, 2026" instead. Mono tabular digits, so the ticking never changes a width.
+ */
 import { site } from '../data/site';
+import { build } from '../lib/build-info';
 import Arrow from './Arrow.astro';
+import MotionToggle from './MotionToggle.astro';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <p class="mono-label">
-      © {year} {site.name}
-    </p>
-    <p class="mono-label">
-      Built with Astro <span aria-hidden="true">·</span>
-      <a class="source-link" href={site.sourceRepo}>
-        Source
-        <Arrow dir="up-right" />
-      </a>
-    </p>
+    <div class="site-footer__status">
+      <p class="status-line mono-label" data-clock data-state="static">
+        <span class="visually-hidden" set:text={`Build ${build.sha}, ${build.dateLong}`} />
+        <span class="status-line__visual" aria-hidden="true">
+          <span class="status-line__cell">
+            SYS <span class="status-line__dot"></span>
+            <span class="status-line__value">Nominal</span>
+          </span>
+          <span class="status-line__sep">·</span>
+          <span class="status-line__cell">
+            UTC <span class="status-line__value" data-clock-time set:text={build.time} />
+          </span>
+          <span class="status-line__sep">·</span>
+          <span class="status-line__cell">
+            Build <span class="status-line__value status-line__sha">{build.sha}</span>
+          </span>
+          <span class="status-line__sep">·</span>
+          <span class="status-line__cell status-line__value">{build.date}</span>
+        </span>
+      </p>
+      <MotionToggle class="site-footer__motion" deferLayer />
+    </div>
+    <div class="site-footer__meta">
+      <p class="mono-label">
+        © {year}
+        {site.name}
+      </p>
+      <p class="mono-label">
+        Built with Astro <span aria-hidden="true">·</span>
+        <a class="source-link" href={site.sourceRepo}>
+          Source
+          <Arrow dir="up-right" />
+        </a>
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    padding-block: var(--space-l);
+    padding-block: var(--space-m) var(--space-l);
     border-block-start: var(--hairline);
   }
 
+  .site-footer__inner {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  /* Status readout and Motion chip on one line, the chip at the end; the readout wraps cell by
+     cell on narrow screens, and the chip drops below it rather than squeezing it. */
+  .site-footer__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-l);
+    padding-block-end: var(--space-s);
+    border-block-end: var(--hairline);
+  }
+
   /* Two readouts, left and right; they stack cleanly on narrow screens. */
+  .site-footer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-l);
+  }
+
   /* inline-flex: the underline stays on the word; the arrow centres on the caps. */
   .source-link {
     display: inline-flex;
@@ -35,10 +98,101 @@ const year = new Date().getFullYear();
     gap: 0.3em;
   }
 
-  .site-footer__inner {
+  .status-line__visual {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-2xs) var(--space-l);
+    align-items: baseline;
+    column-gap: 0.75em;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .status-line__cell {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    white-space: nowrap;
+  }
+
+  .status-line__value {
+    color: var(--text-muted);
+  }
+
+  /* A commit hash reads as git prints it. */
+  .status-line__sha {
+    text-transform: none;
+  }
+
+  /* Tabular mono digits: the clock never changes width as it ticks. */
+  [data-clock-time] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-line__sep {
+    color: var(--line-ui);
+  }
+
+  /* Phones: the readout wraps into two lines of cells, spaced rather than dotted (a dot would
+     dangle at a line end), and the Motion chip takes the next line from the start. */
+  @media (width < 40rem) {
+    .status-line__visual {
+      column-gap: 1.25rem;
+    }
+
+    .status-line__sep {
+      display: none;
+    }
+
+    .site-footer__status > :global(.site-footer__motion) {
+      justify-items: start;
+    }
+  }
+
+  /* Status LED (drawn: ● isn't in the Geist Mono subset). Solid accent: nominal. While the
+     clock ticks, a ring breathes out of it (below, behind the motion gate). */
+  .status-line__dot {
+    position: relative;
+    align-self: center;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .status-line__dot::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  @media (forced-colors: active) {
+    .status-line__dot {
+      background-color: CanvasText;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes status-pulse {
+      0% {
+        opacity: 0.7;
+        scale: 1;
+      }
+
+      70%,
+      100% {
+        opacity: 0;
+        scale: 2.6;
+      }
+    }
+
+    :global(:root:not([data-motion='off'])) [data-state='live'] .status-line__dot::after {
+      animation-name: status-pulse;
+      animation-duration: 2.4s;
+      animation-timing-function: var(--ease-out);
+      animation-iteration-count: infinite;
+    }
   }
 </style>
