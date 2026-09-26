@@ -88,16 +88,51 @@ function decrypt(title: HTMLElement): void {
   });
 }
 
-/** Each heading plays once, the first time it comes into view with motion allowed. */
+/**
+ * The rule draws out from the label (a timed CSS animation, SectionHeading.astro). Only a heading
+ * that was below the fold when this arrived was armed — its rule hidden, unseen — so a rule the
+ * reader has already seen never blinks out to redraw.
+ */
+function drawRule(heading: HTMLElement): void {
+  const rule = heading.querySelector<HTMLElement>('.section-heading__rule');
+  if (!rule) return;
+  const done = () => {
+    rule.removeEventListener('animationend', done);
+    rule.removeEventListener('animationcancel', done);
+    delete heading.dataset.rule;
+  };
+  rule.addEventListener('animationend', done);
+  rule.addEventListener('animationcancel', done);
+  heading.dataset.rule = 'draw';
+}
+
+/**
+ * Each heading plays once, the first time it comes into view with motion allowed: the rule
+ * draws (if armed), the index counts up, the label decrypts. One observer drives all three.
+ */
 function watchHeadings(headings: NodeListOf<HTMLElement>): void {
+  const seen = new WeakSet<Element>();
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        observer.unobserve(entry.target);
-        if (!motionAllowed()) continue;
-        const title = entry.target.querySelector<HTMLElement>('.section-heading__title');
-        const index = entry.target.querySelector<HTMLElement>('[data-count]');
+        const heading = entry.target as HTMLElement;
+        const first = !seen.has(heading);
+        seen.add(heading);
+        if (!entry.isIntersecting) {
+          // Entirely below the viewport: arm the rule, out of sight, to draw on arrival.
+          if (first && motionAllowed() && entry.boundingClientRect.top >= innerHeight) {
+            heading.dataset.rule = 'armed';
+          }
+          continue;
+        }
+        observer.unobserve(heading);
+        if (!motionAllowed()) {
+          delete heading.dataset.rule;
+          continue;
+        }
+        const title = heading.querySelector<HTMLElement>('.section-heading__title');
+        const index = heading.querySelector<HTMLElement>('[data-count]');
+        if (heading.dataset.rule === 'armed') drawRule(heading);
         if (title) decrypt(title);
         if (index) countUp(index);
       }
@@ -106,6 +141,11 @@ function watchHeadings(headings: NodeListOf<HTMLElement>): void {
     { rootMargin: '0px 0px -12% 0px' },
   );
   for (const heading of headings) observer.observe(heading);
+  // Motion switched off: every armed rule is simply drawn.
+  onMotionChange((allowed) => {
+    if (allowed) return;
+    for (const heading of headings) delete heading.dataset.rule;
+  });
 }
 
 /**

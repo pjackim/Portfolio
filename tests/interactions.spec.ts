@@ -250,17 +250,25 @@ test.describe('archive rows, wrapped titles', () => {
 test.describe('section headings, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
-  test('the label decrypts once over the real text; the index counts up', async ({ page }) => {
+  test('arrives once: the rule draws, the index counts up, the label decrypts', async ({
+    page,
+  }) => {
     await page.addInitScript(() => {
       window.__decrypt = [];
       window.__count = [];
+      window.__rule = [];
       document.addEventListener('DOMContentLoaded', () => {
-        const title = document.querySelector('#about-title');
-        const count = document.querySelector('#about [data-count]');
+        const heading = document.querySelector('#about .section-heading')!;
+        const title = document.querySelector('#about-title')!;
+        const count = document.querySelector('#about [data-count]')!;
         new MutationObserver(() =>
-          window.__decrypt!.push(title!.getAttribute('data-decrypt')),
-        ).observe(title!, { attributes: true, attributeFilter: ['data-decrypt'] });
-        new MutationObserver(() => window.__count!.push(count!.textContent ?? '')).observe(count!, {
+          window.__decrypt!.push(title.getAttribute('data-decrypt')),
+        ).observe(title, { attributes: true, attributeFilter: ['data-decrypt'] });
+        new MutationObserver(() => window.__rule!.push(heading.getAttribute('data-rule'))).observe(
+          heading,
+          { attributes: true, attributeFilter: ['data-rule'] },
+        );
+        new MutationObserver(() => window.__count!.push(count.textContent ?? '')).observe(count, {
           childList: true,
           characterData: true,
           subtree: true,
@@ -270,13 +278,18 @@ test.describe('section headings, motion on', () => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
     const section = page.locator('#about');
+    const rule = page.locator('#about .section-heading__rule');
     await expect(section).toHaveAccessibleName('About');
-    // The motion layer arrives after load + idle; bring the heading in once it has.
+    // The heading code arrives after load + idle; below the fold, it arms the rule unseen.
     await expect.poll(() => interactionsLoaded(page)).toBe(true);
+    await expect(page.locator('#about .section-heading')).toHaveAttribute('data-rule', 'armed');
+    await expect(rule).toHaveCSS('scale', '0 1');
     await scrollIntoView(page, '#about .section-heading', 'center');
     await expect
       .poll(() => page.evaluate(() => window.__decrypt), { timeout: 5000 })
       .toEqual(['', null]);
+    await expect.poll(() => page.evaluate(() => window.__rule)).toEqual(['armed', 'draw', null]);
+    await expect(rule).toHaveCSS('scale', 'none');
     const title = page.locator('#about-title');
     await expect(title).toHaveText('About');
     await expect(title.locator('.section-heading__decrypt')).toHaveCount(0);
@@ -284,11 +297,32 @@ test.describe('section headings, motion on', () => {
     const counts = (await page.evaluate(() => window.__count)) ?? [];
     expect(counts[0]).toBe('00');
     expect(counts.at(-1)).toBe('02');
-    // First time only: scrolling away and back doesn't replay it.
+    // Once only: scrolling away and back replays nothing.
     await scrollIntoView(page, 'footer', 'end');
     await scrollIntoView(page, '#about .section-heading', 'center');
-    await page.waitForTimeout(400);
+    await twoFrames(page);
+    await twoFrames(page);
     expect(await page.evaluate(() => window.__decrypt)).toEqual(['', null]);
+    expect(await page.evaluate(() => window.__rule)).toEqual(['armed', 'draw', null]);
+  });
+
+  test('a heading on screen as the code arrives keeps its rule (no redraw)', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.addInitScript(() => {
+      window.__rule = [];
+      new MutationObserver((records) => {
+        for (const r of records)
+          window.__rule!.push((r.target as Element).getAttribute('data-rule'));
+      }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-rule'] });
+    });
+    await gotoRel(page, 'work/');
+    await expect.poll(() => interactionsLoaded(page)).toBe(true);
+    // /work/'s first group heading is on screen at load: it decrypts, but its rule never hides.
+    const first = page.locator('.section-heading').first();
+    await expect(first.locator('.section-heading__decrypt')).toHaveCount(0, { timeout: 5000 });
+    await twoFrames(page);
+    expect(await first.getAttribute('data-rule')).toBeNull();
+    await expect(first.locator('.section-heading__rule')).toHaveCSS('scale', 'none');
   });
 });
 

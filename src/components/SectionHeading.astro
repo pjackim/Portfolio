@@ -6,10 +6,12 @@
  * `aria-labelledby` points at. The action's trailing arrow is drawn by the component — a
  * trailing → in `action.text` is dropped (the Latin Geist subset has no → glyph).
  *
- * Entering view (interactions spec §3, all behind the motion gate): the hairline draws left to
- * right on a scroll timeline (CSS only), and — the first time — the index counts up from 00 and
- * the label decrypts (src/scripts/interactions.ts). The decrypt plays on an `aria-hidden` layer
- * laid over the h2, so the heading's text and accessible name never change.
+ * Entering view the first time (interactions spec §3, all behind the motion gate; driven by one
+ * IntersectionObserver in src/scripts/interactions.ts): the hairline draws out from the label,
+ * the index counts up from 00 and the label decrypts. The decrypt plays on an `aria-hidden`
+ * layer laid over the h2, so the heading's text and accessible name never change. Only a
+ * heading that was below the fold when the script arrived draws its rule (it was hidden, unseen,
+ * until then); one already on screen keeps it.
  */
 import Arrow from './Arrow.astro';
 import MotionLayer from './MotionLayer.astro';
@@ -151,25 +153,32 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
         translate: 2px 0;
       }
     }
+  }
 
-    /* The rule draws from the label outward while it rises through the bottom third of the
-       viewport — scrubbed by scroll, so it is always fully drawn by the time it's read. Longhands
-       only (Ruling R22). */
-    @supports ((animation-timeline: view()) and (animation-range: entry)) {
-      @keyframes section-rule-draw {
-        from {
-          scale: 0 1;
-        }
+  /* The rule draw (src/scripts/interactions.ts): an armed rule — below the fold when the script
+     arrived — waits undrawn; on arrival it draws out from the label once, and the state goes.
+     Screen only, so print always shows the rule. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @keyframes section-rule-draw {
+      from {
+        scale: 0 1;
       }
+    }
 
-      :global(:root:not([data-motion='off'])) .section-heading__rule {
-        transform-origin: 0 50%;
-        animation-name: section-rule-draw;
-        animation-timing-function: var(--ease-out);
-        animation-fill-mode: backwards;
-        animation-timeline: view();
-        animation-range: cover 0% cover 32%;
-      }
+    :global(:root:not([data-motion='off']))
+      .section-heading[data-rule='armed']
+      .section-heading__rule {
+      scale: 0 1;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .section-heading[data-rule='draw']
+      .section-heading__rule {
+      transform-origin: 0 50%;
+      animation-name: section-rule-draw;
+      animation-duration: 700ms;
+      animation-timing-function: var(--ease-out);
+      animation-fill-mode: backwards;
     }
   }
 </style>
