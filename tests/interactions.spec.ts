@@ -603,6 +603,28 @@ test.describe('entrance reveals, motion on', () => {
     expect(await page.evaluate(() => (window as Window & { __played?: number }).__played)).toBe(1);
   });
 
+  test('an item taller than the screen still plays as it comes in', async ({ page }) => {
+    // Many screens tall: at most a sliver of it is ever on screen, far under 15% of it.
+    await page.addInitScript(() => {
+      document.addEventListener('DOMContentLoaded', () => {
+        document
+          .querySelector<HTMLElement>('#earlier-work .archive-row')!
+          .style.setProperty('min-height', '9000px');
+      });
+    });
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    const target = page.locator('#earlier-work .archive-row').first();
+    await expect(target).toHaveAttribute('data-reveal-state', 'pending');
+    // Its top a third of the way up the screen: it covers the lower third, ~3% of itself.
+    await target.evaluate((el) => {
+      const top = el.getBoundingClientRect().top + scrollY;
+      scrollTo({ top: top - innerHeight * (2 / 3), behavior: 'instant' });
+    });
+    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(target).toHaveCSS('opacity', '1');
+  });
+
   test('switching motion off shows everything still waiting', async ({ page }) => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');

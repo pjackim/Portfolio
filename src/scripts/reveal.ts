@@ -1,7 +1,10 @@
 /**
  * One-shot entrance reveals (interactions spec §3; Ruling G6), in the spirit of the 2021 site's
- * WOW.js: an item below the fold waits hidden and, once ~15% of it is on screen, plays its
- * entrance once (a timed CSS animation, global.css) and is left alone for good.
+ * WOW.js: an item below the fold waits hidden and, once its top edge is a tenth of the viewport
+ * into view (WOW's offset), plays its entrance once (a timed CSS animation, global.css) and is
+ * left alone for good. Measured against the viewport, not the item, so an item of any height —
+ * even one many screens tall, which could never show 15% of itself at once — plays as it comes
+ * in.
  *
  * Visible by default. Nothing is ever hidden before this runs, and it only ever hides items
  * that are entirely below the viewport at that moment — so no-JS, motion-off and reduced-motion
@@ -23,8 +26,9 @@ const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const allowed = () => !reduce.matches && root.dataset.motion !== 'off';
 const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
-/** Share of an item that must be on screen before it plays. */
-const TRIGGER = 0.15;
+/** An item plays once it crosses a line this far above the viewport's bottom edge (or enters
+    from the top). */
+const TRIGGER_MARGIN = '0px 0px -10% 0px';
 
 const show = (el: HTMLElement) => {
   delete el.dataset.revealState;
@@ -75,17 +79,16 @@ function start(): void {
           observer.unobserve(el);
           continue;
         }
+        // In the band: from below, its top has crossed the trigger line; from above (the reader
+        // scrolled back up past it), it has just come in at the top edge — so no hidden slice
+        // ever sits there.
         if (!entry.isIntersecting) continue;
-        // Coming in from above (the reader scrolled back up past it) plays at once, so no
-        // hidden slice ever sits at the top edge; from below, once enough of it is in view.
-        const fromAbove = entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0);
-        if (entry.intersectionRatio < TRIGGER && !fromAbove) continue;
         observer.unobserve(el);
         if (allowed()) play(el);
         else show(el);
       }
     },
-    { threshold: [0, TRIGGER] },
+    { rootMargin: TRIGGER_MARGIN, threshold: 0 },
   );
   for (const el of items) observer.observe(el);
 

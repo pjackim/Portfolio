@@ -272,7 +272,8 @@ a {
 /* One-shot entrance reveals (interactions spec §3; Ruling G6), below the fold only: cards
    after the first row, capability boxes, archive rows, case-study figures. src/scripts/reveal.ts
    marks items that are entirely below the viewport once the page has loaded `pending`, and
-   `in` once ~15% of one is on screen; it plays once, then the state is dropped. Visible by
+   `in` once one's top edge is a tenth of the viewport into view (any height of item); it plays
+   once, then the state is dropped. Visible by
    default: without the script, with motion off, in print, the states never apply.
    The entrance: a clip-path wipe up from the bottom 12%, a fade and a 12px rise. It ends where
    the item already is (fill `backwards` only), so no inset(0) clip outlives it to cut off a hover
