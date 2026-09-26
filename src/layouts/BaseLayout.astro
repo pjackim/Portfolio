@@ -1,11 +1,11 @@
 ---
 /**
  * Document shell for every page (spec-design-content §3, §7): head meta + SEO, the blocking
- * theme bootstrap, self-hosted fonts, global styles; skip link, header, main, footer.
+ * theme/motion bootstrap, self-hosted fonts, global styles; skip link, header, main, footer.
  * Pages add head-only tags (e.g. `<link rel="expect">`) through `<slot name="head" />`.
  *
  * Content-Security-Policy (spec-architecture §6): Astro hashes what it bundles and inlines; the
- * hand-inlined elements here — theme bootstrap, page style block, JSON-LD — are hashed into the
+ * hand-inlined elements here — the bootstrap, page style block, JSON-LD — are hashed into the
  * policy below. Astro writes the policy `<meta>` near the end of the head; the inline elements
  * before it are hashed too, so the same policy would also hold if sent as a header.
  * The page body is rendered first, so every `pageStyle()` rule its components register
@@ -34,21 +34,32 @@ interface Props {
 
 const { title, description, ogImage, ogType, noindex, jsonLd } = Astro.props;
 
-/** Applies a pinned colour scheme before first paint (blocking by design; spec §1a). */
-const THEME_BOOTSTRAP = `try {
+/**
+ * Blocking by design, before first paint: applies a pinned colour scheme (spec §1a) and a
+ * Motion-off choice (interactions spec §1), and — with motion off — skips cross-document view
+ * transitions on both sides of a navigation (`@view-transition` can't be gated by a selector).
+ * Its CSP hash is taken from this exact string, which is emitted byte for byte below.
+ */
+const BOOTSTRAP = `try {
   const s = localStorage.getItem('scheme');
   if (s === 'light' || s === 'dark') {
     document.documentElement.dataset.scheme = s;
     document.querySelector('meta[name="color-scheme"]').content = s;
   }
-} catch {}`;
+  if (localStorage.getItem('motion') === 'off') document.documentElement.dataset.motion = 'off';
+} catch {}
+for (const type of ['pageswap', 'pagereveal']) {
+  addEventListener(type, (e) => {
+    if (document.documentElement.dataset.motion === 'off') e.viewTransition?.skipTransition();
+  });
+}`;
 
 const main = await Astro.slots.render('default');
 const pageCss = takePageStyle(Astro.locals);
 // Escape "<" so no string inside the data can close the script element.
 const jsonLdText = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
 
-Astro.csp?.insertScriptHash(cspHash(THEME_BOOTSTRAP));
+Astro.csp?.insertScriptHash(cspHash(BOOTSTRAP));
 if (jsonLdText) Astro.csp?.insertScriptHash(cspHash(jsonLdText));
 if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
 ---
@@ -59,7 +70,7 @@ if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <script is:inline set:html={THEME_BOOTSTRAP} />
+    <script is:inline set:html={BOOTSTRAP} />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0d10" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb" />
     <Seo

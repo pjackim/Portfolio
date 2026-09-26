@@ -230,13 +230,28 @@ a {
   translate: none;
 }
 
-/* ── Motion (spec §4) ──────────────────────────────────────────────────── */
+/* ── Motion (spec §4; interactions spec §1) ──────────────────────────────
+ *
+ * The gate. Motion runs only while the OS allows it AND the site's Motion toggle hasn't
+ * switched it off (<html data-motion="off">, applied before first paint by BaseLayout's
+ * bootstrap; scripts ask the same question via motionAllowed() in src/scripts/motion.ts).
+ * Every motion rule on the site is written inside this one pattern:
+ *
+ *   @media (prefers-reduced-motion: no-preference) {
+ *     :root:not([data-motion='off']) .thing { … }
+ *   }
+ *
+ * (In a component's scoped <style>, wrap the gate: `:global(:root:not([data-motion='off']))`.)
+ * The safety net at the end of this file stops anything that slips through, under either. */
 
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  :root:not([data-motion='off']) {
     scroll-behavior: smooth;
   }
 
+  /* Cross-document transitions can't be gated by a selector: with the toggle off, the
+     bootstrap's pageswap/pagereveal guard skips them, and the rule below flattens any that
+     start anyway. */
   @view-transition {
     navigation: auto;
   }
@@ -260,7 +275,7 @@ a {
     /* = `animation: reveal linear backwards` + timeline/range, written as longhands: the
        minifier (Lightning CSS) folds a separate animation-timeline into the shorthand,
        which browsers reject, dropping the whole declaration. */
-    [data-reveal] {
+    :root:not([data-motion='off']) [data-reveal] {
       animation-name: reveal;
       animation-timing-function: linear;
       animation-fill-mode: backwards;
@@ -270,7 +285,8 @@ a {
   }
 }
 
-/* Safety net: the only !important rules in the codebase. */
+/* Safety net — the only !important rules in the codebase — for the OS preference and for the
+   Motion toggle alike. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -280,4 +296,20 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+:root[data-motion='off'],
+:root[data-motion='off'] *,
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+:root[data-motion='off']::view-transition-group(*),
+:root[data-motion='off']::view-transition-old(*),
+:root[data-motion='off']::view-transition-new(*) {
+  animation: none !important;
 }
