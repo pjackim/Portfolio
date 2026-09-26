@@ -9,9 +9,10 @@
  *   name never change), the index counts up from 00; nothing plays with motion off.
  * - Scroll reveals are live with motion allowed (never on the first card row) and complete
  *   no-ops under reduced motion or the Motion toggle.
- * - The theme toggle switches with motion on (a circular-reveal view transition whose
- *   `vt-theme` class and --vt-* properties are gone afterwards) and off (instant, no class), with
- *   no console errors; rapid double clicks leave no class behind.
+ * - The theme toggle switches with motion on (a scan-sweep view transition: the new scheme wipes
+ *   down behind an aria-hidden accent scanline; its `vt-theme` class and the scanline are gone
+ *   afterwards) and off (instant, no class), with no console errors; rapid double clicks leave
+ *   nothing behind.
  * - axe finds nothing with the reticle locked on.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
@@ -30,6 +31,7 @@ declare global {
     __revealed?: string[];
     __armed?: number[];
     __flicker?: { samples: string[]; set: number; cleared: number };
+    __sweep?: { animations: string[]; scan: number };
   }
 }
 
@@ -626,11 +628,39 @@ test.describe('entrance reveals, motion on', () => {
   });
 });
 
+/** Records, as a view transition's animations start, which run and whether the scanline is in. */
+async function recordSweep(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const start = Document.prototype.startViewTransition;
+    if (typeof start !== 'function') return;
+    Document.prototype.startViewTransition = function (this: Document, update) {
+      const vt = start.call(this, update);
+      vt.ready.then(
+        () => {
+          window.__sweep = {
+            animations: document
+              .getAnimations()
+              .map((a) => {
+                const pseudo = (a.effect as KeyframeEffect | null)?.pseudoElement ?? '';
+                return `${pseudo} ${(a as CSSAnimation).animationName ?? ''}`;
+              })
+              .filter((name) => name.startsWith('::view-transition')),
+            scan: document.querySelectorAll('.theme-scan[aria-hidden="true"]').length,
+          };
+        },
+        () => {},
+      );
+      return vt;
+    };
+  });
+}
+
 test.describe('theme toggle', () => {
-  test('motion on: a circular-reveal transition that cleans up after itself', async ({ page }) => {
+  test('motion on: a scan-sweep transition that cleans up after itself', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     const errors = watchConsole(page);
     await recordVtClass(page);
+    await recordSweep(page);
     await gotoRel(page, '');
     await page.waitForLoadState('load');
     const html = page.locator('html');
@@ -641,6 +671,19 @@ test.describe('theme toggle', () => {
     await expect(html).not.toHaveClass(/\bvt-theme\b/);
     const withVt = await page.evaluate(() => typeof document.startViewTransition === 'function');
     expect(await page.evaluate(() => window.__vtClass)).toEqual(withVt ? ['add', 'remove'] : []);
+    if (withVt) {
+      // The new scheme wiped down the page, led by the scanline in its own capture.
+      const sweep = await page.evaluate(() => window.__sweep);
+      expect(sweep?.animations).toEqual(
+        expect.arrayContaining([
+          '::view-transition-new(root) vt-theme-wipe',
+          '::view-transition-group(theme-scan) vt-theme-scan',
+        ]),
+      );
+      expect(sweep?.scan).toBe(1);
+    }
+    // Nothing of it is left: no scanline, no style attribute.
+    await expect(page.locator('.theme-scan')).toHaveCount(0);
     expect(await html.getAttribute('style')).toBeNull();
     // And back again.
     await toggle.click();
@@ -664,6 +707,7 @@ test.describe('theme toggle', () => {
     await expect(html).not.toHaveClass(/\bvt-theme\b/);
     expect(await html.getAttribute('data-scheme')).toBe(before);
     expect(await html.getAttribute('style')).toBeNull();
+    await expect(page.locator('.theme-scan')).toHaveCount(0);
     expect(errors).toEqual([]);
   });
 
@@ -687,6 +731,7 @@ test.describe('theme toggle', () => {
     expect(await page.evaluate(() => window.__vtClass)).toEqual(['add', 'remove']);
     await expect(html).not.toHaveClass(/\bvt-theme\b/);
     expect(await html.getAttribute('style')).toBeNull();
+    await expect(page.locator('.theme-scan')).toHaveCount(0);
     expect(errors).toEqual([]);
   });
 

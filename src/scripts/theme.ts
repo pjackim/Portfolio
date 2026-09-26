@@ -4,9 +4,12 @@
  * `scheme`); choosing the system scheme again clears the pin. The inline bootstrap in
  * BaseLayout applies a stored pin before first paint; this module only handles changes.
  *
- * While motion is allowed the switch is a circular reveal out of the toggle (interactions spec
- * §3): a same-document view transition, styled in global.css under `html.vt-theme` — a class
- * that exists only while this transition runs, so cross-document navigations are unaffected.
+ * While motion is allowed the switch is a scan sweep (interactions spec §3; Ruling G14): a
+ * same-document view transition in which the new scheme wipes down the page from the top edge,
+ * led by a 1px accent scanline with a soft glow tail — the card reticle's scanline, full width.
+ * It is styled in global.css under `html.vt-theme`, a class that exists only while this
+ * transition runs, so cross-document navigations are unaffected. The scanline is an
+ * `aria-hidden` overlay added for the transition's new state only and removed once it's over.
  * Otherwise, or without view transitions, the switch is instant.
  *
  * Import-free on purpose, so Astro inlines it (no request on any page); the motion check
@@ -21,7 +24,11 @@ const systemDark = matchMedia('(prefers-color-scheme: dark)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
 const VT_CLASS = 'vt-theme';
-const VT_PROPS = ['--vt-x', '--vt-y', '--vt-r'] as const;
+/** The sweep's leading scanline (global.css `.theme-scan`), made once, in the page only while a
+    theme transition runs. */
+const scan = document.createElement('div');
+scan.className = 'theme-scan';
+scan.setAttribute('aria-hidden', 'true');
 
 const isScheme = (value: unknown): value is Scheme => value === 'light' || value === 'dark';
 const system = (): Scheme => (systemDark.matches ? 'dark' : 'light');
@@ -58,17 +65,19 @@ function switchScheme(): void {
   sync();
 }
 
-/** The transition in flight, if any: only the latest one may clean up after itself. */
+/**
+ * The transition in flight, if any: only the latest one may clean up after itself. (The same
+ * guard as startTransition() in src/scripts/motion.ts, which this import-free script can't use.)
+ */
 let running: ViewTransition | null = null;
 
-/** Drops the transition's class and properties (and the style attribute, once it's empty). */
+/** Drops the transition's class and scanline. */
 function clearTransitionState(): void {
   root.classList.remove(VT_CLASS);
-  for (const prop of VT_PROPS) root.style.removeProperty(prop);
-  if (root.style.length === 0) root.removeAttribute('style');
+  scan.remove();
 }
 
-function toggle(this: HTMLButtonElement): void {
+function toggle(): void {
   const motion = !reduceMotion.matches && root.dataset.motion !== 'off';
   if (!motion || typeof document.startViewTransition !== 'function') {
     switchScheme();
@@ -78,23 +87,17 @@ function toggle(this: HTMLButtonElement): void {
   root.classList.add(VT_CLASS);
   let transition: ViewTransition;
   try {
-    transition = document.startViewTransition(switchScheme);
+    // The scanline joins the new state only (its own capture, above the page's).
+    transition = document.startViewTransition(() => {
+      document.body.append(scan);
+      switchScheme();
+    });
   } catch {
     // Refused outright (the update never ran): switch instantly, leave nothing behind.
     clearTransitionState();
     switchScheme();
     return;
   }
-  // The circle grows from the toggle's centre until it reaches the farthest viewport corner.
-  // Set once the transition is under way: its pseudo-elements, which read these, are only
-  // built at the next frame — and a refused call never touches the style attribute at all.
-  const box = this.getBoundingClientRect();
-  const x = box.left + box.width / 2;
-  const y = box.top + box.height / 2;
-  const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  root.style.setProperty('--vt-x', `${x}px`);
-  root.style.setProperty('--vt-y', `${y}px`);
-  root.style.setProperty('--vt-r', `${Math.ceil(r)}px`);
   running = transition;
   // Skipped (another click, a hidden tab): nothing to report, the scheme still switches.
   transition.ready.catch(() => {});

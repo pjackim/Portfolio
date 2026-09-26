@@ -306,26 +306,74 @@ a {
   }
 }
 
-/* Theme switch as a circular reveal (interactions spec §3): src/scripts/theme.ts wraps the
-   scheme change in a same-document view transition, only while motion is allowed, with
-   `vt-theme` on <html> for its duration and --vt-x/--vt-y/--vt-r (the toggle's centre and the
-   distance to the farthest viewport corner) set through CSSOM. The new scheme grows out of the
-   toggle over the old one. Everything is scoped to `vt-theme`, so cross-document navigations
-   keep their own transitions. While it runs, nothing else is captured on its own (the header
-   and cover morph names would otherwise cross-fade above the wipe); `html:root` outranks the
-   components' scoped rules and the page-style `[data-style]` rules. */
+/* Theme switch as a scan sweep (interactions spec §3; Ruling G14): src/scripts/theme.ts wraps
+   the scheme change in a same-document view transition, only while motion is allowed, with
+   `vt-theme` on <html> for its duration. The new scheme wipes down over the old one from the top
+   edge, led by a 1px accent scanline with a soft 24px tail — the card reticle's scanline, the
+   full width of the page. The line is `.theme-scan`, an aria-hidden overlay the script adds for
+   the new state only; it is captured on its own (`theme-scan`) and travels exactly with the
+   wipe's edge (same duration and easing: its bottom edge is at e × 100vh as the clip's is), then
+   fades as it reaches the foot. Everything is scoped to `vt-theme`, so cross-document
+   navigations keep their own transitions. While it runs, nothing else is captured on its own
+   (the header and cover morph names would otherwise cross-fade above the wipe); `html:root`
+   outranks the components' scoped rules and the page-style `[data-style]` rules. */
+.theme-scan {
+  display: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html:root.vt-theme:not([data-motion='off']) * {
     view-transition-name: none;
   }
 
-  @keyframes vt-theme-reveal {
+  /* The new scheme is already settled wherever the sweep reveals it: no colour easing from the
+     old scheme's values under the live new-state capture. */
+  html:root.vt-theme:not([data-motion='off']) *,
+  html:root.vt-theme:not([data-motion='off']) *::before,
+  html:root.vt-theme:not([data-motion='off']) *::after {
+    transition-duration: 0s;
+  }
+
+  /* Parked above the viewport in the page itself (never a stray line at the top between the
+     transition's end and its clean-up); the transition moves its capture. */
+  html:root.vt-theme:not([data-motion='off']) .theme-scan {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    block-size: calc(1.5rem + 1px);
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklch, var(--accent) 22%, transparent) calc(100% - 1px),
+      var(--accent) calc(100% - 1px)
+    );
+    translate: 0 -100%;
+    pointer-events: none;
+    view-transition-name: theme-scan;
+  }
+
+  @keyframes vt-theme-wipe {
     from {
-      clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0));
+      clip-path: inset(0 0 100% 0);
     }
 
     to {
-      clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 0));
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes vt-theme-scan {
+    from {
+      transform: translateY(-100%);
+    }
+
+    85% {
+      opacity: 1;
+    }
+
+    to {
+      transform: translateY(calc(100vh - 100%));
+      opacity: 0;
     }
   }
 
@@ -336,10 +384,21 @@ a {
   }
 
   :root.vt-theme:not([data-motion='off'])::view-transition-new(root) {
-    animation-name: vt-theme-reveal;
-    animation-duration: 480ms;
+    animation-name: vt-theme-wipe;
+    animation-duration: 520ms;
     animation-timing-function: var(--ease-out);
     animation-fill-mode: both;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-group(theme-scan) {
+    animation-name: vt-theme-scan;
+    animation-duration: 520ms;
+    animation-timing-function: var(--ease-out);
+    animation-fill-mode: both;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-new(theme-scan) {
+    animation-name: none;
   }
 }
 
