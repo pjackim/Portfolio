@@ -53,7 +53,7 @@ const linkList = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[]).flat
     <div class="project-meta__cell project-meta__cell--links">
       <dt class="mono-label">Links</dt>
       <dd>
-        <ul class="project-meta__links">
+        <ul class="project-meta__links" role="list">
           {linkList.map(({ href, label }) => (
             <li>
               <a href={href}>

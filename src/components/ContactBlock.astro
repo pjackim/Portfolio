@@ -24,7 +24,7 @@ const links = [
   <p class="contact__email">
     <a href={`mailto:${site.email}`}>{site.email}</a>
   </p>
-  <ul class="contact__links">
+  <ul class="contact__links" role="list">
     {links.map(({ href, label, meta }) => (
       <li>
         <a href={href} rel={meta ? 'noopener' : undefined}>

@@ -18,7 +18,7 @@ const hidden = tags.length - shown.length;
 ---
 
 {tags.length > 0 && (
-  <ul class:list={['tag-list', className]} aria-label={label}>
+  <ul class:list={['tag-list', className]} role="list" aria-label={label}>
     {shown.map((tag) => (
       <li class="tag">{tag}</li>
     ))}

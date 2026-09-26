@@ -15,7 +15,7 @@ interface Props {
 const { entries, class: className } = Astro.props;
 ---
 
-<ol class:list={['experience', className]}>
+<ol class:list={['experience', className]} role="list">
   {entries.map(({ period, title, org, place }) => (
     <li class="experience__row">
       {period && (

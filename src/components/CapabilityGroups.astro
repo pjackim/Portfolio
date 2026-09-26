@@ -28,11 +28,11 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
 }));
 ---
 
-<ul class:list={['capabilities', className]} aria-label="Capabilities">
+<ul class:list={['capabilities', className]} role="list" aria-label="Capabilities">
   {groups.map(({ label, items, seenIn }) => (
     <li class="capability">
       <h3 class="capability__label mono-label">{label}</h3>
-      <ul class="capability__items">
+      <ul class="capability__items" role="list">
         {items.map((item) => (
           <li>{item}</li>
         ))}
@@ -40,7 +40,7 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
       {seenIn.length > 0 && (
         <div class="capability__seen">
           <p class="mono-label">Seen in</p>
-          <ul>
+          <ul role="list">
             {seenIn.map(({ href, title }) => (
               <li>
                 <a href={href} data-astro-prefetch>

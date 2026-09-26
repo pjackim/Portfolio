@@ -35,7 +35,7 @@ const sections = GROUPS.map((group) => ({
     {sections.map(({ group, label, items: groupItems }, i) => (
       <section class="archive-group" aria-labelledby={`group-${group}-title`}>
         <SectionHeading index={pad2(i + 1)} label={label} id={`group-${group}-title`} />
-        <ol class="archive">
+        <ol class="archive" role="list">
           {groupItems.map((project) => (
             <ArchiveRow project={project} />
           ))}
@@ -44,7 +44,7 @@ const sections = GROUPS.map((group) => ({
     ))}
   </div>
 ) : (
-  <ol class:list={['archive', className]}>
+  <ol class:list={['archive', className]} role="list">
     {rows.map((project) => (
       <ArchiveRow project={project} />
     ))}

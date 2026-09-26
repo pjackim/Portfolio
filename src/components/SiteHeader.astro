@@ -28,7 +28,7 @@ const links = [
     </a>
     <div class="site-header__end">
       <nav class="site-nav" aria-label="Primary">
-        <ul>
+        <ul role="list">
           {links.map(({ href, label, current }) => (
             <li>
               <a href={href} aria-current={current ? 'page' : undefined}>
