@@ -4,11 +4,13 @@
  * leave content mid-animation while it is scanned) — and again with motion allowed on a sample
  * (home, /work/, one case study), once the home hero's intro has settled, so the motion layer's
  * own controls and states (the Motion toggle, the typed and rolling readouts) are covered too —
- * and again at the foot of the page, where every scroll reveal has landed (below the fold at the
- * top they are still transparent, which axe skips) and the headings in view have decrypted.
+ * and again at the foot of the page, once the entrances there have played (below the fold at the
+ * top, items waiting to reveal are transparent, which axe skips) and the headings in view have
+ * decrypted.
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { interactionsLoaded, revealsInFlightOnScreen, twoFrames } from './helpers/motion.ts';
 import { gotoRel, NOT_FOUND_PAGE, routeName, ROUTES } from './helpers/routes.ts';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
@@ -54,13 +56,17 @@ for (const colorScheme of ['dark', 'light'] as const) {
           await expect(page.locator('.hero [data-motion-toggle]')).toBeVisible();
         }
         expect(await axeReport(page), 'axe violations (rule id + targets)').toEqual([]);
+        // The heading code (if the page has headings) must be in before the jump, so the
+        // headings at the foot do play; then two frames for the observers to fire.
+        if ((await page.locator('[data-section-heading]').count()) > 0) {
+          await expect.poll(() => interactionsLoaded(page)).toBe(true);
+        }
         await page.evaluate(() =>
           scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
         );
-        // Let any decrypt that just started land (≤ 700 ms) and its layer go.
+        await twoFrames(page);
         await expect(page.locator('.section-heading__decrypt')).toHaveCount(0, { timeout: 3000 });
-        await page.waitForTimeout(800);
-        await expect(page.locator('.section-heading__decrypt')).toHaveCount(0);
+        await expect.poll(() => revealsInFlightOnScreen(page), { timeout: 3000 }).toBe(0);
         expect(await axeReport(page), 'axe violations at the foot (rule id + targets)').toEqual([]);
       });
     }
