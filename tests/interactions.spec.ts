@@ -4,8 +4,9 @@
  *   pointer and by keyboard focus; faint and static on touch screens. The spotlight follows the
  *   pointer through CSSOM custom properties (one delegated listener).
  * - Archive rows: the surface wash is clipped away at rest and wipes in on hover and focus.
- * - Section headings: the label decrypts once on an aria-hidden layer (the h2's text and the
- *   section's name never change), the index counts up from 00; nothing plays with motion off.
+ * - Section headings: the label flickers once on an aria-hidden layer — a sparse flicker of about
+ *   a third of its glyphs within ~400 ms, not a full decrypt (the h2's text and the section's
+ *   name never change), the index counts up from 00; nothing plays with motion off.
  * - Scroll reveals are live with motion allowed (never on the first card row) and complete
  *   no-ops under reduced motion or the Motion toggle.
  * - The theme toggle switches with motion on (a circular-reveal view transition whose
@@ -28,6 +29,7 @@ declare global {
     __states?: string[];
     __revealed?: string[];
     __armed?: number[];
+    __flicker?: { samples: string[]; set: number; cleared: number };
   }
 }
 
@@ -318,6 +320,56 @@ test.describe('section headings, motion on', () => {
     await twoFrames(page);
     expect(await page.evaluate(() => window.__decrypt)).toEqual(['', null]);
     expect(await page.evaluate(() => window.__rule)).toEqual(['armed', 'draw', null]);
+  });
+
+  test('the label flickers sparsely (about a third of its glyphs), not a full decrypt', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.__flicker = { samples: [], set: -1, cleared: -1 };
+      document.addEventListener('DOMContentLoaded', () => {
+        const title = document.querySelector('#earlier-work-title')!;
+        new MutationObserver(() => {
+          const flicker = window.__flicker!;
+          const layer = title.querySelector('.section-heading__decrypt');
+          if (layer) flicker.samples.push(layer.textContent ?? '');
+          const on = title.hasAttribute('data-decrypt');
+          if (on && flicker.set < 0) flicker.set = performance.now();
+          if (!on && flicker.set >= 0 && flicker.cleared < 0) flicker.cleared = performance.now();
+        }).observe(title, {
+          subtree: true,
+          childList: true,
+          characterData: true,
+          attributes: true,
+          attributeFilter: ['data-decrypt'],
+        });
+      });
+    });
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    await expect.poll(() => interactionsLoaded(page)).toBe(true);
+    await scrollIntoView(page, '#earlier-work .section-heading', 'center');
+    await expect
+      .poll(() => page.evaluate(() => window.__flicker!.cleared), { timeout: 5000 })
+      .toBeGreaterThan(0);
+    const { samples, set, cleared } = (await page.evaluate(() => window.__flicker))!;
+    const final = 'Earlier work';
+    const letters = [...final].filter((ch) => /[a-z0-9]/i.test(ch)).length;
+    // Every glyph position that ever showed something other than its own letter.
+    const touched = new Set<number>();
+    for (const sample of samples) {
+      expect(sample).toHaveLength(final.length);
+      [...sample].forEach((ch, i) => {
+        if (ch.toUpperCase() !== final[i]!.toUpperCase()) touched.add(i);
+      });
+    }
+    expect(touched.size, 'some glyphs flicker').toBeGreaterThan(0);
+    expect(touched.size, `glyphs touched of ${letters}`).toBeLessThanOrEqual(
+      Math.ceil(letters * 0.4),
+    );
+    // A flicker, not a decrypt: over within ~400 ms (a frame or two of slack each side).
+    expect(cleared - set).toBeLessThan(560);
+    await expect(page.locator('#earlier-work-title')).toHaveText(final);
   });
 
   test('a heading on screen as the code arrives keeps its rule (no redraw)', async ({ page }) => {

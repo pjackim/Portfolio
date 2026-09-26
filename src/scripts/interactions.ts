@@ -68,11 +68,16 @@ function countUp(el: HTMLElement, duration = 420): void {
 }
 
 /**
- * The label decrypts over itself: an `aria-hidden` layer with the same text is laid exactly on
- * the h2 (same box, font and wrapping) and scrambled, while the h2's own glyphs are transparent.
- * The h2 — and so the section's accessible name — keeps its text throughout, and the layer is
- * removed when it lands.
+ * The label flickers as it arrives — a sparse signal flicker, not a full decrypt: about a third
+ * of its glyphs glitch for a moment and settle, within 400 ms (the hero eyebrow alone keeps the
+ * full left-to-right decrypt, so the headings further down don't repeat it). It plays on an
+ * `aria-hidden` layer with the same text, laid exactly on the h2 (same box, font and wrapping),
+ * while the h2's own glyphs are transparent. The h2 — and so the section's accessible name —
+ * keeps its text throughout, and the layer is removed when it lands.
  */
+const FLICKER_MS = 400;
+const FLICKER_DENSITY = 0.35;
+
 function decrypt(title: HTMLElement): void {
   const text = title.textContent?.trim() ?? '';
   if (!text) return;
@@ -82,7 +87,7 @@ function decrypt(title: HTMLElement): void {
   layer.textContent = text;
   title.append(layer);
   title.dataset.decrypt = '';
-  void scramble(layer, text, { duration: 600 }).then(() => {
+  void scramble(layer, text, { duration: FLICKER_MS, density: FLICKER_DENSITY }).then(() => {
     layer.remove();
     delete title.dataset.decrypt;
   });
@@ -108,7 +113,7 @@ function drawRule(heading: HTMLElement): void {
 
 /**
  * Each heading plays once, the first time it comes into view with motion allowed: the rule
- * draws (if armed), the index counts up, the label decrypts. One observer drives all three. A
+ * draws (if armed), the index counts up, the label flickers. One observer drives all three. A
  * heading a /work/ filter change brings into view arrives settled: the reflow is its entrance.
  */
 function watchHeadings(headings: NodeListOf<HTMLElement>): void {

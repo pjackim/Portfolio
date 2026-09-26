@@ -8,8 +8,9 @@
  *
  * Entering view the first time (interactions spec §3, all behind the motion gate; driven by one
  * IntersectionObserver in src/scripts/interactions.ts): the hairline draws out from the label,
- * the index counts up from 00 and the label decrypts. The decrypt plays on an `aria-hidden`
- * layer laid over the h2, so the heading's text and accessible name never change. Only a
+ * the index counts up from 00 and the label flickers — about a third of its glyphs glitch and
+ * settle, a signal flicker rather than a full decrypt. It plays on an `aria-hidden` layer laid
+ * over the h2, so the heading's text and accessible name never change. Only a
  * heading that was below the fold when the script arrived draws its rule (it was hidden, unseen,
  * until then); one already on screen keeps it.
  */
