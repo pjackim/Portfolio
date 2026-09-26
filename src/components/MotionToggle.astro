@@ -1,0 +1,119 @@
+---
+/**
+ * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
+ * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. Drop it in
+ * anywhere; every instance on a page drives and mirrors the same setting (see
+ * src/scripts/motion-toggle.ts). Rendered `hidden` until that script runs; the slot reserves
+ * the chip's height meanwhile, so revealing it never shifts the layout, and collapses when
+ * scripting is off.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={['motion-toggle-slot', className]}>
+  <button
+    type="button"
+    class="motion-toggle"
+    data-motion-toggle
+    aria-label="Reduce motion"
+    aria-pressed="false"
+    hidden
+  >
+    <span>Motion</span>
+    <span class="motion-toggle__dot"></span>
+    <span class="motion-toggle__state" data-motion-state>
+      On
+    </span>
+    <span class="visually-hidden" data-motion-note>
+      Motion is off because your device is set to reduce motion.
+    </span>
+  </button>
+</span>
+
+<script src="../scripts/motion-toggle.ts"></script>
+
+<style>
+  .motion-toggle-slot {
+    --chip-h: 2rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @media (scripting: enabled) {
+    .motion-toggle-slot {
+      min-block-size: var(--chip-h);
+    }
+  }
+
+  @media (scripting: none) {
+    .motion-toggle-slot {
+      display: none;
+    }
+  }
+
+  .motion-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-block-size: var(--chip-h);
+    padding-inline: 0.625rem;
+    border: var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: color-mix(in oklch, var(--bg) 85%, transparent);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .motion-toggle[hidden] {
+    display: none;
+  }
+
+  /* 44px-tall hit area around the 32px chip. */
+  .motion-toggle::after {
+    content: '';
+    position: absolute;
+    inset: calc((var(--chip-h) - 2.75rem) / 2 - 1px) -1px;
+  }
+
+  @media (hover: hover) {
+    .motion-toggle:not([aria-disabled='true']):hover {
+      border-color: var(--line-ui);
+      color: var(--text);
+    }
+  }
+
+  .motion-toggle[aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Status LED: lit accent while motion runs, a hollow ring when it's off. */
+  .motion-toggle__dot {
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .motion-toggle[data-state='on'] .motion-toggle__dot {
+    border-color: var(--accent);
+    background-color: var(--accent);
+  }
+
+  .motion-toggle[data-state='on'] .motion-toggle__state {
+    color: var(--text);
+  }
+</style>
