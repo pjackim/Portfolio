@@ -554,7 +554,7 @@ test.describe('footer status line', () => {
     });
 
     test('the footer Motion toggle stops it on the build time', async ({ page, request }) => {
-      const ssr = /data-clock-time[^>]*>(\d{2}:\d{2}:\d{2})</.exec(
+      const ssr = /data-clock-time[^>]*>\s*(\d{2}:\d{2}:\d{2})\s*</.exec(
         await (await request.get('work/')).text(),
       )?.[1];
       await gotoRel(page, 'work/');
@@ -579,7 +579,7 @@ test.describe('footer status line', () => {
   ] as const) {
     test(`with ${name}, the clock is frozen on the build time`, async ({ page, request }) => {
       await setup(page);
-      const ssr = /data-clock-time[^>]*>(\d{2}:\d{2}:\d{2})</.exec(
+      const ssr = /data-clock-time[^>]*>\s*(\d{2}:\d{2}:\d{2})\s*</.exec(
         await (await request.get('')).text(),
       )?.[1];
       expect(ssr).toBeDefined();
