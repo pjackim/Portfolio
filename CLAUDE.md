@@ -91,8 +91,9 @@ typescript` would pick up 7.x. Dependabot is configured to ignore major bumps of
 - **The legacy site is fully recoverable** at commit `d8782d1` (`git show d8782d1:<path>`, or
   `git archive d8782d1 <path> | tar -x -C .cache/legacy`) if you need to check original copy,
   images, or markup.
-- **`gh` defaults to the upstream fork.** This repo's `origin`/default remote resolves to
-  `j4ck1m/Portfolio`, not `pjackim/Portfolio` — pass `--repo pjackim/Portfolio` on every `gh`
+- **`gh` defaults to the fork parent.** Git's `origin` is `pjackim/Portfolio`, but that repo
+  is a fork of `j4ck1m/Portfolio`, and `gh` resolves its default repository to the parent
+  (the `upstream` remote in this clone) — pass `--repo pjackim/Portfolio` on every `gh`
   command. Never push from here; every change lands as a commit for the human to push/PR.
 - **Verify web changes live before calling them done.** Use the Chrome browser tools (or
   `npm run preview` + a manual check) to load the actual page and confirm the change renders
