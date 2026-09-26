@@ -49,6 +49,19 @@ export interface Site {
 const EMPLOYER = 'Johns Hopkins University Applied Physics Laboratory'; // index.html:156
 const SCHOOL = 'Colorado State University'; // résumé (Education)
 
+/**
+ * Focus areas — index.html:156: "My interests include … embedded systems, machine learning, and
+ * reverse engineering". Shown in the status strip and typed out by the hero's focus line.
+ */
+export const FOCUS_AREAS = ['Reverse engineering', 'Machine learning', 'Embedded systems'] as const;
+
+/**
+ * Size of the credential-correlation dataset, for the hero readouts: "Compiled ~120,000,000
+ * real-world credentials" (src/content/projects/credential-correlation/index.md; legacy
+ * credential_correlation.html:90-105).
+ */
+export const CREDENTIALS_ANALYZED = 120_000_000;
+
 export const site: Site = {
   name: 'Parker Jackim',
   role: 'Cyber Security Researcher', // index.html:156
@@ -87,9 +100,7 @@ export const site: Site = {
 
   status: [
     { label: 'Now', value: 'Cyber security research · JHU APL' }, // index.html:156
-    // index.html:156 — "My interests include … embedded systems, machine learning, and
-    // reverse engineering"
-    { label: 'Focus', value: 'Reverse engineering · Machine learning · Embedded systems' },
+    { label: 'Focus', value: FOCUS_AREAS.join(' · ') },
     // résumé (Education). Degree completion and end date are not stated in the repo.
     { label: 'Edu', value: `Computer Science · ${SCHOOL}` },
   ],
