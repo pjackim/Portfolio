@@ -3,7 +3,8 @@
  * (interactions spec §4, §5; Ruling G9).
  * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability
  *   and the groups left empty; `?capability=` is kept in the URL and restores the filter on load —
- *   painted filtered before any script runs — while an unknown value is ignored; a polite live
+ *   painted filtered before any script runs — while an unknown value is ignored, and a filter
+ *   whose script never arrives fails open; a polite live
  *   region announces "Showing N of 15 projects"; the chips work from the keyboard; with motion on
  *   the change is a view transition that leaves nothing behind; rows it brings on screen are
  *   never left waiting for an entrance (opacity 1); the bar appearing shifts nothing; without JS
@@ -22,7 +23,7 @@
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type Route } from '@playwright/test';
 import { twoFrames } from './helpers/motion.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
@@ -30,6 +31,7 @@ declare global {
   interface Window {
     __vtFilter?: ('add' | 'remove')[];
     __filterShifts?: number[];
+    __capability?: (string | null)[];
     __loadYs?: number[];
     __scrollYs?: number[];
   }
@@ -189,6 +191,39 @@ test.describe('/work/ filter', () => {
     await expect(page.locator('html')).not.toHaveAttribute('data-capability');
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
   });
+
+  for (const [how, respond] of [
+    // The module fails to load (its `error` event).
+    ['fails to load', (route: Route) => route.abort('failed')],
+    // It loads, but never wires the chips (the 3 s-after-load fallback).
+    [
+      'never wires the chips',
+      (route: Route) => route.fulfill({ contentType: 'text/javascript', body: 'export {};' }),
+    ],
+  ] as const) {
+    test(`fails open when the filter's script ${how}: every row shows`, async ({ page }) => {
+      await page.route('**/_astro/MotionLayer*.js', respond);
+      await page.addInitScript(() => {
+        window.__capability = [];
+        new MutationObserver(() =>
+          window.__capability!.push(document.documentElement.getAttribute('data-capability')),
+        ).observe(document, {
+          attributes: true,
+          subtree: true,
+          attributeFilter: ['data-capability'],
+        });
+      });
+      await gotoRel(page, 'work/?capability=data-ml');
+      await page.waitForLoadState('load');
+      await expect(page.locator('html')).not.toHaveAttribute('data-capability', {
+        timeout: 5000,
+      });
+      // It was applied before first paint, then given up on.
+      expect(await page.evaluate(() => window.__capability)).toEqual(['data-ml', null]);
+      expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
+      await expect(page.locator(BAR)).toBeHidden();
+    });
+  }
 
   test('a polite live region announces how many projects show', async ({ page }) => {
     await gotoRel(page, 'work/');

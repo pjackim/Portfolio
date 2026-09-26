@@ -39,9 +39,12 @@ const { title, description, ogImage, ogType, noindex, jsonLd } = Astro.props;
  * Motion-off choice (interactions spec §1) and a /work/ capability filter from the URL
  * (`?capability=`, interactions spec §4: the filter is pure CSS on `<html data-capability>`, so
  * a filtered list is painted filtered — it never paints whole and then collapses; an unknown
- * value matches no rule and hides nothing), and — with motion off — skips cross-document view
- * transitions on both sides of a navigation (`@view-transition` can't be gated by a selector).
- * Its CSP hash is taken from this exact string, which is emitted byte for byte below.
+ * value matches no rule and hides nothing. It fails open: should the filter's script fail to
+ * load, or not have wired its chips 3 s after `load`, the attribute goes and every row shows,
+ * rather than a filtered list with no control to change it), and — with motion off — skips
+ * cross-document view transitions on both sides of a navigation (`@view-transition` can't be
+ * gated by a selector). Its CSP hash is taken from this exact string, which is emitted byte for
+ * byte below.
  */
 const BOOTSTRAP = `try {
   const s = localStorage.getItem('scheme');
@@ -53,7 +56,17 @@ const BOOTSTRAP = `try {
 } catch {}
 {
   const c = new URLSearchParams(location.search).get('capability');
-  if (c) document.documentElement.dataset.capability = c;
+  if (c) {
+    const d = document.documentElement;
+    d.dataset.capability = c;
+    const open = () => {
+      if (!document.querySelector('[data-work-filter][data-ready]')) delete d.dataset.capability;
+    };
+    addEventListener('error', (e) => {
+      if (/MotionLayer/.test(e.target.src)) open();
+    }, true);
+    addEventListener('load', () => setTimeout(open, 3000), { once: true });
+  }
 }
 for (const type of ['pageswap', 'pagereveal']) {
   addEventListener(type, (e) => {

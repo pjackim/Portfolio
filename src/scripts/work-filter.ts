@@ -121,8 +121,11 @@ function wire(bar: HTMLElement, list: HTMLElement): void {
     announce(id);
   });
 
-  // Whatever the bootstrap applied from the URL, minus an unknown value (ignored).
-  apply(current());
+  // The URL is the truth: what the bootstrap applied from it (or, had it given up waiting for
+  // this script, re-applied now). An unknown value is ignored.
+  const requested = new URLSearchParams(location.search).get(PARAM);
+  const initial = requested !== null && ids.has(requested) ? requested : '';
+  apply(initial);
   const pressed = chips.find((chip) => chip.getAttribute('aria-pressed') === 'true');
   if (pressed) bringIntoView(pressed);
   bar.dataset.ready = '';
