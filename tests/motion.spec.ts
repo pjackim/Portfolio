@@ -97,7 +97,8 @@ test.describe('reduced motion', () => {
 
   test('the monogram caret does not blink', async ({ page }) => {
     await gotoRel(page, '');
-    await expect(page.locator('.site-header .monogram')).not.toHaveClass(/\bis-blinking\b/);
+    const cursor = page.locator('.site-header .monogram__cursor');
+    expect(await cursor.evaluate((el) => el.getAnimations().length)).toBe(0);
   });
 
   test('the Motion toggle defers to the system setting', async ({ page }) => {
@@ -124,10 +125,10 @@ test.describe('motion on', () => {
     await expect(page.locator(GRAPH)).toHaveAttribute('aria-hidden', 'true');
     await graphIs(page, 'running');
     const first = await graphSignature(page);
-    await page.waitForTimeout(700);
-    const second = await graphSignature(page);
     expect(first.ink).toBeGreaterThan(0);
-    expect(second).not.toEqual(first);
+    // Hosts drift 3–9 px/s: any frame drawn after this one differs (polled, so a starved test
+    // machine that skips frames for a while can't fail it).
+    await expect.poll(() => graphSignature(page), { timeout: 5000 }).not.toEqual(first);
   });
 
   test('the h1 keeps its server-rendered text, untouched', async ({ page, request }) => {
@@ -263,8 +264,12 @@ test.describe('motion on', () => {
   test('the monogram caret blinks on the first page of a session only', async ({ page }) => {
     await gotoRel(page, '');
     const monogram = page.locator('.site-header .monogram');
+    const blinking = () =>
+      page.locator('.site-header .monogram__cursor').evaluate((el) => el.getAnimations().length);
     await expect(monogram).toHaveClass(/\bis-blinking\b/);
+    expect(await blinking()).toBe(1);
     await gotoRel(page, 'work/');
     await expect(monogram).not.toHaveClass(/\bis-blinking\b/);
+    expect(await blinking()).toBe(0);
   });
 });

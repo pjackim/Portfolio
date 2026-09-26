@@ -49,20 +49,15 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
 </header>
 
 <script>
-  import { motionAllowed } from '../scripts/motion';
-
-  // First page of the session only, and only if it can move now; the class goes once the five
-  // blinks end, so switching motion off and on later never replays them.
+  // First page of the session only. Whether it actually blinks is the CSS motion gate's call;
+  // the class goes once the 5 s blink window has passed, so switching motion on later never
+  // starts it. Import-free on purpose: it stays a tiny inline script, not another request.
   try {
     const monogram = document.querySelector('.site-header .monogram');
     if (monogram && !sessionStorage.getItem('caret')) {
       sessionStorage.setItem('caret', '1');
-      if (motionAllowed()) {
-        monogram.classList.add('is-blinking');
-        monogram.addEventListener('animationend', () => monogram.classList.remove('is-blinking'), {
-          once: true,
-        });
-      }
+      monogram.classList.add('is-blinking');
+      setTimeout(() => monogram.classList.remove('is-blinking'), 5200);
     }
   } catch {
     // Storage blocked: no blink rather than a blink on every page.

@@ -3,7 +3,7 @@
  * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
  * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. Drop it in
  * anywhere; every instance on a page drives and mirrors the same setting (see
- * src/scripts/motion-toggle.ts). Rendered `hidden` until that script runs; the slot reserves
+ * src/scripts/motion-toggle.ts, loaded through src/scripts/motion-layer.ts). Rendered `hidden` until that script runs; the slot reserves
  * the chip's height meanwhile, so revealing it never shifts the layout, and collapses when
  * scripting is off.
  */
@@ -34,7 +34,8 @@ const { class: className } = Astro.props;
   </button>
 </span>
 
-<script src="../scripts/motion-toggle.ts"></script>
+<!-- Wired by the motion layer, one module per page whatever renders it (src/scripts/motion-toggle.ts). -->
+<script src="../scripts/motion-layer.ts"></script>
 
 <style>
   .motion-toggle-slot {

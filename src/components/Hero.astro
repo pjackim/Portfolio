@@ -6,7 +6,10 @@
  * and a rail of rolling readouts with the Motion toggle.
  *
  * Nothing here delays LCP: the h1 and lede paint from this HTML and are never mutated; the
- * canvas, decrypt, typing and reels all start after `load` + idle (src/scripts/motion.ts).
+ * canvas, decrypt, typing and reels all start after `load` + idle. Their code (src/scripts/
+ * hero.ts) isn't even fetched before `load`: the motion layer the hero's MotionToggle loads
+ * (src/scripts/motion-layer.ts, one request) imports it then — so this component has no script
+ * of its own.
  * Every animated piece keeps its real text in the DOM for assistive tech (visually hidden
  * twins; the animated glyphs are `aria-hidden`), and every one stops or snaps to its final
  * state when motion is off. Copy comes from `src/data/site.ts`; counts from the collection.
@@ -122,35 +125,6 @@ const readouts = [
     </div>
   </div>
 </section>
-
-<script>
-  import { createHeroGraph } from '../scripts/hero-graph';
-  import { typeFocusLine } from '../scripts/focus-line';
-  import { afterLoadIdle } from '../scripts/motion';
-  import { rollReadouts } from '../scripts/readouts';
-  import { scramble } from '../scripts/scramble';
-
-  const hero = document.querySelector<HTMLElement>('[data-hero]');
-  if (hero) {
-    // The intro (≤ 5 s) first, with a short idle deadline so it isn't pushed back on a busy
-    // main thread; then the ambient graph and the reels.
-    afterLoadIdle(() => {
-      const line = hero.querySelector<HTMLElement>('[data-focus-line]');
-      if (line) typeFocusLine(line);
-      for (const part of hero.querySelectorAll<HTMLElement>('[data-scramble]')) {
-        void scramble(part, part.textContent?.trim() ?? '', { duration: 650 });
-      }
-    }, 200);
-    afterLoadIdle(() => {
-      const canvas = hero.querySelector<HTMLCanvasElement>('[data-hero-graph]');
-      if (canvas) createHeroGraph(canvas, hero);
-    });
-    afterLoadIdle(() => {
-      const readouts = hero.querySelector<HTMLElement>('[data-readouts]');
-      if (readouts) rollReadouts(readouts);
-    });
-  }
-</script>
 
 <style>
   .hero {
