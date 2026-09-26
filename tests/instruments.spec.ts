@@ -3,8 +3,8 @@
  * (interactions spec §4, §5; Ruling G9).
  * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability
  *   and the groups left empty; `?capability=` is kept in the URL and restores the filter on load —
- *   painted filtered before any script runs — while an unknown value is ignored, and a filter
- *   whose script never arrives fails open; a polite live
+ *   painted filtered before any script runs — while an unknown value is ignored (and dropped from
+ *   the URL), and a filter whose script never arrives fails open; a polite live
  *   region announces "Showing N of 15 projects"; the chips work from the keyboard; with motion on
  *   the change is a view transition that leaves nothing behind; rows it brings on screen are
  *   never left waiting for an entrance (opacity 1); the bar appearing shifts nothing; without JS
@@ -184,12 +184,13 @@ test.describe('/work/ filter', () => {
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
   });
 
-  test('an unknown capability in the URL is ignored', async ({ page }) => {
+  test('an unknown capability in the URL is ignored, and dropped from it', async ({ page }) => {
     await gotoRel(page, 'work/?capability=nope');
     await filterReady(page);
     await expect(chip(page, '')).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('html')).not.toHaveAttribute('data-capability');
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
+    await expect(page).toHaveURL(/\/work\/$/);
   });
 
   for (const [how, respond] of [
