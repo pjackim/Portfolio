@@ -43,7 +43,7 @@
     "kind": "image",
     "lossless": true,
     "cover": true,
-    "crop": { "left": 902, "top": 496, "width": 514, "height": 321 }
+    "crop": { "left": 902, "top": 547, "width": 514, "height": 321 }
   },
   {
     "src": "Images/fovhack/screenshot-gameplay.jpg",
