@@ -476,7 +476,7 @@ export async function extractPoster(
 /* ─────────────────────────── YouTube ─────────────────────────── */
 
 async function fetchImage(url: string): Promise<Buffer | undefined> {
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
   if (!res.ok) return undefined;
   const buf = Buffer.from(await res.arrayBuffer());
   const { width, height } = await sharp(buf).metadata();
