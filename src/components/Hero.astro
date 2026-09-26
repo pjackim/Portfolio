@@ -1,0 +1,296 @@
+---
+/**
+ * Home hero (spec-design-content §2, §5a): masked 64px grid texture, mono eyebrow, display
+ * h1, lede, CTA row, status strip. Copy comes from `src/data/site.ts` unchanged.
+ */
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+import StatusStrip from './StatusStrip.astro';
+
+const eyebrow = site.eyebrow.split(' · ');
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__inner">
+    <p class="hero__eyebrow mono-label">
+      <span class="hero__signal" aria-hidden="true"></span>
+      <span>
+        {eyebrow.map((part, i) => (
+          <>
+            {i > 0 && <span class="hero__eyebrow-sep"> · </span>}
+            <span class="hero__eyebrow-part">{part}</span>
+          </>
+        ))}
+      </span>
+    </p>
+    <h1 class="hero__title" id="hero-title">
+      {site.name}
+    </h1>
+    <p class="hero__lede">{site.lede}</p>
+
+    <div class="hero__actions">
+      <div class="hero__buttons">
+        <a class="button button--primary" href="#work">
+          Selected work
+          <Arrow dir="down" />
+        </a>
+        <a class="button button--secondary" href={withBase(site.resume)} rel="noopener">
+          Résumé
+          <span class="button__meta">
+            <span aria-hidden="true">·</span> PDF
+          </span>
+          <Arrow dir="up-right" />
+        </a>
+      </div>
+      <ul class="hero__links">
+        <li>
+          <a href={site.github}>
+            <span class="hero__link-label">GitHub</span>
+            <Arrow dir="up-right" />
+          </a>
+        </li>
+        <li>
+          <a href={site.linkedin}>
+            <span class="hero__link-label">LinkedIn</span>
+            <Arrow dir="up-right" />
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`}>
+            <span class="hero__link-label">Email</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <StatusStrip class="hero__status" entries={site.status} />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem) 0;
+  }
+
+  .hero__inner {
+    position: relative;
+  }
+
+  /* Decorative 64px grid of --line hairlines, fading out from the upper right. The tiles
+     start whole cells left of the container edge, so a vertical line runs just left of the
+     text column; the mask reaches zero before the box's bottom edge. */
+  .hero__inner::before {
+    --cell: 64px;
+    --bleed: calc(var(--cell) * 8);
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset-block: calc(-1 * clamp(3.5rem, 2rem + 6vw, 7.5rem) - var(--cell)) 0;
+    inset-inline: calc(-1 * var(--bleed));
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: var(--cell) var(--cell);
+    background-position: -1px 0;
+    mask-image: radial-gradient(
+      ellipse min(44rem, 120vw) 85% at calc(100% - var(--bleed) - 6rem) 15%,
+      #000 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Accent "signal" square, centred on the first line; wrapped lines align with the text. */
+  .hero__eyebrow {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.75rem;
+    align-items: start;
+  }
+
+  .hero__signal {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    margin-block-start: calc((1lh - 0.5rem) / 2);
+    background-color: var(--accent);
+  }
+
+  .hero__eyebrow-part {
+    white-space: nowrap;
+  }
+
+  /* Phones: role and location on their own lines, no dangling separator. */
+  @media (width < 30rem) {
+    .hero__eyebrow-part {
+      display: block;
+    }
+
+    .hero__eyebrow-sep {
+      display: none;
+    }
+  }
+
+  .hero__title {
+    margin-block-start: var(--space-m);
+    font-size: var(--step-5);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .hero__lede {
+    max-inline-size: 60ch;
+    margin-block-start: var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+
+  /* ── Actions ── */
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m) var(--space-l);
+    margin-block-start: var(--space-xl);
+  }
+
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  /* Phones: the two buttons share the row (or stack full-width when it's too narrow). */
+  @media (width < 30rem) {
+    .hero__buttons {
+      flex: 1 1 100%;
+    }
+
+    .hero__buttons .button {
+      flex: 1 1 auto;
+      justify-content: center;
+      padding-inline: 0.875rem;
+    }
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: 2.75rem;
+    padding-inline: 1.125rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-s);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .button--primary {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .button--primary:hover {
+    color: var(--on-accent);
+  }
+
+  .button--secondary {
+    border-color: var(--line-ui);
+    color: var(--text);
+  }
+
+  .button--secondary:hover {
+    color: var(--text);
+  }
+
+  @media (hover: hover) {
+    .button--primary:hover {
+      border-color: var(--accent-hover);
+      background-color: var(--accent-hover);
+    }
+
+    .button--secondary:hover {
+      background-color: var(--surface-2);
+    }
+  }
+
+  .button__meta {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+  }
+
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    min-block-size: 2.75rem;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  /* Only the word is underlined, not the arrow. */
+  .hero__link-label {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--line-ui);
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .hero__links a:hover {
+    color: var(--text);
+  }
+
+  .hero__links a:hover .hero__link-label {
+    text-decoration-color: var(--accent);
+  }
+
+  .hero__inner > :global(.hero__status) {
+    margin-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+
+  /* ── Motion: arrows nudge toward where they point ── */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      .button--primary:hover :global(.arrow) {
+        translate: 0 2px;
+      }
+
+      .button--secondary:hover :global(.arrow),
+      .hero__links a:hover :global(.arrow) {
+        translate: 2px -2px;
+      }
+    }
+  }
+</style>

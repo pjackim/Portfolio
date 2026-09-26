@@ -1,0 +1,53 @@
+---
+/**
+ * Featured work grid (spec-design-content §2): an ordered list of ProjectCards, two columns
+ * from 800px. An odd last card spans both columns in a horizontal layout (see ProjectCard),
+ * so any count looks intentional. Cards are numbered by rendered position; the first cover
+ * loads eagerly, and cards below the first row reveal on scroll.
+ */
+import type { CollectionEntry } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  projects: readonly CollectionEntry<'projects'>[];
+  class?: string;
+}
+
+const { projects, class: className } = Astro.props;
+---
+
+<ol class:list={['project-grid', className]}>
+  {projects.map((project, i) => (
+    <ProjectCard project={project} index={i} eager={i === 0} reveal={i >= 2} />
+  ))}
+</ol>
+
+<style>
+  /* No row gap: cards subgrid the rows (see ProjectCard), and a parent row gap would leak
+     into every row inside the cards. Rows of cards are spaced by the cards' top margins. */
+  .project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0 var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  .project-grid > :global(.card + .card) {
+    margin-block-start: var(--space-l);
+  }
+
+  @media (width >= 50rem) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-grid > :global(.card:nth-child(2)) {
+      margin-block-start: 0;
+    }
+
+    .project-grid > :global(.card:nth-child(n + 3)) {
+      margin-block-start: var(--space-xl);
+    }
+  }
+</style>

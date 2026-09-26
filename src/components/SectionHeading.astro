@@ -14,15 +14,18 @@ interface Props {
   label: string;
   /** id of the `<h2>`; the parent section uses it for `aria-labelledby`. */
   id: string;
+  /** Internal link on the right of the rule; hover-prefetched (Ruling R24). */
   action?: { href: string; text: string };
+  /** Fade/slide in on scroll (below-the-fold headings only; spec §4). */
+  reveal?: boolean;
   class?: string;
 }
 
-const { index, label, id, action, class: className } = Astro.props;
+const { index, label, id, action, reveal = false, class: className } = Astro.props;
 const actionText = action?.text.replace(/\s*→\s*$/u, '');
 ---
 
-<div class:list={['section-heading', className]}>
+<div class:list={['section-heading', className]} data-reveal={reveal || undefined}>
   <div class="section-heading__label">
     <span class="section-heading__index" aria-hidden="true">
       {index}
@@ -34,7 +37,7 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
   </div>
   <span class="section-heading__rule" aria-hidden="true"></span>
   {action && (
-    <a class="section-heading__action" href={action.href}>
+    <a class="section-heading__action" href={action.href} data-astro-prefetch>
       {actionText}
       <Arrow />
     </a>
@@ -103,6 +106,19 @@ const actionText = action?.text.replace(/\s*→\s*$/u, '');
     letter-spacing: 0;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  /* Phones: a smaller label, so "01 / SELECTED WORK ── All work →" still fits one line. */
+  @media (width < 30rem) {
+    .section-heading__label,
+    .section-heading__index,
+    .section-heading__title {
+      font-size: 0.875rem;
+    }
+
+    .section-heading {
+      gap: var(--space-xs);
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {

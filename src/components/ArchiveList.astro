@@ -1,0 +1,83 @@
+---
+/**
+ * Archive rows (spec-design-content §2, §3) as a dense readout table on hairline rows — see
+ * ArchiveRow.
+ *
+ * - `limit`: show at most this many rows (home: "Earlier work").
+ * - `grouped`: one `<section>` per project group (in `GROUPS` order, empty groups skipped),
+ *   each labelled by an `h2` on the section rule — for /work/. Items keep their given order.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { GROUP_LABELS, GROUPS } from '../data/taxonomy';
+import { pad2 } from '../lib/format';
+import ArchiveRow from './ArchiveRow.astro';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  items: readonly CollectionEntry<'projects'>[];
+  grouped?: boolean;
+  limit?: number;
+  class?: string;
+}
+
+const { items, grouped = false, limit, class: className } = Astro.props;
+const rows = limit === undefined ? items : items.slice(0, limit);
+
+const sections = GROUPS.map((group) => ({
+  group,
+  label: GROUP_LABELS[group],
+  items: rows.filter((p) => p.data.group === group),
+})).filter((s) => s.items.length > 0);
+---
+
+{grouped ? (
+  <div class:list={['archive-groups', className]}>
+    {sections.map(({ group, label, items: groupItems }, i) => (
+      <section class="archive-group" aria-labelledby={`group-${group}-title`}>
+        <SectionHeading index={pad2(i + 1)} label={label} id={`group-${group}-title`} />
+        <ol class="archive">
+          {groupItems.map((project) => (
+            <ArchiveRow project={project} />
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+) : (
+  <ol class:list={['archive', className]}>
+    {rows.map((project) => (
+      <ArchiveRow project={project} />
+    ))}
+  </ol>
+)}
+
+<style>
+  .archive-groups {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  /* The column template every row subgrids (see ArchiveRow). The year rail is shared with
+     ExperienceList, so both tables' text columns line up. */
+  .archive {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: var(--space-s);
+    padding: 0;
+    border-block-start: var(--hairline);
+    list-style: none;
+  }
+
+  @media (width >= 48rem) {
+    .archive {
+      grid-template-columns: var(--readout-rail, 9rem) minmax(0, 1fr);
+      column-gap: var(--space-m);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .archive {
+      grid-template-columns: var(--readout-rail, 9rem) 12rem minmax(0, 1fr);
+    }
+  }
+</style>

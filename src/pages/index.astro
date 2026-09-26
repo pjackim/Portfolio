@@ -1,71 +1,118 @@
 ---
+/**
+ * Home (spec-design-content §2): hero → 01 Selected work → 02 About → 03 Experience →
+ * 04 Earlier work → 05 Contact. Each section is labelled by its h2. The empty
+ * `*-section` spans keep the legacy site's deep links (#about-section, #portfolio-section,
+ * #social-section) landing on the matching section.
+ */
+import ArchiveList from '../components/ArchiveList.astro';
+import CapabilityGroups from '../components/CapabilityGroups.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import ExperienceList from '../components/ExperienceList.astro';
+import Hero from '../components/Hero.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import TagList from '../components/TagList.astro';
+import { site } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getFeatured } from '../lib/projects';
+import { getFeatured, getHomeArchive } from '../lib/projects';
 import { withBase } from '../lib/url';
 
-// Temporary page: proves the layout shell and the project collection; Task 6 replaces it.
-const featured = await getFeatured();
+const [featured, archive] = await Promise.all([getFeatured(), getHomeArchive()]);
+const workHref = withBase('work/');
 ---
 
 <BaseLayout
   title="Parker Jackim — Cyber Security Researcher"
   description="Portfolio of Parker Jackim: reverse engineering, credential-security ML, Unreal Engine networking, and React engineering."
 >
-  <section class="container placeholder" aria-labelledby="work-title">
-    <h1 class="visually-hidden">Parker Jackim</h1>
+  <Hero />
+
+  <section id="work" class="home-section container" aria-labelledby="work-title">
+    <span id="portfolio-section" class="legacy-anchor"></span>
     <SectionHeading
       index="01"
       label="Selected work"
       id="work-title"
-      action={{ href: withBase('work/'), text: 'All work →' }}
+      action={{ href: workHref, text: 'All work →' }}
     />
-    <ol class="placeholder__list">
-      {featured.map((project, i) => (
-        <li>
-          <span class="mono-label">{String(i + 1).padStart(2, '0')}</span>
-          <span class="placeholder__title">{project.data.title}</span>
-          <TagList tags={project.data.stack} max={4} label="Stack" />
-        </li>
+    <ProjectGrid projects={featured} />
+  </section>
+
+  <section id="about" class="home-section container" aria-labelledby="about-title">
+    <span id="about-section" class="legacy-anchor"></span>
+    <SectionHeading index="02" label="About" id="about-title" reveal />
+    <div class="about__bio">
+      {site.about.map((paragraph) => (
+        <p>{paragraph}</p>
       ))}
-    </ol>
-    <p class="placeholder__resume">
-      <a href={withBase('files/Resume_General.pdf')}>Résumé · PDF</a>
-    </p>
+    </div>
+    <CapabilityGroups class="about__capabilities" />
+  </section>
+
+  <section id="experience" class="home-section container" aria-labelledby="experience-title">
+    <SectionHeading index="03" label="Experience" id="experience-title" reveal />
+    <ExperienceList entries={site.experience} />
+  </section>
+
+  <section id="earlier-work" class="home-section container" aria-labelledby="earlier-work-title">
+    <SectionHeading
+      index="04"
+      label="Earlier work"
+      id="earlier-work-title"
+      action={{ href: workHref, text: 'Full index →' }}
+      reveal
+    />
+    <ArchiveList items={archive} limit={6} />
+  </section>
+
+  <section
+    id="contact"
+    class="home-section home-section--last container"
+    aria-labelledby="contact-title"
+  >
+    <span id="social-section" class="legacy-anchor"></span>
+    <SectionHeading index="05" label="Contact" id="contact-title" reveal />
+    <ContactBlock />
   </section>
 </BaseLayout>
 
 <style>
-  .placeholder {
-    padding-block: var(--space-section);
+  /* --readout-rail: the date column of Experience and Earlier work. On wider screens the
+     About and Contact text starts at the same offset, so the lower half of the page reads
+     down one text edge while headings, rules and grids keep the container edge. */
+  .home-section {
+    --readout-rail: 9rem;
+    --text-edge: calc(var(--readout-rail) + var(--space-m));
+    padding-block-start: var(--space-section);
+    /* In-page jumps (#work, #about, #contact) land just above the heading, not on the
+       section's top padding (html's scroll-padding already clears the sticky header). */
+    scroll-margin-top: calc(var(--space-l) - var(--space-section));
   }
 
-  .placeholder__list {
+  .home-section--last {
+    padding-block-end: var(--space-section);
+  }
+
+  .legacy-anchor {
+    display: block;
+  }
+
+  .about__bio {
     display: grid;
-    padding: 0;
-    list-style: none;
-  }
-
-  .placeholder__list li {
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: var(--space-2xs) var(--space-s);
-    align-items: baseline;
-    padding-block: var(--space-s);
-    border-block-end: var(--hairline);
-  }
-
-  .placeholder__list li > :global(.tag-list) {
-    grid-column: 2;
-  }
-
-  .placeholder__title {
+    gap: var(--space-s);
+    max-inline-size: var(--measure);
     font-size: var(--step-1);
-    font-weight: 500;
+    line-height: 1.6;
   }
 
-  .placeholder__resume {
-    margin-block-start: var(--space-l);
+  @media (width >= 48rem) {
+    .about__bio,
+    .home-section > :global(.contact) {
+      margin-inline-start: var(--text-edge);
+    }
+  }
+
+  .home-section > :global(.about__capabilities) {
+    margin-block-start: var(--space-2xl);
   }
 </style>
