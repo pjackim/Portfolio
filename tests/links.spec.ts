@@ -59,6 +59,8 @@ test('internal URLs resolve and hash targets exist', async ({ page, request }, t
       }
       return urls;
     }, SOURCES);
+    // Never pass vacuously: every page links somewhere (at least the skip link).
+    expect(found.length, `URLs collected on ${path || 'home'}`).toBeGreaterThan(0);
 
     for (const href of found) {
       const url = new URL(href);
@@ -73,6 +75,9 @@ test('internal URLs resolve and hash targets exist', async ({ page, request }, t
   // Each unique URL once.
   const bodies = new Map<string, string>();
   const urls = [...resources.keys()];
+  expect(urls.length, 'unique internal URLs collected').toBeGreaterThan(0);
+  // The skip link (`#main`) alone guarantees at least one.
+  expect(anchors.size, 'hash links collected').toBeGreaterThan(0);
   for (let i = 0; i < urls.length; i += CONCURRENCY) {
     await Promise.all(
       urls.slice(i, i + CONCURRENCY).map(async (url) => {

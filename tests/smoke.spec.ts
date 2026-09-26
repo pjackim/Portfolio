@@ -22,10 +22,15 @@ declare global {
  */
 const BROWSER_NOISE = [/^Button failed to load, iconName = [\w-]+-placard, /];
 
+/** Console text of a CSP block: WebKit says "Refused to …", Chromium "… violates the
+    following Content Security Policy directive …". */
+const CSP_CONSOLE = /Refused|Content Security Policy/i;
+
 /**
  * Records page errors, console errors and CSP violations from the next navigation on.
- * `missingDocument`: the absolute URL of a page expected to answer 404 — the browser's own
- * "Failed to load resource" console error for that document is not a problem.
+ * `missingDocument`: the absolute URL of a page expected to answer 404 — only the browser's
+ * own "Failed to load resource" error for that document is ignored; anything else the page
+ * logs is still a problem.
  */
 async function watchErrors(
   page: Page,
@@ -35,9 +40,12 @@ async function watchErrors(
   page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
   page.on('console', (message) => {
     const text = message.text();
-    if (missingDocument && message.location().url === missingDocument) return;
-    if (BROWSER_NOISE.some((noise) => noise.test(text))) return;
-    if (message.type() === 'error' || /Refused/i.test(text)) {
+    const expected404 =
+      missingDocument !== undefined &&
+      message.location().url === missingDocument &&
+      /^Failed to load resource/.test(text);
+    if (expected404 || BROWSER_NOISE.some((noise) => noise.test(text))) return;
+    if (message.type() === 'error' || CSP_CONSOLE.test(text)) {
       errors.push(`console.${message.type()}: ${text} (${message.location().url})`);
     }
   });
