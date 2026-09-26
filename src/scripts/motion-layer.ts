@@ -7,8 +7,8 @@
  * request for all of it: split into chunks, the extra early requests cost more than the bytes.
  * Once the page has loaded and painted, when idle, it fetches the code for whatever else the
  * page has: the hero instrument, the card spotlight / section-heading decrypt, and a case
- * study's section index. Everything in those starts after load + idle anyway (spec §0.1), so
- * those requests never compete with first paint or LCP.
+ * study's section index and figure lightbox. Everything in those starts after load + idle anyway
+ * (spec §0.1), so those requests never compete with first paint or LCP.
  */
 import { afterLoadIdle } from './motion';
 import './motion-toggle';
@@ -18,7 +18,7 @@ import './work-filter';
 
 const hasHero = document.querySelector('[data-hero]') !== null;
 const hasInteractions = document.querySelector('[data-section-heading], [data-spotlight]') !== null;
-const hasCase = document.querySelector('[data-case-index]') !== null;
+const hasCase = document.querySelector('[data-case-index], [data-lightbox]') !== null;
 
 // After load, after the next paint, when idle — only then fetch, so these requests never join
 // the first paint's (on a fast connection `load` can precede it).

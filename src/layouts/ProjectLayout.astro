@@ -12,13 +12,15 @@
  * Instruments (interactions spec §4): a reading-progress bar under the sticky header (CSS scroll
  * timeline, decorative); from 72rem, a sticky section index in columns 1–2 (CaseIndex) — built
  * from the Markdown body's `h2`s plus Figures, when there are at least two sections — with `wide`
- * figures then breaking out to the right only (3–12, the same width), clear of it.
+ * figures then breaking out to the right only (3–12, the same width), clear of it; and a figure
+ * lightbox (Lightbox) when the gallery has images.
  */
 import type { MarkdownHeading } from 'astro';
 import Arrow from '../components/Arrow.astro';
 import CaseHeader from '../components/CaseHeader.astro';
 import CaseHero from '../components/CaseHero.astro';
 import CaseIndex, { type CaseIndexItem } from '../components/CaseIndex.astro';
+import Lightbox from '../components/Lightbox.astro';
 import MediaFigure from '../components/media/MediaFigure.astro';
 import PrevNext from '../components/PrevNext.astro';
 import ProjectMeta from '../components/ProjectMeta.astro';
@@ -118,6 +120,7 @@ const indexed = sections.length >= 2;
         </section>
       )}
     </div>
+    {gallery.some((item) => item.kind === 'image') && <Lightbox />}
   </article>
 
   <PrevNext class="case__prev-next container" prev={prev} next={next} />

@@ -1,0 +1,55 @@
+---
+/**
+ * Figure lightbox (interactions spec §4): one native `<dialog>` per case study, filled and opened
+ * by src/scripts/lightbox.ts from any figure image that has a large rendition (MediaFigure's
+ * "Full size" link — the same 2400-wide WebP). It shows that rendition as large as the viewport
+ * allows, with the figure number, the caption, and a close button; Esc, the close button and a
+ * click on the empty stage around the image close it. The image morphs out of (and back into)
+ * its thumbnail — a same-document view transition, while motion is allowed — and targeting
+ * brackets lock on around it once it lands.
+ *
+ * Its accessible name is "Figure n" (`aria-labelledby`), and the caption describes it. Focus goes
+ * to the close button, and back to the figure's link on close; the page behind doesn't scroll.
+ * Without JS it never opens, and the "Full size" link simply opens the image.
+ *
+ * Its styles are src/styles/lightbox.css, which the script imports: they load with it, after the
+ * page (they're only ever needed once it opens), instead of joining the render-blocking CSS.
+ */
+import Arrow from './Arrow.astro';
+---
+
+<dialog
+  class="lightbox"
+  aria-labelledby="lightbox-title"
+  aria-describedby="lightbox-caption"
+  data-lightbox
+>
+  <div class="lightbox__bar">
+    <p class="lightbox__title mono-label" id="lightbox-title">
+      <span aria-hidden="true" data-lightbox-number></span>
+      <span class="visually-hidden" data-lightbox-name></span>
+    </p>
+    <div class="lightbox__actions">
+      <!-- The script gives it the shown figure's href: a link with none isn't one (nor crawlable). -->
+      <template data-lightbox-full>
+        <a class="lightbox__full mono-label">
+          Full size<span class="visually-hidden" data-lightbox-full-name></span>
+          <Arrow dir="up-right" />
+        </a>
+      </template>
+      <button type="button" class="lightbox__close mono-label" data-lightbox-close autofocus>
+        <span class="lightbox__key" aria-hidden="true">
+          Esc
+        </span>
+        Close
+        <svg class="lightbox__x" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M3.75 3.75l8.5 8.5M12.25 3.75l-8.5 8.5"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="lightbox__stage" data-lightbox-stage>
+    <div class="lightbox__frame" data-lightbox-frame></div>
+  </div>
+  <p class="lightbox__caption" id="lightbox-caption" data-lightbox-caption></p>
+</dialog>

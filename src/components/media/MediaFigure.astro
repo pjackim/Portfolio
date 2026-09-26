@@ -7,7 +7,9 @@
  *   `frameMode`: "cover" fills the column; "panel" (smaller than the column, or portrait)
  *   shows it whole at no more than its own size on a `--surface-2` plate; "alpha" puts
  *   transparent art on a fixed light plate. Images shown clearly smaller than their source
- *   (well beyond the column, or portrait plates) get a "Full size" link to a big WebP.
+ *   (well beyond the column, or portrait plates) get a "Full size" link to a big WebP; with JS
+ *   that link, and a click on the image, open it in the case study's lightbox instead
+ *   (Lightbox.astro, src/scripts/lightbox.ts), which marks such figures `data-zoomable`.
  * - video → LoopVideo; youtube → YouTubeFacade.
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
  * grid; this component only marks the figure `figure--wide`).
@@ -60,12 +62,15 @@ const image =
                 layout: 'none',
               })
             : undefined;
+        const fullWidth = Math.min(2400, facts.width);
         return {
           src: item.src,
           alt: item.alt,
           mode,
           widths: candidateWidths(facts.width, COLUMN[column] * 2),
           full: full?.src,
+          fullWidth,
+          fullHeight: Math.round((fullWidth * facts.height) / facts.width),
           style: pageStyle(Astro.locals, { '--image-max': `${facts.width}px` }),
         };
       })()
@@ -75,7 +80,12 @@ const number = pad2(index);
 const caption = item.caption;
 ---
 
-<figure class:list={['figure', wide && 'figure--wide']} data-kind={item.kind} data-reveal>
+<figure
+  class:list={['figure', wide && 'figure--wide']}
+  data-kind={item.kind}
+  data-figure={index}
+  data-reveal
+>
   {image && (
     <div class="figure__frame" data-mode={image.mode} data-style={image.style}>
       <Picture
@@ -115,7 +125,13 @@ const caption = item.caption;
     </span>
     {caption && <span class="figure__text">{caption}</span>}
     {image?.full && (
-      <a class="figure__full" href={image.full}>
+      <a
+        class="figure__full"
+        href={image.full}
+        data-lightbox-trigger
+        data-width={image.fullWidth}
+        data-height={image.fullHeight}
+      >
         Full size<span class="visually-hidden"> of figure {index}</span>
         <Arrow dir="up-right" />
       </a>
@@ -225,6 +241,10 @@ const caption = item.caption;
     .figure__full:hover {
       color: var(--accent);
     }
+  }
+
+  .figure[data-zoomable] .figure__frame :global(img) {
+    cursor: zoom-in;
   }
 
   /* No caption text: "FIG. nn" and the link share one line. */
