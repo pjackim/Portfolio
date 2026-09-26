@@ -6,9 +6,9 @@
  * chips should answer as soon as they show); the footer clock starts after load + idle. One
  * request for all of it: split into chunks, the extra early requests cost more than the bytes.
  * Once the page has loaded and painted, when idle, it fetches the code for whatever else the
- * page has: the hero instrument, and the card spotlight / section-heading decrypt. Everything in
- * those starts after load + idle anyway (spec §0.1), so those requests never compete with first
- * paint or LCP.
+ * page has: the hero instrument, the card spotlight / section-heading decrypt, and a case
+ * study's section index. Everything in those starts after load + idle anyway (spec §0.1), so
+ * those requests never compete with first paint or LCP.
  */
 import { afterLoadIdle } from './motion';
 import './motion-toggle';
@@ -18,14 +18,16 @@ import './work-filter';
 
 const hasHero = document.querySelector('[data-hero]') !== null;
 const hasInteractions = document.querySelector('[data-section-heading], [data-spotlight]') !== null;
+const hasCase = document.querySelector('[data-case-index]') !== null;
 
 // After load, after the next paint, when idle — only then fetch, so these requests never join
 // the first paint's (on a fast connection `load` can precede it).
-if (hasHero || hasInteractions) {
+if (hasHero || hasInteractions || hasCase) {
   const fetchLayer = () =>
     afterLoadIdle(() => {
       if (hasHero) void import('./hero');
       if (hasInteractions) void import('./interactions');
+      if (hasCase) void import('./case');
     }, 300);
   afterLoadIdle(() => requestAnimationFrame(fetchLayer), 300);
 }
