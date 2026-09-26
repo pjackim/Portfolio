@@ -82,30 +82,18 @@ export const site: Site = {
     'and I want my work to be high-impact and in service of my country.',
 
   about: [
-    // index.html:156, résumé (Experience: Freelance Developer); AI practice per the author
-    // (Sept 2026): custom agent harnesses, AI tooling, skills, and AI quality processes.
-    'I am a cyber security researcher and software developer at the Johns Hopkins ' +
-      'University Applied Physics Laboratory. My work sits where offensive security, ' +
-      'systems engineering, and applied AI meet: understanding how software actually ' +
-      'behaves, finding where it breaks, and building the tooling that makes that work ' +
-      'repeatable.',
-    // index.html:176-177, paradox.html:72-76, aes.html:79, résumé (Education; Teacher, iD
-    // Tech), foresthack.html:78/:101, mordhaumod.html:81-82, tripsite.html:79-81,
-    // credential_correlation.html:79/:90-105, 1460ff3^:index.html:148
-    'I started early. At 10 I was designing logos, interfaces, and promotional material ' +
-      'for Paradox, a game-hacking community, and the interface work pulled me into ' +
-      'programming. At 15 I wrote an AES-256 encryption tool for clipboard text, single ' +
-      'files, and whole volumes. I went on to study computer science at Colorado State ' +
-      'University and teach programming for iD Tech. Along the way I instrumented a Unity ' +
-      'game at runtime, built a replicated Unreal Engine 4 game mode, delivered a team ' +
-      'React application under CMMI, and curated a dataset of roughly 120 million ' +
-      'real-world credentials for machine-learning research on credential security.',
-    // Author (Sept 2026)
-    'Today much of my work is building with and around large language models: custom ' +
-      'agent harnesses, developer tooling, reusable skills, and the evaluation and quality ' +
-      'processes that make AI output trustworthy enough to ship. I bring the same ' +
-      'discipline to that work that I bring to security research: assume nothing, verify ' +
-      'everything, and design for the failure case.',
+    // index.html:176-177, paradox.html:72-76, aes.html:79, résumé (Education; Teacher, iD Tech)
+    'I started in graphic design at 10, building interfaces for a game-hacking community, ' +
+      'and the interface work pulled me into programming. At 15 I wrote an AES-256 ' +
+      'encryption tool. I went on to study computer science at Colorado State University ' +
+      'and teach programming for iD Tech, and have been drawn to vulnerabilities and how ' +
+      'they are exploited ever since.',
+    // index.html:156; AI practice per the author (Sept 2026): custom agent harnesses, AI
+    // tooling, skills, and AI quality processes.
+    'Today I work across security research, software engineering, and applied AI: ' +
+      'building agent harnesses, developer tooling, and the quality processes that make ' +
+      'AI output trustworthy enough to ship. Whatever the domain, the approach is the ' +
+      'same: assume nothing, verify everything, design for the failure case.',
   ],
 
   // The focus areas aren't repeated here: the hero's typed FOCUS line carries them.
