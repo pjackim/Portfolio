@@ -661,15 +661,18 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     if (run === running) return;
     const first = running === null;
     running = run;
-    canvas.dataset.state = run ? 'running' : 'static';
+    // Either way a frame is on the canvas when this returns: the current live frame (the loop
+    // continues from the next animation frame) or the static one.
     if (run) {
-      lastNow = performance.now() - MIN_FRAME_MS;
+      draw(true);
+      lastNow = performance.now();
       raf = requestAnimationFrame(frame);
     } else {
       cancelAnimationFrame(raf);
       raf = 0;
       draw(false);
     }
+    canvas.dataset.state = run ? 'running' : 'static';
     // Fade in once the first frame (static or live) is on the canvas.
     if (first) canvas.classList.add('is-ready');
   }
