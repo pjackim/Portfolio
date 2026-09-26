@@ -13,14 +13,18 @@ sourced from the frozen legacy site (commit `d8782d1`) and the résumé PDF.
 
 ## Commands
 
-- `npm ci` — install (Node ≥22.18 locally, 24 in CI; see `.nvmrc`)
+- `npm ci` — install (Node ≥22.18 locally, 24 in CI; see `.nvmrc`). npm is the package manager
+  (`package-lock.json`); a stray `bun.lock` is not part of the project
 - `npm run dev` — dev server at `http://localhost:4321/Portfolio/`
 - `npm run build` — `astro check` + `astro build` → `dist/`; `npm run build:only` skips the
   type check
 - `npm run lint` — `prettier --check .` + `astro check` + `check:media`; `npm run format` to
   autofix Prettier issues
-- `npm run test:e2e` — Playwright (smoke, a11y, links, redirects, media specs) against a local
-  preview of `dist/`; needs a build first
+- `npm run test:e2e` — Playwright specs in `tests/` (chromium, mobile-chrome, webkit projects)
+  against `astro preview` of `dist/`; run `npm run build:only` first. Browsers: `npx playwright
+install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.spec.ts
+--project=chromium` (add `-g "<title>"` to filter). `BASE_URL=<url> npx playwright test
+--grep @prod` runs the post-deploy subset against a live site without a local server
 - `npm run test:lhci` — Lighthouse CI budgets (`lighthouserc.json`)
 - `npm run new -- <slug>` — scaffold a project; `npm run media -- <files...> --project <slug>`
   — encode media into it; `npm run media:migrate` — one-time legacy media import; `npm run
@@ -62,9 +66,17 @@ check:media` — media lint (also part of `lint`)
   Node's native TypeScript type-stripping, so erasable syntax only — no enums/namespaces/param
   properties) and `scripts/new-project.ts` (project scaffolding). `scripts/og/` renders the OG
   card and icons from the shared monogram geometry.
-- **Client JS** — exactly four hand-written scripts: `src/scripts/{theme,video,youtube}.ts`
-  (theme bootstrap/toggle, loop video controller, YouTube facade) plus Astro's built-in hover
-  prefetch. No other client-side JS budget exists; keep total JS ≤30 KB/page.
+- **Client JS** — hand-written modules in `src/scripts/` (theme, motion/motion-toggle,
+  video, youtube, lightbox, work-filter, hero, case-index, etc.), each imported by the
+  component that needs it, plus Astro's built-in hover prefetch. Motion is user-toggleable
+  (`data-motion="off"` on `<html>`, persisted in `localStorage`) on top of
+  `prefers-reduced-motion`. Script budget is 30 KB/page, enforced by `lighthouserc.json`.
+- **Build info** — `src/lib/build-info.ts` derives the footer year from `SOURCE_DATE_EPOCH` or
+  HEAD's commit date (not wall clock), so builds are byte-reproducible; don't introduce
+  `new Date()` into rendered output.
+- **CI** — `.github/workflows/ci.yml` (format, media, check, build, e2e, LHCI),
+  `deploy.yml` (Pages deploy, then `@prod` Playwright against the live URL), `links.yml`
+  (weekly link check).
 
 ## Conventions & gotchas
 
@@ -76,7 +88,7 @@ check:media` — media lint (also part of `lint`)
 - **Media only via the pipeline.** Never hand-encode or commit a raw image/video export — run
   `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy batch).
   Filenames are kebab-case; only WebP images and MP4+WebM+poster videos are allowed under
-  `src/content`; size budgets are enforced by `check:media` (spec-architecture.md §5).
+  `src/content`; size budgets are enforced by `check:media` (`scripts/media/check.ts`).
 - **Content is fact-only.** Everything in `src/data/site.ts`, `src/data/taxonomy.ts`, and every
   project's frontmatter/body must trace to the legacy site (`git show d8782d1:<path>`) or the
   résumé PDF. Never invent accomplishments, metrics, employers, dates, skills, or links; omit
