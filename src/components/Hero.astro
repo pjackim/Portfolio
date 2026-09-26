@@ -208,18 +208,27 @@ const readouts = [
     opacity: 1;
   }
 
-  /* Narrower screens: text fills the column, so the graph keeps to the top-right corner,
-     beside the eyebrow and above the lede — and the canvas is only that top band, not the
-     whole (tall) phone hero, so no pixels are pushed that the mask would hide. */
+  /* Narrower screens: text fills the column, so the graph keeps to the free corner — a band
+     along the top (the hero's padding, above the eyebrow) and a strip down the right edge,
+     beside the eyebrow and the h1 but clear of their ends — and never crosses a line of text.
+     The canvas is only that top band, not the whole (tall) phone hero, so no pixels are pushed
+     that the mask would hide. */
   @media (width < 60rem) {
     .hero__graph {
-      block-size: 20rem;
-      mask-image: radial-gradient(
-        ellipse 64vw 10.5rem at 100% 0%,
-        #000 0%,
-        rgb(0 0 0 / 0.75) 30%,
-        transparent 100%
-      );
+      block-size: 12rem;
+      mask-image:
+        radial-gradient(
+          ellipse 72% 3.25rem at 100% 0%,
+          #000 0%,
+          rgb(0 0 0 / 0.7) 45%,
+          transparent 100%
+        ),
+        radial-gradient(
+          ellipse 32% 11rem at 100% 0%,
+          #000 0%,
+          rgb(0 0 0 / 0.7) 40%,
+          transparent 92%
+        );
     }
   }
 

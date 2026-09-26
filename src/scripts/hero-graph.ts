@@ -14,7 +14,10 @@
  * frame is requested at all. Draws are paced to ~60 fps, and all motion is time-based.
  *
  * Colours come from the design tokens (--line-ui, --text-subtle, --accent), resolved through
- * the canvas's own computed `color`, and are re-read when the scheme changes.
+ * the canvas's own computed `color`, and are re-read when the scheme changes. So is the resting
+ * presence: on the dark ground the hairline grey sits so close to the background that edges and
+ * hosts get a stronger hand than on the light one, so the structure reads in a still frame —
+ * still well behind the text (the CSS mask keeps it off the h1).
  */
 import { motionAllowed, onMotionChange } from './motion';
 
@@ -45,11 +48,20 @@ const FIRST_TRACE_MS = 1400;
 const MAX_TRACES = 2;
 const MIN_HOPS = 3;
 const MAX_HOPS = 6;
-/** Edge alpha: EDGE_NEAR at distance 0 → EDGE_FAR at FADE_FROM·LINK → 0 at LINK. */
+/** Edge alpha: EDGE_NEAR at distance 0 → EDGE_FAR at FADE_FROM·LINK → 0 at LINK (before gain). */
 const EDGE_NEAR = 0.45;
 const EDGE_FAR = 0.2;
 const FADE_FROM = 0.82;
 const BUCKETS = 9;
+/**
+ * Resting presence per scheme: edge alpha × gain, and host size (CSS px). Hosts are drawn
+ * opaque: on the dark ground a 2.4 px host has ~1.6× the ink of the 2 px, 0.9-alpha host it
+ * replaces; the light scheme, where the greys already stand off the ground, gets a smaller bump.
+ */
+const PRESENCE = {
+  dark: { gain: 1.5, node: 2.4 },
+  light: { gain: 1.15, node: 2 },
+} as const;
 const CURSOR_BUCKETS = 4;
 const CURSOR_ALPHA = 0.38;
 /** Share of hosts drawn as hollow "asset" squares rather than plain points. */
@@ -70,7 +82,8 @@ const MAX_DPR = 2;
  * Where hosts drift (the "field"): the part of the canvas the hero's CSS mask opens onto, so
  * none are simulated under the text column for nothing — right of WIDE_FIELD_LEFT × width on
  * wide screens. Below 60rem the canvas itself is only the top band of the hero (Hero.astro),
- * the one part its mask shows, so there the field is the whole canvas.
+ * masked to the corner above and beside the eyebrow and the h1; there the field is the whole
+ * band, so the hosts in view are no denser than on a wide screen's.
  */
 const NARROW = '(width < 60rem)';
 const WIDE_FIELD_LEFT = 0.3;
@@ -126,8 +139,8 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   const edgeB = new Int16Array(MAX_EDGES);
   const edgeBucket = new Uint8Array(MAX_EDGES);
   let edgeCount = 0;
+  /** Stroke alpha per bucket (the scheme's gain applied); buckets are cut before the gain. */
   const bucketAlpha = new Float32Array(BUCKETS);
-  for (let b = 0; b < BUCKETS; b++) bucketAlpha[b] = (EDGE_NEAR * (b + 1)) / BUCKETS;
 
   // Uniform grid: head of each cell's linked list, and the next host in the same cell.
   let cols = 0;
@@ -166,6 +179,8 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   const narrow = matchMedia(NARROW);
   let dpr = 1;
   let colors: Colors = { edge: '#686c72', node: '#8e9398', accent: '#5ed9e6' };
+  let presence: (typeof PRESENCE)[keyof typeof PRESENCE] = PRESENCE.dark;
+  const systemDark = matchMedia('(prefers-color-scheme: dark)');
 
   let clock = 0; // ms of simulated time; advances only while running
   let nextTraceAt = FIRST_TRACE_MS;
@@ -209,6 +224,13 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     style.removeProperty('text-decoration-color');
     style.removeProperty('column-rule-color');
     style.removeProperty('transition-property');
+    // The scheme in use: the toggle's pin, else the system's.
+    const pinned = document.documentElement.dataset.scheme;
+    const dark = pinned === 'dark' || (pinned !== 'light' && systemDark.matches);
+    presence = dark ? PRESENCE.dark : PRESENCE.light;
+    for (let b = 0; b < BUCKETS; b++) {
+      bucketAlpha[b] = Math.min(1, ((EDGE_NEAR * (b + 1)) / BUCKETS) * presence.gain);
+    }
   }
 
   function seed(i: number): void {
@@ -366,7 +388,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
         ? EDGE_NEAR + (EDGE_FAR - EDGE_NEAR) * (q / FADE_FROM)
         : EDGE_FAR * (1 - (q - FADE_FROM) / (1 - FADE_FROM));
     const bucket = Math.min(BUCKETS - 1, Math.floor((alpha / EDGE_NEAR) * BUCKETS));
-    if (alpha < bucketAlpha[0]! * 0.5) return;
+    if (alpha < (EDGE_NEAR / BUCKETS) * 0.5) return;
     edgeA[edgeCount] = i;
     edgeB[edgeCount] = j;
     edgeBucket[edgeCount] = bucket;
@@ -639,10 +661,13 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     }
 
     // Hosts: points, plus hollow squares for the "asset" hosts.
+    const size = presence.node;
+    const half = size / 2;
     ctx.fillStyle = colors.node;
-    ctx.globalAlpha = 0.9;
+    ctx.globalAlpha = 1;
     ctx.beginPath();
-    for (let i = 0; i < count; i++) if (!asset[i]) ctx.rect(rx[i]! - 1, ry[i]! - 1, 2, 2);
+    for (let i = 0; i < count; i++)
+      if (!asset[i]) ctx.rect(rx[i]! - half, ry[i]! - half, size, size);
     ctx.fill();
     ctx.strokeStyle = colors.node;
     ctx.lineWidth = 1;
@@ -720,7 +745,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
     attributes: true,
     attributeFilter: ['data-scheme'],
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', recolor);
+  systemDark.addEventListener('change', recolor);
 
   surface.addEventListener(
     'pointermove',

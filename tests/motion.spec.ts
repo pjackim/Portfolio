@@ -66,13 +66,14 @@ function graphSignature(page: Page): Promise<{ ink: number; hash: number }> {
 
 type Rgb = [number, number, number];
 
-/** Median colour of the canvas's near-opaque pixels: the hosts (drawn at 0.9, edges ≤ 0.45). */
+/** Median colour of the canvas's opaque pixels: the hosts (drawn opaque; edges stay translucent,
+    ≤ 0.68 alpha, even where two cross). */
 function graphNodeColor(page: Page): Promise<Rgb> {
   return page.locator(GRAPH).evaluate((canvas: HTMLCanvasElement) => {
     const { data } = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height);
     const channels: number[][] = [[], [], []];
     for (let i = 0; i < data.length; i += 4) {
-      if (data[i + 3]! < 200) continue;
+      if (data[i + 3]! < 250) continue;
       for (let c = 0; c < 3; c++) channels[c]!.push(data[i + c]!);
     }
     return channels.map((xs) => xs.sort((a, b) => a - b)[xs.length >> 1] ?? -1) as Rgb;
