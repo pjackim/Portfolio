@@ -178,7 +178,7 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
   let fx = 0; // the field the hosts drift in: [fx, w] × [0, h]
   const narrow = matchMedia(NARROW);
   let dpr = 1;
-  let colors: Colors = { edge: '#686c72', node: '#8e9398', accent: '#5ed9e6' };
+  let colors: Colors = { edge: '#686c72', node: '#8e9398', accent: '#f2893d' };
   let presence: (typeof PRESENCE)[keyof typeof PRESENCE] = PRESENCE.dark;
   const systemDark = matchMedia('(prefers-color-scheme: dark)');
 

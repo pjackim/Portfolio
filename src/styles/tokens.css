@@ -28,12 +28,12 @@
   --text-muted-l: oklch(45% 0.01 255); /* #52565b */
   --text-subtle-d: oklch(66% 0.01 255); /* #8e9398 */
   --text-subtle-l: oklch(52% 0.01 255); /* #65696f */
-  --accent-d: oklch(82% 0.11 205); /* #5ed9e6 — "Signal" */
-  --accent-l: oklch(50% 0.085 215); /* #0e6f81 */
-  --accent-hover-d: oklch(88% 0.09 205); /* #8ce9f4 */
-  --accent-hover-l: oklch(42% 0.07 215); /* #0d5665 */
-  --danger-d: oklch(72% 0.15 25); /* #f47b74 — 404 code only */
-  --danger-l: oklch(52% 0.17 25); /* #b63132 */
+  --accent-d: oklch(73% 0.155 53); /* #f2893d — "Signal": orange, after the 2021 site's #f26b1d */
+  --accent-l: oklch(52% 0.145 44); /* #aa460d — burnt orange */
+  --accent-hover-d: oklch(80% 0.135 63); /* #fba95a */
+  --accent-hover-l: oklch(46% 0.128 41); /* #903913 */
+  --danger-d: oklch(66% 0.2 24); /* #f45152 — 404 code only: a true red, darker than the accent */
+  --danger-l: oklch(48% 0.18 22); /* #ac172b */
 
   /* 1a. Colour — composed */
   --bg: light-dark(var(--bg-l), var(--bg-d));

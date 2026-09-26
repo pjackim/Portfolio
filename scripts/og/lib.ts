@@ -30,9 +30,9 @@ export const COLOR = {
   text: '#eff0f2',
   textMuted: '#aeb1b6',
   textSubtle: '#8e9398',
-  accent: '#5ed9e6',
+  accent: '#f2893d',
   textLight: '#15191d',
-  accentLight: '#0e6f81',
+  accentLight: '#aa460d',
 } as const;
 
 export interface MonogramPaint {
