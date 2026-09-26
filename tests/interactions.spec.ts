@@ -456,6 +456,49 @@ for (const [name, setup] of [
   });
 }
 
+/**
+ * Arrow nudges behind the whole gate (Ruling G14): the OS setting alone used to decide, so with
+ * the Motion toggle off an arrow still slid on hover or focus.
+ */
+test.describe('arrow nudges', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  const nudge = (page: Page, selector: string) =>
+    page
+      .locator(selector)
+      .first()
+      .evaluate((el) => getComputedStyle(el.querySelector('.arrow')!).translate);
+
+  for (const motion of ['on', 'off'] as const) {
+    test(`with the Motion toggle ${motion}, arrows ${motion === 'on' ? 'nudge' : 'hold still'}`, async ({
+      page,
+    }) => {
+      if (motion === 'off') await motionOffByToggle(page);
+      const expectNudge = async (selector: string) => {
+        if (motion === 'on') await expect.poll(() => nudge(page, selector)).not.toBe('none');
+        else {
+          await twoFrames(page);
+          expect(await nudge(page, selector)).toBe('none');
+        }
+      };
+      // Keyboard focus: the case study's "next" link.
+      await gotoRel(page, 'work/credential-correlation/');
+      await page.locator('.prev-next__link--next').focus();
+      await expectNudge('.prev-next__link--next');
+      if (!(await finePointer(page))) return;
+      // Hover: the case study's back link, home's contact links, the 404's actions.
+      await page.locator('.case__back').hover();
+      await expectNudge('.case__back');
+      await gotoRel(page, '');
+      await page.locator('.contact__links a').first().hover();
+      await expectNudge('.contact__links a');
+      await gotoRel(page, '404.html');
+      await page.locator('.not-found__actions a:has(.arrow)').hover();
+      await expectNudge('.not-found__actions a:has(.arrow)');
+    });
+  }
+});
+
 test.describe('entrance reveals, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 

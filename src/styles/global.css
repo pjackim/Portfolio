@@ -235,14 +235,18 @@ a {
  * The gate. Motion runs only while the OS allows it AND the site's Motion toggle hasn't
  * switched it off (<html data-motion="off">, applied before first paint by BaseLayout's
  * bootstrap; scripts ask the same question via motionAllowed() in src/scripts/motion.ts).
- * Every motion rule on the site is written inside this one pattern:
+ * Every motion rule on the site — anything that moves, scales, clips, draws or plays an
+ * animation, arrow nudges included, and every transition of the interaction layer — is
+ * written inside this one pattern:
  *
  *   @media (prefers-reduced-motion: no-preference) {
  *     :root:not([data-motion='off']) .thing { … }
  *   }
  *
  * (In a component's scoped <style>, wrap the gate: `:global(:root:not([data-motion='off']))`.)
- * The safety net at the end of this file stops anything that slips through, under either. */
+ * Outside it sit only the base styles' plain colour and opacity fades on hover and focus (links,
+ * buttons, the theme toggle, the media controls): feedback, not motion. The safety net at the
+ * end of this file shortens those, and stops anything that slips through, under either. */
 
 @media (prefers-reduced-motion: no-preference) {
   /* Smooth scrolling only for a same-page #hash link click (Ruling G9): the class is on <html>

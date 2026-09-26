@@ -327,13 +327,14 @@ const indexed = sections.length >= 2;
     }
   }
 
+  /* Motion (the gate, global.css): the back arrow nudges back. */
   @media (prefers-reduced-motion: no-preference) {
-    .case__back :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .case__back :global(.arrow) {
       transition: translate var(--dur-base) var(--ease-out);
     }
 
     @media (hover: hover) {
-      .case__back:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .case__back:hover :global(.arrow) {
         translate: -2px 0;
       }
     }

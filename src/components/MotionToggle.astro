@@ -93,9 +93,6 @@ const { class: className, deferLayer = false } = Astro.props;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
-    transition:
-      color var(--dur-fast) var(--ease-standard),
-      border-color var(--dur-fast) var(--ease-standard);
   }
 
   .motion-toggle[hidden] {
@@ -135,5 +132,15 @@ const { class: className, deferLayer = false } = Astro.props;
 
   .motion-toggle[data-state='on'] .motion-toggle__state {
     color: var(--text);
+  }
+
+  /* Motion (the gate, global.css): the chip eases its colours on hover — so switching motion
+     off never leaves it easing out of the state it just left. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .motion-toggle {
+      transition:
+        color var(--dur-fast) var(--ease-standard),
+        border-color var(--dur-fast) var(--ease-standard);
+    }
   }
 </style>

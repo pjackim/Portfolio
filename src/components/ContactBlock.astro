@@ -120,13 +120,14 @@ const links = [
     letter-spacing: 0.04em;
   }
 
+  /* Motion (the gate, global.css): the arrow nudges toward where it points. */
   @media (prefers-reduced-motion: no-preference) {
-    .contact__links :global(.arrow) {
+    :global(:root:not([data-motion='off'])) .contact__links :global(.arrow) {
       transition: translate var(--dur-base) var(--ease-out);
     }
 
     @media (hover: hover) {
-      .contact__links a:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .contact__links a:hover :global(.arrow) {
         translate: 2px -2px;
       }
     }
