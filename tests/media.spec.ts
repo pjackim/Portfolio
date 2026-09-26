@@ -4,7 +4,9 @@
  * site's Motion toggle off, which pauses a playing loop live and, back on, resumes only a loop
  * the reader hadn't paused), and
  * the YouTube facade on the-forest (nothing requested from YouTube or ytimg until the click,
- * then a titled, focused player). Runs on desktop Chromium and mobile WebKit.
+ * then a titled, focused player). Keyboard focus shows on footage: the loop chip fills with the
+ * accent, and a click-to-play video draws its ring inside the frame. Runs on desktop Chromium
+ * and mobile WebKit.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { gotoRel } from './helpers/routes.ts';
@@ -151,6 +153,51 @@ test.describe('trip-planner loops', () => {
       await page.waitForTimeout(SETTLE_MS);
       expect(await isPaused(video)).toBe(true);
     });
+  });
+});
+
+test.describe('trip-planner video focus, from the keyboard', () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'keyboard focus: desktop Chromium');
+  });
+
+  /** The accent as the page resolves it, read off a probe styled through the CSSOM. */
+  const accent = (page: Page) =>
+    page.evaluate(() => {
+      const probe = document.createElement('i');
+      probe.style.color = 'var(--accent)';
+      document.body.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    });
+
+  // The ring alone would sit on the footage, where no one colour keeps 3:1.
+  test('the Pause / Play chip fills with the accent', async ({ page }) => {
+    await gotoRel(page, 'work/trip-planner/');
+    const toggle = page.locator(`${LOOPS} .video-toggle`).first();
+    await center(toggle);
+    await toggle.focus();
+    expect(await toggle.evaluate((el) => el.matches(':focus-visible'))).toBe(true);
+    await expect(toggle).toHaveCSS('background-color', await accent(page));
+  });
+
+  // The figure frame's overflow clips the video's own ring, so one is drawn inside it.
+  test('a click-to-play video shows a ring inside its frame', async ({ page }) => {
+    await gotoRel(page, 'work/trip-planner/');
+    const wrapper = page.locator('[data-video]:not([data-autoplay])').first();
+    const video = wrapper.locator('video');
+    await expect(video).toHaveJSProperty('controls', true);
+    await center(video);
+    const ring = () =>
+      wrapper.evaluate((el) => {
+        const after = getComputedStyle(el, '::after');
+        return { content: after.content, style: after.borderTopStyle, color: after.borderTopColor };
+      });
+    expect((await ring()).content).toBe('none');
+    await video.focus();
+    expect(await video.evaluate((el) => el.matches(':focus-visible'))).toBe(true);
+    expect(await ring()).toEqual({ content: '""', style: 'solid', color: await accent(page) });
   });
 });
 

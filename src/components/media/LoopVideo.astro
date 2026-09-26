@@ -64,6 +64,24 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     background-color: var(--surface-2);
   }
 
+  /* A focused click-to-play video (native controls): the figure frame's overflow clips the
+     video's own ring, so the ring is drawn inside it, on a page-colour halo that keeps it
+     legible over any footage (as the card reticle's). */
+  .loop-video:has(> video:focus-visible)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--accent);
+    box-shadow: inset 0 0 0 2px var(--bg);
+    pointer-events: none;
+  }
+
+  @media (forced-colors: active) {
+    .loop-video:has(> video:focus-visible)::after {
+      border-color: Highlight;
+    }
+  }
+
   /* Toggle added by the script (no scoping attribute): a solid mono chip in the bottom-right
      corner, 44px tall, same family as the YouTube facade's play chip. */
   .loop-video :global(.video-toggle) {
@@ -113,6 +131,14 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
   /* The label has a fixed width, so Pause ⇄ Play never resizes the chip. */
   .loop-video :global(.video-toggle__label) {
     min-inline-size: 5ch;
+  }
+
+  /* Keyboard focus fills the chip as hover does (as the YouTube chip): the focus ring alone
+     sits on the footage, where no single colour keeps 3:1. */
+  .loop-video :global(.video-toggle:focus-visible) {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: var(--on-accent);
   }
 
   @media (hover: hover) {
