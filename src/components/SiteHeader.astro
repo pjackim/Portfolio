@@ -3,6 +3,8 @@
  * Sticky site header (spec-design-content §2, §3): monogram + wordmark home link, primary
  * nav, theme toggle. Pinned across cross-document view transitions (`site-header`).
  * About/Contact point at the home page anchors so they work from every page.
+ * The monogram's caret blinks on the first page load of a session only (sessionStorage
+ * `caret`); navigations keep the header, so it never re-blinks.
  */
 import { site } from '../data/site';
 import { withBase } from '../lib/url';
@@ -45,6 +47,27 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     </div>
   </div>
 </header>
+
+<script>
+  import { motionAllowed } from '../scripts/motion';
+
+  // First page of the session only, and only if it can move now; the class goes once the five
+  // blinks end, so switching motion off and on later never replays them.
+  try {
+    const monogram = document.querySelector('.site-header .monogram');
+    if (monogram && !sessionStorage.getItem('caret')) {
+      sessionStorage.setItem('caret', '1');
+      if (motionAllowed()) {
+        monogram.classList.add('is-blinking');
+        monogram.addEventListener('animationend', () => monogram.classList.remove('is-blinking'), {
+          once: true,
+        });
+      }
+    }
+  } catch {
+    // Storage blocked: no blink rather than a blink on every page.
+  }
+</script>
 
 <style>
   .site-header {
