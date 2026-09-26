@@ -1,6 +1,7 @@
 /**
  * Smoke: every built page loads cleanly — 200, one h1, title + description, absolute
- * canonical under /Portfolio/, `lang="en"`, and no uncaught errors, console errors or CSP
+ * canonical under /Portfolio/, `lang="en"`, a single hashed CSP `<meta>` covering scripts and
+ * styles with no `unsafe-inline`/`unsafe-eval`, and no uncaught errors, console errors or CSP
  * violations (console "Refused …" messages and `securitypolicyviolation` events). Plus the
  * home page's skip link and theme toggle, and the 404 page. `@prod` tests also run against
  * the deployed site.
@@ -79,6 +80,15 @@ for (const route of ROUTES) {
     const href = (await canonical.getAttribute('href')) ?? '';
     expect(href).toMatch(/^https:\/\//);
     expect(new URL(href).pathname).toBe(`/Portfolio/${route}`);
+
+    // Guards the hash-based CSP itself (astro.config.ts `security.csp`): exactly one policy,
+    // covering scripts and styles, with no escape hatch that would defeat the hashing.
+    const csp = page.locator('meta[http-equiv="content-security-policy"]');
+    await expect(csp).toHaveCount(1);
+    const policy = (await csp.getAttribute('content')) ?? '';
+    expect(policy).toMatch(/(?:^|;)\s*script-src\b/);
+    expect(policy).toMatch(/(?:^|;)\s*style-src\b/);
+    expect(policy).not.toMatch(/unsafe-inline|unsafe-eval/);
 
     expect(await problems()).toEqual([]);
   });
