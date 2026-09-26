@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/mordhaumod.html:68-70, :77-85, :109-118, :126-135, :144-156, :163; index.html:517-519
 title: Hardpoint Game Mode
 summary: A freelance Unreal Engine 4 game mode for Mordhau, commissioned by its competitive community — a moving capture point and team scoring, open-sourced for the community.
 role: Freelance developer
@@ -32,8 +33,6 @@ media:
     title: Hardpoint game mode gameplay
 legacyPaths: [html/Work/mordhaumod.html]
 ---
-
-<!-- Sources: html/Work/mordhaumod.html:68-70, :77-85, :109-118, :126-135, :144-156, :163; index.html:517-519 -->
 
 A replicated Unreal Engine 4 game mode, commissioned by a competitive community and used in its tournaments.
 

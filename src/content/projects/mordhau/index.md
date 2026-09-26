@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/mordhauhack.html:77-79, :90-96, :129, :168, :186-218, :224-228, :234-238; public/files/Resume_General.pdf (Memory Hacking)
 title: Mordhau — Runtime Memory Patching
 summary: A C++ DLL injected into Mordhau's Unreal Engine 4 client that patches memory at runtime to change field-of-view, turn-rate, movement and cooldown limits.
 year: 2021
@@ -22,8 +23,6 @@ media:
     caption: Gameplay options — idle-kick prevention, instant crouch and dodge, dodge for the current class, a wider field of view, and movement while emoting.
 legacyPaths: [html/Work/mordhauhack.html]
 ---
-
-<!-- Sources: html/Work/mordhauhack.html:77-79, :90-96, :129, :168, :186-218, :224-228, :234-238; public/files/Resume_General.pdf (Memory Hacking) -->
 
 Patching a live Unreal Engine 4 game's memory through an injected DLL.
 

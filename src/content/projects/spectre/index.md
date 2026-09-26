@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/spectre.html:70-72, :79-84, :99-117
 title: Spectre
 summary: A personal brand identity inspired by James Bond — a smoke-wreathed octopus mark and wordmarks — made to practice Photoshop and give myself an online identity.
 role: Personal project
@@ -22,7 +23,5 @@ media:
     wide: true
 legacyPaths: [html/Work/spectre.html]
 ---
-
-<!-- Sources: html/Work/spectre.html:70-72, :79-84, :99-117 -->
 
 Spectre is a personal project, inspired by James Bond, that I used to practice Photoshop and to give myself an online identity. The branding centers on an octopus mark trailing smoke, built in Photoshop and Illustrator and set on light and dark backgrounds, alone and beside a wordmark.

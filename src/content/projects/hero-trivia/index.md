@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/hero_trivia.html:69-74, :81-91, :115-125, :134-144, :153-162; index.html:577-579
 title: Hero Trivia
 summary: A rapid prototype of a comic-book trivia crossword for a freelance client — answer a trivia question for each letter of the hint word.
 role: Freelance developer
@@ -22,8 +23,6 @@ media:
     autoplay: true
 legacyPaths: [html/Work/hero_trivia.html]
 ---
-
-<!-- Sources: html/Work/hero_trivia.html:69-74, :81-91, :115-125, :134-144, :153-162; index.html:577-579 -->
 
 Hero Trivia is a rapid prototype: a proof of concept for a rudimentary crossword puzzle built on comic-book data sets. Players are given a hint word and must answer a trivia question for each of its letters, and every game varies so the player is continuously challenged.
 

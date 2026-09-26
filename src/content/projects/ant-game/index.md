@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/ant_game.html:75-77, :84-99, :123-132, :138-150, :159-183, :192-206, :212; public/files/Resume_General.pdf (Ant Game)
 title: Ant Game
 summary: Sculpted, textured and rigged insect models in ZBrush, Substance Painter and Maya, then brought them into Unity for an ant game I made with a friend.
 role: Insect modeling, texturing & rigging
@@ -45,8 +46,6 @@ media:
     title: Ant Game development build in Unity
 legacyPaths: [html/Work/ant_game.html]
 ---
-
-<!-- Sources: html/Work/ant_game.html:75-77, :84-99, :123-132, :138-150, :159-183, :192-206, :212; public/files/Resume_General.pdf (Ant Game) -->
 
 A fascination with the sophistication of ants led me to make an ant game with a friend. We didn't get very far, but we learned a ton about the process because we made almost everything ourselves.
 

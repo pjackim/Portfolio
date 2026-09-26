@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/aes.html:77-79, :86-98, :113; index.html:176-177, :528
 title: AES-256 Encryptor
 summary: A recursive AES-256 encryptor I wrote at 15. Its command-line arguments encrypt clipboard text, single files, or entire volumes with a password.
 year: 2016
@@ -26,16 +27,12 @@ media:
 legacyPaths: [html/Work/aes.html]
 ---
 
-<!-- Sources: html/Work/aes.html:77-79, :86-98, :113; index.html:176-177, :528 -->
-
 A recursive AES-256 encryptor for clipboard text, single files, or whole volumes — written at 15.
+
+Designing user interfaces first piqued my interest in programming, and by 15 I was writing software of my own. This program is one of my first substantial independent projects.
 
 ## What I built
 
-I was 15 when I wrote this program, and it's one of my first substantial independent projects. It uses AES-256 as a recursive directory encryptor: its arguments let users encrypt clipboard text, single files, or entire volumes with the password they provide.
+The program uses AES-256 as a recursive directory encryptor: its arguments let users encrypt clipboard text, single files, or entire volumes with the password they provide.
 
 Building it meant learning to read files, recurse through directories and work with foreign code, writing tests, and using GitHub.
-
-## Outcome & lessons
-
-Designing user interfaces first piqued my interest in programming; by 15 I was writing software of my own, and this encryptor was one of the first substantial results.

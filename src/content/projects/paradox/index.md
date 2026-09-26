@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/paradox.html:70-76, :83-92, :117-126, :135-144, :153-162, :172-173, :184; index.html:176-177, :657-663
 title: Paradox
 summary: Branding, graphical user interfaces, ads and promotional videos for Paradox, a game-hacking group I joined at ten and a pillar of my technical development.
 role: Designer
@@ -30,8 +31,6 @@ media:
     caption: The UI I designed. I couldn't program yet, so I contributed the graphical and design elements.
 legacyPaths: [html/Work/paradox.html]
 ---
-
-<!-- Sources: html/Work/paradox.html:70-76, :83-92, :117-126, :135-144, :153-162, :172-173, :184; index.html:176-177, :657-663 -->
 
 Paradox was a video-game hacking group that offered subscriptions across nearly every gaming platform. I joined when I was ten, and it was a pillar of my technical development.
 

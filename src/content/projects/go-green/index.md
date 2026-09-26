@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/go_green.html:69-71, :82-85, :107-132; public/files/Resume_General.pdf (Education: high school 2015–2019)
 title: Go Green
 summary: A high-school sustainability brochure made in Photoshop, splitting one landscape between a landfill and a clean forest waterfall.
 role: Group project
@@ -21,7 +22,5 @@ media:
     wide: true
 legacyPaths: [html/Work/go_green.html]
 ---
-
-<!-- Sources: html/Work/go_green.html:69-71, :82-85, :107-132; public/files/Resume_General.pdf (Education: high school 2015–2019) -->
 
 A project for a high-school class in which we could choose a topic to present; my group chose sustainability. I made the brochure in Photoshop, starting from a photo of a forest waterfall and turning half of the scene into a landfill.

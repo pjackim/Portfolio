@@ -3,7 +3,7 @@
  * which excludes drafts outside dev and enforces the collection invariants at build time.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { GROUPS, type Group } from '../data/taxonomy';
+import { CAPABILITY_GROUPS, GROUPS, type Group } from '../data/taxonomy';
 import { REMOVED_LEGACY } from './legacy';
 
 export type Project = CollectionEntry<'projects'>;
@@ -24,8 +24,8 @@ const byYearDescThenTitle = (a: Project, b: Project) =>
 
 /**
  * Throws when the collection breaks an invariant: duplicate `order` among featured projects,
- * a legacy path claimed twice (or colliding with a removed page's redirect), or a featured
- * count outside 3–8.
+ * a legacy path claimed twice (or colliding with a removed page's redirect), a featured
+ * count outside 3–8, or a capability "Seen in" slug that isn't a published project id.
  */
 export function validateProjects(projects: readonly Project[]): void {
   const featured = projects.filter((p) => p.data.featured);
@@ -58,6 +58,17 @@ export function validateProjects(projects: readonly Project[]): void {
         throw new Error(`projects: duplicate legacy path ${path} (${other}, ${p.id})`);
       }
       owners.set(path, p.id);
+    }
+  }
+
+  const ids = new Set(projects.map((p) => p.id));
+  for (const group of CAPABILITY_GROUPS) {
+    for (const slug of group.seenIn) {
+      if (!ids.has(slug)) {
+        throw new Error(
+          `taxonomy: CAPABILITY_GROUPS "${group.id}" seenIn "${slug}" is not a published project id`,
+        );
+      }
     }
   }
 }

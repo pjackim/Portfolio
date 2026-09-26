@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/credential_correlation.html:77-79, :86-107, :115-118, :130, :136-144, :150-159, :167-181, :186, :190
 title: Credential Correlation Visualizer
 summary: Scores how strongly a password correlates with its username, to show users a risk that online password-strength checkers miss.
 year: 2023
@@ -41,8 +42,6 @@ media:
     title: Credential Correlation Visualizer demo
 legacyPaths: [html/Work/credential_correlation.html]
 ---
-
-<!-- Sources: html/Work/credential_correlation.html:77-79, :86-107, :115-118, :130, :136-144, :150-159, :167-181, :186, :190 -->
 
 Password checkers grade the password. This grades it against the username.
 

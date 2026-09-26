@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/archlinux.html:76-78, :85-103, :127-136, :144-154
 title: Arch Linux
 summary: I learned Linux from zero by building an Arch Linux desktop and customizing everything in it. My configurations are public on GitHub.
 year: 2020
@@ -21,8 +22,6 @@ links:
   repo: https://github.com/pjackim/dots
 legacyPaths: [html/Work/archlinux.html]
 ---
-
-<!-- Sources: html/Work/archlinux.html:76-78, :85-103, :127-136, :144-154 -->
 
 The goal was to become comfortable using Linux. I love clean interfaces, and I figured that customizing everything would eventually lead to understanding Linux. It worked.
 

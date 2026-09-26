@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/tripsite.html:77-82, :88-110, :138-147, :155-165, :172-184, :192-205, :213-226, :234-244, :252-262; public/files/Resume_General.pdf (Trip Planner)
 title: Trip Planner
 summary: A team-built React trip planner for CSU's CS 314, developed under CMMI on an existing codebase, with database search, cross-team interoperability and trip optimization.
 role: Team project
@@ -10,11 +11,11 @@ order: 3
 capabilities: [engineering-practice]
 stack: [React, Reactstrap, GitHub, ZenHub, Code Climate, SCRUM]
 highlights:
-  - 'Applied CMMI: configuration and change management, baselines, record keeping, integrity and maintainability audits, integration strategies and peer evaluation.'
+  - 'Our team applied CMMI: configuration and change management, baselines, record keeping, integrity and maintainability audits, and peer evaluation.'
   - Database search that queries efficiently and filters results by place type and country.
   - A front end that follows shared protocols to work with any team's back end, demonstrated against another team's server.
-  - Went above and beyond with browser storage that keeps loaded trips and download preferences.
-  - Traveling Salesman trip optimization, built to the requirement of optimizing any size trip in under a second.
+  - My team went above and beyond with browser storage that keeps loaded trips and download preferences.
+  - Traveling Salesman trip optimization, built against the requirement to optimize any size trip in under a second.
 cover: ./cover.webp
 coverAlt: Trip Planner map in the T22 2 Eazy app, with a multi-stop trip drawn in blue lines across the world and a place pop-up.
 media:
@@ -50,8 +51,6 @@ media:
 legacyPaths: [html/Work/tripsite.html]
 ---
 
-<!-- Sources: html/Work/tripsite.html:77-82, :88-110, :138-147, :155-165, :172-184, :192-205, :213-226, :234-244, :252-262; public/files/Resume_General.pdf (Trip Planner) -->
-
 A team-built React trip planner, developed under CMMI and built to work with any other team's back end.
 
 ## Problem
@@ -71,7 +70,7 @@ With my team, on the existing codebase:
 - **Database search.** Places come from a database, queried efficiently with filters applied to the query — one of the most rewarding parts of the project, because it put practical information in front of users.
 - **Interoperability.** Each team followed shared protocols so any team's front end could work with any team's back end, and vice versa. The interoperability recording shows our front end connected to another team's back end.
 - **Storage.** Users can save and load trips. We went above and beyond and added browser storage that keeps loaded trips and download preferences.
-- **Trip optimization.** The classic Traveling Salesman problem, implemented to meet the requirement of optimizing any size trip in under a second — good practice in testing and efficient resource usage.
+- **Trip optimization.** The classic Traveling Salesman problem, built against the requirement to optimize any size trip in under a second — good practice in testing and efficient resource usage.
 
 ## Outcome & lessons
 

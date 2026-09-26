@@ -1,4 +1,5 @@
 ---
+# Sources: html/Work/nodes.html:70-72, :79-88, :103, :109
 title: Nodes
 summary: A team concept for a responsibility-management bracelet, shaped by iterative design around users' pain points.
 role: Team project
@@ -17,8 +18,6 @@ media:
     wide: true
 legacyPaths: [html/Work/nodes.html]
 ---
-
-<!-- Sources: html/Work/nodes.html:70-72, :79-88, :103, :109 -->
 
 Nodes was a team-based project built around iterative design and users' pain points. Our final product was a responsibility-management bracelet: each bead is a button that completes a task, and its colored ring shows whether that task is completed, in progress, to do or unassigned.
 
