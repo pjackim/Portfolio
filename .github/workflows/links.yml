@@ -1,0 +1,41 @@
+# Weekly external link check of the built site. Internal links and assets are covered by
+# tests/links.spec.ts on every PR; this only reports rot in outbound links, so it never fails.
+# `--root-dir` turns the site's root-relative links (/Portfolio/…) into file: URIs, which the
+# http(s)-only scheme filter then skips — without it lychee reports each one as an error.
+name: Links
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build:only
+      - name: Check external links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --root-dir ${{ github.workspace }}/dist
+            --scheme https
+            --scheme http
+            --exclude 'linkedin\.com'
+            --accept 200,429
+            --no-progress
+            'dist/**/*.html'
+          fail: false
