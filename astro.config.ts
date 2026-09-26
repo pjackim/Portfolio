@@ -14,6 +14,9 @@ export default defineConfig({
   compressHTML: true,
   image: { layout: 'constrained', responsiveStyles: true },
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },
+  // Shiki colours code blocks with inline style attributes, which the CSP below forbids; code
+  // stays plain, styled by prose.css.
+  markdown: { syntaxHighlight: false },
   integrations: [sitemap({ filter: (p) => !p.includes('/html/Work/') })],
   // Fonts API: local provider → `<Font cssVariable=… />` emits the @font-face rules, the
   // `--font-sans` / `--font-mono` variables and metric-matched fallbacks (Arial / Courier New).
@@ -53,5 +56,23 @@ export default defineConfig({
       },
     },
   ],
-  // security.csp added in the SEO/CSP task
+  // Content-Security-Policy as a <meta> on every page (spec-architecture §6). Astro adds
+  // `script-src` / `style-src` with 'self' plus the hash of every script and style it bundles
+  // or inlines; BaseLayout adds the hashes of the elements it inlines by hand. No
+  // 'unsafe-inline' or 'unsafe-eval' anywhere: per-element values go through
+  // src/lib/page-style.ts instead of style attributes.
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "media-src 'self'",
+        "font-src 'self'",
+        'frame-src https://www.youtube-nocookie.com',
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'none'",
+      ],
+    },
+  },
 });

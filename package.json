@@ -18,6 +18,7 @@
     "media": "node scripts/media/build.ts",
     "media:migrate": "node scripts/media/migrate.ts",
     "new": "node scripts/new-project.ts",
+    "og": "node scripts/og/render-default.ts && node scripts/og/render-icons.ts",
     "test:e2e": "playwright test",
     "test:lhci": "lhci autorun",
     "ci": "npm run lint && npm run build:only && npm run test:e2e"

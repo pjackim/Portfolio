@@ -9,6 +9,7 @@
  */
 import { getImage } from 'astro:assets';
 import { videoSources } from '../../lib/media';
+import { pageStyle } from '../../lib/page-style';
 
 interface Props {
   projectId: string;
@@ -29,6 +30,7 @@ const posterImage = await getImage({
 });
 const width = Number(posterImage.attributes.width ?? poster.width);
 const height = Number(posterImage.attributes.height ?? poster.height);
+const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` });
 ---
 
 <div class="loop-video" data-video data-autoplay={autoplay || undefined}>
@@ -42,7 +44,7 @@ const height = Number(posterImage.attributes.height ?? poster.height);
     aria-label={alt}
     width={width}
     height={height}
-    style={{ aspectRatio: `${width} / ${height}` }}
+    data-style={style}
   >
     <source src={webm} type='video/webm; codecs="vp9"' />
     <source src={mp4} type="video/mp4" />

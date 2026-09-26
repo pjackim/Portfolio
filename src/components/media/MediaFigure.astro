@@ -16,6 +16,7 @@ import { getImage, Picture } from 'astro:assets';
 import { pad2 } from '../../lib/format';
 import { candidateWidths, frameMode, imageFacts } from '../../lib/images';
 import type { MediaItem } from '../../lib/media';
+import { pageStyle } from '../../lib/page-style';
 import Arrow from '../Arrow.astro';
 import LoopVideo from './LoopVideo.astro';
 import YouTubeFacade from './YouTubeFacade.astro';
@@ -61,9 +62,9 @@ const image =
           src: item.src,
           alt: item.alt,
           mode,
-          maxWidth: facts.width,
           widths: candidateWidths(facts.width, COLUMN[column] * 2),
           full: full?.src,
+          style: pageStyle(Astro.locals, { '--image-max': `${facts.width}px` }),
         };
       })()
     : undefined;
@@ -74,11 +75,7 @@ const caption = item.caption;
 
 <figure class:list={['figure', wide && 'figure--wide']} data-kind={item.kind}>
   {image && (
-    <div
-      class="figure__frame"
-      data-mode={image.mode}
-      style={{ '--image-max': `${image.maxWidth}px` }}
-    >
+    <div class="figure__frame" data-mode={image.mode} data-style={image.style}>
       <Picture
         src={image.src}
         formats={['avif', 'webp']}

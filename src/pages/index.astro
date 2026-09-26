@@ -15,6 +15,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import { site } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getFeatured, getHomeArchive } from '../lib/projects';
+import { personJsonLd } from '../lib/seo';
 import { withBase } from '../lib/url';
 
 const [featured, archive] = await Promise.all([getFeatured(), getHomeArchive()]);
@@ -24,6 +25,7 @@ const workHref = withBase('work/');
 <BaseLayout
   title="Parker Jackim — Cyber Security Researcher"
   description="Portfolio of Parker Jackim: reverse engineering, credential-security ML, Unreal Engine networking, and React engineering."
+  jsonLd={personJsonLd(featured)}
 >
   <Hero />
 

@@ -9,6 +9,7 @@
 import { Picture } from 'astro:assets';
 import { candidateWidths, imageFacts } from '../../lib/images';
 import { youtubePoster } from '../../lib/media';
+import { pageStyle } from '../../lib/page-style';
 
 interface Props {
   projectId: string;
@@ -42,14 +43,13 @@ const {
 
 const poster = youtubePoster(projectId, videoId);
 const facts = await imageFacts(poster);
+const style = transitionName
+  ? pageStyle(Astro.locals, { 'view-transition-name': transitionName })
+  : undefined;
 const watchUrl = `https://www.youtube.com/watch?v=${videoId}${start ? `&t=${start}s` : ''}`;
 ---
 
-<div
-  class:list={['yt-frame', className]}
-  id={frameId}
-  style={transitionName ? { viewTransitionName: transitionName } : undefined}
->
+<div class:list={['yt-frame', className]} id={frameId} data-style={style}>
   <a
     class="yt"
     href={watchUrl}

@@ -19,6 +19,7 @@ import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
 import { coverYouTube } from '../lib/media';
 import { getFeatured, getPrevNext, type Project } from '../lib/projects';
+import { coverOgImage, creativeWorkJsonLd } from '../lib/seo';
 import { withBase } from '../lib/url';
 import BaseLayout from './BaseLayout.astro';
 
@@ -29,10 +30,11 @@ interface Props {
 const { project } = Astro.props;
 const { id, data } = project;
 
-const [featured, { prev, next }, heroVideo] = await Promise.all([
+const [featured, { prev, next }, heroVideo, ogImage] = await Promise.all([
   getFeatured(),
   getPrevNext(id),
   coverYouTube(project),
+  coverOgImage(project),
 ]);
 const position = featured.findIndex((p) => p.id === id);
 const kind = position === -1 ? 'Archive' : `Case study ${pad2(position + 1)}`;
@@ -40,7 +42,13 @@ const keyPoints = data.featured ? data.highlights : [];
 const gallery = data.media.filter((item) => item !== heroVideo);
 ---
 
-<BaseLayout title={`${data.title} — Parker Jackim`} description={data.summary} ogType="article">
+<BaseLayout
+  title={`${data.title} — Parker Jackim`}
+  description={data.summary}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={creativeWorkJsonLd(project, ogImage)}
+>
   <link slot="head" rel="expect" href="#case-hero" blocking="render" />
 
   <article class="case container">

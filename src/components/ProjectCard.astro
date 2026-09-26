@@ -18,6 +18,7 @@ import { Picture } from 'astro:assets';
 import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2, projectDate } from '../lib/format';
 import { candidateWidths, frameMode, imageFacts } from '../lib/images';
+import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
@@ -39,6 +40,11 @@ const { id, data } = project;
 const facts = await imageFacts(data.cover);
 const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
 const mode = frameMode(facts, 800);
+const style = pageStyle(Astro.locals, {
+  'view-transition-name': `cover-${id}`,
+  '--cover-position': data.coverPosition ?? 'center',
+  '--cover-max': `${facts.width}px`,
+});
 
 const href = withBase(`work/${id}/`);
 // The arrow stays glued to the title's last word (never wraps onto a line of its own).
@@ -48,15 +54,7 @@ const titleHead = words.join(' ');
 ---
 
 <li class="card" data-reveal={reveal || undefined}>
-  <div
-    class="card__media"
-    data-mode={mode}
-    style={{
-      viewTransitionName: `cover-${id}`,
-      '--cover-position': data.coverPosition ?? 'center',
-      '--cover-max': `${facts.width}px`,
-    }}
-  >
+  <div class="card__media" data-mode={mode} data-style={style}>
     <Picture
       src={data.cover}
       formats={['avif', 'webp']}

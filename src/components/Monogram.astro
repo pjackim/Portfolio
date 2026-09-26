@@ -1,13 +1,13 @@
 ---
 /**
  * "pj" monogram with an accent cursor block (spec-design-content §2, §3). Decorative: the
- * surrounding link carries the accessible name. Drawn on a 22×18 unit grid with 2-unit
- * strokes, so at the default size (18px tall) every stem lands on whole pixels.
- *
- * Grid: j dot 0–2 · x-height 4–14 (baseline 14) · descender to 18 · cursor full height.
- * The x-height band is vertically centred in the box, so `align-items: center` next to Geist
- * caps lines the bowl up with the cap height.
+ * surrounding link carries the accessible name. Geometry lives in `src/lib/monogram.ts` (shared
+ * with the favicon and OG card); at the default size (18px tall) every stem lands on whole
+ * pixels. The x-height band is vertically centred in the box, so `align-items: center` next to
+ * Geist caps lines the bowl up with the cap height.
  */
+import { MONOGRAM } from '../lib/monogram';
+
 interface Props {
   /** Rendered height in CSS px; width follows the 22:18 grid. */
   size?: number;
@@ -15,24 +15,33 @@ interface Props {
 }
 
 const { size = 18, class: className } = Astro.props;
-const width = Math.round((size * 22) / 18);
+const width = Math.round((size * MONOGRAM.width) / MONOGRAM.height);
+const { cursor } = MONOGRAM;
 ---
 
 <svg
   class:list={['monogram', className]}
-  viewBox="0 0 22 18"
+  viewBox={`0 0 ${MONOGRAM.width} ${MONOGRAM.height}`}
   width={width}
   height={size}
   aria-hidden="true"
   focusable="false"
 >
-  <g fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M1 5h5a4 4 0 0 1 0 8H1"></path>
-    <path d="M15 4v9a4 4 0 0 1-4 4H9"></path>
+  <g fill="none" stroke="currentColor" stroke-width={MONOGRAM.strokeWidth}>
+    {MONOGRAM.strokes.map((d) => (
+      <path d={d} />
+    ))}
   </g>
-  <rect x="0" y="4" width="2" height="14" fill="currentColor"></rect>
-  <rect x="14" y="0" width="2" height="2" fill="currentColor"></rect>
-  <rect class="monogram__cursor" x="19" y="0" width="3" height="18"></rect>
+  {MONOGRAM.rects.map((r) => (
+    <rect x={r.x} y={r.y} width={r.width} height={r.height} fill="currentColor" />
+  ))}
+  <rect
+    class="monogram__cursor"
+    x={cursor.x}
+    y={cursor.y}
+    width={cursor.width}
+    height={cursor.height}
+  />
 </svg>
 
 <style>

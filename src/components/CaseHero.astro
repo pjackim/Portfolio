@@ -10,6 +10,7 @@
 import { Picture } from 'astro:assets';
 import { candidateWidths, frameMode, imageFacts } from '../lib/images';
 import type { YouTubeItem } from '../lib/media';
+import { pageStyle } from '../lib/page-style';
 import type { Project } from '../lib/projects';
 import YouTubeFacade from './media/YouTubeFacade.astro';
 
@@ -29,6 +30,13 @@ const SIZES = '(min-width: 1232px) 1152px, 100vw';
 
 const facts = await imageFacts(data.cover);
 const mode = frameMode(facts, 1000);
+const style = video
+  ? undefined
+  : pageStyle(Astro.locals, {
+      'view-transition-name': transitionName,
+      '--cover-position': data.coverPosition ?? 'center',
+      '--cover-max': `${facts.width}px`,
+    });
 ---
 
 {video ? (
@@ -54,16 +62,7 @@ const mode = frameMode(facts, 1000);
     )}
   </figure>
 ) : (
-  <div
-    class="case-hero case-hero__frame"
-    id={HERO_ID}
-    data-mode={mode}
-    style={{
-      viewTransitionName: transitionName,
-      '--cover-position': data.coverPosition ?? 'center',
-      '--cover-max': `${facts.width}px`,
-    }}
-  >
+  <div class="case-hero case-hero__frame" id={HERO_ID} data-mode={mode} data-style={style}>
     <Picture
       src={data.cover}
       formats={['avif', 'webp']}
