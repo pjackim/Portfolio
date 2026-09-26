@@ -35,6 +35,11 @@ lint` (format + type-check + media lint), `npm run test:e2e` (Playwright), `npm 
    `draft: false`.
 4. `npm run lint && npm run build` locally, then open a PR against `master`.
 
+Drafts are still schema-validated at build — `draft: true` only hides a project outside
+`astro dev`, it doesn't skip validation. A draft needs a valid `cover` and every media file its
+frontmatter references, or the build fails; run step 2 to add that project's media before the
+next `npm run build`.
+
 Case studies conventionally use `## Problem`, `## Approach`, `## What I built`,
 `## Outcome & lessons` as body headings — omit any section the source material doesn't support.
 
@@ -102,6 +107,11 @@ All three run in `.github/workflows/ci.yml` on every PR to `master` (Lighthouse 
 Push or merge to `master` → **Actions** → `Deploy` builds, publishes to Pages, and smoke-tests
 the live URL (`.github/workflows/deploy.yml`). The repo's Pages source must be set to **GitHub
 Actions** (Settings → Pages), not "Deploy from a branch".
+
+Rollback: `git revert -m 1 <merge-commit>` on `master` redeploys the legacy site only if the
+Pages-passthrough workflow (PR A) was merged to `master` first — the revert then restores that
+commit's `deploy.yml` and the Pages source stays "GitHub Actions". Otherwise, revert and then
+switch the repo's Pages source back to "Deploy from a branch: master /".
 
 `gh` in this repo defaults to the upstream `j4ck1m/Portfolio`, not this fork — pass
 `--repo pjackim/Portfolio` on every `gh` command, e.g. `gh run list --repo pjackim/Portfolio`.
