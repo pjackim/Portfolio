@@ -32,6 +32,7 @@ declare global {
     __vtFilter?: ('add' | 'remove')[];
     __filterShifts?: number[];
     __capability?: (string | null)[];
+    __vts?: ViewTransition[];
     __loadYs?: number[];
     __scrollYs?: number[];
   }
@@ -486,6 +487,57 @@ test.describe('figure lightbox', () => {
       });
     });
   }
+
+  test.describe('motion on', () => {
+    test.use({ reducedMotion: 'no-preference' });
+
+    test('Esc during the opening morph still closes with a morph', async ({ page }) => {
+      await page.addInitScript(() => {
+        const start = Document.prototype.startViewTransition;
+        if (typeof start !== 'function') return;
+        window.__vts = [];
+        Document.prototype.startViewTransition = function (this: Document, update) {
+          const vt = start.call(this, update);
+          window.__vts!.push(vt);
+          return vt;
+        } as typeof start;
+      });
+      await ready(page);
+      test.skip(!(await page.evaluate(() => Array.isArray(window.__vts))), 'no view transitions');
+      const link = page.locator(`${FIGURE} a[data-lightbox-trigger]`).first();
+      await page.locator(`${FIGURE} img`).first().click();
+      // Hold the opening morph mid-flight, then press Esc.
+      await page.evaluate(async () => {
+        await window.__vts!.at(-1)!.ready;
+        for (const animation of document.getAnimations()) animation.pause();
+      });
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.keyboard.press('Escape');
+      const morphs = await page.evaluate(async () => {
+        await window.__vts!.at(-1)!.ready;
+        return {
+          transitions: window.__vts!.length,
+          image: document
+            .getAnimations()
+            .some(
+              (a) =>
+                (a.effect as KeyframeEffect | null)?.pseudoElement ===
+                '::view-transition-group(lightbox-image)',
+            ),
+        };
+      });
+      expect(morphs).toEqual({ transitions: 2, image: true });
+      await expect(page.locator('dialog[data-lightbox]')).not.toHaveAttribute('open');
+      await expect(link).toBeFocused();
+      await expect(page.locator('html')).not.toHaveClass(/lightbox-open|vt-lightbox/);
+      for (const img of [
+        page.locator(`${FIGURE} img`).first(),
+        page.locator('dialog[data-lightbox] img'),
+      ]) {
+        await expect(img).toHaveCSS('view-transition-name', 'none');
+      }
+    });
+  });
 
   test('opens from the Full size link with Enter; the close button closes it', async ({ page }) => {
     await ready(page);

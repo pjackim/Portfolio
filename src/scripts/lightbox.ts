@@ -76,7 +76,8 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
     thumb.naturalWidth > 0 &&
     onScreen(thumb);
 
-  /** Runs `update` as a view transition with `vt-lightbox` on; `after` once it's over. */
+  /** Runs `update` as a view transition with `vt-lightbox` on; `after` once it's over, unless a
+      newer transition took over (whose own update clears what this one named). */
   const morph = (update: () => void | Promise<void>, after: () => void): boolean => {
     root.classList.add(VT_CLASS);
     let vt: ViewTransition;
@@ -91,9 +92,11 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
     vt.finished
       .catch(() => {})
       .finally(() => {
-        after();
+        // Superseded — Esc during the opening morph starts the closing one: that transition
+        // owns the names and the class now, and this cleanup would strip the name it needs.
         if (running !== vt) return;
         running = null;
+        after();
         root.classList.remove(VT_CLASS);
       });
     return true;
