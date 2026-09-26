@@ -120,7 +120,7 @@ async function recordFocusStates(page: Page): Promise<void> {
 
 /** Holds back the motion layer (and so the hero code) by `ms`, as a slow connection would. */
 async function delayMotionLayer(page: Page, ms: number): Promise<void> {
-  await page.route('**/_astro/MotionToggle*.js', async (route) => {
+  await page.route('**/_astro/MotionLayer*.js', async (route) => {
     await new Promise((resolve) => setTimeout(resolve, ms));
     await route.continue();
   });

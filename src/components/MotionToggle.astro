@@ -3,7 +3,7 @@
  * Site-wide Motion toggle chip (interactions spec §1): `MOTION ● ON` / `MOTION ○ OFF`, or
  * `MOTION ○ OFF (SYSTEM)` (disabled, described) when the OS asks for reduced motion. Drop it in
  * anywhere; every instance on a page drives and mirrors the same setting (see
- * src/scripts/motion-toggle.ts, loaded through src/scripts/motion-layer.ts).
+ * src/scripts/motion-toggle.ts, loaded through the page's one motion-layer entry, MotionLayer).
  *
  * No layout shift (spec §0.6): the chip is rendered `hidden` until that script runs, and its
  * width depends on its state. So the slot holds an invisible, `aria-hidden` ghost of the widest
@@ -11,6 +11,8 @@
  * the reveal nor a state change can move or re-wrap anything around it. The chip sits at the
  * slot's inline end (pass a class to override). With scripting off the slot collapses.
  */
+import MotionLayer from './MotionLayer.astro';
+
 interface Props {
   class?: string;
 }
@@ -44,7 +46,7 @@ const { class: className } = Astro.props;
 </span>
 
 <!-- Wired by the motion layer, one module per page whatever renders it (src/scripts/motion-toggle.ts). -->
-<script src="../scripts/motion-layer.ts"></script>
+<MotionLayer />
 
 <style>
   .motion-toggle-slot {

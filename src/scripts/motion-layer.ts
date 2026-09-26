@@ -1,9 +1,9 @@
 /**
- * The motion layer's one entry per page (interactions spec §1–§2), loaded by MotionToggle.astro
- * (Astro emits it once per page however many chips render; the hero always renders one). It
- * wires every Motion toggle chip straight away and, on a page with the hero, fetches the hero
- * instrument's code only once the page has loaded and painted — everything in it starts after
- * load + idle anyway (spec §0.1), so it never competes with first paint or LCP.
+ * The motion layer's one entry per page (interactions spec §1–§3), loaded by MotionLayer.astro
+ * (Astro emits it once per page however many components render that). It wires every Motion
+ * toggle chip straight away and, on a page with the hero, fetches the hero instrument's code only
+ * once the page has loaded and painted — everything in it starts after load + idle anyway (spec
+ * §0.1), so it never competes with first paint or LCP.
  */
 import { afterLoadIdle } from './motion';
 import './motion-toggle';
