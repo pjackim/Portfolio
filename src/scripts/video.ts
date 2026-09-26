@@ -80,11 +80,7 @@ if (loops.size > 0) {
       for (const entry of entries) {
         const loop = loops.get(entry.target);
         if (!loop) continue;
-        // "Half visible" — or, for a video taller than twice the viewport, filling half of it.
-        const viewport = entry.rootBounds?.height ?? innerHeight;
-        loop.visible =
-          entry.isIntersecting &&
-          (entry.intersectionRatio >= 0.5 || entry.intersectionRect.height >= viewport / 2);
+        loop.visible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
         if (loop.visible) autoplay(loop);
         else pause(loop);
       }
