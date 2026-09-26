@@ -1,5 +1,9 @@
 ---
+import { getFeatured } from '../lib/projects';
 import { withBase } from '../lib/url';
+
+// Temporary proof that the project collection loads; Task 6 replaces this page.
+const featured = await getFeatured();
 ---
 
 <!doctype html>
@@ -12,5 +16,10 @@ import { withBase } from '../lib/url';
   <body>
     <h1>Parker Jackim</h1>
     <a href={withBase('files/Resume_General.pdf')}>Résumé</a>
+    <ul>
+      {featured.map((project) => (
+        <li>{project.data.title}</li>
+      ))}
+    </ul>
   </body>
 </html>
