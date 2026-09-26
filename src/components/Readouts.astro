@@ -1,7 +1,7 @@
 ---
 /**
- * Instrument readouts (interactions spec §2), e.g. `15 PROJECTS · 06 CASE STUDIES · ~120M
- * CREDENTIALS ANALYZED` — the successor to the 2021 site's counter-up.
+ * Instrument readouts (interactions spec §2), e.g. `15 PROJECTS · 06 CASE STUDIES` — the
+ * successor to the 2021 site's counter-up.
  *
  * Every digit is a clipped reel of 0–9 twice over (one text node, wrapped one digit per line),
  * parked by CSS on its value in the second turn, so the static (SSR, no-JS, motion-off) state
@@ -11,7 +11,7 @@
  * text (`spoken`) sits in a visually hidden twin. Tabular mono digits: widths never change.
  */
 export interface Readout {
-  /** As displayed, e.g. "06" or "~120M"; digits roll, other characters stay put. */
+  /** As displayed, e.g. "06"; digits roll, other characters stay put. */
   value: string;
   label: string;
   /** What assistive tech reads, e.g. "6 case studies". */

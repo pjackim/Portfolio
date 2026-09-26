@@ -1,8 +1,12 @@
 ---
 /**
- * Contact (spec-design-content §2, §5f): one line, the email as a large mono mailto link, then
- * GitHub · LinkedIn · Résumé. No form, no phone.
+ * Contact (spec-design-content §2, §5f): the profile photo, then one line, the email as a large
+ * mono mailto link, then GitHub · LinkedIn · Résumé. No form, no phone. The photo is the legacy
+ * site's contact selfie (d8782d1:Images/self/canyonSelfie.JPG), cropped square like it was there.
+ * It sits beside the text from `--contact-photo` up and above it on phones.
  */
+import { Picture } from 'astro:assets';
+import portrait from '../assets/profile/parker-jackim.webp';
 import { site } from '../data/site';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
@@ -20,31 +24,72 @@ const links = [
 ---
 
 <div class:list={['contact', className]}>
-  <p class="contact__lead">Email is the fastest way to reach me.</p>
-  <p class="contact__email">
-    <a href={`mailto:${site.email}`}>{site.email}</a>
-  </p>
-  <ul class="contact__links" role="list">
-    {links.map(({ href, label, meta }) => (
-      <li>
-        <a href={href} rel={meta ? 'noopener' : undefined}>
-          <span class="contact__label">{label}</span>
-          {meta && (
-            <span class="contact__meta">
-              <span aria-hidden="true">·</span> {meta}
-            </span>
-          )}
-          <Arrow dir="up-right" />
-        </a>
-      </li>
-    ))}
-  </ul>
+  <Picture
+    src={portrait}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={[192, 288, 384]}
+    sizes="(width >= 48rem) 9rem, 6rem"
+    alt={`${site.name}, smiling, in a sandstone canyon`}
+    class="contact__photo"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="contact__body">
+    <p class="contact__lead">Email is the fastest way to reach me.</p>
+    <p class="contact__email">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+    <ul class="contact__links" role="list">
+      {links.map(({ href, label, meta }) => (
+        <li>
+          <a href={href} rel={meta ? 'noopener' : undefined}>
+            <span class="contact__label">{label}</span>
+            {meta && (
+              <span class="contact__meta">
+                <span aria-hidden="true">·</span> {meta}
+              </span>
+            )}
+            <Arrow dir="up-right" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
 </div>
 
 <style>
+  /* Phones: photo above the text. From 48rem the photo takes a `--contact-photo` column (the
+     home page sets it to the readout rail, so the text keeps the page's text edge). */
   .contact {
     display: grid;
     gap: var(--space-m);
+    align-items: start;
+  }
+
+  .contact__body {
+    display: grid;
+    gap: var(--space-m);
+    min-inline-size: 0;
+  }
+
+  .contact__photo {
+    inline-size: 6rem;
+    block-size: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-s);
+    background-color: var(--surface-2);
+  }
+
+  @media (width >= 48rem) {
+    .contact {
+      grid-template-columns: var(--contact-photo, 9rem) minmax(0, 1fr);
+    }
+
+    .contact__photo {
+      inline-size: 100%;
+    }
   }
 
   .contact__lead {

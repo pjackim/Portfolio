@@ -318,7 +318,7 @@ test.describe('section headings, motion on', () => {
     await expect(section).toHaveAccessibleName('About');
     const counts = (await page.evaluate(() => window.__count)) ?? [];
     expect(counts[0]).toBe('00');
-    expect(counts.at(-1)).toBe('02');
+    expect(counts.at(-1)).toBe('01');
     // Once only: scrolling away and back replays nothing.
     await scrollIntoView(page, 'footer', 'end');
     await scrollIntoView(page, '#about .section-heading', 'center');
@@ -455,7 +455,7 @@ for (const [name, setup] of [
       await twoFrames(page);
       await twoFrames(page);
       expect(await page.evaluate(() => window.__states)).toEqual([]);
-      await expect(page.locator('#about [data-count]')).toHaveText('02');
+      await expect(page.locator('#about [data-count]')).toHaveText('01');
     });
   });
 }

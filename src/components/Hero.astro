@@ -14,7 +14,7 @@
  * twins; the animated glyphs are `aria-hidden`), and every one stops or snaps to its final
  * state when motion is off. Copy comes from `src/data/site.ts`; counts from the collection.
  */
-import { CREDENTIALS_ANALYZED, FOCUS_AREAS, site } from '../data/site';
+import { FOCUS_AREAS, site } from '../data/site';
 import { pad2 } from '../lib/format';
 import { getFeatured, getProjects } from '../lib/projects';
 import { withBase } from '../lib/url';
@@ -28,18 +28,12 @@ const focus = FOCUS_AREAS.map((area) => area.toLowerCase());
 const focusText = focus.join(' · ');
 
 const [projects, featured] = await Promise.all([getProjects(), getFeatured()]);
-const millions = CREDENTIALS_ANALYZED / 1_000_000;
 const readouts = [
   { value: pad2(projects.length), label: 'Projects', spoken: `${projects.length} projects` },
   {
     value: pad2(featured.length),
     label: 'Case studies',
     spoken: `${featured.length} case studies`,
-  },
-  {
-    value: `~${millions}M`,
-    label: 'Credentials analyzed',
-    spoken: `About ${millions} million credentials analyzed`,
   },
 ];
 ---

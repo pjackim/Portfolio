@@ -320,7 +320,6 @@ test.describe('motion on', () => {
     await expect(list.locator('.visually-hidden')).toHaveText([
       `${PROJECT_COUNT} projects`,
       `${featured} case studies`,
-      'About 120 million credentials analyzed',
     ]);
     await list.scrollIntoViewIfNeeded();
     await expect(list).toHaveAttribute('data-roll', 'done', { timeout: 10_000 });
@@ -334,7 +333,7 @@ test.describe('motion on', () => {
       }),
     );
     expect(reels.map((r) => String(r.digit)).join('')).toBe(
-      `${String(PROJECT_COUNT).padStart(2, '0')}${String(featured).padStart(2, '0')}120`,
+      `${String(PROJECT_COUNT).padStart(2, '0')}${String(featured).padStart(2, '0')}`,
     );
     for (const { digit, steps } of reels) expect(steps).toBe(10 + digit);
   });

@@ -55,13 +55,6 @@ const SCHOOL = 'Colorado State University'; // résumé (Education)
  */
 export const FOCUS_AREAS = ['Reverse engineering', 'Machine learning', 'Embedded systems'] as const;
 
-/**
- * Size of the credential-correlation dataset, for the hero readouts: "Compiled ~120,000,000
- * real-world credentials" (src/content/projects/credential-correlation/index.md; legacy
- * credential_correlation.html:90-105).
- */
-export const CREDENTIALS_ANALYZED = 120_000_000;
-
 export const site: Site = {
   name: 'Parker Jackim',
   role: 'Cyber Security Researcher', // index.html:156

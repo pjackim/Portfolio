@@ -1,6 +1,6 @@
 ---
 /**
- * Home (spec-design-content §2): hero → 01 Selected work → 02 About → 03 Experience →
+ * Home (spec-design-content §2): hero → 01 About → 02 Experience → 03 Selected work →
  * 04 Earlier work → 05 Contact. Each section is labelled by its h2. The empty
  * `*-section` spans keep the legacy site's deep links (#about-section, #portfolio-section,
  * #social-section) landing on the matching section.
@@ -29,20 +29,9 @@ const workHref = withBase('work/');
 >
   <Hero />
 
-  <section id="work" class="home-section container" aria-labelledby="work-title">
-    <span id="portfolio-section" class="legacy-anchor"></span>
-    <SectionHeading
-      index="01"
-      label="Selected work"
-      id="work-title"
-      action={{ href: workHref, text: 'All work →' }}
-    />
-    <ProjectGrid projects={featured} />
-  </section>
-
   <section id="about" class="home-section container" aria-labelledby="about-title">
     <span id="about-section" class="legacy-anchor"></span>
-    <SectionHeading index="02" label="About" id="about-title" />
+    <SectionHeading index="01" label="About" id="about-title" />
     <div class="about__bio">
       {site.about.map((paragraph) => (
         <p>{paragraph}</p>
@@ -52,8 +41,19 @@ const workHref = withBase('work/');
   </section>
 
   <section id="experience" class="home-section container" aria-labelledby="experience-title">
-    <SectionHeading index="03" label="Experience" id="experience-title" />
+    <SectionHeading index="02" label="Experience" id="experience-title" />
     <ExperienceList entries={site.experience} />
+  </section>
+
+  <section id="work" class="home-section container" aria-labelledby="work-title">
+    <span id="portfolio-section" class="legacy-anchor"></span>
+    <SectionHeading
+      index="03"
+      label="Selected work"
+      id="work-title"
+      action={{ href: workHref, text: 'All work →' }}
+    />
+    <ProjectGrid projects={featured} />
   </section>
 
   <section id="earlier-work" class="home-section container" aria-labelledby="earlier-work-title">
@@ -109,10 +109,14 @@ const workHref = withBase('work/');
   }
 
   @media (width >= 48rem) {
-    .about__bio,
-    .home-section > :global(.contact) {
+    .about__bio {
       margin-inline-start: var(--text-edge);
     }
+  }
+
+  /* Contact's photo fills the readout rail, so its text lands on the same text edge. */
+  .home-section > :global(.contact) {
+    --contact-photo: var(--readout-rail);
   }
 
   .home-section > :global(.about__capabilities) {
