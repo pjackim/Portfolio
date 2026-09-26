@@ -102,7 +102,6 @@ const titleHead = words.join(' ');
     display: inline-block;
     margin-inline-start: 0.2em;
     color: var(--text-subtle);
-    transition: color var(--dur-fast) var(--ease-standard);
   }
 
   /* Stretched link: the whole row is the target. */
@@ -167,6 +166,10 @@ const titleHead = words.join(' ');
   @media (prefers-reduced-motion: no-preference) {
     :global(:root:not([data-motion='off'])) .archive-row::before {
       transition: clip-path var(--dur-base) var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row__arrow {
+      transition: color var(--dur-fast) var(--ease-standard);
     }
 
     :global(:root:not([data-motion='off'])) .archive-row__name,
