@@ -15,7 +15,7 @@ highlights:
   - Built user authorization plus access-key distribution and management around the tool.
   - Handled the tool's UX and end-user tech support, working from client feedback.
 cover: ./cover.webp
-coverAlt: In-game menu with a Turncap checkbox and sliders set to FOV Value 130, TurncapX 315 and TurncapY 290.
+coverAlt: In-game menu sliders set to FOV Value 130, TurncapX 315 and TurncapY 290.
 media:
   - kind: image
     src: ./gameplay-toggles.webp
