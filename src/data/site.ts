@@ -36,7 +36,6 @@ export interface Site {
   linkedin: string;
   /** Raw path to the résumé PDF — wrap with `withBase()`. */
   resume: string;
-  sourceRepo: string;
   /** Mono eyebrow above the h1; stored in mixed case, uppercased by CSS. */
   eyebrow: string;
   lede: string;
@@ -73,7 +72,6 @@ export const site: Site = {
   github: 'https://github.com/pjackim', // index.html:398
   linkedin: 'https://www.linkedin.com/in/parker-jackim-68b3561b8/', // index.html:399
   resume: 'files/Resume_General.pdf', // index.html:375
-  sourceRepo: 'https://github.com/pjackim/Portfolio',
 
   eyebrow: 'Cyber Security Researcher · Columbia, MD', // index.html:156, :418
 
