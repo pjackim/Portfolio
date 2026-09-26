@@ -709,6 +709,24 @@ test.describe('in-page scrolling (Ruling G9)', () => {
     await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'auto');
   });
 
+  test('a malformed fragment in a link breaks nothing', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    await page.evaluate(() => {
+      const link = document.createElement('a');
+      link.href = '#%zz';
+      link.textContent = 'malformed';
+      link.id = 'malformed-link';
+      document.querySelector('main')!.prepend(link);
+    });
+    await page.locator('#malformed-link').click();
+    await expect(page).toHaveURL(/#%zz$/);
+    await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/);
+    expect(errors).toEqual([]);
+  });
+
   for (const motion of ['on', 'off'] as const) {
     test(`a same-page anchor click ${motion === 'on' ? 'glides' : 'jumps'} (motion ${motion})`, async ({
       page,

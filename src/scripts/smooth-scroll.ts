@@ -17,6 +17,17 @@ const CLASS = 'smooth-scroll';
 const FALLBACK_MS = 2000;
 let timer = 0;
 
+/** The element a `#fragment` names — read as written when it isn't valid percent-encoding. */
+function fragmentTarget(hash: string): HTMLElement | null {
+  let id = hash.slice(1);
+  try {
+    id = decodeURIComponent(id);
+  } catch {
+    // A malformed escape (`#%zz`): the browser looks it up as written, and so do we.
+  }
+  return document.getElementById(id);
+}
+
 function end(): void {
   root.classList.remove(CLASS);
   clearTimeout(timer);
@@ -37,7 +48,7 @@ document.addEventListener('click', (event) => {
   ) {
     return;
   }
-  if (!document.getElementById(decodeURIComponent(link.hash.slice(1)))) return;
+  if (!fragmentTarget(link.hash)) return;
   end();
   root.classList.add(CLASS);
   addEventListener('scrollend', end, { once: true });

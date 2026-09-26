@@ -17,9 +17,15 @@ const BELOW_LINE = '-70%';
 function spy(nav: HTMLElement): void {
   const track = nav.querySelector<HTMLElement>('.case-index__track') ?? nav;
   const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
-  const targets = links.map((link) =>
-    document.getElementById(decodeURIComponent(link.hash.slice(1))),
-  );
+  const targets = links.map((link) => {
+    let id = link.hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      // A malformed escape: look it up as written (as the browser does).
+    }
+    return document.getElementById(id);
+  });
   const above = new Set<Element>();
   let current = -2;
   let observer: IntersectionObserver | null = null;
