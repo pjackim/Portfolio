@@ -682,8 +682,12 @@ test.describe('without view transitions', () => {
 });
 
 test.describe('footer', () => {
-  test('the copyright and the Motion chip, on one row (stacked on phones)', async ({ page }) => {
-    await gotoRel(page, 'work/');
+  test.use({ reducedMotion: 'no-preference' });
+
+  /** Stacked below 28rem (SiteFooter.astro); one row from there up. */
+  const ROW_FROM = 448;
+
+  const expectLayout = async (page: Page) => {
     const footer = page.locator('footer');
     const copyright = footer.locator('p');
     await expect(copyright).toHaveCount(1);
@@ -693,7 +697,7 @@ test.describe('footer', () => {
     await expect(chip).toBeVisible({ timeout: 10_000 });
     const text = (await copyright.boundingBox())!;
     const button = (await chip.boundingBox())!;
-    if (page.viewportSize()!.width >= 640) {
+    if (page.viewportSize()!.width >= ROW_FROM) {
       // One row: centred on the same line, the chip at the end.
       expect(button.y + button.height / 2).toBeCloseTo(text.y + text.height / 2, 0);
       expect(button.x).toBeGreaterThan(text.x + text.width);
@@ -702,6 +706,37 @@ test.describe('footer', () => {
       expect(button.y).toBeGreaterThanOrEqual(text.y + text.height);
       expect(button.x).toBeCloseTo(text.x, 0);
     }
+  };
+
+  // The home page has a second chip (the hero's); the footer's must still be there and work.
+  for (const [name, path] of [
+    ['home', ''],
+    ['work index', 'work/'],
+    ['a case study', 'work/trip-planner/'],
+  ] as const) {
+    test(`${name}: the copyright and a working Motion chip, on one row (stacked on phones)`, async ({
+      page,
+    }) => {
+      await gotoRel(page, path);
+      await page.waitForLoadState('load');
+      await expectLayout(page);
+      const html = page.locator('html');
+      const chip = page.locator('footer [data-motion-toggle]');
+      await expect(chip).toHaveAttribute('aria-pressed', 'true');
+      await chip.click();
+      await expect(html).toHaveAttribute('data-motion', 'off');
+      // Every chip on the page follows (home: the hero's too).
+      await expect(page.locator('[data-motion-toggle][aria-pressed="true"]')).toHaveCount(0);
+      await chip.click();
+      await expect(html).not.toHaveAttribute('data-motion');
+      await expect(page.locator('[data-motion-toggle][aria-pressed="false"]')).toHaveCount(0);
+    });
+  }
+
+  test('a small tablet or large phone keeps the one row', async ({ page }) => {
+    await page.setViewportSize({ width: 600, height: 900 });
+    await gotoRel(page, 'work/');
+    await expectLayout(page);
   });
 });
 
