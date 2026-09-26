@@ -61,13 +61,33 @@ function switchScheme(): void {
 /** The transition in flight, if any: only the latest one may clean up after itself. */
 let running: ViewTransition | null = null;
 
+/** Drops the transition's class and properties (and the style attribute, once it's empty). */
+function clearTransitionState(): void {
+  root.classList.remove(VT_CLASS);
+  for (const prop of VT_PROPS) root.style.removeProperty(prop);
+  if (root.style.length === 0) root.removeAttribute('style');
+}
+
 function toggle(this: HTMLButtonElement): void {
   const motion = !reduceMotion.matches && root.dataset.motion !== 'off';
   if (!motion || typeof document.startViewTransition !== 'function') {
     switchScheme();
     return;
   }
+  // The class goes on first: it must be in place when the old state is captured.
+  root.classList.add(VT_CLASS);
+  let transition: ViewTransition;
+  try {
+    transition = document.startViewTransition(switchScheme);
+  } catch {
+    // Refused outright (the update never ran): switch instantly, leave nothing behind.
+    clearTransitionState();
+    switchScheme();
+    return;
+  }
   // The circle grows from the toggle's centre until it reaches the farthest viewport corner.
+  // Set once the transition is under way: its pseudo-elements, which read these, are only
+  // built at the next frame — and a refused call never touches the style attribute at all.
   const box = this.getBoundingClientRect();
   const x = box.left + box.width / 2;
   const y = box.top + box.height / 2;
@@ -75,9 +95,6 @@ function toggle(this: HTMLButtonElement): void {
   root.style.setProperty('--vt-x', `${x}px`);
   root.style.setProperty('--vt-y', `${y}px`);
   root.style.setProperty('--vt-r', `${Math.ceil(r)}px`);
-  root.classList.add(VT_CLASS);
-
-  const transition = document.startViewTransition(switchScheme);
   running = transition;
   // Skipped (another click, a hidden tab): nothing to report, the scheme still switches.
   transition.ready.catch(() => {});
@@ -86,9 +103,7 @@ function toggle(this: HTMLButtonElement): void {
     .finally(() => {
       if (running !== transition) return;
       running = null;
-      root.classList.remove(VT_CLASS);
-      for (const prop of VT_PROPS) root.style.removeProperty(prop);
-      if (root.style.length === 0) root.removeAttribute('style');
+      clearTransitionState();
     });
 }
 

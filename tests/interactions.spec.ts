@@ -58,17 +58,30 @@ function watchConsole(page: Page): string[] {
   return errors;
 }
 
-/** Records every add/remove of `vt-theme` on <html>, from before any script runs. */
+/** Records every add/remove of `vt-theme` on <html>, from before any script runs — including
+    an add and remove in the same task (read from each mutation's old value). */
 async function recordVtClass(page: Page): Promise<void> {
   await page.addInitScript(() => {
     window.__vtClass = [];
     let had = false;
+    const has = (value: string | null) => /(^|\s)vt-theme(\s|$)/.test(value ?? '');
+    const note = (now: boolean) => {
+      if (now !== had) window.__vtClass!.push(now ? 'add' : 'remove');
+      had = now;
+    };
     // <html> may not exist yet: watch the document for it.
-    new MutationObserver(() => {
-      const has = document.documentElement?.classList.contains('vt-theme') ?? false;
-      if (has !== had) window.__vtClass!.push(has ? 'add' : 'remove');
-      had = has;
-    }).observe(document, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.target !== document.documentElement) continue;
+        note(has(record.oldValue));
+      }
+      note(document.documentElement?.classList.contains('vt-theme') ?? false);
+    }).observe(document, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['class'],
+      attributeOldValue: true,
+    });
   });
 }
 
@@ -561,6 +574,29 @@ test.describe('theme toggle', () => {
     });
     await expect(html).not.toHaveClass(/\bvt-theme\b/);
     expect(await html.getAttribute('data-scheme')).toBe(before);
+    expect(await html.getAttribute('style')).toBeNull();
+    expect(errors).toEqual([]);
+  });
+
+  test('motion on: a view transition refused outright still switches, instantly', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const errors = watchConsole(page);
+    await recordVtClass(page);
+    await page.addInitScript(() => {
+      Document.prototype.startViewTransition = () => {
+        throw new DOMException('refused', 'InvalidStateError');
+      };
+    });
+    await gotoRel(page, 'work/');
+    await page.waitForLoadState('load');
+    const html = page.locator('html');
+    const before = await html.getAttribute('data-scheme');
+    await page.locator('header [data-theme-toggle]').click();
+    await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
+    expect(await page.evaluate(() => window.__vtClass)).toEqual(['add', 'remove']);
+    await expect(html).not.toHaveClass(/\bvt-theme\b/);
     expect(await html.getAttribute('style')).toBeNull();
     expect(errors).toEqual([]);
   });
