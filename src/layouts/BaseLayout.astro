@@ -94,6 +94,8 @@ if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
       <Fragment set:html={main} />
     </main>
     <SiteFooter />
+    <!-- One-shot entrance reveals (src/scripts/reveal.ts): import-free, so it is inlined. -->
+    <script src="../scripts/reveal.ts"></script>
     {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}
   </body>
 </html>

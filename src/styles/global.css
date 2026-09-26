@@ -262,53 +262,44 @@ a {
   animation-timing-function: var(--ease-out);
 }
 
-/* Scroll reveals (interactions spec §3), below the fold only: cards after the first row,
-   capability boxes, archive rows, case-study figures. A clip-path wipe up from the bottom 12%,
-   with a fade and a 12px rise, scrubbed by the element's own entry into the viewport — so
-   whatever is on screen when scrolling stops is (nearly) settled. `--i` (from :nth-child rules
-   where items share a row) moves an item's range later, so a row lands left to right; items in
-   one column are staggered by the layout itself. `--reveal-span`: how much of the entry range
-   the wipe takes. `data-reveal="contents"` reveals the element's children on its timeline
-   instead of the element itself (for boxes whose background must never go see-through, like
-   the capability grid, whose hairlines are its background showing through gaps).
-   Decorative, so no fallback: without scroll-driven animations everything is simply there. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports ((animation-timeline: view()) and (animation-range: entry)) {
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        translate: 0 12px;
-        clip-path: inset(0 0 12% 0);
-      }
-
-      to {
-        opacity: 1;
-        translate: 0 0;
-        clip-path: inset(0);
-      }
+/* One-shot entrance reveals (interactions spec §3; Ruling G6), below the fold only: cards
+   after the first row, capability boxes, archive rows, case-study figures. src/scripts/reveal.ts
+   marks items that are entirely below the viewport once the page has loaded `pending`, and
+   `in` once ~15% of one is on screen; it plays once, then the state is dropped. Visible by
+   default: without the script, with motion off, in print, the states never apply.
+   The entrance: a clip-path wipe up from the bottom 12%, a fade and a 12px rise. It ends where
+   the item already is (fill `backwards` only), so no inset(0) clip outlives it to cut off a hover
+   wash or a focus ring. `--i` (from :nth-child rules where items share a row) delays an item a
+   beat per column, capped; one-column lists stagger as they scroll in. `data-reveal="contents"`
+   plays on the element's children instead (boxes whose background must never go see-through,
+   like the capability grid, whose hairlines are its background showing through gaps). */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+      clip-path: inset(0 0 12% 0);
     }
 
-    /* = `animation: reveal var(--ease-out) backwards` + timeline/range, written as longhands:
-       the minifier (Lightning CSS) folds a separate animation-timeline into the shorthand,
-       which browsers reject, dropping the whole declaration (Ruling R22). */
-    :root:not([data-motion='off']) [data-reveal],
-    :root:not([data-motion='off']) [data-reveal='contents'] > * {
-      animation-name: reveal;
-      animation-timing-function: var(--ease-out);
-      animation-fill-mode: backwards;
-      animation-timeline: view();
-      animation-range-start: entry calc(var(--i, 0) * 10%);
-      animation-range-end: entry calc(var(--reveal-span, 45%) + var(--i, 0) * 10%);
+    to {
+      opacity: 1;
+      translate: 0 0;
+      clip-path: inset(0);
     }
+  }
 
-    :root:not([data-motion='off']) [data-reveal='contents'] {
-      animation-name: none;
-      view-timeline-name: --reveal;
-    }
+  :root:not([data-motion='off']) [data-reveal-state='pending']:not([data-reveal='contents']),
+  :root:not([data-motion='off']) [data-reveal='contents'][data-reveal-state='pending'] > * {
+    opacity: 0;
+  }
 
-    :root:not([data-motion='off']) [data-reveal='contents'] > * {
-      animation-timeline: --reveal;
-    }
+  :root:not([data-motion='off']) [data-reveal-state='in']:not([data-reveal='contents']),
+  :root:not([data-motion='off']) [data-reveal='contents'][data-reveal-state='in'] > * {
+    animation-name: reveal;
+    animation-duration: 560ms;
+    animation-timing-function: var(--ease-out);
+    animation-delay: min(calc(var(--i, 0) * 90ms), 270ms);
+    animation-fill-mode: backwards;
   }
 }
 

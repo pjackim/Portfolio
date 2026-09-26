@@ -3,8 +3,8 @@
  * Featured work grid (spec-design-content §2): an ordered list of ProjectCards, two columns
  * from 800px. An odd last card spans both columns in a horizontal layout (see ProjectCard),
  * so any count looks intentional. Cards are numbered by rendered position; the first cover
- * loads eagerly, and cards below the first row reveal on scroll — the second column a beat
- * after the first (`--i`). The list is the spotlight's delegation root (`data-spotlight`,
+ * loads eagerly, and cards below the first row play an entrance as they scroll into view —
+ * the second column a beat after the first (`--i`). The list is the spotlight's delegation root (`data-spotlight`,
  * src/scripts/interactions.ts via the motion layer).
  */
 import type { CollectionEntry } from 'astro:content';
@@ -60,7 +60,7 @@ const { projects, class: className } = Astro.props;
       margin-block-start: var(--space-xl);
     }
 
-    /* Reveal stagger: the right-hand card of a row lands a beat after the left. */
+    /* Entrance stagger: the right-hand card of a row lands a beat after the left. */
     .project-grid > :global(.card:nth-child(even)) {
       --i: 1;
     }

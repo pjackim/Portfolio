@@ -11,7 +11,8 @@
  * - video → LoopVideo; youtube → YouTubeFacade.
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
  * grid; this component only marks the figure `figure--wide`).
- * Figures reveal on scroll (global.css `[data-reveal]`; they are never above the fold).
+ * Figures play an entrance as they scroll into view (global.css `[data-reveal]`,
+ * src/scripts/reveal.ts; they are never above the fold).
  */
 import { getImage, Picture } from 'astro:assets';
 import { pad2 } from '../../lib/format';
@@ -124,7 +125,6 @@ const caption = item.caption;
 
 <style>
   .figure {
-    --reveal-span: 30%;
     margin: 0;
   }
 

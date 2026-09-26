@@ -5,9 +5,9 @@
  * one column on phones. Project titles come from the collection; an unknown slug fails the
  * build (as does `validateProjects`).
  *
- * Scroll reveal (interactions spec §3): each box's contents wipe in on the box's own timeline
- * (`data-reveal="contents"`, global.css) — never the box itself, whose opaque background is what
- * draws the hairlines. A row lands left to right (`--i`).
+ * Entrance reveal (interactions spec §3): each box's contents play in once the box scrolls into
+ * view (`data-reveal="contents"`, global.css, src/scripts/reveal.ts) — never the box itself,
+ * whose opaque background is what draws the hairlines. A row lands left to right (`--i`).
  */
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { getProjects } from '../lib/projects';
@@ -100,7 +100,6 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
   /* Each box subgrids three rows (label, items, "Seen in"), so labels that wrap to two
      lines don't push one box's items out of line with its neighbours'. */
   .capability {
-    --reveal-span: 40%;
     display: grid;
     grid-row: span 3;
     grid-template-rows: auto 1fr auto;

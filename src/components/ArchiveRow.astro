@@ -2,8 +2,8 @@
 /**
  * One ArchiveList row: year · title link · one-liner · stack (max 3). The title link is
  * stretched over the row (one tab stop). Hover/focus (interactions spec §3): a surface wash
- * wipes in from the left, the title slides 4px right and tints, its arrow nudges. The row
- * reveals on scroll (global.css `[data-reveal]`).
+ * wipes in from the left, the title slides 4px right and tints, its arrow nudges. Below the
+ * fold the row plays an entrance as it scrolls into view (global.css `[data-reveal]`).
  */
 import type { CollectionEntry } from 'astro:content';
 import { projectDate } from '../lib/format';
@@ -50,7 +50,6 @@ const titleHead = words.join(' ');
      same year column: phones — year · title, then the one-liner and tags full width;
      tablets — year rail | title, one-liner, tags; desktop — year | title | one-liner + tags. */
   .archive-row {
-    --reveal-span: 80%;
     position: relative;
     isolation: isolate;
     display: grid;

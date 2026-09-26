@@ -16,6 +16,7 @@
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { interactionsLoaded, twoFrames } from './helpers/motion.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 declare global {
@@ -23,6 +24,9 @@ declare global {
     __vtClass?: ('add' | 'remove')[];
     __decrypt?: (string | null)[];
     __count?: string[];
+    __rule?: (string | null)[];
+    __states?: string[];
+    __revealed?: string[];
   }
 }
 
@@ -80,14 +84,6 @@ async function scrollSettled(page: Page): Promise<void> {
     })
     .toBe(true);
 }
-
-/** The card/heading module (fetched by the motion layer after load + idle) has arrived. */
-const interactionsLoaded = (page: Page) =>
-  page.evaluate(() =>
-    performance
-      .getEntriesByType('resource')
-      .some((r) => /\/interactions\.[\w-]+\.js$/.test(r.name)),
-  );
 
 /** Moves a fine pointer onto the first card's cover (the stretched link covers the card). */
 async function pointAtCover(page: Page): Promise<void> {
@@ -267,20 +263,24 @@ for (const [name, setup] of [
     test('reveals, rule draws and decrypts are complete no-ops', async ({ page }) => {
       await setup(page);
       await page.addInitScript(() => {
-        window.__decrypt = [];
+        window.__states = [];
         new MutationObserver((records) => {
-          for (const record of records) {
-            if (record.attributeName === 'data-decrypt') window.__decrypt!.push('changed');
-          }
+          for (const record of records) window.__states!.push(record.attributeName ?? '');
         }).observe(document, {
           attributes: true,
           subtree: true,
-          attributeFilter: ['data-decrypt'],
+          attributeFilter: ['data-decrypt', 'data-rule', 'data-reveal-state'],
         });
       });
       for (const path of ['', 'work/credential-correlation/']) {
         await gotoRel(page, path);
         await page.waitForLoadState('load');
+        // Through the whole page, so every reveal would have had its chance.
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += 600) {
+          await page.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), y);
+          await twoFrames(page);
+        }
         const states = await page.locator(REVEALED).evaluateAll((els) =>
           els.map((el) => {
             const style = getComputedStyle(el);
@@ -298,38 +298,156 @@ for (const [name, setup] of [
       // The heading code does load (the layer is there); it just never plays.
       await expect.poll(() => interactionsLoaded(page)).toBe(true);
       await scrollIntoView(page, '#about .section-heading', 'center');
-      await page.waitForTimeout(1000);
-      expect(await page.evaluate(() => window.__decrypt)).toEqual([]);
+      await twoFrames(page);
+      await twoFrames(page);
+      expect(await page.evaluate(() => window.__states)).toEqual([]);
       await expect(page.locator('#about [data-count]')).toHaveText('02');
     });
   });
 }
 
-test.describe('reveals, motion on', () => {
+test.describe('entrance reveals, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
-  test('run on a view timeline below the fold, never on the first card row', async ({ page }) => {
+  // /work/'s first rows, and home landed on at a fragment (as the legacy deep links do), where
+  // the capability boxes are on screen at load. (Home's own first screen holds no reveal items:
+  // the hero and the first card row never reveal — checked below.)
+  for (const height of [900, 1200]) {
+    for (const path of ['work/', '#about']) {
+      test(`everything on screen at load is shown, unanimated (${path}, 1440×${height})`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width: 1440, height });
+        await page.addInitScript(() => {
+          window.__revealed = [];
+          document.addEventListener('animationstart', (event) => {
+            if (event.animationName === 'reveal') window.__revealed!.push('played');
+          });
+        });
+        await gotoRel(page, path);
+        await page.waitForLoadState('load');
+        // Classified: whatever is below the fold now waits.
+        await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        const onScreen = await page.locator('[data-reveal]').evaluateAll((els) =>
+          els
+            .filter((el) => {
+              const box = el.getBoundingClientRect();
+              return box.bottom > 0 && box.top < innerHeight;
+            })
+            .map((el) => ({
+              state: el.getAttribute('data-reveal-state'),
+              opacity: getComputedStyle(el).opacity,
+              animations: el.getAnimations().length,
+            })),
+        );
+        expect(onScreen.length, 'reveal items on screen at load').toBeGreaterThan(0);
+        for (const item of onScreen)
+          expect(item).toEqual({ state: null, opacity: '1', animations: 0 });
+        expect(await page.evaluate(() => window.__revealed)).toEqual([]);
+      });
+    }
+  }
+
+  test('never on the hero or the first card row', async ({ page }) => {
     await gotoRel(page, '');
-    const supported = await page.evaluate(() =>
-      CSS.supports('(animation-timeline: view()) and (animation-range: entry)'),
-    );
-    test.skip(!supported, 'no scroll-driven animations: everything is simply shown');
-    const firstRow = await page
-      .locator(`${CARD}:nth-child(-n + 2)`)
-      .evaluateAll((els) => els.map((el) => el.getAnimations().length));
-    expect(firstRow).toEqual([0, 0]);
-    const timelines = await page.locator(REVEALED).evaluateAll((els) =>
-      els.map((el) => {
-        const [animation] = el.getAnimations();
-        return (animation as CSSAnimation | undefined)?.timeline?.constructor.name ?? 'none';
-      }),
-    );
-    expect(timelines.length).toBeGreaterThan(0);
-    expect(new Set(timelines)).toEqual(new Set(['ViewTimeline']));
-    // Once scrolled fully into view, an item has landed.
-    const target = page.locator(`${CARD}:nth-child(3)`);
-    await target.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await expect(page.locator('.hero [data-reveal]')).toHaveCount(0);
+    for (const card of await page.locator(`${CARD}:nth-child(-n + 2)`).all()) {
+      expect(await card.getAttribute('data-reveal')).toBeNull();
+    }
+    await expect(page.locator(`${CARD}:nth-child(3)`)).toHaveAttribute('data-reveal');
+  });
+
+  test('an item below the fold waits, then plays once as it scrolls in', async ({ page }) => {
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    const target = page.locator('#earlier-work .archive-row').first();
+    await expect(target).toHaveAttribute('data-reveal-state', 'pending');
+    await expect(target).toHaveCSS('opacity', '0');
+    await target.evaluate((el) => {
+      (window as Window & { __played?: number }).__played = 0;
+      el.addEventListener('animationstart', (event: Event) => {
+        if ((event as AnimationEvent).animationName === 'reveal')
+          (window as Window & { __played?: number }).__played! += 1;
+      });
+    });
+    await scrollIntoView(page, '#earlier-work .archive-row', 'center');
+    // It plays, then the state goes: nothing left behind (no clip that could cut a focus ring).
+    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
     await expect(target).toHaveCSS('opacity', '1');
+    await expect(target).toHaveCSS('clip-path', 'none');
+    expect(await target.evaluate((el) => el.getAnimations().length)).toBe(0);
+    // Once: away and back again, it doesn't replay.
+    await scrollIntoView(page, 'header', 'start');
+    await scrollIntoView(page, '#earlier-work .archive-row', 'center');
+    await twoFrames(page);
+    expect(await page.evaluate(() => (window as Window & { __played?: number }).__played)).toBe(1);
+  });
+
+  test('switching motion off shows everything still waiting', async ({ page }) => {
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+    await page.locator('.hero [data-motion-toggle]').click();
+    await expect(page.locator('[data-reveal-state]')).toHaveCount(0);
+    // (With motion off every change is a 0.01 ms transition: read once it has run.)
+    await expect
+      .poll(() =>
+        page
+          .locator(REVEALED)
+          .evaluateAll((els) => [...new Set(els.map((el) => getComputedStyle(el).opacity))]),
+      )
+      .toEqual(['1']);
+  });
+
+  test('back/forward: no card comes back transparent', async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__revealed = [];
+      document.addEventListener('animationstart', (event) => {
+        if (event.animationName === 'reveal') window.__revealed!.push('played');
+      });
+    });
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    const card = page.locator(`${CARD}:nth-child(3)`);
+    await expect(card).toHaveAttribute('data-reveal-state', 'pending');
+    await scrollIntoView(page, `${CARD}:nth-child(3)`, 'center');
+    await expect(card).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await card.locator('.card__title a').click();
+    await page.waitForURL(/\/work\/[^/]+\/$/);
+    await page.goBack();
+    await page.waitForLoadState('load');
+    // The browser restores the scroll position progressively, well after load.
+    await expect.poll(() => page.evaluate(() => scrollY), { timeout: 5000 }).toBeGreaterThan(0);
+    await scrollSettled(page);
+    await twoFrames(page);
+    const onScreen = await page.locator(CARD).evaluateAll((els) =>
+      els
+        .filter((el) => {
+          const box = el.getBoundingClientRect();
+          return box.bottom > 0 && box.top < innerHeight;
+        })
+        .map((el) => `${el.getAttribute('data-reveal-state')}|${getComputedStyle(el).opacity}`),
+    );
+    expect(onScreen.length).toBeGreaterThan(0);
+    expect(new Set(onScreen)).toEqual(new Set(['null|1']));
+    // A return visit is shown as it was left: no entrance plays at all.
+    expect(await page.evaluate(() => window.__revealed)).toEqual([]);
+  });
+
+  test('a back/forward-cache restore shows waiting items on screen at once', async ({ page }) => {
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    const card = page.locator(`${CARD}:nth-child(3)`);
+    await expect(card).toHaveAttribute('data-reveal-state', 'pending');
+    // As if the page had been frozen with this card waiting on screen, then restored.
+    await scrollIntoView(page, `${CARD}:nth-child(3)`, 'center');
+    await card.evaluate((el: HTMLElement) => {
+      el.dataset.revealState = 'pending';
+      dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+    });
+    await expect(card).not.toHaveAttribute('data-reveal-state');
+    await expect(card).toHaveCSS('opacity', '1');
+    expect(await card.evaluate((el) => el.getAnimations().length)).toBe(0);
   });
 });
 
