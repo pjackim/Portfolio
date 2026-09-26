@@ -4,8 +4,11 @@
 # artifact; `deploy` publishes it; `smoke-prod` waits out Pages CDN propagation and then runs
 # the `@prod`-tagged Playwright subset against the live URL.
 #
-# Rollback: `git revert -m 1 <merge-commit>` on `master` restores both the legacy static site
-# and the Task 1 passthrough workflow this replaces.
+# Rollback: `git revert -m 1 <merge-commit>` on `master` redeploys the legacy static site only
+# if the Pages-passthrough workflow (PR A, commit 855a30b) was merged to master before this one
+# — the revert then restores that commit's deploy.yml, and the Pages source stays "GitHub
+# Actions". If PR A was never merged first, reverting leaves no working deploy workflow on
+# master; also switch the repo's Pages source back to "Deploy from a branch: master /".
 name: Deploy
 
 on:
@@ -23,12 +26,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # No timeout-minutes here: a job that calls a reusable workflow with `uses:` can't set one
+  # (actionlint syntax-check) — the called workflow's own `quality` job already has one.
   verify:
     uses: ./.github/workflows/ci.yml
 
   build:
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,6 +46,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -53,6 +60,7 @@ jobs:
   smoke-prod:
     needs: deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -67,19 +75,20 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Normalize deployed URL
         id: url
-        run: |
-          url="${{ needs.deploy.outputs.page_url }}"
-          echo "url=${url%/}/" >> "$GITHUB_OUTPUT"
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: echo "url=${PAGE_URL%/}/" >> "$GITHUB_OUTPUT"
       - name: Wait for Pages CDN propagation
+        env:
+          URL: ${{ steps.url.outputs.url }}
         run: |
-          url="${{ steps.url.outputs.url }}"
           for _ in $(seq 1 10); do
-            if curl -fsS "$url" > /dev/null; then
+            if curl -fsS "${URL}work/" > /dev/null; then
               exit 0
             fi
             sleep 15
           done
-          echo "::error::$url never became reachable after 10 attempts" >&2
+          echo "::error::${URL}work/ never became reachable after 10 attempts" >&2
           exit 1
       - name: Post-deploy smoke tests
         env:
