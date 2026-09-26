@@ -96,4 +96,12 @@ const sections = GROUPS.map((group) => ({
       grid-template-columns: var(--readout-rail, 9rem) 12rem minmax(0, 1fr);
     }
   }
+
+  /* The wider container (tokens.css): room for the longest titles on one line, while the
+     summary keeps its 62ch measure. */
+  @media (width >= 110rem) {
+    .archive {
+      grid-template-columns: var(--readout-rail, 9rem) 18rem minmax(0, 1fr);
+    }
+  }
 </style>

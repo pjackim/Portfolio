@@ -289,6 +289,29 @@ const indexed = sections.length >= 2;
     }
   }
 
+  /* From 150rem (tokens.css: the 88rem container at an 18px root) columns 3–9 are 912px, wider
+     than the prose's 66ch measure: every text block — key points, the Figures label, captions
+     — keeps to the prose's right edge, and only the images use the full columns. Registered, so
+     the measure resolves to one length here, at the body's size, and captions in their smaller
+     type inherit that length rather than 66 of their own ch. */
+  @property --case-measure {
+    syntax: '<length>';
+    inherits: true;
+    initial-value: 0px;
+  }
+
+  @media (width >= 150rem) {
+    .case__body {
+      --case-measure: var(--measure);
+    }
+
+    .case__key-points,
+    .case__gallery > .case__label,
+    .case__figures :global(figcaption) {
+      max-inline-size: var(--case-measure);
+    }
+  }
+
   /* ── Reading progress (interactions spec §4) ──
      A 2px accent bar under the sticky header, scaled by how far the page has been read — a CSS
      scroll timeline on the root, no script. Decorative (aria-hidden). Where scroll timelines

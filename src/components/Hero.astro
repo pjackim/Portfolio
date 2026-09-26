@@ -197,7 +197,7 @@ const readouts = [
     opacity: 0;
     transition-property: opacity;
     mask-image: radial-gradient(
-      ellipse min(36rem, 48vw) 78% at calc(50% + min(36rem, 50% - var(--gutter))) 12%,
+      ellipse min(36rem, 48vw) 78% at calc(50% + min(var(--container) / 2, 50% - var(--gutter))) 12%,
       #000 0%,
       rgb(0 0 0 / 0.85) 35%,
       transparent 88%

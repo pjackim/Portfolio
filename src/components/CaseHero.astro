@@ -25,8 +25,10 @@ const { id, data } = project;
 
 const HERO_ID = 'case-hero';
 const transitionName = `cover-${id}`;
-/** The container: 72rem from 1232px up, the viewport minus gutters below. */
-const SIZES = '(min-width: 1232px) 1152px, 100vw';
+/** The container (tokens.css): 88rem at an 18px root from 2400px, 80rem from 1760px, 72rem
+    from 1232px up, the viewport minus gutters below. */
+const SIZES =
+  '(min-width: 2400px) 1584px, (min-width: 1760px) 1280px, (min-width: 1232px) 1152px, 100vw';
 
 const facts = await imageFacts(data.cover);
 const mode = frameMode(facts, 1000);

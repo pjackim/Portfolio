@@ -90,6 +90,29 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Large displays (1c). The fluid scale tops out at 1280px, so past it only the margins grew:
+   by 2560px the 72rem column filled 45% of the screen at laptop type sizes. Two steps instead:
+   from 1760px (1920×1080 and wider) the column widens to 80rem; from 2400px (1440p and
+   ultrawide monitors, read from further away) the root size rises an eighth, scaling type,
+   space and the column together (88rem = 1584px there). The display steps (page titles) take
+   one more size with the wider column. Every `sizes` attribute that states a container width
+   in pixels (CaseHero, MediaFigure, ProjectCard) mirrors these values. */
+@media (width >= 110rem) {
+  :root {
+    --container: 80rem;
+    --step-4: 3rem;
+    --step-5: 4.5rem;
+  }
+}
+
+@media (width >= 150rem) {
+  :root {
+    --container: 88rem;
+
+    font-size: 112.5%;
+  }
+}
+
 /* A pinned scheme (theme toggle) overrides the system preference. */
 :root[data-scheme='light'] {
   color-scheme: light;

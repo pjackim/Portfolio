@@ -36,11 +36,14 @@ const { projectId, item, index } = Astro.props;
 
 /** Rendered width of the two figure columns at the full 72rem container (ProjectLayout). */
 const COLUMN = { normal: 662, wide: 956 };
-/** `sizes` for each column: fixed from the full container, ~54vw / ~78vw on 64–77rem
-    screens (12-column grid), the full container width below 64rem. */
+/** The same columns at the largest container (88rem at an 18px root, from 2400px). */
+const COLUMN_MAX = { normal: 913, wide: 1316 };
+/** `sizes` for each column: fixed from the full container at each of its widths (tokens.css),
+    ~54vw / ~78vw on 64–77rem screens (12-column grid), the full container width below 64rem. */
 const SIZES = {
-  normal: '(min-width: 1232px) 662px, (min-width: 1024px) 54vw, 100vw',
-  wide: '(min-width: 1232px) 956px, (min-width: 1024px) 78vw, 100vw',
+  normal:
+    '(min-width: 2400px) 913px, (min-width: 1760px) 737px, (min-width: 1232px) 662px, (min-width: 1024px) 54vw, 100vw',
+  wide: '(min-width: 2400px) 1316px, (min-width: 1760px) 1063px, (min-width: 1232px) 956px, (min-width: 1024px) 78vw, 100vw',
 };
 
 const wide = item.kind === 'youtube' || (item.kind === 'image' && item.wide);
@@ -67,7 +70,7 @@ const image =
           src: item.src,
           alt: item.alt,
           mode,
-          widths: candidateWidths(facts.width, COLUMN[column] * 2),
+          widths: candidateWidths(facts.width, COLUMN_MAX[column] * 2),
           full: full?.src,
           fullWidth,
           fullHeight: Math.round((fullWidth * facts.height) / facts.width),
