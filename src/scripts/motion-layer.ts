@@ -1,16 +1,16 @@
 /**
  * The motion layer's one entry per page (interactions spec §1–§3), loaded by MotionLayer.astro
- * (Astro emits it once per page however many components render that; MotionToggle and
- * ProjectGrid do). It wires every Motion toggle chip straight away, then — once the page
+ * (Astro emits it once per page however many components render that; MotionToggle, ProjectGrid
+ * and SectionHeading do). It wires every Motion toggle chip straight away, then — once the page
  * has loaded and painted, when idle — fetches the code for whatever the page has: the hero
- * instrument, and the card spotlight. Everything in those starts after
+ * instrument, and the card spotlight / section-heading decrypt. Everything in those starts after
  * load + idle anyway (spec §0.1), so the requests never compete with first paint or LCP.
  */
 import { afterLoadIdle } from './motion';
 import './motion-toggle';
 
 const hasHero = document.querySelector('[data-hero]') !== null;
-const hasInteractions = document.querySelector('[data-spotlight]') !== null;
+const hasInteractions = document.querySelector('[data-section-heading], [data-spotlight]') !== null;
 
 // After load, after the next paint, when idle — only then fetch, so these requests never join
 // the first paint's (on a fast connection `load` can precede it).
