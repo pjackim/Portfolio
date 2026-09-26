@@ -27,6 +27,7 @@ declare global {
     __rule?: (string | null)[];
     __states?: string[];
     __revealed?: string[];
+    __armed?: number[];
   }
 }
 
@@ -441,6 +442,33 @@ test.describe('entrance reveals, motion on', () => {
         expect(await page.evaluate(() => window.__revealed)).toEqual([]);
       });
     }
+  }
+
+  // A fragment the page is already at when it loads — `#main`, at the top, is never scrolled
+  // to — and one it jumps to: either way the entrances are armed straight after load, never
+  // after waiting out a scroll that isn't coming.
+  for (const fragment of ['#main', '#about']) {
+    test(`landed on at ${fragment}, the entrances arm at once`, async ({ page }) => {
+      await page.addInitScript(() => {
+        window.__armed = [];
+        addEventListener('load', () => window.__armed!.push(performance.now()), { once: true });
+        new MutationObserver(() => {
+          if (window.__armed!.length === 1 && document.querySelector('[data-reveal-state]')) {
+            window.__armed!.push(performance.now());
+          }
+        }).observe(document, {
+          attributes: true,
+          subtree: true,
+          attributeFilter: ['data-reveal-state'],
+        });
+      });
+      await gotoRel(page, fragment);
+      await page.waitForLoadState('load');
+      await expect.poll(() => page.evaluate(() => window.__armed?.length)).toBe(2);
+      const [load, armed] = (await page.evaluate(() => window.__armed)) ?? [];
+      // Load, a frame, the observer's first report: well under the old 1.5 s fallback.
+      expect(armed! - load!).toBeLessThan(600);
+    });
   }
 
   test('never on the hero or the first card row', async ({ page }) => {

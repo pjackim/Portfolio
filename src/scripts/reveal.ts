@@ -6,9 +6,9 @@
  * Visible by default. Nothing is ever hidden before this runs, and it only ever hides items
  * that are entirely below the viewport at that moment — so no-JS, motion-off and reduced-motion
  * visitors never see hidden content, and nothing already on screen can blink out and pop back.
- * It starts once the page has loaded and any fragment jump has landed. Coming back to a page — the
- * back/forward buttons or a reload, where the browser restores the scroll position well after
- * load — there are no entrances at all: the page is shown as it was left. And on a
+ * It starts once the page has loaded (and landed on its fragment, if any). Coming back to a
+ * page — the back/forward buttons or a reload, where the browser restores the scroll position
+ * well after load — there are no entrances at all: the page is shown as it was left. And on a
  * back/forward-cache restore anything still waiting on screen is shown at once, unanimated —
  * so a cross-document cover morph never lands on a transparent card. Something else may show a
  * waiting item first by dropping its state — the /work/ filter does, for the rows it brings on
@@ -112,11 +112,33 @@ function start(): void {
   });
 }
 
-// After load and a frame. Landing on a fragment, the browser only then scrolls to it (smoothly,
-// with motion): wait until it lands, so what the reader lands on is never held back.
+/** The element the URL's fragment names, if any (a malformed escape is read as written). */
+const fragmentTarget = (): HTMLElement | null => {
+  let id = location.hash.slice(1);
+  try {
+    id = decodeURIComponent(id);
+  } catch {
+    // As the browser does.
+  }
+  return id ? document.getElementById(id) : null;
+};
+
+/** The page is where a fragment jump puts it: the target at the scroll padding, or as close as
+    the page can scroll (a target near the top or the foot can't get there). */
+const landedOn = (el: HTMLElement): boolean => {
+  const padding = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+  const off = el.getBoundingClientRect().top - padding;
+  const max = root.scrollHeight - innerHeight;
+  return Math.abs(off) <= 2 || (off > 0 && scrollY >= max - 2) || (off < 0 && scrollY <= 2);
+};
+
+// After load and a frame. A page loaded at a fragment lands on it at once — smooth scrolling is
+// only ever for in-page clicks (Ruling G9) — normally before `load`, so there is nothing to wait
+// for. Only if the jump is still to come (the target isn't where it lands) wait for it to end,
+// or 1.5 s, so what the reader lands on is never held back.
 const begin = () => {
-  const id = decodeURIComponent(location.hash.slice(1));
-  if (!id || !document.getElementById(id)) {
+  const target = fragmentTarget();
+  if (!target || landedOn(target)) {
     requestAnimationFrame(start);
     return;
   }
