@@ -1,5 +1,5 @@
 /**
- * /work/ filter, case-study instruments, figure lightbox, footer status line, in-page scrolling
+ * /work/ filter, case-study instruments, figure lightbox, footer, in-page scrolling
  * (interactions spec §4, §5; Ruling G9).
  * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability
  *   and the groups left empty; `?capability=` is kept in the URL and restores the filter on load —
@@ -11,13 +11,12 @@
  *   there is no bar and every row shows.
  * - Case study at 1440: the "On this page" index, whose scrollspy follows the section being read;
  *   below 72rem there is none. The reading-progress bar is decorative. The motion layer (footer
- *   chip and clock, index, lightbox) is fetched only after load there.
+ *   chip, index, lightbox) is fetched only after load there.
  * - Lightbox: opens from a figure image (click) and its "Full size" link (Enter); Esc, the close
  *   button and the backdrop close it; focus goes to the close button and back to the link; the
  *   page can't scroll behind it; it is named "Figure n"; axe finds nothing with it open.
- * - Footer: the build SHA and date; the UTC clock ticks with motion on, only on screen; with
- *   motion off (reduced motion or the toggle) or without JS its slot reads CLOCK PAUSED — no
- *   frozen time under a UTC label — in the same space; the status dot pulses only while it ticks.
+ * - Footer: the copyright line and the Motion chip, on one row (stacked on phones), and nothing
+ *   else.
  * - A page loaded at a fragment lands on it at once; a same-page anchor click glides with motion
  *   on and jumps with it off, keeping the hash.
  * - Without view transitions at all, the theme switch, the filter and the lightbox still work,
@@ -682,120 +681,28 @@ test.describe('without view transitions', () => {
   });
 });
 
-test.describe('footer status line', () => {
-  const LINE = '[data-clock]';
-  const TIME = '[data-clock-time]';
-  const LIVE = `${LINE} .status-line__live`;
-  const PAUSED = `${LINE} .status-line__paused`;
-
-  const pulses = (page: Page) =>
-    page
-      .locator(`${LINE} .status-line__dot`)
-      .evaluate((el) => el.getAnimations({ subtree: true }).length);
-
-  /** The clock slot shows `CLOCK PAUSED`, with no time under a UTC label. */
-  async function expectPaused(page: Page): Promise<void> {
-    await expect(page.locator(PAUSED)).toBeVisible();
-    await expect(page.locator(PAUSED)).toHaveText(/^\s*Clock\s+Paused\s*$/);
-    await expect(page.locator(LIVE)).toBeHidden();
-  }
-
-  test('shows the build SHA and date, and reads them out plainly', async ({ page, request }) => {
-    await gotoRel(page, '');
-    const line = page.locator(LINE);
-    const spoken = (await line.locator('.visually-hidden').textContent()) ?? '';
-    expect(spoken).toBe(spoken.trim());
-    const match = /^Build ([0-9a-f]{7}|local), [A-Z][a-z]+ \d{1,2}, \d{4}$/.exec(spoken);
-    expect(match, spoken).not.toBeNull();
-    await expect(line.locator('.status-line__visual')).toHaveAttribute('aria-hidden', 'true');
-    await expect(line.locator('.status-line__sha')).toHaveText(match![1]!);
-    await expect(line).toContainText(/\d{4}-\d{2}-\d{2}/);
-    // The same build on every page.
-    const html = await (await request.get('work/')).text();
-    expect(html).toContain(`Build ${match![1]}`);
-    // No time is baked into the page: the clock slot is blank until it ticks.
-    expect(/data-clock-time[^>]*>([^<]*)</.exec(html)?.[1]?.trim()).toBe('--:--:--');
-    await expect(page.locator('footer [data-motion-toggle]')).toBeVisible();
+test.describe('footer', () => {
+  test('the copyright and the Motion chip, on one row (stacked on phones)', async ({ page }) => {
+    await gotoRel(page, 'work/');
+    const footer = page.locator('footer');
+    const copyright = footer.locator('p');
+    await expect(copyright).toHaveCount(1);
+    await expect(copyright).toHaveText(/^\s*© \d{4}\s+Parker Jackim\s*$/);
+    await expect(footer.locator('a')).toHaveCount(0);
+    const chip = footer.locator('[data-motion-toggle]');
+    await expect(chip).toBeVisible({ timeout: 10_000 });
+    const text = (await copyright.boundingBox())!;
+    const button = (await chip.boundingBox())!;
+    if (page.viewportSize()!.width >= 640) {
+      // One row: centred on the same line, the chip at the end.
+      expect(button.y + button.height / 2).toBeCloseTo(text.y + text.height / 2, 0);
+      expect(button.x).toBeGreaterThan(text.x + text.width);
+    } else {
+      // Stacked: the chip below, both at the start.
+      expect(button.y).toBeGreaterThanOrEqual(text.y + text.height);
+      expect(button.x).toBeCloseTo(text.x, 0);
+    }
   });
-
-  test.describe('without JavaScript', () => {
-    test.use({ javaScriptEnabled: false });
-
-    test('the clock slot reads CLOCK PAUSED', async ({ page }) => {
-      await gotoRel(page, '');
-      await expectPaused(page);
-    });
-  });
-
-  test.describe('motion on', () => {
-    test.use({ reducedMotion: 'no-preference' });
-
-    test('the clock ticks while on screen, and stops offscreen', async ({ page }) => {
-      await gotoRel(page, '');
-      await page.locator('footer').scrollIntoViewIfNeeded();
-      const line = page.locator(LINE);
-      await expect(line).toHaveAttribute('data-state', 'live', { timeout: 10_000 });
-      await expect(page.locator(LIVE)).toBeVisible();
-      await expect(page.locator(PAUSED)).toBeHidden();
-      const time = page.locator(TIME);
-      const first = (await time.textContent()) ?? '';
-      expect(first).toMatch(/^\d{2}:\d{2}:\d{2}$/);
-      await expect.poll(() => time.textContent(), { timeout: 3000 }).not.toBe(first);
-      expect(await pulses(page)).toBeGreaterThan(0);
-      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-      await expect(line).toHaveAttribute('data-state', 'paused');
-      const held = await time.textContent();
-      await page.waitForTimeout(1300);
-      expect(await time.textContent()).toBe(held);
-      expect(await pulses(page)).toBe(0);
-    });
-
-    test('the footer Motion toggle stops it: CLOCK PAUSED, in the same space', async ({ page }) => {
-      await gotoRel(page, 'work/');
-      await page.locator('footer').scrollIntoViewIfNeeded();
-      await expect(page.locator(LINE)).toHaveAttribute('data-state', 'live', { timeout: 10_000 });
-      const slot = page.locator(`${LINE} .status-line__clock`);
-      const liveBox = (await slot.boundingBox())!;
-      await page.locator('footer [data-motion-toggle]').click();
-      await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
-      await expect(page.locator(LINE)).toHaveAttribute('data-state', 'static');
-      await expectPaused(page);
-      // No stale time is left under the hidden UTC label either.
-      await expect(page.locator(TIME)).toHaveText('--:--:--');
-      await page.waitForTimeout(1300);
-      await expect(page.locator(TIME)).toHaveText('--:--:--');
-      expect(await pulses(page)).toBe(0);
-      // The two states share one box: nothing after the slot moves.
-      const pausedBox = (await slot.boundingBox())!;
-      expect(pausedBox.x).toBeCloseTo(liveBox.x, 1);
-      expect(pausedBox.width).toBeCloseTo(liveBox.width, 1);
-      // And back on: it ticks again.
-      await page.locator('footer [data-motion-toggle]').click();
-      await expect(page.locator(LINE)).toHaveAttribute('data-state', 'live');
-      await expect(page.locator(TIME)).toHaveText(/^\d{2}:\d{2}:\d{2}$/);
-    });
-  });
-
-  for (const [name, setup] of [
-    ['reduced motion', (page: Page) => page.emulateMedia({ reducedMotion: 'reduce' })],
-    [
-      'the Motion toggle off',
-      (page: Page) => page.addInitScript(() => localStorage.setItem('motion', 'off')),
-    ],
-  ] as const) {
-    test(`with ${name}, the clock slot reads CLOCK PAUSED, and nothing ticks`, async ({ page }) => {
-      await setup(page);
-      await gotoRel(page, '');
-      await page.waitForLoadState('load');
-      await page.locator('footer').scrollIntoViewIfNeeded();
-      await expect(page.locator(LINE)).toHaveAttribute('data-state', 'static', { timeout: 5000 });
-      await expectPaused(page);
-      await expect(page.locator(TIME)).toHaveText('--:--:--');
-      await page.waitForTimeout(1300);
-      await expect(page.locator(TIME)).toHaveText('--:--:--');
-      expect(await pulses(page)).toBe(0);
-    });
-  }
 });
 
 test.describe('in-page scrolling (Ruling G9)', () => {

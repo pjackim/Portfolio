@@ -1,8 +1,9 @@
 /**
  * Cards, sections, reveals, theme reveal (interactions spec §3, §5).
- * - Card targeting reticle: hidden at rest; locked on (brackets + readout) by hover with a fine
- *   pointer and by keyboard focus; faint and static on touch screens. The spotlight follows the
- *   pointer through CSSOM custom properties (one delegated listener).
+ * - Card targeting reticle: hidden at rest; locked on (brackets + an "Open project" readout, on
+ *   every card) by hover with a fine pointer and by keyboard focus; faint and static on touch
+ *   screens. The spotlight follows the pointer through CSSOM custom properties (one delegated
+ *   listener).
  * - Archive rows: the surface wash is clipped away at rest and wipes in on hover and focus.
  * - Section headings: the label flickers once on an aria-hidden layer — a sparse flicker of about
  *   a third of its glyphs within ~400 ms, not a full decrypt (the h2's text and the section's
@@ -158,6 +159,9 @@ test.describe('card reticle', () => {
     await expect(link).toBeFocused();
     await expect.poll(() => brackets(page)).toEqual([1, 1]);
     await expect(page.locator(`${CARD} .card__readout`).first()).toHaveCSS('opacity', '1');
+    // Every card's readout says the same, featured or not.
+    const labels = await page.locator(`${CARD} .card__readout`).allTextContents();
+    expect(new Set(labels.map((label) => label.trim()))).toEqual(new Set(['Open project']));
     // The link's name is the title alone: the readout chip adds nothing.
     await expect(link).toHaveAccessibleName('Credential Correlation Visualizer');
   });
