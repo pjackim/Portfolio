@@ -1,36 +1,40 @@
 /**
  * Redirect stubs at the legacy site's exact URLs (spec-architecture §6): `html/Work/<name>.html`
- * for every project's `legacyPaths` → `work/<slug>/`, plus the removed pages in
- * `REMOVED_LEGACY`. GitHub Pages can't send HTTP redirects, so each stub is a tiny document
- * with a zero-delay meta refresh, a canonical link to the new URL and a visible fallback link.
+ * for every project's `legacyPaths` → `work/<slug>/`. Legacy pages without a published project
+ * — `REMOVED_LEGACY`, and the `legacyPaths` of draft projects — go to `work/`. GitHub Pages
+ * can't send HTTP redirects, so each stub is a tiny document with a zero-delay meta refresh
+ * and a visible fallback link (root-relative, so they work on any host, e.g. the local
+ * preview) plus an absolute canonical link.
  *
  * No script (Astro's CSP doesn't cover endpoints) and nothing to load, so the stub carries its
  * own policy that allows nothing at all.
  */
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { REMOVED_LEGACY } from '../../../lib/legacy';
-import { getProjects } from '../../../lib/projects';
-import { absoluteUrl } from '../../../lib/seo';
+import { getAllProjectEntries, getProjects } from '../../../lib/projects';
+import { absoluteUrl, withBase } from '../../../lib/url';
 
 const LEGACY_PAGE = /^html\/Work\/([a-z_]+)\.html$/;
 
 interface Props {
-  /** Absolute URL of the new page. */
+  /** Target path relative to the base, e.g. `work/the-forest/`. */
   target: string;
 }
 
 export const getStaticPaths = (async () => {
-  const projects = await getProjects();
-  const redirects: [legacyPath: string, target: string][] = [
-    ...projects.flatMap((p) =>
-      p.data.legacyPaths.map((path): [string, string] => [path, `work/${p.id}/`]),
-    ),
-    ...Object.entries(REMOVED_LEGACY),
-  ];
-  return redirects.map(([path, target]) => {
+  const [entries, published] = await Promise.all([getAllProjectEntries(), getProjects()]);
+  const live = new Set(published.map((p) => p.id));
+  const targets = new Map<string, string>(Object.entries(REMOVED_LEGACY));
+  for (const entry of entries) {
+    for (const path of entry.data.legacyPaths) {
+      if (targets.has(path)) throw new Error(`legacy redirects: ${path} is claimed twice`);
+      targets.set(path, live.has(entry.id) ? `work/${entry.id}/` : 'work/');
+    }
+  }
+  return [...targets].map(([path, target]) => {
     const name = LEGACY_PAGE.exec(path)?.[1];
     if (!name) throw new Error(`legacy redirects: not an html/Work/<name>.html path: ${path}`);
-    return { params: { legacy: name }, props: { target: absoluteUrl(target) } satisfies Props };
+    return { params: { legacy: name }, props: { target } satisfies Props };
   });
 }) satisfies GetStaticPaths;
 
@@ -38,7 +42,8 @@ const escapeHtml = (text: string) =>
   text.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
 export const GET: APIRoute<Props> = ({ props }) => {
-  const url = escapeHtml(props.target);
+  const href = escapeHtml(withBase(props.target));
+  const canonical = escapeHtml(absoluteUrl(props.target));
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -48,11 +53,11 @@ export const GET: APIRoute<Props> = ({ props }) => {
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex">
 <title>Moved — Parker Jackim</title>
-<link rel="canonical" href="${url}">
-<meta http-equiv="refresh" content="0; url=${url}">
+<link rel="canonical" href="${canonical}">
+<meta http-equiv="refresh" content="0; url=${href}">
 </head>
 <body>
-<p>This page moved to <a href="${url}">${url}</a>.</p>
+<p>This page moved to <a href="${href}">${href}</a>.</p>
 </body>
 </html>
 `;

@@ -83,6 +83,14 @@ export async function getProjects(): Promise<Project[]> {
   return projects;
 }
 
+/**
+ * Every project entry, drafts included, unvalidated. Only for the legacy redirect stubs: a
+ * legacy URL must keep resolving while its project is a draft. Pages use `getProjects()`.
+ */
+export async function getAllProjectEntries(): Promise<Project[]> {
+  return getCollection('projects');
+}
+
 /** Featured case studies, sorted by `order`. */
 export async function getFeatured(): Promise<Project[]> {
   return (await getProjects()).filter((p) => p.data.featured).sort(byOrder);

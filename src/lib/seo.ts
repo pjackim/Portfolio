@@ -8,7 +8,7 @@ import { site } from '../data/site';
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { imageFacts } from './images';
 import type { Project } from './projects';
-import { withBase } from './url';
+import { absoluteUrl } from './url';
 
 export interface OgImage {
   /** Absolute URL. */
@@ -17,10 +17,6 @@ export interface OgImage {
   height: number;
   alt: string;
 }
-
-/** Absolute URL of a path relative to the site base, e.g. `absoluteUrl('work/')`. */
-export const absoluteUrl = (path = ''): string =>
-  new URL(withBase(path), import.meta.env.SITE).href;
 
 /** `public/og-default.png`, rendered by `scripts/og/render-default.ts`. */
 export const DEFAULT_OG_IMAGE: OgImage = {
@@ -32,6 +28,9 @@ export const DEFAULT_OG_IMAGE: OgImage = {
 
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
+/** Smaller crops render as small thumbnails (or not at all) on some platforms. */
+const OG_MIN_WIDTH = 600;
+const OG_MIN_HEIGHT = 315;
 /** `--surface-2-l`: the light plate the site shows transparent covers on. */
 const ALPHA_PLATE = '#e8eaec';
 
@@ -50,8 +49,8 @@ function cropPosition(objectPosition: string | undefined): string | undefined {
 /**
  * The project's cover cropped to 1200×630 for link previews — JPEG q85, 4–8× smaller than PNG
  * for these covers. Astro never upscales, so a smaller cover gets the largest crop of the same
- * 40:21 shape instead. Transparent covers are flattened onto the site's light plate, so dark
- * artwork never lands on black.
+ * 40:21 shape instead, and one too small for even 600×315 gets the default card. Transparent
+ * covers are flattened onto the site's light plate, so dark artwork never lands on black.
  */
 export async function coverOgImage(project: Project): Promise<OgImage> {
   const { cover, coverAlt, coverPosition } = project.data;
@@ -59,6 +58,7 @@ export async function coverOgImage(project: Project): Promise<OgImage> {
   const scale = Math.min(1, facts.width / OG_WIDTH, facts.height / OG_HEIGHT);
   const width = Math.round(OG_WIDTH * scale);
   const height = Math.round(OG_HEIGHT * scale);
+  if (width < OG_MIN_WIDTH || height < OG_MIN_HEIGHT) return DEFAULT_OG_IMAGE;
   const position = cropPosition(coverPosition);
   const image = await getImage({
     src: cover,
@@ -69,6 +69,8 @@ export async function coverOgImage(project: Project): Promise<OgImage> {
     background: ALPHA_PLATE,
     format: 'jpeg',
     quality: 85,
+    // One file: without this the global `constrained` layout adds a srcset of unused widths.
+    layout: 'none',
   });
   return { src: new URL(image.src, import.meta.env.SITE).href, width, height, alt: coverAlt };
 }
@@ -98,6 +100,8 @@ export function personJsonLd(featured: readonly Project[]): object {
   for (const term of terms) {
     if (!knowsAbout.has(term.toLowerCase())) knowsAbout.set(term.toLowerCase(), term);
   }
+  const [locality, region] = site.location.split(', ');
+  if (!locality || !region) throw new Error(`site.location "${site.location}" is not "City, ST"`);
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -105,16 +109,13 @@ export function personJsonLd(featured: readonly Project[]): object {
     name: site.name,
     url: absoluteUrl(),
     jobTitle: site.role,
-    // index.html:156; résumé (Education)
-    worksFor: {
-      '@type': 'Organization',
-      name: 'Johns Hopkins University Applied Physics Laboratory',
-    },
-    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Colorado State University' },
+    worksFor: { '@type': 'Organization', name: site.employer },
+    alumniOf: { '@type': 'CollegeOrUniversity', name: site.school },
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Columbia',
-      addressRegion: 'MD',
+      addressLocality: locality,
+      addressRegion: region,
+      // `region` is a US state code (spec-design-content §6: Columbia / MD / US).
       addressCountry: 'US',
     },
     sameAs: [site.github, site.linkedin],

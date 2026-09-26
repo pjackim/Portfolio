@@ -25,7 +25,12 @@ export interface ExperienceEntry {
 export interface Site {
   name: string;
   role: string;
+  /** "City, ST". */
   location: string;
+  /** Organisation of the current role (the first experience entry). */
+  employer: string;
+  /** University (Education on the résumé). */
+  school: string;
   email: string;
   github: string;
   linkedin: string;
@@ -41,10 +46,15 @@ export interface Site {
   experience: readonly ExperienceEntry[];
 }
 
+const EMPLOYER = 'Johns Hopkins University Applied Physics Laboratory'; // index.html:156
+const SCHOOL = 'Colorado State University'; // résumé (Education)
+
 export const site: Site = {
   name: 'Parker Jackim',
   role: 'Cyber Security Researcher', // index.html:156
   location: 'Columbia, MD', // index.html:418
+  employer: EMPLOYER,
+  school: SCHOOL,
   email: 'parkerwjackim@gmail.com', // index.html:420
   github: 'https://github.com/pjackim', // index.html:398
   linkedin: 'https://www.linkedin.com/in/parker-jackim-68b3561b8/', // index.html:399
@@ -81,15 +91,12 @@ export const site: Site = {
     // reverse engineering"
     { label: 'Focus', value: 'Reverse engineering · Machine learning · Embedded systems' },
     // résumé (Education). Degree completion and end date are not stated in the repo.
-    { label: 'Edu', value: 'Computer Science · Colorado State University' },
+    { label: 'Edu', value: `Computer Science · ${SCHOOL}` },
   ],
 
   experience: [
     // index.html:156 — the repo gives no dates or work location for this role
-    {
-      title: 'Cyber Security Researcher',
-      org: 'Johns Hopkins University Applied Physics Laboratory',
-    },
+    { title: 'Cyber Security Researcher', org: EMPLOYER },
     // résumé (Experience): "May 2021 - August 2021 · Online"
     { period: 'May–Aug 2021', title: 'Teacher', org: 'iD Tech', place: 'Online' },
     // foresthack.html:79-82 — undated; the project itself is Spring 2020 per the résumé
@@ -100,7 +107,7 @@ export const site: Site = {
     {
       period: 'From Aug 2019',
       title: 'Computer Science student',
-      org: 'Colorado State University',
+      org: SCHOOL,
       place: 'Fort Collins, Colorado',
     },
     // résumé (Experience): "2016 – Present" as of June 2022

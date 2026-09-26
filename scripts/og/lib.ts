@@ -8,7 +8,7 @@
  *    back to a system sans), and sharp's FreeType can't read WOFF2, so Geist can't be loaded
  *    that way either. Headless Chromium (the pinned Playwright build already used for the e2e
  *    tests) renders the same SVG with the real variable fonts and kerning; sharp then encodes
- *    the PNG.
+ *    the PNG. Regenerating therefore needs that browser: `npx playwright install chromium`.
  *
  * Runs on Node's native TypeScript support: erasable syntax only.
  */
