@@ -245,7 +245,10 @@ a {
  * The safety net at the end of this file stops anything that slips through, under either. */
 
 @media (prefers-reduced-motion: no-preference) {
-  :root:not([data-motion='off']) {
+  /* Smooth scrolling only for a same-page #hash link click (Ruling G9): the class is on <html>
+     for that one scroll (src/scripts/smooth-scroll.ts). Never on the root for good, which would
+     also make the fragment jump of a page loaded at `…#about` a long glide instead of landing. */
+  :root.smooth-scroll:not([data-motion='off']) {
     scroll-behavior: smooth;
   }
 
