@@ -1,0 +1,68 @@
+---
+/**
+ * Document shell for every page (spec-design-content §3, §7): head meta + SEO, the blocking
+ * theme bootstrap, self-hosted fonts, global styles; skip link, header, main, footer.
+ * Pages add head-only tags (e.g. `<link rel="expect">`) through `<slot name="head" />`.
+ */
+import { Font } from 'astro:assets';
+import Seo from '../components/Seo.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/prose.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: object | object[];
+}
+
+const { title, description, ogImage, ogType, noindex, jsonLd } = Astro.props;
+// Escape "<" so no string inside the data can close the script element.
+const jsonLdText = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      try {
+        const s = localStorage.getItem('scheme');
+        if (s === 'light' || s === 'dark') {
+          document.documentElement.dataset.scheme = s;
+          document.querySelector('meta[name="color-scheme"]').content = s;
+        }
+      } catch {}
+    </script>
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0d10" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb" />
+    <Seo
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+    />
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}
+  </body>
+</html>

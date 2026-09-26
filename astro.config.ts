@@ -1,5 +1,10 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+
+/** Self-hosted variable woff2, Latin subset only, straight from the Fontsource packages. */
+const LATIN =
+  'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,' +
+  'U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
 
 export default defineConfig({
   site: 'https://pjackim.github.io',
@@ -10,6 +15,43 @@ export default defineConfig({
   image: { layout: 'constrained', responsiveStyles: true },
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },
   integrations: [sitemap({ filter: (p) => !p.includes('/html/Work/') })],
-  // fonts: local Fontsource woff2 via the Fonts API — added in the fonts task
+  // Fonts API: local provider → `<Font cssVariable=… />` emits the @font-face rules, the
+  // `--font-sans` / `--font-mono` variables and metric-matched fallbacks (Arial / Courier New).
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: 'Geist',
+      cssVariable: '--font-sans',
+      fallbacks: ['sans-serif'],
+      display: 'swap',
+      options: {
+        variants: [
+          {
+            src: ['@fontsource-variable/geist/files/geist-latin-wght-normal.woff2'],
+            weight: '100 900',
+            style: 'normal',
+            unicodeRange: [LATIN],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Geist Mono',
+      cssVariable: '--font-mono',
+      fallbacks: ['monospace'],
+      display: 'swap',
+      options: {
+        variants: [
+          {
+            src: ['@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2'],
+            weight: '100 900',
+            style: 'normal',
+            unicodeRange: [LATIN],
+          },
+        ],
+      },
+    },
+  ],
   // security.csp added in the SEO/CSP task
 });

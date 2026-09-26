@@ -1,0 +1,85 @@
+---
+/**
+ * Two-state theme switch (spec-design-content §2). Rendered `hidden`: it only appears once
+ * `src/scripts/theme.ts` runs, so without JS the page simply follows the system scheme.
+ * The slot reserves the button's box while scripting is enabled, so revealing it never
+ * shifts the header. The icon shows the scheme the button switches *to* (matching its label).
+ */
+---
+
+<span class="theme-toggle-slot">
+  <button type="button" class="theme-toggle" data-theme-toggle hidden aria-label="Switch theme">
+    <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.7 6.7 5.28 5.28M18.72 18.72 17.3 17.3M6.7 17.3l-1.42 1.42M18.72 5.28 17.3 6.7"></path>
+    </svg>
+    <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20.49 12.49A8.5 8.5 0 1 1 11.51 3.51a6.5 6.5 0 0 0 8.98 8.98Z"></path>
+    </svg>
+  </button>
+</span>
+
+<script src="../scripts/theme.ts"></script>
+
+<style>
+  .theme-toggle-slot {
+    --size: 2.25rem;
+    display: grid;
+    place-items: center;
+  }
+
+  @media (scripting: enabled) {
+    .theme-toggle-slot {
+      min-inline-size: var(--size);
+      min-block-size: var(--size);
+    }
+  }
+
+  .theme-toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: var(--size);
+    block-size: var(--size);
+    padding: 0;
+    border: var(--rule-ui);
+    border-radius: var(--radius-s);
+    background-color: transparent;
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  /* 44×44 hit area around the 36px visual box (inset is measured from the padding box). */
+  .theme-toggle::after {
+    content: '';
+    position: absolute;
+    inset: calc((var(--size) - 2.75rem) / 2 - 1px);
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--surface-2);
+    color: var(--text);
+  }
+
+  .theme-toggle__icon {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .theme-toggle[data-next='light'] .theme-toggle__icon--moon,
+  .theme-toggle[data-next='dark'] .theme-toggle__icon--sun,
+  .theme-toggle:not([data-next]) .theme-toggle__icon--moon {
+    display: none;
+  }
+</style>

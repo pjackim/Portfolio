@@ -1,0 +1,38 @@
+---
+/**
+ * Per-page meta (spec-design-content §6): title, description, canonical, robots, Open Graph
+ * and Twitter basics, sitemap link. Task 8 adds the default OG image and favicons.
+ */
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /**
+   * Absolute URL, or a root-relative path that already includes the base (e.g. `getImage()`
+   * output or `withBase('og-default.png')`). Resolved against `site` for `og:image`.
+   */
+  ogImage?: string | undefined;
+  ogType?: 'website' | 'article' | undefined;
+  noindex?: boolean | undefined;
+}
+
+const { title, description, ogImage, ogType = 'website', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const image = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_US" />
+{image && <meta property="og:image" content={image} />}
+<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+<link rel="sitemap" href={withBase('sitemap-index.xml')} />

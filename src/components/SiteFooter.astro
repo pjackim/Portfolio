@@ -1,0 +1,44 @@
+---
+/** Site footer (spec-design-content §2, §3): copyright, build credit, source link. */
+import { site } from '../data/site';
+import Arrow from './Arrow.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p class="mono-label">
+      © {year} {site.name}
+    </p>
+    <p class="mono-label">
+      Built with Astro <span aria-hidden="true">·</span>
+      <a class="source-link" href={site.sourceRepo}>
+        Source
+        <Arrow dir="up-right" />
+      </a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-l);
+    border-block-start: var(--hairline);
+  }
+
+  /* Two readouts, left and right; they stack cleanly on narrow screens. */
+  /* inline-flex: the underline stays on the word; the arrow centres on the caps. */
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-l);
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+/**
+ * Non-interactive mono chips (spec-design-content §3): stack, tools, keywords. With `max`,
+ * shows the first `max` tags plus a "+N" chip; the full list lives on the case study.
+ */
+interface Props {
+  tags: readonly string[];
+  /** Show at most this many tags, then "+N". */
+  max?: number;
+  /** Accessible name for the list, e.g. "Stack". */
+  label?: string;
+  class?: string;
+}
+
+const { tags, max, label, class: className } = Astro.props;
+const shown = max === undefined ? tags : tags.slice(0, max);
+const hidden = tags.length - shown.length;
+---
+
+{tags.length > 0 && (
+  <ul class:list={['tag-list', className]} aria-label={label}>
+    {shown.map((tag) => (
+      <li class="tag">{tag}</li>
+    ))}
+    {hidden > 0 && (
+      <li class="tag tag--more">
+        <span aria-hidden="true">+{hidden}</span>
+        <span class="visually-hidden">and {hidden} more</span>
+      </li>
+    )}
+  </ul>
+)}
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tag {
+    padding: 0.1875rem 0.4375rem;
+    border-radius: var(--radius-xs);
+    background-color: var(--surface-2);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 400;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .tag--more {
+    color: var(--text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

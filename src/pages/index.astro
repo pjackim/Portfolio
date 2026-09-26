@@ -1,25 +1,71 @@
 ---
+import SectionHeading from '../components/SectionHeading.astro';
+import TagList from '../components/TagList.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getFeatured } from '../lib/projects';
 import { withBase } from '../lib/url';
 
-// Temporary proof that the project collection loads; Task 6 replaces this page.
+// Temporary page: proves the layout shell and the project collection; Task 6 replaces it.
 const featured = await getFeatured();
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Parker Jackim</title>
-  </head>
-  <body>
-    <h1>Parker Jackim</h1>
-    <a href={withBase('files/Resume_General.pdf')}>Résumé</a>
-    <ul>
-      {featured.map((project) => (
-        <li>{project.data.title}</li>
+<BaseLayout
+  title="Parker Jackim — Cyber Security Researcher"
+  description="Portfolio of Parker Jackim: reverse engineering, credential-security ML, Unreal Engine networking, and React engineering."
+>
+  <section class="container placeholder" aria-labelledby="work-title">
+    <h1 class="visually-hidden">Parker Jackim</h1>
+    <SectionHeading
+      index="01"
+      label="Selected work"
+      id="work-title"
+      action={{ href: withBase('work/'), text: 'All work →' }}
+    />
+    <ol class="placeholder__list">
+      {featured.map((project, i) => (
+        <li>
+          <span class="mono-label">{String(i + 1).padStart(2, '0')}</span>
+          <span class="placeholder__title">{project.data.title}</span>
+          <TagList tags={project.data.stack} max={4} label="Stack" />
+        </li>
       ))}
-    </ul>
-  </body>
-</html>
+    </ol>
+    <p class="placeholder__resume">
+      <a href={withBase('files/Resume_General.pdf')}>Résumé · PDF</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder {
+    padding-block: var(--space-section);
+  }
+
+  .placeholder__list {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  .placeholder__list li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-2xs) var(--space-s);
+    align-items: baseline;
+    padding-block: var(--space-s);
+    border-block-end: var(--hairline);
+  }
+
+  .placeholder__list li > :global(.tag-list) {
+    grid-column: 2;
+  }
+
+  .placeholder__title {
+    font-size: var(--step-1);
+    font-weight: 500;
+  }
+
+  .placeholder__resume {
+    margin-block-start: var(--space-l);
+  }
+</style>

@@ -1,0 +1,157 @@
+/*
+ * Design tokens — "Operator console" (spec-design-content §1). Values are exact; change them
+ * there first. Colour tokens keep raw light (-l) / dark (-d) values and compose them with
+ * light-dark(), so every token follows the used `color-scheme`: the system preference by
+ * default, or the pin written to <html data-scheme> by the theme bootstrap / toggle.
+ *
+ * Font stacks (`--font-sans`, `--font-mono`) come from the Astro Fonts API (`<Font>` in
+ * BaseLayout), including metric-matched Arial / Courier New fallbacks.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* 1a. Colour — raw values */
+  --bg-d: oklch(16% 0.006 255); /* #0c0d10 */
+  --bg-l: oklch(98.5% 0.002 255); /* #f9fafb */
+  --surface-d: oklch(19.5% 0.007 255); /* #131518 */
+  --surface-l: oklch(96.5% 0.003 255); /* #f2f3f5 */
+  --surface-2-d: oklch(23.5% 0.008 255); /* #1c1e22 */
+  --surface-2-l: oklch(93.5% 0.004 255); /* #e8eaec */
+  --line-d: oklch(30% 0.008 255); /* #2b2e32 — decorative */
+  --line-l: oklch(89% 0.005 255); /* #d8dbde */
+  --line-ui-d: oklch(53% 0.01 255); /* #686c72 — ≥3:1 */
+  --line-ui-l: oklch(60% 0.01 255); /* #7c8186 */
+  --text-d: oklch(95.5% 0.003 255); /* #eff0f2 */
+  --text-l: oklch(21% 0.01 255); /* #15191d */
+  --text-muted-d: oklch(76% 0.008 255); /* #aeb1b6 */
+  --text-muted-l: oklch(45% 0.01 255); /* #52565b */
+  --text-subtle-d: oklch(66% 0.01 255); /* #8e9398 */
+  --text-subtle-l: oklch(52% 0.01 255); /* #65696f */
+  --accent-d: oklch(82% 0.11 205); /* #5ed9e6 — "Signal" */
+  --accent-l: oklch(50% 0.085 215); /* #0e6f81 */
+  --accent-hover-d: oklch(88% 0.09 205); /* #8ce9f4 */
+  --accent-hover-l: oklch(42% 0.07 215); /* #0d5665 */
+  --danger-d: oklch(72% 0.15 25); /* #f47b74 — 404 code only */
+  --danger-l: oklch(52% 0.17 25); /* #b63132 */
+
+  /* 1a. Colour — composed */
+  --bg: light-dark(var(--bg-l), var(--bg-d));
+  --surface: light-dark(var(--surface-l), var(--surface-d));
+  --surface-2: light-dark(var(--surface-2-l), var(--surface-2-d));
+  --line: light-dark(var(--line-l), var(--line-d));
+  --line-ui: light-dark(var(--line-ui-l), var(--line-ui-d));
+  --text: light-dark(var(--text-l), var(--text-d));
+  --text-muted: light-dark(var(--text-muted-l), var(--text-muted-d));
+  --text-subtle: light-dark(var(--text-subtle-l), var(--text-subtle-d));
+  --accent: light-dark(var(--accent-l), var(--accent-d));
+  --accent-hover: light-dark(var(--accent-hover-l), var(--accent-hover-d));
+  --on-accent: var(--bg);
+  --danger: light-dark(var(--danger-l), var(--danger-d));
+
+  /* 1b. Type — fluid scale, 360 → 1280px */
+  --step--1: clamp(0.7812rem, 0.769rem + 0.0544vw, 0.8125rem);
+  --step-0: clamp(1rem, 0.9755rem + 0.1087vw, 1.0625rem);
+  --step-1: clamp(1.125rem, 1.076rem + 0.2174vw, 1.25rem);
+  --step-2: clamp(1.25rem, 1.152rem + 0.4348vw, 1.5rem);
+  --step-3: clamp(1.5rem, 1.304rem + 0.8696vw, 2rem);
+  --step-4: clamp(1.875rem, 1.533rem + 1.522vw, 2.75rem);
+  --step-5: clamp(2.25rem, 1.565rem + 3.043vw, 4rem);
+
+  /* 1c. Space */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+
+  /* 1c. Layout */
+  --container: 72rem;
+  --measure: 66ch;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --header-h: 3.5rem;
+
+  /* 1c. Radii & borders — nothing else is rounded; no elevation, tone + hairline only */
+  --radius-xs: 2px;
+  --radius-s: 4px;
+  --hairline: 1px solid var(--line);
+  --rule-ui: 1px solid var(--line-ui);
+
+  /* 1d. Motion */
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* A pinned scheme (theme toggle) overrides the system preference. */
+:root[data-scheme='light'] {
+  color-scheme: light;
+}
+
+:root[data-scheme='dark'] {
+  color-scheme: dark;
+}
+
+/* prefers-contrast: more — stronger muted text; decorative rules become UI-grade (≥3:1). */
+@media (prefers-contrast: more) {
+  :root {
+    --text-muted-d: oklch(84% 0.006 255);
+    --text-muted-l: oklch(36% 0.01 255);
+    --line-d: var(--line-ui-d);
+    --line-l: var(--line-ui-l);
+  }
+}
+
+/* Browsers without light-dark(): pick the raw values with prefers-color-scheme + data-scheme. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root {
+    --bg: var(--bg-l);
+    --surface: var(--surface-l);
+    --surface-2: var(--surface-2-l);
+    --line: var(--line-l);
+    --line-ui: var(--line-ui-l);
+    --text: var(--text-l);
+    --text-muted: var(--text-muted-l);
+    --text-subtle: var(--text-subtle-l);
+    --accent: var(--accent-l);
+    --accent-hover: var(--accent-hover-l);
+    --danger: var(--danger-l);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-scheme='light']) {
+      --bg: var(--bg-d);
+      --surface: var(--surface-d);
+      --surface-2: var(--surface-2-d);
+      --line: var(--line-d);
+      --line-ui: var(--line-ui-d);
+      --text: var(--text-d);
+      --text-muted: var(--text-muted-d);
+      --text-subtle: var(--text-subtle-d);
+      --accent: var(--accent-d);
+      --accent-hover: var(--accent-hover-d);
+      --danger: var(--danger-d);
+    }
+  }
+
+  :root[data-scheme='dark'] {
+    --bg: var(--bg-d);
+    --surface: var(--surface-d);
+    --surface-2: var(--surface-2-d);
+    --line: var(--line-d);
+    --line-ui: var(--line-ui-d);
+    --text: var(--text-d);
+    --text-muted: var(--text-muted-d);
+    --text-subtle: var(--text-subtle-d);
+    --accent: var(--accent-d);
+    --accent-hover: var(--accent-hover-d);
+    --danger: var(--danger-d);
+  }
+}
