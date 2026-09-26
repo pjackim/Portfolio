@@ -670,6 +670,15 @@ test.describe('axe, motion on', () => {
     await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
     await expect.poll(() => brackets(page)).toEqual([1, 1]);
     await scrollSettled(page);
+    // The locked-on card in view below its section heading, which sits at the scroll padding —
+    // so what's under the sticky header is the section's own top padding. Wherever the focus
+    // scroll happens to stop, a link can otherwise sit half under the header (the hero's links or
+    // Motion chip, depending on the viewport), which axe reads as a target too small to hit.
+    await page
+      .locator('#work .section-heading')
+      .evaluate((el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    await twoFrames(page);
+    await expect(page.locator(`${CARD} .card__title a`).first()).toBeFocused();
     const { violations } = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
       .analyze();

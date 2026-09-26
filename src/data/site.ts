@@ -51,7 +51,8 @@ const SCHOOL = 'Colorado State University'; // résumé (Education)
 
 /**
  * Focus areas — index.html:156: "My interests include … embedded systems, machine learning, and
- * reverse engineering". Shown in the status strip and typed out by the hero's focus line.
+ * reverse engineering". Typed out by the hero's focus line (the one place they appear: the status
+ * strip used to repeat them in a FOCUS cell).
  */
 export const FOCUS_AREAS = ['Reverse engineering', 'Machine learning', 'Embedded systems'] as const;
 
@@ -98,9 +99,9 @@ export const site: Site = {
       'they are exploited.',
   ],
 
+  // The focus areas aren't repeated here: the hero's typed FOCUS line carries them.
   status: [
     { label: 'Now', value: 'Cyber security research · JHU APL' }, // index.html:156
-    { label: 'Focus', value: FOCUS_AREAS.join(' · ') },
     // résumé (Education). Degree completion and end date are not stated in the repo.
     { label: 'Edu', value: `Computer Science · ${SCHOOL}` },
   ],

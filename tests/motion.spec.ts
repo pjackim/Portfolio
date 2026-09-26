@@ -221,6 +221,31 @@ test.describe('motion on', () => {
     await expect.poll(() => graphSignature(page), { timeout: 5000 }).not.toEqual(first);
   });
 
+  test('the status strip is NOW · EDU: the focus areas are the typed line alone', async ({
+    page,
+  }) => {
+    await gotoRel(page, '');
+    const strip = page.locator('.hero .status-strip');
+    await expect(strip.locator('dt')).toHaveText(['Now', 'Edu']);
+    // Said once, by the focus line (its visible layers are aria-hidden twins of its own text).
+    await expect(page.locator('.hero')).toContainText(/Focus: reverse engineering/);
+    await expect(strip).not.toContainText(/reverse engineering/i);
+    // Wide: two equal cells side by side; phones: stacked rows.
+    const cells = await strip.locator('.status-strip__cell').evaluateAll((els) =>
+      els.map((el) => {
+        const box = el.getBoundingClientRect();
+        return { top: Math.round(box.top), width: Math.round(box.width) };
+      }),
+    );
+    expect(cells).toHaveLength(2);
+    if ((page.viewportSize()?.width ?? 0) >= 640) {
+      expect(cells[0]!.top).toBe(cells[1]!.top);
+      expect(Math.abs(cells[0]!.width - cells[1]!.width)).toBeLessThanOrEqual(1);
+    } else {
+      expect(cells[1]!.top).toBeGreaterThan(cells[0]!.top);
+    }
+  });
+
   test('the h1 keeps its server-rendered text, untouched', async ({ page, request }) => {
     const html = await (await request.get('')).text();
     const ssr = /<h1[^>]*>([^<]*)<\/h1>/.exec(html)?.[1]?.trim();
