@@ -43,8 +43,6 @@ export interface BuildInfo {
   sha: string;
   /** `YYYY-MM-DD` (UTC). */
   date: string;
-  /** `HH:MM:SS` (UTC). */
-  time: string;
   /** The date for people and screen readers, e.g. "September 26, 2026". */
   dateLong: string;
   /** Four-digit year (UTC), for the copyright line. */
@@ -54,7 +52,6 @@ export interface BuildInfo {
 export const build: BuildInfo = {
   sha: commit(),
   date: at.toISOString().slice(0, 10),
-  time: at.toISOString().slice(11, 19),
   dateLong: new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(at),
   year: at.getUTCFullYear(),
 };

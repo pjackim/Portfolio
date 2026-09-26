@@ -15,9 +15,9 @@
  * - Lightbox: opens from a figure image (click) and its "Full size" link (Enter); Esc, the close
  *   button and the backdrop close it; focus goes to the close button and back to the link; the
  *   page can't scroll behind it; it is named "Figure n"; axe finds nothing with it open.
- * - Footer: the build SHA and date; the UTC clock ticks with motion on, only on screen, and is
- *   frozen on the build time with motion off (reduced motion or the toggle); the status dot
- *   pulses only while it ticks.
+ * - Footer: the build SHA and date; the UTC clock ticks with motion on, only on screen; with
+ *   motion off (reduced motion or the toggle) or without JS its slot reads CLOCK PAUSED — no
+ *   frozen time under a UTC label — in the same space; the status dot pulses only while it ticks.
  * - A page loaded at a fragment lands on it at once; a same-page anchor click glides with motion
  *   on and jumps with it off, keeping the hash.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
@@ -629,11 +629,20 @@ test.describe('figure lightbox', () => {
 test.describe('footer status line', () => {
   const LINE = '[data-clock]';
   const TIME = '[data-clock-time]';
+  const LIVE = `${LINE} .status-line__live`;
+  const PAUSED = `${LINE} .status-line__paused`;
 
   const pulses = (page: Page) =>
     page
       .locator(`${LINE} .status-line__dot`)
       .evaluate((el) => el.getAnimations({ subtree: true }).length);
+
+  /** The clock slot shows `CLOCK PAUSED`, with no time under a UTC label. */
+  async function expectPaused(page: Page): Promise<void> {
+    await expect(page.locator(PAUSED)).toBeVisible();
+    await expect(page.locator(PAUSED)).toHaveText(/^\s*Clock\s+Paused\s*$/);
+    await expect(page.locator(LIVE)).toBeHidden();
+  }
 
   test('shows the build SHA and date, and reads them out plainly', async ({ page, request }) => {
     await gotoRel(page, '');
@@ -648,7 +657,18 @@ test.describe('footer status line', () => {
     // The same build on every page.
     const html = await (await request.get('work/')).text();
     expect(html).toContain(`Build ${match![1]}`);
+    // No time is baked into the page: the clock slot is blank until it ticks.
+    expect(/data-clock-time[^>]*>([^<]*)</.exec(html)?.[1]?.trim()).toBe('--:--:--');
     await expect(page.locator('footer [data-motion-toggle]')).toBeVisible();
+  });
+
+  test.describe('without JavaScript', () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('the clock slot reads CLOCK PAUSED', async ({ page }) => {
+      await gotoRel(page, '');
+      await expectPaused(page);
+    });
   });
 
   test.describe('motion on', () => {
@@ -659,6 +679,8 @@ test.describe('footer status line', () => {
       await page.locator('footer').scrollIntoViewIfNeeded();
       const line = page.locator(LINE);
       await expect(line).toHaveAttribute('data-state', 'live', { timeout: 10_000 });
+      await expect(page.locator(LIVE)).toBeVisible();
+      await expect(page.locator(PAUSED)).toBeHidden();
       const time = page.locator(TIME);
       const first = (await time.textContent()) ?? '';
       expect(first).toMatch(/^\d{2}:\d{2}:\d{2}$/);
@@ -672,20 +694,29 @@ test.describe('footer status line', () => {
       expect(await pulses(page)).toBe(0);
     });
 
-    test('the footer Motion toggle stops it on the build time', async ({ page, request }) => {
-      const ssr = /data-clock-time[^>]*>\s*(\d{2}:\d{2}:\d{2})\s*</.exec(
-        await (await request.get('work/')).text(),
-      )?.[1];
+    test('the footer Motion toggle stops it: CLOCK PAUSED, in the same space', async ({ page }) => {
       await gotoRel(page, 'work/');
       await page.locator('footer').scrollIntoViewIfNeeded();
       await expect(page.locator(LINE)).toHaveAttribute('data-state', 'live', { timeout: 10_000 });
+      const slot = page.locator(`${LINE} .status-line__clock`);
+      const liveBox = (await slot.boundingBox())!;
       await page.locator('footer [data-motion-toggle]').click();
       await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
       await expect(page.locator(LINE)).toHaveAttribute('data-state', 'static');
-      await expect(page.locator(TIME)).toHaveText(ssr!);
+      await expectPaused(page);
+      // No stale time is left under the hidden UTC label either.
+      await expect(page.locator(TIME)).toHaveText('--:--:--');
       await page.waitForTimeout(1300);
-      await expect(page.locator(TIME)).toHaveText(ssr!);
+      await expect(page.locator(TIME)).toHaveText('--:--:--');
       expect(await pulses(page)).toBe(0);
+      // The two states share one box: nothing after the slot moves.
+      const pausedBox = (await slot.boundingBox())!;
+      expect(pausedBox.x).toBeCloseTo(liveBox.x, 1);
+      expect(pausedBox.width).toBeCloseTo(liveBox.width, 1);
+      // And back on: it ticks again.
+      await page.locator('footer [data-motion-toggle]').click();
+      await expect(page.locator(LINE)).toHaveAttribute('data-state', 'live');
+      await expect(page.locator(TIME)).toHaveText(/^\d{2}:\d{2}:\d{2}$/);
     });
   });
 
@@ -696,19 +727,16 @@ test.describe('footer status line', () => {
       (page: Page) => page.addInitScript(() => localStorage.setItem('motion', 'off')),
     ],
   ] as const) {
-    test(`with ${name}, the clock is frozen on the build time`, async ({ page, request }) => {
+    test(`with ${name}, the clock slot reads CLOCK PAUSED, and nothing ticks`, async ({ page }) => {
       await setup(page);
-      const ssr = /data-clock-time[^>]*>\s*(\d{2}:\d{2}:\d{2})\s*</.exec(
-        await (await request.get('')).text(),
-      )?.[1];
-      expect(ssr).toBeDefined();
       await gotoRel(page, '');
       await page.waitForLoadState('load');
       await page.locator('footer').scrollIntoViewIfNeeded();
       await expect(page.locator(LINE)).toHaveAttribute('data-state', 'static', { timeout: 5000 });
-      await expect(page.locator(TIME)).toHaveText(ssr!);
+      await expectPaused(page);
+      await expect(page.locator(TIME)).toHaveText('--:--:--');
       await page.waitForTimeout(1300);
-      await expect(page.locator(TIME)).toHaveText(ssr!);
+      await expect(page.locator(TIME)).toHaveText('--:--:--');
       expect(await pulses(page)).toBe(0);
     });
   }
