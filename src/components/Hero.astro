@@ -179,62 +179,6 @@ const eyebrow = site.eyebrow.split(' · ');
     }
   }
 
-  .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-block-size: 2.75rem;
-    padding-inline: 1.125rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius-s);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    line-height: 1;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      color var(--dur-fast) var(--ease-standard),
-      background-color var(--dur-fast) var(--ease-standard),
-      border-color var(--dur-fast) var(--ease-standard);
-  }
-
-  .button--primary {
-    border-color: var(--accent);
-    background-color: var(--accent);
-    color: var(--on-accent);
-  }
-
-  .button--primary:hover {
-    color: var(--on-accent);
-  }
-
-  .button--secondary {
-    border-color: var(--line-ui);
-    color: var(--text);
-  }
-
-  .button--secondary:hover {
-    color: var(--text);
-  }
-
-  @media (hover: hover) {
-    .button--primary:hover {
-      border-color: var(--accent-hover);
-      background-color: var(--accent-hover);
-    }
-
-    .button--secondary:hover {
-      background-color: var(--surface-2);
-    }
-  }
-
-  .button__meta {
-    color: var(--text-subtle);
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    letter-spacing: 0.04em;
-  }
-
   .hero__links {
     display: flex;
     flex-wrap: wrap;

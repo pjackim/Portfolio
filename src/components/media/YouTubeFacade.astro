@@ -1,0 +1,201 @@
+---
+/**
+ * YouTube facade (spec-design-content §3): a link to the video on YouTube wrapping the local
+ * poster (`yt-<id>.webp`), a play chip and a visually-hidden "Play video: {title}". Nothing
+ * is requested from YouTube until the click — `src/scripts/youtube.ts` then swaps in the
+ * youtube-nocookie player inside the same 16:9 frame. As the case-study hero (Ruling R21)
+ * the frame carries `id="case-hero"` and the cover's `view-transition-name`.
+ */
+import { Picture } from 'astro:assets';
+import { candidateWidths, imageFacts } from '../../lib/images';
+import { youtubePoster } from '../../lib/media';
+
+interface Props {
+  projectId: string;
+  /** YouTube video id. */
+  videoId: string;
+  title: string;
+  /** Start offset in seconds. */
+  start?: number | undefined;
+  /** `sizes` for the poster, matching the frame's rendered width. */
+  sizes: string;
+  /** Above the fold (hero): load the poster eagerly at high priority. */
+  priority?: boolean;
+  /** Frame id (the case-study hero's `case-hero`). */
+  frameId?: string | undefined;
+  /** Frame `view-transition-name` (the hero's `cover-<slug>`). */
+  transitionName?: string | undefined;
+  class?: string;
+}
+
+const {
+  projectId,
+  videoId,
+  title,
+  start,
+  sizes,
+  priority = false,
+  frameId,
+  transitionName,
+  class: className,
+} = Astro.props;
+
+const poster = youtubePoster(projectId, videoId);
+const facts = await imageFacts(poster);
+const watchUrl = `https://www.youtube.com/watch?v=${videoId}${start ? `&t=${start}s` : ''}`;
+---
+
+<div
+  class:list={['yt-frame', className]}
+  id={frameId}
+  style={transitionName ? { viewTransitionName: transitionName } : undefined}
+>
+  <a
+    class="yt"
+    href={watchUrl}
+    data-yt-id={videoId}
+    data-yt-title={title}
+    data-yt-start={start === undefined ? undefined : String(start)}
+  >
+    <Picture
+      src={poster}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      widths={candidateWidths(facts.width, 2400)}
+      sizes={sizes}
+      alt=""
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchpriority={priority ? 'high' : undefined}
+      class="yt__poster"
+    />
+    <span class="yt__play" aria-hidden="true">
+      <svg class="yt__icon" viewBox="0 0 16 16" width="16" height="16">
+        <path d="M5 3.25v9.5L12.5 8z"></path>
+      </svg>
+      <span class="yt__play-label">Play</span>
+      <span class="yt__play-meta">YouTube</span>
+    </span>
+    <span class="visually-hidden">Play video: {title}</span>
+  </a>
+</div>
+
+<script src="../../scripts/youtube.ts"></script>
+
+<style>
+  /* The frame is the stable box: the link, then the button (script) and finally the player
+     iframe replace each other inside it. Children added by the script carry no scoping
+     attribute, hence the :global() hooks. */
+  .yt-frame {
+    position: relative;
+    display: grid;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface-2);
+  }
+
+  .yt-frame > :global(*) {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .yt-frame :global(.yt) {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .yt-frame :global(.yt) > :global(picture) {
+    display: contents;
+  }
+
+  .yt-frame :global(.yt__poster) {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    object-fit: cover;
+  }
+
+  /* Focus ring drawn inside the frame (overflow is clipped). */
+  .yt-frame :global(.yt:focus-visible) {
+    outline-offset: -4px;
+  }
+
+  /* Play chip: a solid mono readout, same family as the loop videos' Pause / Play toggle. */
+  .yt__play {
+    position: relative;
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-block-size: 3rem;
+    padding-inline: 1rem 1.125rem;
+    border: var(--rule-ui);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .yt__icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    fill: currentColor;
+  }
+
+  .yt__play-meta {
+    padding-inline-start: 0.625rem;
+    border-inline-start: var(--hairline);
+    color: var(--text-subtle);
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .yt-frame :global(.yt:focus-visible) .yt__play {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .yt-frame :global(.yt:focus-visible) .yt__play-meta {
+    border-color: color-mix(in oklch, var(--on-accent) 30%, transparent);
+    color: var(--on-accent);
+  }
+
+  @media (hover: hover) {
+    .yt-frame :global(.yt:hover) .yt__play {
+      border-color: var(--accent);
+      background-color: var(--accent);
+      color: var(--on-accent);
+    }
+
+    .yt-frame :global(.yt:hover) .yt__play-meta {
+      border-color: color-mix(in oklch, var(--on-accent) 30%, transparent);
+      color: var(--on-accent);
+    }
+  }
+
+  .yt-frame :global(.yt-player) {
+    display: block;
+    border: 0;
+  }
+</style>

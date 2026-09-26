@@ -3,8 +3,8 @@
  * Featured project card (spec-design-content §2–§4). One tab stop: the title link is
  * stretched over the whole card; the cover is decorative (`alt=""`, the title names the link).
  *
- * Cover frame (16:10) modes:
- * - default: `object-fit: cover`, cropped at `coverPosition`;
+ * Cover frame (16:10) modes (`frameMode`, src/lib/images.ts):
+ * - "cover": `object-fit: cover`, cropped at `coverPosition`;
  * - "panel": covers narrower than 800px or portrait are shown whole (`contain`) on
  *   `--surface-2`, never upscaled past their source size;
  * - "alpha": covers with transparency sit on a fixed light panel in both schemes, so dark
@@ -17,7 +17,7 @@ import type { CollectionEntry } from 'astro:content';
 import { Picture } from 'astro:assets';
 import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2, projectDate } from '../lib/format';
-import { imageFacts } from '../lib/images';
+import { candidateWidths, frameMode, imageFacts } from '../lib/images';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
@@ -36,20 +36,9 @@ interface Props {
 const { project, index, eager = false, reveal = false } = Astro.props;
 const { id, data } = project;
 
-/** Candidate widths. Astro never upscales, so smaller sources stop at their own width. */
-const WIDTHS = [480, 800, 1200];
-const MAX_WIDTH = 1200;
-const PANEL_BELOW = 800;
-
 const facts = await imageFacts(data.cover);
-const widths = [
-  ...new Set([...WIDTHS.filter((w) => w < facts.width), Math.min(facts.width, MAX_WIDTH)]),
-];
-const mode = facts.transparent
-  ? 'alpha'
-  : facts.width < PANEL_BELOW || facts.height > facts.width
-    ? 'panel'
-    : 'cover';
+const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
+const mode = frameMode(facts, 800);
 
 const href = withBase(`work/${id}/`);
 // The arrow stays glued to the title's last word (never wraps onto a line of its own).

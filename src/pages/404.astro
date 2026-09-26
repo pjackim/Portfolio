@@ -1,0 +1,108 @@
+---
+/**
+ * Not found (spec-design-content §2, spec-architecture §6) → `dist/404.html`. GitHub Pages
+ * serves it for any missing path under the site, so every URL here is base-absolute
+ * (`withBase`; BaseLayout does the same for assets and nav). Not indexed.
+ */
+import Arrow from '../components/Arrow.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/url';
+---
+
+<BaseLayout
+  title="Not found — Parker Jackim"
+  description="This page moved: the site was rebuilt, and project pages now live under /work/."
+  noindex
+>
+  <section class="not-found container" aria-labelledby="not-found-title">
+    <p class="not-found__code mono-label">
+      <span class="not-found__signal" aria-hidden="true"></span>
+      404 — Not found
+    </p>
+    <h1 class="not-found__title" id="not-found-title">
+      This page moved.
+    </h1>
+    <p class="not-found__body">
+      The site was rebuilt; project pages now live under <code>/work/</code>.
+    </p>
+    <ul class="not-found__actions">
+      <li>
+        <a class="button button--secondary" href={withBase('')}>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="button button--primary" href={withBase('work/')}>
+          All work
+          <Arrow />
+        </a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: clamp(4rem, 2rem + 10vw, 10rem) var(--space-section);
+  }
+
+  .not-found__code {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--danger);
+  }
+
+  .not-found__signal {
+    flex: none;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    background-color: var(--danger);
+  }
+
+  .not-found__title {
+    margin-block-start: var(--space-m);
+    font-size: var(--step-5);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .not-found__body {
+    max-inline-size: 60ch;
+    margin-block-start: var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+
+  .not-found__body code {
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-xs);
+    background-color: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-xl);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .not-found__actions :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      .not-found__actions a:hover :global(.arrow) {
+        translate: 2px 0;
+      }
+    }
+  }
+</style>

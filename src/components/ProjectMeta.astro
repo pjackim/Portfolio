@@ -1,0 +1,172 @@
+---
+/**
+ * Case-study meta strip (spec-design-content §2, §3): a `<dl>` of hairline readout cells —
+ * Role (only when stated), Year (`period` ?? `year`), Stack, Links (repo / demo / video when
+ * present). Cells without data are left out. One row on wide screens, the stack taking the
+ * slack; a two-column grid on phones with Stack and Links full width.
+ */
+import { projectDate } from '../lib/format';
+import type { Project } from '../lib/projects';
+import Arrow from './Arrow.astro';
+import DateText from './DateText.astro';
+
+interface Props {
+  project: Project;
+  class?: string;
+}
+
+const { project, class: className } = Astro.props;
+const { role, stack, links } = project.data;
+
+const LINK_LABELS = { repo: 'Repository', demo: 'Live demo', video: 'Video' } as const;
+const linkList = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[]).flatMap((key) => {
+  const href = links[key];
+  return href ? [{ href, label: LINK_LABELS[key] }] : [];
+});
+---
+
+<dl class:list={['project-meta', className]}>
+  {role && (
+    <div class="project-meta__cell project-meta__cell--role">
+      <dt class="mono-label">Role</dt>
+      <dd>{role}</dd>
+    </div>
+  )}
+  <div class="project-meta__cell project-meta__cell--year">
+    <dt class="mono-label">Year</dt>
+    <dd>
+      <DateText text={projectDate(project)} />
+    </dd>
+  </div>
+  <div class="project-meta__cell project-meta__cell--stack">
+    <dt class="mono-label">Stack</dt>
+    <dd>
+      {stack.map((item, i) => (
+        <>
+          {i > 0 && <span class="project-meta__sep"> · </span>}
+          <span class="project-meta__item">{item}</span>
+        </>
+      ))}
+    </dd>
+  </div>
+  {linkList.length > 0 && (
+    <div class="project-meta__cell project-meta__cell--links">
+      <dt class="mono-label">Links</dt>
+      <dd>
+        <ul class="project-meta__links">
+          {linkList.map(({ href, label }) => (
+            <li>
+              <a href={href}>
+                <span class="project-meta__link-label">{label}</span>
+                <Arrow dir="up-right" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+  )}
+</dl>
+
+<style>
+  /* Hairlines between cells are the --line background showing through 1px gaps; the strip
+     itself sits between two hairlines and is open at both ends, like the home status strip. */
+  .project-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    border-block: var(--hairline);
+    background-color: var(--line);
+  }
+
+  .project-meta__cell {
+    display: grid;
+    align-content: start;
+    gap: 0.375rem;
+    padding: var(--space-s) var(--space-s) var(--space-s) 0;
+    background-color: var(--bg);
+  }
+
+  /* Phones: Role | Year share the first row (the year's text starts a gutter in from the
+     vertical hairline); without a role, and for Stack and Links, a cell takes the full row. */
+  .project-meta__cell--role + .project-meta__cell--year {
+    padding-inline-start: var(--space-s);
+  }
+
+  .project-meta__cell--year:first-child,
+  .project-meta__cell--stack,
+  .project-meta__cell--links {
+    grid-column: 1 / -1;
+  }
+
+  dd {
+    color: var(--text);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .project-meta__sep {
+    color: var(--text-subtle);
+  }
+
+  .project-meta__item {
+    white-space: nowrap;
+  }
+
+  .project-meta__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  .project-meta__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  /* Only the word is underlined, not the arrow. */
+  .project-meta__link-label {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+
+  .project-meta__links a:hover {
+    color: var(--accent);
+  }
+
+  /* Wide: one row of cells split by vertical hairlines; Stack takes the leftover width. */
+  @media (width >= 48rem) {
+    .project-meta {
+      display: flex;
+    }
+
+    .project-meta__cell {
+      flex: 0 1 auto;
+      padding-inline: var(--space-m);
+    }
+
+    .project-meta__cell:first-child {
+      padding-inline-start: 0;
+    }
+
+    .project-meta__cell--role + .project-meta__cell--year {
+      padding-inline-start: var(--space-m);
+    }
+
+    .project-meta__cell--stack {
+      flex: 1 1 auto;
+    }
+
+    .project-meta__cell:last-child {
+      padding-inline-end: 0;
+    }
+  }
+</style>
