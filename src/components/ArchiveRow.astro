@@ -4,9 +4,12 @@
  * stretched over the row (one tab stop). Hover/focus (interactions spec §3): a surface wash
  * wipes in from the left, the title slides 4px right and tints, its arrow nudges. Below the
  * fold the row plays an entrance as it scrolls into view (global.css `[data-reveal]`).
+ * `data-capabilities` lists the project's capability ids for the /work/ filter (WorkFilter);
+ * `named` gives the row its filter-reflow view-transition name, `row-<slug>` (ArchiveList).
  */
 import type { CollectionEntry } from 'astro:content';
 import { projectDate } from '../lib/format';
+import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
 import DateText from './DateText.astro';
@@ -14,17 +17,25 @@ import TagList from './TagList.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  named?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, named = false } = Astro.props;
 const { id, data } = project;
+const style = named ? pageStyle(Astro.locals, { '--vt-name': `row-${id}` }) : undefined;
 // The arrow stays glued to the title's last word (never wraps onto a line of its own).
 const words = data.title.split(' ');
 const titleTail = words.pop();
 const titleHead = words.join(' ');
 ---
 
-<li class="archive-row" data-reveal>
+<li
+  class="archive-row"
+  data-reveal
+  data-capabilities={data.capabilities.join(' ')}
+  data-slug={id}
+  data-style={style}
+>
   <p class="archive-row__year mono-label">
     <DateText text={projectDate(project)} />
   </p>

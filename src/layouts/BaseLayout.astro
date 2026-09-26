@@ -35,8 +35,11 @@ interface Props {
 const { title, description, ogImage, ogType, noindex, jsonLd } = Astro.props;
 
 /**
- * Blocking by design, before first paint: applies a pinned colour scheme (spec §1a) and a
- * Motion-off choice (interactions spec §1), and — with motion off — skips cross-document view
+ * Blocking by design, before first paint: applies a pinned colour scheme (spec §1a), a
+ * Motion-off choice (interactions spec §1) and a /work/ capability filter from the URL
+ * (`?capability=`, interactions spec §4: the filter is pure CSS on `<html data-capability>`, so
+ * a filtered list is painted filtered — it never paints whole and then collapses; an unknown
+ * value matches no rule and hides nothing), and — with motion off — skips cross-document view
  * transitions on both sides of a navigation (`@view-transition` can't be gated by a selector).
  * Its CSP hash is taken from this exact string, which is emitted byte for byte below.
  */
@@ -48,6 +51,10 @@ const BOOTSTRAP = `try {
   }
   if (localStorage.getItem('motion') === 'off') document.documentElement.dataset.motion = 'off';
 } catch {}
+{
+  const c = new URLSearchParams(location.search).get('capability');
+  if (c) document.documentElement.dataset.capability = c;
+}
 for (const type of ['pageswap', 'pagereveal']) {
   addEventListener(type, (e) => {
     if (document.documentElement.dataset.motion === 'off') e.viewTransition?.skipTransition();

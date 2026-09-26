@@ -10,7 +10,9 @@
  * back/forward buttons or a reload, where the browser restores the scroll position well after
  * load — there are no entrances at all: the page is shown as it was left. And on a
  * back/forward-cache restore anything still waiting on screen is shown at once, unanimated —
- * so a cross-document cover morph never lands on a transparent card.
+ * so a cross-document cover morph never lands on a transparent card. Something else may show a
+ * waiting item first by dropping its state — the /work/ filter does, for the rows it brings on
+ * screen (its reflow is their entrance) — and then it never plays.
  *
  * Import-free on purpose, so Astro inlines it (no request on any page). The motion check
  * mirrors motionAllowed() in src/scripts/motion.ts, and `motion:change` is that module's event.
@@ -65,6 +67,12 @@ function start(): void {
             continue;
           }
           el.dataset.revealState = 'pending';
+          continue;
+        }
+        // Shown meanwhile by something else (the /work/ filter releases the rows it shows):
+        // it no longer waits, so it never plays.
+        if (el.dataset.revealState !== 'pending') {
+          observer.unobserve(el);
           continue;
         }
         if (!entry.isIntersecting) continue;

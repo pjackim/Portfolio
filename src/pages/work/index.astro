@@ -3,8 +3,11 @@
  * All work (spec-design-content §2): every published project as a grouped readout — one
  * section per group in `GROUPS` order ("Security & systems", "Software", "Design & 3D"),
  * featured case studies first (by `order`), then the archive (newest first). No thumbnails.
+ * A capability filter (WorkFilter, interactions spec §4) narrows the list; `?capability=<id>`
+ * links straight to a filtered view.
  */
 import ArchiveList from '../../components/ArchiveList.astro';
+import WorkFilter from '../../components/WorkFilter.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { pad2 } from '../../lib/format';
 import { getByGroup } from '../../lib/projects';
@@ -34,7 +37,8 @@ const caseStudies = projects.filter((p) => p.data.featured).length;
         Every project in one index, grouped by discipline — case studies first, then earlier work.
       </p>
     </header>
-    <ArchiveList class="work__list" items={projects} grouped />
+    <WorkFilter class="work__filter" projects={projects} />
+    <ArchiveList class="work__list" items={projects} grouped filterable />
   </div>
 </BaseLayout>
 
@@ -70,7 +74,16 @@ const caseStudies = projects.filter((p) => p.data.featured).length;
     line-height: 1.55;
   }
 
+  .work > :global(.work__filter) {
+    margin-block-start: var(--space-xl);
+  }
+
   .work > :global(.work__list) {
     margin-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+
+  /* The filter belongs to the list: closer to it than the intro is. */
+  .work > :global(.work__filter + .work__list) {
+    margin-block-start: clamp(2.5rem, 1.75rem + 3vw, 4rem);
   }
 </style>
