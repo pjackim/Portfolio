@@ -58,10 +58,12 @@ const sections = GROUPS.map((group) => ({
   }
 
   /* The column template every row subgrids (see ArchiveRow). The year rail is shared with
-     ExperienceList, so both tables' text columns line up. */
+     ExperienceList, so both tables' text columns line up. Phones: a fixed 6rem rail holds
+     the longest label (11 mono characters, "Spring 2020", ≤ 94px), so titles line up across
+     /work/'s groups; a longer label would widen its own list rather than wrap. */
   .archive {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: minmax(6rem, max-content) minmax(0, 1fr);
     column-gap: var(--space-s);
     padding: 0;
     border-block-start: var(--hairline);

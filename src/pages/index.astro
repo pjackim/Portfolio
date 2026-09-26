@@ -99,10 +99,12 @@ const workHref = withBase('work/');
     display: block;
   }
 
+  /* Lede-size text: at step-1, 66ch of Geist holds ~95 characters a line; 30em keeps the
+     bio near 60–65. */
   .about__bio {
     display: grid;
     gap: var(--space-s);
-    max-inline-size: var(--measure);
+    max-inline-size: 30em;
     font-size: var(--step-1);
     line-height: 1.6;
   }

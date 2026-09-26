@@ -104,6 +104,18 @@ const eyebrow = site.eyebrow.split(' · ');
     pointer-events: none;
   }
 
+  /* Narrower screens: the text runs the full column width, so the grid keeps to the top-right
+     corner, above and beside the eyebrow, and fades out before any text. */
+  @media (width < 60rem) {
+    .hero__inner::before {
+      mask-image: radial-gradient(
+        ellipse 40vw 30vw at calc(100% - var(--bleed)) var(--cell),
+        #000 0%,
+        transparent 100%
+      );
+    }
+  }
+
   /* Accent "signal" square, centred on the first line; wrapped lines align with the text. */
   .hero__eyebrow {
     display: grid;
