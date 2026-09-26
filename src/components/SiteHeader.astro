@@ -11,12 +11,15 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const home = withBase('');
 const work = withBase('work/');
-const onWork = Astro.url.pathname.startsWith(work);
+const onWorkIndex = Astro.url.pathname === work;
+const onWorkCase = Astro.url.pathname.startsWith(work) && !onWorkIndex;
 
-const links = [
-  { href: work, label: 'Work', current: onWork },
-  { href: `${home}#about`, label: 'About', current: false },
-  { href: `${home}#contact`, label: 'Contact', current: false },
+// `aria-current="page"` only on `/work/` itself; a case-study page is in the Work section but
+// isn't that page, so it gets `aria-current="true"` — same active visual state, correct semantics.
+const links: { href: string; label: string; current: 'page' | 'true' | undefined }[] = [
+  { href: work, label: 'Work', current: onWorkIndex ? 'page' : onWorkCase ? 'true' : undefined },
+  { href: `${home}#about`, label: 'About', current: undefined },
+  { href: `${home}#contact`, label: 'Contact', current: undefined },
 ];
 ---
 
@@ -31,7 +34,7 @@ const links = [
         <ul role="list">
           {links.map(({ href, label, current }) => (
             <li>
-              <a href={href} aria-current={current ? 'page' : undefined}>
+              <a href={href} aria-current={current}>
                 {label}
               </a>
             </li>
@@ -130,13 +133,15 @@ const links = [
     }
   }
 
-  .site-nav a[aria-current='page'] {
+  /* `aria-current` is only ever present on the Work link ('page' on /work/ itself, 'true' on a
+     case-study page below it) — either value gets the same active visual state. */
+  .site-nav a[aria-current] {
     color: var(--text);
   }
 
   /* Active mark: an accent segment laid over the header hairline (the link box ends
      (header-h − 44px) / 2 above the header's bottom edge). */
-  .site-nav a[aria-current='page']::after {
+  .site-nav a[aria-current]::after {
     content: '';
     position: absolute;
     inset-inline: 0.625rem;
@@ -169,7 +174,7 @@ const links = [
       font-size: 0.8125rem;
     }
 
-    .site-nav a[aria-current='page']::after {
+    .site-nav a[aria-current]::after {
       inset-inline: 0.3125rem;
     }
   }
