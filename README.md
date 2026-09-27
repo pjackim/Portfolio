@@ -10,7 +10,8 @@ per project. Static site, no backend.
 **Design for a fast, lazy scanner.** Assume visitors give the site a few seconds, read very
 little prose, and don't click. What matters has to be visible at a glance: a real picture of
 each project with a 2–3 sentence summary, short informative headings, key facts pulled out as
-highlights and tags, and the full case study one click away for anyone who wants depth.
+highlights and tags, and the full case study one click away for anyone who wants depth. The research behind this is in
+[`docs/design-research/`](docs/design-research/README.md).
 
 In priority order (when they pull against each other, the higher one wins):
 
@@ -168,5 +169,6 @@ scripts/
   og/{render-default,render-icons,lib}.ts
   new-project.ts
 tests/{smoke,a11y,links,redirects,media}.spec.ts
+docs/design-research/   # distilled UX research behind the Goals (scanning, cards, disclosure, grids)
 .github/workflows/{ci,deploy,links}.yml
 ```

@@ -38,6 +38,10 @@ link. Concretely:
 - **Big, forgiving targets.** A whole project card is a single link with a visible hover and
   focus state, not a small "read more".
 
+The research behind these rules, with concrete numbers, code, and how each maps onto this
+repo, is in `docs/design-research/` (start at its `README.md`). Read the relevant file before
+designing a section, card, layout, or copy.
+
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at
      10 → AES tool at 15 → CSU computer science → security research at JHU APL), and that his
