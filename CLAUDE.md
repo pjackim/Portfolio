@@ -32,6 +32,8 @@ check:media` — media lint (also part of `lint`)
 - `npm run og` — regenerate `public/og-default.png`, favicon, and touch icon from
   `src/lib/monogram.ts`
 - `npm run ci` — `lint` + `build:only` + `test:e2e`, the local approximation of the CI gate
+- `npm run clean` — delete build/cache/test output (`-- --all` also removes `node_modules`); VS Code
+  tasks for all of the above live in `.vscode/tasks.json`
 
 ## Architecture
 

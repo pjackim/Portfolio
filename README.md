@@ -21,7 +21,13 @@ npm run dev      # http://localhost:4321/Portfolio/
 
 Other scripts: `npm run build` (type-check + build to `dist/`), `npm run preview`, `npm run
 lint` (format + type-check + media lint), `npm run test:e2e` (Playwright), `npm run test:lhci`
-(Lighthouse CI).
+(Lighthouse CI), `npm run clean` (delete build/cache/test output; `-- --all` also removes
+`node_modules`).
+
+VS Code: `.vscode/tasks.json` wraps these as tasks (**Tasks: Run Task**) — dev server on the LAN
+with hot reload, `Ctrl+Shift+B` to build, the default test task runs the full CI sequence
+(format → media → types → build → e2e → Lighthouse), plus clean/reinstall, Playwright UI, and
+content scaffolding.
 
 ## Add a project
 
