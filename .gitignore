@@ -26,3 +26,6 @@ blob-report/
 .codebase-memory/
 docs/codebase/
 !docs/codebase/codebase-cli.md
+
+# wt worktrees (path set in user config [projects."github.com/pjackim/Portfolio"])
+.claude/worktrees/
