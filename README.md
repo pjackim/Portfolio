@@ -49,7 +49,9 @@ npm run dev      # http://localhost:4321/Portfolio/
 Other scripts: `npm run build` (type-check + build to `dist/`), `npm run preview`, `npm run
 lint` (format + type-check + media lint), `npm run test:e2e` (Playwright), `npm run test:lhci`
 (Lighthouse CI), `npm run clean` (delete build/cache/test output; `-- --all` also removes
-`node_modules`).
+`node_modules`), `npm run graph` (open the
+[codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) graph UI on this checkout,
+indexing it first if needed; `-- --reindex` to refresh).
 
 VS Code: `.vscode/tasks.json` wraps these as tasks (**Tasks: Run Task**) — dev server on the LAN
 with hot reload, `Ctrl+Shift+B` to build, the default test task runs the full CI sequence

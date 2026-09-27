@@ -302,6 +302,21 @@
       "problemMatcher": []
     },
 
+    // ── Tools ──────────────────────────────────────────────────────────────
+    {
+      "label": "Tools: open codebase graph UI",
+      "detail": "codebase-memory-mcp graph for this checkout (indexes it first if needed)",
+      "type": "shell",
+      "command": "bun run graph",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: re-index + open codebase graph UI",
+      "type": "shell",
+      "command": "bun run graph --reindex",
+      "problemMatcher": []
+    },
+
     // ── Content ────────────────────────────────────────────────────────────
     {
       "label": "Content: new project",

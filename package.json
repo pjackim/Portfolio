@@ -22,7 +22,8 @@
     "test:e2e": "playwright test",
     "test:lhci": "lhci autorun",
     "ci": "npm run lint && npm run build:only && npm run test:e2e",
-    "clean": "node scripts/clean.ts"
+    "clean": "node scripts/clean.ts",
+    "graph": "node scripts/graph-ui.ts"
   },
   "dependencies": {
     "astro": "^7.3.5",

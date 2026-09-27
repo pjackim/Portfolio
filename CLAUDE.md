@@ -104,6 +104,8 @@ check:media` — media lint (also part of `lint`)
 - `npm run ci` — `lint` + `build:only` + `test:e2e`, the local approximation of the CI gate
 - `npm run clean` — delete build/cache/test output (`-- --all` also removes `node_modules`); VS Code
   tasks for all of the above live in `.vscode/tasks.json`
+- `npm run graph` — open the codebase-memory-mcp graph UI on this checkout (indexes it if
+  missing; `-- --reindex` to refresh; starts a UI server if none is listening)
 
 ## Architecture
 
