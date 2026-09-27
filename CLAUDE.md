@@ -45,7 +45,9 @@ anti-generic ("AI slop") checks, and design tools. Each one ends with how it app
 repo. Follow them. Where one conflicts with these goals or the repo's constraints below, the
 goals and constraints win. Outside design skills (including the locally installed taste-skill
 family) assume React/Tailwind/GSAP; translate them with `docs/design-research/stack-translation.md`
-before using any of their advice.
+before using any of their advice. The site's own look and voice are defined in
+`docs/identity/site-style.md`. For end-to-end UI work, use the project skills
+`/design-portfolio <feature>` and `/audit-portfolio [focus]`.
 
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at

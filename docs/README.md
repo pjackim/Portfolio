@@ -11,3 +11,14 @@ goals live in [`CLAUDE.md`](../CLAUDE.md); how to add projects and media is in t
   advice and installed design skills to this Astro + vanilla-CSS/TS stack. Each file opens with
   TL;DR rules and ends with how they apply to this repo. Start at its `README.md` and read only
   the file for the task at hand.
+- [`identity/`](./identity/site-style.md): the site's own look and feel ("operator console":
+  palette and type roles, signature elements, motion personality, voice). This is what "on-vibe"
+  means, and it wins over generic design advice.
+- [`design-research/review-checklist.md`](./design-research/review-checklist.md): the rubric
+  (check IDs, how to verify each check, whether a fix is mechanical or a judgement call) used to
+  grade UI work.
+- [`audits/`](./audits/): dated `/audit-portfolio` reports.
+
+Two project skills run the full loop: `/design-portfolio <feature>` (explore → brief →
+prototypes → build → verify → staged merge) and `/audit-portfolio [focus]` (evidence → lens
+review → report → approved fixes).

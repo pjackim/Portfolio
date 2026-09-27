@@ -21,6 +21,11 @@ says what to take from each installed design skill.
 | [typography-and-layout.md](./typography-and-layout.md)   | setting type, spacing, hierarchy, or section composition; final craft checks            | Practitioner consensus (impeccable, taste-skill)            |
 | [tools-and-skills.md](./tools-and-skills.md)             | checking where a piece of guidance came from, or whether to use the impeccable detector | Reference: sources and what each is good for                |
 | [stack-translation.md](./stack-translation.md)           | applying any outside design advice or installed design skill to this stack              | Repo-specific mapping (authoritative for this stack)        |
+| [review-checklist.md](./review-checklist.md)             | verifying finished UI work or auditing the site: check IDs, how to verify, fix class    | Repo rubric built from the files above and `CLAUDE.md`      |
+
+The site's own identity (what "on-vibe" means) is in
+[`../identity/site-style.md`](../identity/site-style.md). Where generic advice here disagrees
+with that identity, the identity wins, within `CLAUDE.md`'s constraints.
 
 ## Ground rules for using these
 
