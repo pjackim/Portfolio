@@ -11,9 +11,13 @@ import { defineConfig, devices } from '@playwright/test';
  * holds `.astro/preview.json`, and auto-backgrounds itself when run by an AI agent. Either
  * would leave the test server missing or detached; with the flag it always runs in the
  * foreground and Playwright owns its lifetime.
+ *
+ * `E2E_PORT` moves the preview server off 4321 so parallel worktrees (`.config/wt.toml`)
+ * don't reuse each other's server via `reuseExistingServer`.
  */
 const envBase = process.env.BASE_URL;
-const LOCAL_URL = 'http://localhost:4321/Portfolio/';
+const PORT = process.env.E2E_PORT ?? '4321';
+const LOCAL_URL = `http://localhost:${PORT}/Portfolio/`;
 const baseURL = envBase ? envBase.replace(/\/?$/, '/') : LOCAL_URL;
 
 export default defineConfig({
@@ -35,7 +39,7 @@ export default defineConfig({
     ? {}
     : {
         webServer: {
-          command: 'npm run preview -- --port 4321 --ignore-lock',
+          command: `npm run preview -- --port ${PORT} --ignore-lock`,
           url: LOCAL_URL,
           reuseExistingServer: !process.env.CI,
         },

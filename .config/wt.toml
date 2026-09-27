@@ -1,0 +1,16 @@
+# Worktrunk project hooks — https://worktrunk.dev/hook/
+# The site reads no .env files, so a fresh worktree only needs its dependencies.
+
+# Blocking: a new worktree is unusable until node_modules exists.
+pre-start = "npm ci"
+
+# Same gate as `npm run lint` (prettier --check, astro check, media lint).
+pre-commit = "npm run lint"
+
+# Build, then the Playwright suite against `astro preview` of that build. The per-branch
+# port keeps parallel worktrees from reusing another worktree's preview server.
+[[pre-merge]]
+build = "npm run build:only"
+
+[[pre-merge]]
+e2e = "E2E_PORT={{ branch | hash_port }} npm run test:e2e"

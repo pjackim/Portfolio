@@ -110,3 +110,21 @@ typescript` would pick up 7.x. Dependabot is configured to ignore major bumps of
 - **Verify web changes live before calling them done.** Use the Chrome browser tools (or
   `npm run preview` + a manual check) to load the actual page and confirm the change renders
   as expected — a passing build/type-check is not sufficient proof for UI work.
+
+<!-- BEGIN:worktrunk-worktree-policy -->
+
+## Git worktrees: use `wt` (worktrunk), not `git worktree`
+
+This project uses worktrunk (`wt`) for all worktree work: isolated branches, parallel agents, checking out a PR without disturbing the current checkout, and cleaning up merged branches.
+
+**Never use raw `git worktree` commands or EnterWorktree/ExitWorktree.** Agent `isolation: "worktree"` is fine only because the worktrunk plugin routes it through `wt`.
+
+- New isolated task: `wt switch --create <branch>` (or `/wt-switch-create <branch> -- <task>`)
+- See state: `wt list`
+- Finish: `wt merge` (not manual `git merge` → `git branch -d` → `git worktree remove`)
+- Discard: `wt remove`
+- Stale 🤖/💬 marker: `wt config state marker clear`
+
+Project hooks live in `.config/wt.toml`.
+
+<!-- END:worktrunk-worktree-policy -->
