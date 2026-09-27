@@ -35,14 +35,14 @@ will break CI on the next push.
 
 ## Findings
 
-| ID  | Sev | Checks | Title                                                         | Where                                | Fix class | Status |
-| --- | --- | ------ | ------------------------------------------------------------- | ------------------------------------ | --------- | ------ |
-| F1  | P0  | X8     | `npm run lint` fails on vendored design skills                | `.claude/skills/*` (13 files)        | M         | open   |
-| F2  | P1  | G3, C6 | Featured grid is a uniform 2×3; the lead project isn't bigger | `ProjectGrid.astro`                  | J         | open   |
-| F3  | P1  | G2, G3 | Mordhau cover in slot #2 is mostly empty black                | `src/content/projects/mordhau/`      | J         | open   |
-| F4  | P2  | A4     | Reticle timings are literals (160/50/90/700ms, ad-hoc curve)  | `ProjectCard.astro`                  | J         | open   |
-| F5  | P3  | A7     | No press (`:active`) feedback on the card link                | `ProjectCard.astro`                  | J         | open   |
-| F6  | P3  | C3, S4 | Card summary `font-size: 0.9375rem` is off the type scale     | `ProjectCard.astro` `.card__summary` | M         | open   |
+| ID  | Sev | Checks | Title                                                         | Where                                | Fix class | Status          |
+| --- | --- | ------ | ------------------------------------------------------------- | ------------------------------------ | --------- | --------------- |
+| F1  | P0  | X8     | `npm run lint` fails on vendored design skills                | `.claude/skills/*` (13 files)        | M         | fixed (35ac92f) |
+| F2  | P1  | G3, C6 | Featured grid is a uniform 2×3; the lead project isn't bigger | `ProjectGrid.astro`                  | J         | skipped         |
+| F3  | P1  | G2, G3 | Mordhau cover in slot #2 is mostly empty black                | `src/content/projects/mordhau/`      | J         | skipped         |
+| F4  | P2  | A4     | Reticle timings are literals (160/50/90/700ms, ad-hoc curve)  | `ProjectCard.astro`                  | J         | fixed (135efad) |
+| F5  | P3  | A7     | No press (`:active`) feedback on the card link                | `ProjectCard.astro`                  | J         | fixed (135efad) |
+| F6  | P3  | C3, S4 | Card summary `font-size: 0.9375rem` is off the type scale     | `ProjectCard.astro` `.card__summary` | M         | fixed (50ba32e) |
 
 ### F1: `npm run lint` fails on vendored design skills
 
@@ -74,6 +74,7 @@ will break CI on the next push.
   fifth, and the rest of the frame is black. In dark mode it merges into the page. The project
   already has `gameplay-toggles.webp`.
 - **Rule:** G2 (the image should show what was built at a glance) and G3.
+- **Also:** `check:media` warns the cover is only 514px wide (< 1200).
 - **Fix:** pick a cover that shows the effect (a crop or another frame through
   `npm run media`), or set a `coverPosition`. Parker's call on which image represents the work.
 - **Files:** `src/content/projects/mordhau/index.md`, cover media
