@@ -20,3 +20,9 @@ blob-report/
 !.vscode/settings.json
 !.vscode/tasks.json
 .superpowers/
+
+.claude/advisor-data/metrics.json
+
+.codebase-memory/
+docs/codebase/
+!docs/codebase/codebase-cli.md

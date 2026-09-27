@@ -1,0 +1,6 @@
+.agents/
+.vscode/
+.claude/
+bun.lock
+package-lock.json
+docs/codebase/
