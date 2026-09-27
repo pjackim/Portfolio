@@ -30,7 +30,9 @@
 
 - Pitfalls: hiding everyday content behind extra steps; oversimplifying so the product looks
   "dumbed down"; several access paths to one feature.
-- Typical mechanisms: accordions/expanders, tabs, modals, tooltips, click-to-reveal.
+- Typical mechanisms: expanders (`<details>`), tabs, modals, tooltips, click-to-reveal. On this
+  site, prefer native elements (`<details>`, `<dialog>`) that work without JS and need no
+  library.
 - Use clear signifiers for hidden content (arrows, "more" labels).
 
 ## Applying it here
@@ -44,6 +46,8 @@ The site's two levels are fixed:
 
 - Don't add a third level (e.g. an expander inside a case study that opens a modal that links
   elsewhere). Deeper detail goes into the case-study body.
+- The media lightbox (`Lightbox.astro`) is not a third level: it's a bigger view of media
+  already on the page, not new content. Keep it that way.
 - Within level 1, small reveals (hover HUD, in-view loop playback) are **enhancements**, not
   disclosure layers. Nothing a scanner needs may sit behind them.
 - Link labels into level 2 should name the destination (project title, "All work →"), which

@@ -8,9 +8,10 @@
    gaps (inside a group) and generous gaps (between groups). One spacing value everywhere
    flattens everything.
 3. **Obvious type steps.** Heading, body, label, and meta roles are distinguishable without
-   reading. Adjacent size steps are at least 1.25× apart, and weight and colour share the load
-   with size.
-4. **Readable body text:** ≥ 16px, 45–75 characters per line (aim 65–75ch), line height about
+   reading. The source asks for size steps of at least 1.25×; the site's adjacent `--step-*`
+   tokens are closer (about 1.1–1.25×), so when size alone must separate two roles, skip a
+   step, and let weight, colour, and mono-vs-sans carry the rest.
+4. **Readable body text:** at least 1rem (`--step-0`), 45–75 characters per line (aim 65–75ch), line height about
    1.5–1.7, left-aligned (not justified).
 5. **Short surface copy:** headlines of about 8 words or fewer, a sub-paragraph of about 25
    words or fewer, then one visual or one action.
@@ -33,7 +34,8 @@
   step more weight.
 - Use tabular numerals for data. Load only the font weights you use, with metric-compatible
   fallbacks.
-- Layout: a 4-unit spacing base gives useful middle steps; `gap` for sibling rhythm; keep DOM
+- Layout: one spacing scale with useful middle steps (here: `--space-3xs`…`--space-3xl`, plus
+  `--space-section` between sections); `gap` for sibling rhythm; keep DOM
   order, focus order, and visual order in agreement at every breakpoint.
 - "Variation is not a goal by itself. Repetition should support recognition; break it only
   when content or priority changes."
@@ -45,9 +47,10 @@
 - Don't repeat a layout family section after section (e.g. several identical image+text
   zigzags in a row); vary the composition when the content changes.
 - A bento grid has **exactly** as many cells as there is content. No filler tiles.
-- Long lists (> 5 items) usually want a different component: grouped columns, an image+label
-  card grid, tabs, or scroll-snap rows, rather than a longer list with a hairline under
-  every row.
+- A long flat list with a hairline under every row is the laziest layout. When there are more
+  than about 5 items, group them, show the top few with a link to the rest, or give each an
+  image. Exception: views built for comparison or lookup (the `/work/` index, the archive) stay
+  lists, per NN/g ([cards.md](./cards.md)), made scannable by grouping and filters instead.
 - One copy register per page (don't mix terminal-mono telemetry, editorial prose, and
   marketing punch without reason).
 - Portfolios are visual products: a text-only section where the work could be shown is

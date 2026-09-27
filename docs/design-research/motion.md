@@ -7,7 +7,8 @@
    meaningful moment, or express the site's identity. If removing it loses nothing but
    decoration, remove it.
 2. **One authored focal moment per surface** (the hero's is the typed focus line and graph).
-   Supporting motion is quiet. Don't give every section the same fade-up.
+   Supporting motion (the shared scroll reveals) is quick and quiet. Don't invent a new showy
+   entrance per section.
 3. **Content is visible at rest.** Animate _from_ an already-visible default so a failed or
    slow script never hides the page.
 4. **Timing expresses distance and consequence** (table below). Exits are faster than
@@ -28,7 +29,10 @@
 | 300–500 ms | Layout change, overlay, view transition     |
 | 500–800 ms | One deliberately authored focal entrance    |
 
-Easing for confident arrivals: `cubic-bezier(0.16, 1, 0.3, 1)` (expo-style ease-out). "Long
+Decelerate on arrival (an exponential-style ease-out) and exit faster than you enter. The site
+already encodes this: durations `--dur-fast` (140ms), `--dur-base` (220ms), `--dur-slow`
+(320ms) and curves `--ease-out` / `--ease-standard` in `tokens.css`. Use those tokens. A
+longer focal entrance (500–800ms) is a deliberate exception, not a new default. "Long
 feedback feels like latency."
 
 ### Visitor mode ([impeccable][imp])
@@ -38,38 +42,52 @@ itself … let the artifact lead from the first viewport; the interface recedes.
 carry the voice there, but prefer **one rehearsed focal sequence over repeated section
 reveals**. Sibling stagger is fine when a list appears as a list; cap the total delay.
 
-### Implementation ([impeccable][imp], [taste-skill][taste] §5–6)
+### Implementation principles ([impeccable][imp], [taste-skill][taste] §5–6)
 
-- CSS transitions/keyframes for declarative states; the Web Animations API for sequencing and
-  interruption; View Transitions for cross-page continuity; scroll-driven animation only when
-  the scroll relationship itself means something, with a fallback.
-- **No `scroll` event listeners** for effects. Use IntersectionObserver or CSS
-  `animation-timeline: view()`.
-- `will-change` only during a known animation. Grain/noise only on a fixed
+- Declarative first: CSS transitions and keyframes for states; script only for sequencing,
+  interruption, or data-driven values. Native cross-document View Transitions for page-to-page
+  continuity.
+- Scroll-linked effects only when the scroll relationship itself means something. Trigger with
+  IntersectionObserver or CSS `animation-timeline: view()`, **never a `scroll` event
+  listener**, and always with a static fallback.
+- Stagger only things that arrive as a list, and cap the total delay.
+- `will-change` only during a known animation. Grain/noise, if ever, only on a fixed
   `pointer-events: none` layer, never on scrolling content.
-- Stagger via CSS: `animation-delay: calc(var(--index) * 100ms)`. Here, set `--index` through
-  classes or `src/lib/page-style.ts`, not inline `style=` (CSP).
-- Core Web Vitals targets: LCP < 2.5 s, INP < 200 ms, CLS < 0.1. This repo's Lighthouse
-  budgets are stricter (LCP ≤ 2000 ms, CLS ≤ 0.02).
+- Bound expensive effects (blur, filters, canvas) to small regions, and measure on a real phone.
 
 ### Pattern vocabulary ([taste-skill][taste] §10)
 
-Named patterns worth knowing when discussing options (not endorsements): kinetic-type hero,
-scroll-pinned hero, sticky-stack sections, bento grid, spotlight-border card, parallax tilt
-card, text scramble, accordion image slider, animated SVG line drawing, lens-blur depth. The
-site already uses text scramble (`src/scripts/scramble.ts`) and a spotlight/reticle card.
+Names worth knowing when discussing options, with how each fits here:
+
+| Pattern                                                  | Fit                                                                                            |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Kinetic type, text scramble                              | In use (hero focus line, `scramble.ts`). Keep it to the hero and short labels.                 |
+| Spotlight-border / reticle card                          | In use (`ProjectCard`, `reticle.css`). Hover-only enhancement; never carries information.      |
+| Loop that plays in view                                  | In use (`LoopVideo.astro`). The best motion for the scan-first goal: it shows the work itself. |
+| Animated SVG line drawing, clip-path/mask reveals        | Good fit: CSS-only, cheap, can explain a diagram in a case study.                              |
+| Scroll-pinned hero, sticky-stack sections, scroll hijack | Poor fit: they slow a scanning visitor and need heavy JS. Avoid.                               |
+| Parallax tilt, magnetic buttons, custom cursors          | Avoid: pointer-only, and cursors hurt accessibility.                                           |
+| Marquee                                                  | Avoid: listed as an AI tell ([anti-slop.md](./anti-slop.md)), and hides half its content.      |
 
 ## Applying it here
 
-- Existing modules: `src/scripts/motion.ts` (the motion gate), `motion-toggle.ts`, `reveal.ts`,
-  `hero*.ts`, `scramble.ts`, `video.ts`. Reuse them; don't add a second motion system.
-- Always respect **both** `prefers-reduced-motion` and the user toggle (`data-motion="off"`
-  on `<html>`).
-- No animation library: vanilla JS under the 30 KB/page budget. GSAP, Motion, and Three.js
-  are out unless Parker explicitly changes that constraint.
+- **One motion system.** The gate is `src/scripts/motion.ts` (it honours both
+  `prefers-reduced-motion` and the user toggle `data-motion="off"` on `<html>`). Scroll
+  entrances are declarative: add `data-reveal` (or `data-reveal="contents"`) and optionally
+  `data-reveal-from="start|end|rise"`; stagger with `--i`. The presets live in `global.css`
+  and `reveal.ts` only toggles state. Don't write a second observer or keyframe set for a new
+  section.
+- Other modules to reuse: `motion-toggle.ts`, `hero*.ts`, `scramble.ts`, `video.ts`. See
+  [stack-translation.md](./stack-translation.md) for mapping outside motion advice to this
+  stack.
+- **Reveals are supporting motion.** They should stay quick and subtle, pick the preset that
+  matches the layout (column side, rise for single columns), and never hide content if the
+  script fails. The hero keeps the one authored focal moment.
+- Hand-written modules only, inside the 30 KB/page script budget and the Lighthouse budgets
+  (LCP ≤ 2000 ms, CLS ≤ 0.02).
 - Best use of motion under the scan-first goal: **loops of the actual projects** that play when
-  in view (`LoopVideo.astro`), plus crisp hover/focus feedback on cards. Motion that points at
-  the work, not at itself.
+  in view, plus crisp hover and focus feedback on cards. Motion that points at the work, not at
+  itself.
 
 [imp]: https://github.com/pbakaus/impeccable
 [taste]: https://github.com/Leonxlnx/taste-skill

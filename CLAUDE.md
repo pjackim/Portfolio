@@ -21,7 +21,7 @@ most), and does not click. Anything important has to be _seen_, not read or reac
 link. Concretely:
 
 - **Picture first, then 2–3 sentences.** Every project a visitor can see shows a real,
-  tasteful image or loop of the thing Parker built, plus a 2–3 sentence summary that says what
+  tasteful image or loop of the thing Parker built, plus a 2–3 short-sentence summary (the `summary` field caps at 180 characters) that says what
   it is and why it's impressive. The work should land without a click; the full case study
   stays one click away for anyone who wants more depth.
 - **Layer-cake structure.** Pages should read like a stack of headings and visuals the eye can
@@ -43,7 +43,9 @@ link. Concretely:
 sourced patterns behind these goals: scanning, cards, disclosure, grids, motion, typography,
 anti-generic ("AI slop") checks, and design tools. Each one ends with how it applies to this
 repo. Follow them. Where one conflicts with these goals or the repo's constraints below, the
-goals and constraints win.
+goals and constraints win. Outside design skills (including the locally installed taste-skill
+family) assume React/Tailwind/GSAP; translate them with `docs/design-research/stack-translation.md`
+before using any of their advice.
 
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at

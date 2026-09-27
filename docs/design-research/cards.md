@@ -33,44 +33,20 @@
 
 ### Accessible whole-card link ([Kitty Giraudel, "Accessible Cards"][kitty])
 
-Link only the title; stretch its hit area with a pseudo-element:
+Link only the title and stretch its hit area over the card with a positioned pseudo-element:
 
-```html
-<li class="Card">
-  <img class="Card-Image" src="…" alt="…" />
-  <div class="Card-Content">
-    <p class="Card-Title"><a class="Card-Primary-Action" href="/cat/lilith">Lilith</a></p>
-    <p class="Card-Meta">10 year old British Shorthair</p>
-  </div>
-</li>
-```
-
-```css
-.Card {
-  position: relative;
-}
-.Card-Primary-Action::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 200ms;
-}
-.Card-Primary-Action:hover::before,
-.Card-Primary-Action:focus::before {
-  border-color: hotpink;
-}
-.Card-Secondary-Action {
-  position: relative;
-  z-index: 2;
-} /* secondary links stay clickable */
-```
+- The card is `position: relative`; the title's `<a>` gets a `::before` (or `::after`) with
+  `position: absolute; inset: 0`, so the whole card is clickable through one link.
+- Hover and focus styles hang off that pseudo-element (and `:focus-visible` on the link), so
+  the whole card reacts. **Keep a visible focus indicator.** Never remove the outline without
+  an equally visible replacement (WCAG 2.2 AA, 2.4.7 and 2.4.11).
+- Any secondary link inside the card is `position: relative` with a higher `z-index` than the
+  stretched pseudo-element, with space around it to prevent mis-taps.
+- The image is decorative (`alt=""`) because the title already names the link.
 
 Why: screen readers list one clearly named link per card, the text stays selectable, and the
-whole surface is still a target. (If you drop the link's own `:focus` outline, as the
-original does, the pseudo-element border must be a WCAG-compliant focus indicator.)
+whole surface is still a target. **The canonical implementation in this repo is
+`src/components/ProjectCard.astro`.** Copy its structure, not the article's demo code.
 
 ### Pitfalls ([UC Berkeley DAP, "Accessible card UI component patterns"][berkeley])
 

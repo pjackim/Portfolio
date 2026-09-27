@@ -6,7 +6,8 @@
    slop". Every visual choice should be a decision made for this site, not the first thing
    that came to mind.
 2. **Commit to one aesthetic.** Use one accent colour locked across the whole page, one
-   corner-radius scale, one theme per page (no sections that flip light/dark), and tokens (CSS
+   corner-radius scale, one theme at a time (the site's light/dark toggle switches the whole page; no single section
+   flips theme), and tokens (CSS
    variables) for all of it.
 3. **One authored motion moment** beats scattered micro-effects (see [motion.md](./motion.md)).
 4. **Real artifacts, never fakes.** Use real screenshots and loops of the work. No div-built
@@ -24,14 +25,20 @@
 to Inter/Roboto, purple gradients on white, minimal motion, and predictable layouts. The fix
 is explicit guidance on four axes:
 
-- **Typography:** distinctive faces, high-contrast pairings, extreme weight contrast (100–200
-  vs 800–900), size jumps of 3× or more rather than timid 1.5× steps.
+- **Typography:** distinctive faces, high-contrast pairings, strong weight contrast, and
+  decisive size jumps rather than timid steps.
 - **Colour and theme:** a cohesive aesthetic in CSS variables; **dominant colours with sharp
   accents** beat timid, evenly distributed palettes.
-- **Motion:** CSS-first. "One well-orchestrated page load with staggered reveals
-  (animation-delay) creates more delight than scattered micro-interactions."
-- **Backgrounds:** atmosphere and depth (layered gradients, geometric patterns, contextual
-  effects) rather than flat fills.
+- **Motion:** CSS-first. "One well-orchestrated page load with staggered reveals … creates
+  more delight than scattered micro-interactions."
+- **Backgrounds:** atmosphere and depth rather than flat fills, but only depth that belongs
+  to the site's world. Stock decoration (glow halos, hairline grids, stripes) is itself a tell
+  (next section).
+
+How that lands here: the faces are fixed (Geist + Geist Mono, self-hosted); get contrast from
+weight, the `--step-*` scale, and mono-vs-sans roles, not by adding fonts. The accent and
+neutrals are the tokens in `tokens.css`. The hero's field and graph are the site's one
+atmospheric background; other sections stay calm so the work carries them.
 
 ### Named tells ([impeccable][impeccable] detector rules, [taste-skill][taste] §9)
 
@@ -58,14 +65,14 @@ levels; more space above a heading than below it.
 identity matches patterns on these lists. They are deliberate and part of the approved look.
 **Don't remove them unasked, and don't copy them into new sections by reflex:**
 
-| Existing pattern                           | Where                                         | Guidance                                                                                                               |
-| ------------------------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Mono eyebrow above the h1 (`site.eyebrow`) | `Hero.astro`                                  | Keep. Don't add eyebrows above other headings.                                                                         |
-| Typed focus line with a blinking caret     | `Hero.astro`, `src/scripts/focus-line.ts`     | Keep: finite, ends within 5 s, reduced-motion safe. It's the hero's one authored moment, so don't repeat it elsewhere. |
-| Numbered section headings (01–05)          | `SectionHeading.astro` on the home page       | Established; flag it if a redesign is on the table. Don't number new UI.                                               |
-| Pointer spotlight and reticle on cards     | `ProjectCard.astro`, `src/styles/reticle.css` | Part of the targeting-HUD identity. Keep it subtle, and never let it carry information.                                |
-| Geist / Geist Mono                         | `astro.config.ts`                             | impeccable lists Geist as overused; taste-skill recommends it. Changing it is a brand decision for Parker.             |
-| Em-dashes in copy                          | ~120 across `src/`                            | Don't add new ones to visible copy; prefer periods, commas, colons.                                                    |
+| Existing pattern                           | Where                                         | Guidance                                                                                                                                               |
+| ------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Mono eyebrow above the h1 (`site.eyebrow`) | `Hero.astro`                                  | Keep. Don't add eyebrows above other headings.                                                                                                         |
+| Typed focus line with a blinking caret     | `Hero.astro`, `src/scripts/focus-line.ts`     | Keep: finite, ends within 5 s, reduced-motion safe. It's the hero's one authored moment, so don't repeat it elsewhere.                                 |
+| Numbered section headings (01–05)          | `SectionHeading.astro` on the home page       | Established; flag it if a redesign is on the table. Don't number new UI.                                                                               |
+| Pointer spotlight and reticle on cards     | `ProjectCard.astro`, `src/styles/reticle.css` | Part of the targeting-HUD identity. Keep it subtle, and never let it carry information.                                                                |
+| Geist / Geist Mono                         | `astro.config.ts`                             | impeccable lists Geist as overused; taste-skill recommends it. Changing it is a brand decision for Parker.                                             |
+| Em-dashes in copy                          | ~120 across `src/`                            | Don't add new ones to visible site copy (pages, frontmatter, `site.ts`); prefer periods, commas, colons. Code comments and these docs aren't affected. |
 
 For new work: plain headings with no kicker, one accent, real project imagery, no invented
 metrics (also the repo's fact-only rule), and nothing in the copy table above.

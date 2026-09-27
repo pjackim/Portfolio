@@ -68,7 +68,9 @@ default, so the only lever is formatting. NN/g's fixes:
 
 - **Project card copy** (`summary` in frontmatter; rendered by `src/components/ProjectCard.astro`):
   lead with what the thing _is_ and the most impressive concrete fact. Keep it to 2–3 short
-  sentences. The card's image does the rest.
+  sentences, and note the schema caps `summary` at **180 characters** (about 25–30 words), so
+  the sentences must be terse. Don't raise the cap without the human's go-ahead. The card's
+  image does the rest.
 - **Case studies** (`src/layouts/ProjectLayout.astro`, body under `src/content/projects/`):
   the header block (summary, highlights, meta, cover) must stand alone for someone who reads
   nothing else. `highlights` are the spotted-pattern anchors, so make each a short, concrete

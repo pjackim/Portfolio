@@ -1,26 +1,34 @@
-# Design tools, skills, and component libraries
+# Design tools, skills, and references
 
-What each resource is, whether it fits this repo, and how to use it. Reviewed 2026-09-27.
+Where the outside design guidance in this folder came from, what's worth taking from each
+source, and how to use it here. Reviewed 2026-09-27. All of these target other stacks, so
+translate anything you take through [stack-translation.md](./stack-translation.md).
 
-| Resource                                              | What it is                                                                                                                                                                                      | Fit here                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **[impeccable][imp]**                                 | Apache-2.0 agent skill (evolved from Anthropic's frontend-design skill): 24 `/impeccable` commands, 61 deterministic detector rules, optional edit hook                                         | **High, for its checks.** `npx impeccable detect src/` (or a built `dist/` page or URL; `--json` for machine output) runs the detector with no API key. Its rules are distilled in [anti-slop.md](./anti-slop.md), [motion.md](./motion.md), and [typography-and-layout.md](./typography-and-layout.md). Not installed in the repo; installing it adds hooks and `PRODUCT.md`/`DESIGN.md`/`.impeccable/` files, so ask first. |
-| **[taste-skill][taste]**                              | MIT agent skills against generic UI, with three dials (design variance, motion intensity, visual density) plus style variants (minimalist, soft, brutalist, redesign)                           | **Medium.** Strong on layout discipline, AI tells, and pattern vocabulary (distilled in the files above). Its code defaults assume React, Tailwind, Motion, and GSAP, which this repo forbids, so take the rules, not the code. Its `redesign-existing-projects` flow (audit before touching, preserve what works) matches how changes should land here.                                                                      |
-| **[Anthropic frontend-aesthetics prompt][anthropic]** | The ~400-token `<frontend_aesthetics>` guidance from Anthropic's skills blog post (typography, colour, motion, backgrounds, what to avoid)                                                      | **High as a mindset**; distilled in [anti-slop.md](./anti-slop.md). Its font suggestions are examples, not a list to pick from; the site's fonts are a brand decision.                                                                                                                                                                                                                                                        |
-| **[React Bits][reactbits]**                           | 200+ animated React components (text, backgrounds, UI, micro-interactions) in JS/TS × CSS/Tailwind variants, installed via the shadcn CLI or jsrepo; MIT + Commons Clause; offers an MCP server | **Inspiration only.** The repo has no UI framework, so components can't be installed. When one fits, re-implement the idea in vanilla TS/CSS within the 30 KB budget, CSP, and reduced-motion rules. Check the licence before porting any code closely.                                                                                                                                                                       |
-| **[Interfaces][interfaces]**                          | Paid design-engineering magazine (transitions, typography, accessibility, animation), with 3 free issues                                                                                        | **Low as a reference here.** The landing page has no extractable rules; the content is paywalled. Worth a human read, but nothing to cite.                                                                                                                                                                                                                                                                                    |
+| Source                                                   | What to take                                                                                                                                             | Where it's distilled                                                                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| [impeccable][imp] (Apache-2.0 agent skill)               | Its craft floor (contrast, spacing, type measure), motion timing, and its catalogue of generic-UI tells, which it also checks mechanically               | [anti-slop.md](./anti-slop.md), [motion.md](./motion.md), [typography-and-layout.md](./typography-and-layout.md)      |
+| [taste-skill][taste] (MIT agent skills)                  | Layout discipline, content density, AI-tell list, pattern vocabulary, redesign protocol (audit first, preserve what works). Installed locally, see below | Same files, plus the installed-skills table in [stack-translation.md](./stack-translation.md#installed-design-skills) |
+| [Anthropic, "frontend design through Skills"][anthropic] | Why models drift to generic UI, and the four axes to push against (type, colour, motion, backgrounds)                                                    | [anti-slop.md](./anti-slop.md)                                                                                        |
+| [React Bits][reactbits]                                  | A catalogue of animated-component ideas (text effects, backgrounds, micro-interactions) to browse for inspiration                                        | Not distilled. It ships framework components, so treat each as an idea to rebuild by hand, never as code to install   |
+| [Interfaces][interfaces]                                 | Nothing citable: a paid design-engineering magazine whose free landing page has no rules                                                                 | Not distilled                                                                                                         |
 
-## How to use them in this repo
+## Optional: the impeccable detector
 
-- Before shipping UI work, a quick mechanical pass is cheap: `npx impeccable detect` on the
-  changed component or on the built page (`npm run build:only`, then point it at `dist/`).
-  Treat findings against the [anti-slop.md](./anti-slop.md) "existing pattern" table as
-  known and accepted.
-- **Repo constraints override every tool:** no UI framework, no animation libraries, CSP with
-  no `'unsafe-inline'`, 30 KB JS per page, WCAG 2.2 AA, fact-only content, media only through
-  the pipeline. A tool's suggestion that breaks one of these is out.
-- Adding any dependency or tool config needs the human's go-ahead, and goes through the
-  package manager (`npm i -D …`), never hand-edited into `package.json`.
+impeccable ships a rule-based detector for many of the tells in [anti-slop.md](./anti-slop.md)
+(low contrast, overflow, line length, skipped headings, gradient text, bounce easing, …). It
+isn't part of this repo's toolchain. Running it (`npx impeccable detect <path-or-url>`)
+downloads a binary, so ask the human first. If used, run it against built output
+(`npm run build:only`, then `dist/`) and treat findings that match the "existing pattern"
+table in [anti-slop.md](./anti-slop.md) as known and accepted.
+
+## Rules for any tool or source
+
+- **Repo constraints override every tool** (`CLAUDE.md`): no UI or CSS framework, no animation
+  library, CSP with no inline styles, 30 KB JS per page, zero third-party requests, WCAG 2.2 AA,
+  fact-only content, media only through the pipeline.
+- Adding a dependency, hook, or tool config (including `DESIGN.md`/`PRODUCT.md`-style files a
+  skill may want to generate) needs the human's go-ahead. Dependencies go through `npm i`,
+  never hand-edited into `package.json`.
 
 [imp]: https://github.com/pbakaus/impeccable
 [taste]: https://github.com/Leonxlnx/taste-skill
