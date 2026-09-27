@@ -134,6 +134,24 @@ switch`, which changes global state other sessions and terminals rely on.
   PRs, re-running or cancelling workflows, editing repo settings — needs the human's go-ahead
   first, and pushing stays off-limits (see above).
 
+## Code discovery: `codebase-memory-mcp`
+
+The repo is indexed in `codebase-memory-mcp` (user-scoped server; project name
+`C-Users-m0rt-projects-Portfolio`). Prefer its graph tools for finding and tracing code:
+`search_graph` (by `name_pattern` or `query`), `trace_path` (callers/callees),
+`get_code_snippet`, `query_graph` (Cypher), `get_architecture`. Reach for Grep/Glob for
+string literals, config values, and non-code files.
+
+- **Coverage is partial.** Only `.ts` (`src/lib/`, `src/scripts/`, `scripts/`, `tests/`),
+  CSS, YAML and TOML are parsed into symbols. `.astro` files are File/Module nodes with no
+  edges, and Markdown content isn't parsed — so `trace_path`/`in_degree` **undercount**
+  callers of anything used from components or layouts (e.g. `withBase` shows 2 callers). For
+  "who uses X", combine the graph with `Grep` over `src/**/*.astro`.
+- **Keep it fresh.** The index doesn't auto-update. After pulling or switching branches, or
+  before relying on call graphs, run `index_repository` with `repo_path` set to the repo
+  root (`mode: "full"`); `detect_changes` shows what moved since a ref. A worktree needs its
+  own index (its path becomes a separate project name).
+
 <!-- BEGIN:worktrunk-worktree-policy -->
 
 ## Git worktrees: use `wt` (worktrunk), not `git worktree`
