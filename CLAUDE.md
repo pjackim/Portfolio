@@ -355,6 +355,10 @@ This project uses worktrunk (`wt`) for all worktree work: isolated branches, par
 - Discard: `wt remove`
 - Stale 🤖/💬 marker: `wt config state marker clear`
 
-Project hooks live in `.config/wt.toml`.
+Project hooks live in `.config/wt.toml`. It also defines per-worktree aliases, each on the
+worktree's own port (`{{ branch | hash_port }}`, shown in `wt list`'s URL column): `wt dev`,
+`wt preview`, `wt ci` (the full local gate), `wt stop` (stop this worktree's servers, which
+the `pre-remove` hook also runs so Windows file locks can't block a removal), `wt index`, and
+`wt url`.
 
 <!-- END:worktrunk-worktree-policy -->
