@@ -17,7 +17,7 @@
  */
 import { existsSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import { basename, join, relative, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
 import { BUDGETS, CONTENT_DIR, PROJECTS_DIR, fileSize, formatBytes } from './lib.ts';
@@ -32,7 +32,8 @@ const skipRefs = values['skip-refs'];
 
 const errors: string[] = [];
 const warnings: string[] = [];
-const rel = (path: string) => relative(CONTENT_DIR, path);
+/** `path` relative to the content dir, `/`-separated on every OS (Windows yields `\`). */
+const rel = (path: string) => relative(CONTENT_DIR, path).split(sep).join('/');
 
 /** True when `token` occurs in `text` as a whole path segment / word. */
 function mentions(text: string, token: string): boolean {
@@ -122,7 +123,7 @@ async function main(): Promise<void> {
   const files = await walk(CONTENT_DIR);
   let total = 0;
   for (const path of files) {
-    const name = path.slice(path.lastIndexOf('/') + 1);
+    const name = basename(path);
     const bytes = await fileSize(path);
     total += bytes;
     if (FORBIDDEN.test(name)) {

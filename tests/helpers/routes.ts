@@ -5,10 +5,15 @@
  * `page.goto()` resolves them under `/Portfolio/`.
  */
 import { globSync } from 'node:fs';
+import { sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Page, Response } from '@playwright/test';
 
 const DIST = fileURLToPath(new URL('../../dist/', import.meta.url));
+
+/** `globSync` returns OS-separated paths (`\` on Windows); routes and names are URL paths. */
+const globPosix = (pattern: string): string[] =>
+  globSync(pattern, { cwd: DIST }).map((file) => file.split(sep).join('/'));
 
 /** The post-deploy (`@prod`) sample: home + one case study. */
 export const PROD_ROUTES: readonly string[] = ['', 'work/credential-correlation/'];
@@ -40,7 +45,7 @@ export const LEGACY_REDIRECTS: Readonly<Record<string, string>> = {
 };
 
 /** `<name>` of every `dist/html/Work/<name>.html` stub the build emitted. */
-export const LEGACY_PAGES: readonly string[] = globSync('html/Work/*.html', { cwd: DIST })
+export const LEGACY_PAGES: readonly string[] = globPosix('html/Work/*.html')
   .map((file) => file.replace(/^.*\/|\.html$/g, ''))
   .sort();
 
@@ -48,7 +53,7 @@ export const LEGACY_PAGES: readonly string[] = globSync('html/Work/*.html', { cw
 export const ROUTES: readonly string[] = discoverRoutes();
 
 function discoverRoutes(): string[] {
-  const routes = globSync('**/index.html', { cwd: DIST })
+  const routes = globPosix('**/index.html')
     .map((file) => file.replace(/index\.html$/, ''))
     .sort();
   if (routes.length > 0) return routes;
