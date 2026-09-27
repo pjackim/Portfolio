@@ -3,6 +3,10 @@
 # come from, Architecture), docs/superpowers/specs/2026-09-04-bodycam-external-tool-design.md,
 # pyproject.toml, bodycam/cli.py (reward command), bodycam/gamemodes.py; git history
 # 2026-09-04 → 2026-09-26 (204 commits, 165 modules).
+# media: cover.webp, control-panel-overview.webp, control-panel-match.webp ← the project's own
+# PyQt6 panel (../BodyCam @ f02783f, bodycam/ui/main_window.py) rendered offscreen at 1200×750 ×2,
+# the way scripts/check_ui_layout.py captures pages: attach stubbed out, so no game process
+# was touched and every live value reads "detached" (owner's own work, fetched 2026-09-27).
 title: 'BodyCam External'
 summary: 'An out-of-process Python tool that reads and writes the memory of Bodycam, an Unreal Engine 5.5 game, driven from a PyQt6 control panel and CLI.'
 year: 2026
@@ -11,7 +15,7 @@ group: security
 capabilities: [offensive-security, engines-systems, engineering-practice]
 stack: [Python, pymem, PyQt6, Keystone, Capstone, Unreal Engine 5, Reverse engineering]
 cover: ./cover.webp
-coverAlt: 'Placeholder cover reading “Cover pending”.'
+coverAlt: "The BodyCam control panel's Lobby tab: a roster with puppet actions, and a host-only column of lobby-wide toggles tagged Replicates, Players, Host-local or One-shot, beside a context pane explaining the puppet commands."
 featured: true
 order: 7
 showOnHome: false
@@ -22,7 +26,15 @@ highlights:
   - Ran curated UFunction calls on the game thread through a ProcessEvent hook, gated on the local player being the host.
   - Captured every changed value once before the first write and restored it on detach or map change.
   - Built a frameless PyQt6 control panel in the game's own menu language, plus a click-through ESP and crosshair overlay.
-media: []
+media:
+  - kind: image
+    src: ./control-panel-overview.webp
+    alt: "The panel's Overview tab: player, zombie, orb and dispatch tiles, the world chain from UWorld down to the local pawn, resource usage, and an Owed to the game list of restore points, byte patches and hook caves."
+    caption: 'Overview tab, rendered with no game attached, so every live value shows a dash.'
+  - kind: image
+    src: ./control-panel-match.webp
+    alt: "The panel's Match tab: the game mode's phase machine from WaitingForPlayers to EndMatch, stepper rows for each match duration and the score limit, and a Next Match button."
+    caption: 'Match tab: the phase machine and the match timings, also with no game attached.'
 links:
   private: [repo]
 legacyPaths: []
