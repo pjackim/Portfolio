@@ -1101,6 +1101,9 @@ test.describe('axe, motion on', () => {
       .evaluate((el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
     await twoFrames(page);
     await expect(page.locator(`${CARD} .card__title a`).first()).toBeFocused();
+    // The jump can start entrances below the fold (on phones, the Experience rows); axe would
+    // read their contrast mid-fade, so let every running entrance finish first.
+    await expect(page.locator('[data-reveal-state="in"]')).toHaveCount(0, { timeout: 5000 });
     const { violations } = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
       .analyze();
