@@ -5,11 +5,26 @@ Live: **<https://pjackim.github.io/Portfolio/>**
 Parker Jackim's personal portfolio — a home page, a `/work/` index, and one case-study page
 per project. Static site, no backend.
 
+## Goals
+
+In priority order — when they pull against each other, the higher one wins:
+
+1. **Showcase Parker's work and who he is** — his projects, his history, and the depth of his
+   abilities, shown through real work rather than claimed. All content stays fact-only (see
+   [Frontmatter reference](#frontmatter-reference)).
+2. **A modern, professional, satisfying, interactive experience** — the hero sets the bar:
+   polished and credible, but alive and rewarding to explore. Interaction never costs
+   accessibility (WCAG 2.2 AA, reduced motion) or performance (the Lighthouse budgets below).
+3. **Easy to recognise and contact** — a consistent identity (profile photo, monogram, name)
+   and every contact channel Parker publishes (email, GitHub, LinkedIn, résumé, …) one step
+   away from any page. Contact details live in `src/data/site.ts`.
+
 ## Stack
 
-Astro 7 (static output), TypeScript, plain CSS (design tokens, no framework), vanilla
-`<script>`s for theme toggle / video / YouTube facade, Playwright for e2e + accessibility
-tests, Lighthouse CI for performance/SEO budgets. No React/Vue/Svelte, no MDX, no ESLint.
+Astro 7 (static output), TypeScript, plain CSS (design tokens, no framework), hand-written
+vanilla client modules in `src/scripts/` (hero, motion, theme, video, YouTube facade,
+lightbox, work filter, …; ≤30 KB JS per page), Playwright for e2e + accessibility tests,
+Lighthouse CI for performance/SEO budgets. No React/Vue/Svelte, no MDX, no ESLint.
 
 ## Quickstart
 
@@ -52,7 +67,7 @@ Case studies conventionally use `## Problem`, `## Approach`, `## What I built`,
 ## Frontmatter reference
 
 Schema source of truth: `src/content.config.ts`. All content must come from facts already in
-the repo (legacy site at commit `d8782d1`, the résumé PDF) — never invent accomplishments,
+the repo (legacy site at commit `d8782d1`, the résumé PDF) or Parker himself — never invent accomplishments,
 metrics, employers, dates, or links.
 
 | Field                             | Type                                                                   | Notes                                                                                  |
@@ -134,8 +149,9 @@ src/
   layouts/{BaseLayout,ProjectLayout}.astro
   components/                     # + components/media/*
   pages/{index,404,work/index,work/[slug]}.astro
-  scripts/{theme,video,youtube}.ts # the only hand-written client JS
-  styles/{tokens,global,prose}.css
+  assets/profile/                 # profile photo (contact section)
+  scripts/*.ts                    # hand-written client JS (hero, motion, theme, media, …)
+  styles/{tokens,global,prose,lightbox,reticle}.css
 scripts/
   media/{build,check,migrate,lib}.ts   # media pipeline (npm run media / check:media / media:migrate)
   og/{render-default,render-icons,lib}.ts
