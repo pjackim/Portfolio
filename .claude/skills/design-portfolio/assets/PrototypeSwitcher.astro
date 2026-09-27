@@ -1,0 +1,108 @@
+---
+/**
+ * PROTOTYPE — delete with the variants once one is signed off (/design-portfolio).
+ *
+ * Dev-only floating switcher for design variants. Wrap each variant on the host page in an
+ * element with `data-prototype-variant="A"` (B, C, …) and an optional `data-prototype-name`;
+ * render this component once on that page. `?variant=B` picks one (reload-stable, shareable);
+ * the arrows or ←/→ cycle. Outside `astro dev` it renders nothing, and the host page should
+ * render only variant A, so a stray merge can't ship the others.
+ */
+const show = import.meta.env.DEV;
+---
+
+{show && (
+  <nav class="proto-switcher" aria-label="Prototype variants" data-proto-switcher>
+    <button type="button" data-proto-step="-1" aria-label="Previous variant">
+      ‹
+    </button>
+    <span class="proto-switcher__label" data-proto-label aria-live="polite" />
+    <button type="button" data-proto-step="1" aria-label="Next variant">
+      ›
+    </button>
+  </nav>
+)}
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-proto-switcher]');
+  const variants = [...document.querySelectorAll<HTMLElement>('[data-prototype-variant]')];
+  if (bar && variants.length) {
+    const keys = variants.map((v) => v.dataset.prototypeVariant ?? '');
+    const label = bar.querySelector<HTMLElement>('[data-proto-label]');
+
+    const show = (key: string): void => {
+      const current = keys.includes(key) ? key : keys[0];
+      for (const v of variants) v.hidden = v.dataset.prototypeVariant !== current;
+      const el = variants[keys.indexOf(current)];
+      if (label) {
+        const name = el.dataset.prototypeName;
+        label.textContent = `${current}${name ? ` — ${name}` : ''} (${keys.indexOf(current) + 1}/${keys.length})`;
+      }
+      const url = new URL(location.href);
+      url.searchParams.set('variant', current);
+      history.replaceState(null, '', url);
+    };
+
+    const step = (delta: number): void => {
+      const current = new URL(location.href).searchParams.get('variant') ?? keys[0];
+      const i = (keys.indexOf(current) + delta + keys.length) % keys.length;
+      show(keys[i]);
+    };
+
+    bar.addEventListener('click', (event) => {
+      const button = (event.target as Element).closest<HTMLElement>('[data-proto-step]');
+      if (button) step(Number(button.dataset.protoStep));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('input, textarea, select, [contenteditable]')) return;
+      if (event.key === 'ArrowLeft') step(-1);
+      if (event.key === 'ArrowRight') step(1);
+    });
+
+    show(new URL(location.href).searchParams.get('variant') ?? keys[0]);
+  }
+</script>
+
+<style>
+  /* Deliberately unlike the site (inverted pill) so it never reads as part of a design. */
+  .proto-switcher {
+    position: fixed;
+    z-index: 1000;
+    inset-block-end: var(--space-s);
+    inset-inline-start: 50%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-3xs);
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    translate: -50% 0;
+  }
+
+  .proto-switcher button {
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--step-1);
+    cursor: pointer;
+  }
+
+  .proto-switcher button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .proto-switcher__label {
+    padding-inline: var(--space-2xs);
+    white-space: nowrap;
+  }
+</style>
