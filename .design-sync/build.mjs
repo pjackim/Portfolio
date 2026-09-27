@@ -352,12 +352,41 @@ ${rewrite(cap.html, '')}
 // 5. Guidelines.
 cpSync(join(ROOT, 'docs/identity/site-style.md'), join(OUT, 'guidelines/site-style.md'));
 cpSync(join(ROOT, 'docs/identity/brand.md'), join(OUT, 'guidelines/brand.md'));
+// The sourced design research behind the goals. Each file ends with "Applying it here", written
+// against repo paths; the conventions header translates those rules for the design agent.
+const DESIGN_DOCS = {
+  'scanning-and-reading': 'how visitors scan; headings, copy length, link text',
+  cards: 'the whole-card link pattern and what a card carries',
+  'progressive-disclosure': 'the two fixed levels (surface, case study)',
+  'bento-grid': 'varied-size showcase grid rules',
+  motion: 'what motion is for, timing, reduced motion',
+  'typography-and-layout': 'squint test, spacing rhythm, type roles, copy lengths',
+  'anti-slop': 'avoiding the generic AI-generated look',
+};
+for (const name of Object.keys(DESIGN_DOCS))
+  cpSync(join(ROOT, `docs/design/${name}.md`), join(OUT, `guidelines/design/${name}.md`));
+// Project goals + the fact-only content rule, lifted verbatim from CLAUDE.md.
+{
+  const md = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf8');
+  const goals = /^## Goals[\s\S]*?(?=^## )/m.exec(md)?.[0];
+  const factOnly = /^- \*\*Content is fact-only\.\*\*[\s\S]*?(?=^- \*\*)/m.exec(md)?.[0];
+  if (!goals || !factOnly) throw new Error('CLAUDE.md: Goals section or fact-only rule not found');
+  w(
+    'guidelines/project-goals.md',
+    `# Project goals\n\nVerbatim from the repo's CLAUDE.md. Paths name source files in the site repo; the\nconventions in README.md translate them into what to do in a design.\n\n${goals.trim()}\n\n## Content rule\n\n${factOnly.trim()}\n`,
+  );
+}
 w(
   'guidelines/index.md',
   `# Guidelines
 
-- \`site-style.md\`: the "operator console" style profile (palette roles, type roles, shape, motion, voice, on/off-vibe test). Read first.
+- \`project-goals.md\`: what every page must achieve, in priority order, and the fact-only content rule. Read first.
+- \`site-style.md\`: the "operator console" style profile (palette roles, type roles, shape, motion, voice, on/off-vibe test).
 - \`brand.md\`: the named signature patterns (reticle, decrypt, readouts...) and how to rebuild them.
+- \`design/\`: the sourced research behind the goals; each file ends with "Applying it here".
+${Object.entries(DESIGN_DOCS)
+  .map(([n, d]) => `  - \`design/${n}.md\`: ${d}`)
+  .join('\n')}
 - \`screenshots/pages/\`: full-page captures of the home page, the work index, and a case study, at 1440px (light, dark) and 390px (light).
 ${shots.map((s) => `  - \`${s.replace('guidelines/', '')}\``).join('\n')}
 - \`screenshots/components/\`: each component in light and dark.

@@ -35,3 +35,9 @@ content, then deletes for remote paths no longer produced, then re-arm the senti
 - A new component or page section isn't captured until it's added to `COMPONENTS` in build.mjs.
 - If `/work/aes-256/` is renamed, update `PAGES.case`.
 - `docs/identity/*.md` filenames are copied by name (brand.md was once site-brand.md).
+- `guidelines/design/*.md` are copied from `docs/design/` (list in `DESIGN_DOCS` in build.mjs;
+  the folder was `docs/design-research/` before 2026-09-27). `guidelines/project-goals.md` is cut
+  from CLAUDE.md's `## Goals` section plus its "Content is fact-only" bullet, and the build throws if
+  either heading changes.
+- The project also holds `uploads/*.md`, which the owner uploaded by hand (copies of these docs).
+  They sit outside the sync's folders, so the sync never writes or deletes them.
