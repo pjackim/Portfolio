@@ -24,7 +24,8 @@
     "ci": "npm run lint && npm run build:only && npm run test:e2e",
     "clean": "node scripts/clean.ts",
     "graph": "node scripts/graph-ui.ts",
-    "graph:snapshot": "node scripts/graph-snapshot.ts"
+    "graph:snapshot": "node scripts/graph-snapshot.ts",
+    "cbm": "node scripts/cbm-cli.ts"
   },
   "dependencies": {
     "astro": "^7.3.5",
