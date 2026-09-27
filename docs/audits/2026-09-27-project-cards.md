@@ -62,7 +62,7 @@ will break CI on the next push.
 - **Evidence:** `home__1280__{light,dark}__full.png`: all six cards are the same size. The only
   span variation in `ProjectGrid.astro:29` is the odd-last-card rule, which never fires with six
   featured projects. `order: 1` (Credential Correlation) gets no extra weight.
-- **Rule:** G3; [bento-grid.md](../design-research/bento-grid.md) ("all-equal cells defeat the
+- **Rule:** G3; [bento-grid.md](../design/bento-grid.md) ("all-equal cells defeat the
   pattern"), which names this as the natural next step.
 - **Fix:** derive cell size from `order` (lead cell larger), designed for every featured count
   from 3 to 8. This is a layout decision, so run `/design-portfolio`.

@@ -22,11 +22,11 @@ Read these in step 1. They win over any outside skill's defaults, in this order:
 2. `docs/identity/site-style.md`: the operator-console identity (palette roles, type roles,
    signature elements, motion personality, voice). "On-vibe" means this. Also read any other
    file in `docs/identity/`.
-3. `docs/design-research/README.md`, then every file its table maps to this feature (almost
+3. `docs/design/README.md`, then every file its table maps to this feature (almost
    always `scanning-and-reading.md` and `anti-slop.md`, plus cards/bento/motion/disclosure/type
    as relevant). If you use any outside or installed design skill, read `stack-translation.md`
    first.
-4. `docs/design-research/review-checklist.md`: the rubric the finished work is graded on.
+4. `docs/design/review-checklist.md`: the rubric the finished work is graded on.
 
 ## Step 1: Explore (no questions yet)
 

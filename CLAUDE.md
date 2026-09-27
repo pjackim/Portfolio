@@ -39,12 +39,12 @@ link. Concretely:
   focus state, not a small "read more".
 
 **Before any UI, layout, motion, or copy work, read the matching file in
-`docs/design-research/`** (its `README.md` maps each task to a file). Those files hold the
+`docs/design/`** (its `README.md` maps each task to a file). Those files hold the
 sourced patterns behind these goals: scanning, cards, disclosure, grids, motion, typography,
 anti-generic ("AI slop") checks, and design tools. Each one ends with how it applies to this
 repo. Follow them. Where one conflicts with these goals or the repo's constraints below, the
 goals and constraints win. Outside design skills (including the locally installed taste-skill
-family) assume React/Tailwind/GSAP; translate them with `docs/design-research/stack-translation.md`
+family) assume React/Tailwind/GSAP; translate them with `docs/design/stack-translation.md`
 before using any of their advice. The site's own look and voice are defined in
 `docs/identity/site-style.md`. For end-to-end UI work, use the project skills
 `/design-portfolio <feature>` and `/audit-portfolio [focus]`.
@@ -66,9 +66,9 @@ before using any of their advice. The site's own look and voice are defined in
      template.
    - Motion should reward attention and point at the work: loops that play in view, hover and
      focus feedback on cards, reveals that pace a scroll. It shouldn't decorate for its own
-     sake or make people wait for content (`docs/design-research/motion.md`).
+     sake or make people wait for content (`docs/design/motion.md`).
    - Distinct, never generic. Avoid the default "AI-generated" look
-     (`docs/design-research/anti-slop.md`). The hero's signature elements (mono eyebrow, typed
+     (`docs/design/anti-slop.md`). The hero's signature elements (mono eyebrow, typed
      caret, reticle) are approved identity: keep them, but don't copy them into every new
      section.
    - Interaction stays inside the site's constraints: vanilla client JS within the 30 KB/page

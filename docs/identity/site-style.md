@@ -29,7 +29,7 @@ crisp when touched.
 
 Each of these is specified step by step, with its timings, in [brand.md](brand.md). These
 belong to the hero and the core components. **Reuse the component, don't re-draw the
-effect**, and don't add a new signature per section (see [anti-slop.md](../design-research/anti-slop.md)).
+effect**, and don't add a new signature per section (see [anti-slop.md](../design/anti-slop.md)).
 
 ## Palette roles
 
@@ -92,7 +92,7 @@ scroll hijacking.
 - Mono keys are **terse nouns**: `Now`, `Edu`, `Focus ›`, `Projects`, `Case studies`.
 - Action labels say where they go: "Selected work", "All work", "Full index", "Résumé · PDF".
 - No hype words, no aphorisms, no em-dashes in new visible copy (see
-  [anti-slop.md](../design-research/anti-slop.md)). Every claim traces to a source (fact-only rule, `CLAUDE.md`).
+  [anti-slop.md](../design/anti-slop.md)). Every claim traces to a source (fact-only rule, `CLAUDE.md`).
 
 ## On-vibe / off-vibe quick test
 
