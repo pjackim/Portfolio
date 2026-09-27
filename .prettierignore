@@ -6,3 +6,4 @@ package-lock.json
 .superpowers
 src/content/**/*.{webp,mp4,webm}
 public/files
+docs/codebase

@@ -23,7 +23,8 @@
     "test:lhci": "lhci autorun",
     "ci": "npm run lint && npm run build:only && npm run test:e2e",
     "clean": "node scripts/clean.ts",
-    "graph": "node scripts/graph-ui.ts"
+    "graph": "node scripts/graph-ui.ts",
+    "graph:snapshot": "node scripts/graph-snapshot.ts"
   },
   "dependencies": {
     "astro": "^7.3.5",

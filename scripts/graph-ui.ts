@@ -8,11 +8,8 @@
  * UI enabled (`codebase-memory-mcp config set ui_enabled true`). The UI is served by a running
  * MCP server; if none is listening, this starts one and keeps it alive until Ctrl+C.
  */
-import { execFileSync, spawn } from 'node:child_process';
-import { resolve } from 'node:path';
-
-const BIN = 'codebase-memory-mcp';
-const ROOT = resolve(import.meta.dirname, '..');
+import { spawn } from 'node:child_process';
+import { BIN, cbm as run, ensureProject } from './cbm.ts';
 
 function die(message: string): never {
   console.error(`✖ ${message}\nusage: npm run graph [-- --reindex]`);
@@ -21,23 +18,10 @@ function die(message: string): never {
 
 function cbm(...args: string[]): string {
   try {
-    return execFileSync(BIN, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return run(...args);
   } catch (error) {
-    const missing = (error as NodeJS.ErrnoException).code === 'ENOENT';
-    die(missing ? `${BIN} is not on PATH` : `${BIN} ${args.join(' ')} failed`);
+    die((error as Error).message);
   }
-}
-
-const samePath = (a: string, b: string) => resolve(a).toLowerCase() === resolve(b).toLowerCase();
-
-/** Indexed project name for ROOT, from `list_projects` rows: `<name> <root_path> <branch>`. */
-function findProject(): string | undefined {
-  for (const line of cbm('cli', '--quiet', 'list_projects').split('\n')) {
-    const cols = line.trim().split(/\s+/);
-    if (cols.length < 3) continue;
-    if (samePath(cols.slice(1, -1).join(' '), ROOT)) return cols[0];
-  }
-  return undefined;
 }
 
 async function isServing(url: string): Promise<boolean> {
@@ -66,11 +50,11 @@ if (cbm('config', 'get', 'ui_enabled').trim() !== 'true') {
 const port = cbm('config', 'get', 'ui_port').trim() || '9749';
 const base = `http://localhost:${port}/`;
 
-let project = findProject();
-if (!project || args.includes('--reindex')) {
-  console.log(`… indexing ${ROOT}`);
-  cbm('cli', '--quiet', 'index_repository', '--repo-path', ROOT);
-  project = findProject() ?? die(`indexing finished but no project matches ${ROOT}`);
+let project: string;
+try {
+  project = ensureProject(args.includes('--reindex'));
+} catch (error) {
+  die((error as Error).message);
 }
 
 /** Start an MCP server for its UI; it speaks stdio, so an open stdin pipe keeps it alive. */
