@@ -5,9 +5,14 @@ the site. Each check has an ID (cite it in findings), a source to read for the f
 verify it, and a **fix class**:
 
 - **M (mechanical):** there is one objectively correct fix (a contrast value, a missing gate, a
-  literal that should be a token). Safe to batch.
-- **J (judgement):** fixing it is a design decision (layout, hierarchy, what to show). Propose it
-  and route it through `/design-portfolio`.
+  literal that should be a token).
+- **J (judgement):** fixing it takes a design call. If the call stays within the current layout,
+  hierarchy, and content, `/audit-portfolio` still makes it autonomously. If it changes any of
+  those, it goes through `/design-portfolio` (prototypes and sign-off).
+
+`/audit-portfolio` turns this into a **route** per finding: **fix** (made autonomously),
+**design** (handed to `/design-portfolio`), or **owner** (needs a fact, media, dependency, or
+brand decision from Parker).
 
 Severity when reporting: **P0** breaks a hard constraint (CSP, a11y failure, broken link,
 fabricated fact) · **P1** undermines a goal for most visitors · **P2** off-style or craft

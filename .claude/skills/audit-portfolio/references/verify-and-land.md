@@ -10,7 +10,7 @@ way every time, and **land** it as a staged, uncommitted merge the human approve
 2. Record where you started: `ORIGIN_BRANCH=$(git branch --show-current)` and
    `ORIGIN_PATH=$(git rev-parse --show-toplevel)`. You need both to land.
 3. Create the worktree with worktrunk, never raw `git worktree`:
-   `wt switch --create <prefix>/<slug>` (`design/<slug>` or `audit/<YYYY-MM-DD>-<focus>`). The
+   `wt switch --create <prefix>/<slug> --no-cd -y` (non-interactive; `design/<slug>` or `audit/<YYYY-MM-DD>-<focus>`). The
    `pre-start` hook runs `npm ci`. All later commands run in that worktree (its path is under
    `.claude/worktrees/`; `wt list` shows it).
 4. Pick a port unique to this worktree, so parallel sessions don't collide:
@@ -46,7 +46,10 @@ a scanner sees first, and `__full` is the whole page. `.cache/` is gitignored.
 
 **b. Interactive pass with Chrome (claude-in-chrome)**
 
-Load the core tools in one `ToolSearch`, then `tabs_context_mcp` and a new tab. Check what
+Load the core tools in one `ToolSearch`, then `tabs_context_mcp` and a new tab. If several
+browsers are connected, ask which one (the one on this machine can reach `localhost`). After
+every rebuild, reload with a cache-busting query (`?v=<n>`): Chrome otherwise keeps serving
+the previous HTML and you verify stale code. Check what
 screenshots can't show:
 
 - Hover every interactive element in scope; Tab through it (focus visible, order logical, focus
@@ -70,7 +73,7 @@ screenshots can't show:
 
 **d. Rubric**
 
-Grade the result against `docs/design-research/review-checklist.md`: every check that the
+Grade the result against `docs/design/review-checklist.md`: every check that the
 change touches, by ID. A check that fails is either fixed or explicitly reported with a reason.
 
 ## 4. Land (staged merge, human commits it)

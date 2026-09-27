@@ -36,9 +36,9 @@ carry the report, and the detail sections are for whoever fixes each finding.
 
 ## Findings
 
-| ID  | Sev | Checks | Title | Where | Fix class | Status |
-| --- | --- | ------ | ----- | ----- | --------- | ------ |
-| F1  | P1  | G2, S4 | …     | …     | J         | open   |
+| ID  | Sev | Checks | Title | Where | Route | Status            |
+| --- | --- | ------ | ----- | ----- | ----- | ----------------- |
+| F1  | P1  | G2, S4 | …     | …     | fix   | fixed (`abc1234`) |
 
 ### F1: <title>
 
@@ -46,6 +46,16 @@ carry the report, and the detail sections are for whoever fixes each finding.
 - **Rule:** <checklist ID + doc link>
 - **Fix:** <concrete change>
 - **Files:** <paths>
+- **Route:** fix / design / owner, and why
+
+## Design handoffs
+
+- `/design-portfolio <feature>`: F<n>, F<n>. <evidence summary; the constraint the redesign must
+  meet>
+
+## Needed from Parker
+
+- F<n>: <the exact fact, file, or decision needed>
 
 ## What's working (keep it)
 

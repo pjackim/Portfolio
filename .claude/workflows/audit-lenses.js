@@ -1,7 +1,7 @@
 export const meta = {
   name: 'audit-lenses',
   description:
-    'Grade portfolio pages against docs/design-research/review-checklist.md: one reviewer per lens (goals, identity, style, craft, motion, constraints) over captured screenshots + source, then an adversarial verify/dedupe pass',
+    'Grade portfolio pages against docs/design/review-checklist.md: one reviewer per lens (goals, identity, style, craft, motion, constraints) over captured screenshots + source, then an adversarial verify/dedupe pass',
   whenToUse:
     'Called by /audit-portfolio (whole-site or focused audit) and /design-portfolio (independent review of a finished feature). Needs a capture directory from .claude/skills/audit-portfolio/scripts/capture.ts',
   phases: [
@@ -37,7 +37,7 @@ const COMMON = `${WHERE}
 ${FOCUS} ${PAGES}
 You are one reviewer in a design audit of Parker Jackim's portfolio (Astro 7 static site, plain CSS tokens, vanilla TS, strict CSP). Read-only: never edit files, run git write commands, or start servers.
 Evidence lives in ${A.captureDir}: manifest.json (per view: overflow, thirdPartyRequests, jsBytes, inlineStyleAttrs, consoleErrors, imagesWithoutAlt) and PNGs named <page>__<width>__<scheme>[__motion]__{fold|full}.png. Open the PNGs with Read and look at them; "__fold" is what a scanning visitor sees first.
-Rubric: docs/design-research/review-checklist.md (cite check IDs). Identity: docs/identity/site-style.md (and any other docs/identity/*.md). Goals and constraints: CLAUDE.md. Read the docs/design-research/ files your checks link to.
+Rubric: docs/design/review-checklist.md (cite check IDs). Identity: docs/identity/site-style.md (and any other docs/identity/*.md). Goals and constraints: CLAUDE.md. Read the docs/design/ files your checks link to.
 Approved identity is NOT a finding: the anti-slop.md "existing pattern" table (hero eyebrow, typed caret, numbered section headings, reticle/spotlight, Geist, existing em-dashes) is deliberate. Flag only new spread of those patterns.
 Every finding needs concrete evidence: a screenshot file name plus what is visible in it, or a file:line with the offending code quoted. No evidence, no finding. Prefer fewer, real findings over many speculative ones. Also list what is working well in your lens (short), so fixes don't break it.${BRIEF}`;
 
@@ -85,7 +85,7 @@ const LENSES = [
   {
     key: 'goals',
     prompt:
-      "Lens: GOALS / SHOWCASE (checks G1–G4, G7). Be the fast, lazy scanner: from the fold and full screenshots at 390 and 1280 only, what would a visitor learn about what Parker built, his history, and how strong the work is, without reading prose or clicking? Are projects shown with real imagery plus a 2–3 short-sentence summary? Is the strongest work biggest and earliest? Does each page read as a layer cake? Does new UI reach the hero's bar? Read docs/design-research/scanning-and-reading.md, progressive-disclosure.md, bento-grid.md.",
+      "Lens: GOALS / SHOWCASE (checks G1–G4, G7). Be the fast, lazy scanner: from the fold and full screenshots at 390 and 1280 only, what would a visitor learn about what Parker built, his history, and how strong the work is, without reading prose or clicking? Are projects shown with real imagery plus a 2–3 short-sentence summary? Is the strongest work biggest and earliest? Does each page read as a layer cake? Does new UI reach the hero's bar? Read docs/design/scanning-and-reading.md, progressive-disclosure.md, bento-grid.md.",
   },
   {
     key: 'identity',
@@ -100,12 +100,12 @@ const LENSES = [
   {
     key: 'craft',
     prompt:
-      'Lens: CRAFT (checks C1–C8). Squint test on the screenshots, proximity rhythm, heading spacing, token use (grep in-scope CSS for raw px/rem/ms/colour literals that should be --step/--space/--radius/--dur/--ease or colour tokens), body size and measure, anti-slop tells (docs/design-research/anti-slop.md table), repeated layout families, bento cell counts, overflow (manifest overflowX/overflowingElements) and clipping/overlap at every width.',
+      'Lens: CRAFT (checks C1–C8). Squint test on the screenshots, proximity rhythm, heading spacing, token use (grep in-scope CSS for raw px/rem/ms/colour literals that should be --step/--space/--radius/--dur/--ease or colour tokens), body size and measure, anti-slop tells (docs/design/anti-slop.md table), repeated layout families, bento cell counts, overflow (manifest overflowX/overflowingElements) and clipping/overlap at every width.',
   },
   {
     key: 'motion',
     prompt:
-      "Lens: MOTION & INTERACTION (checks A1–A7, G5, G6). Read the in-scope components' <style> and their src/scripts modules. Every animation has a job; content visible at rest; every motion rule is behind the gate (CSS: :root:not([data-motion='off']) inside @media (prefers-reduced-motion: no-preference), wrapped in :global() in scoped styles; TS: motionAllowed()/onMotionChange() from src/scripts/motion.ts); token durations/easing, no bounce, cheap properties; reveals via data-reveal presets (no new IntersectionObserver or scroll listener); loops only in view; hover/focus/press feedback everywhere with focus mirroring hover; nothing essential hover-only; whole-card links follow docs/design-research/cards.md. Compare __motion shots with reduced-motion shots if present.",
+      "Lens: MOTION & INTERACTION (checks A1–A7, G5, G6). Read the in-scope components' <style> and their src/scripts modules. Every animation has a job; content visible at rest; every motion rule is behind the gate (CSS: :root:not([data-motion='off']) inside @media (prefers-reduced-motion: no-preference), wrapped in :global() in scoped styles; TS: motionAllowed()/onMotionChange() from src/scripts/motion.ts); token durations/easing, no bounce, cheap properties; reveals via data-reveal presets (no new IntersectionObserver or scroll listener); loops only in view; hover/focus/press feedback everywhere with focus mirroring hover; nothing essential hover-only; whole-card links follow docs/design/cards.md. Compare __motion shots with reduced-motion shots if present.",
   },
   {
     key: 'constraints',
@@ -152,6 +152,13 @@ const VERIFIED = {
           ...FINDINGS.properties.findings.items.properties,
           lenses: { type: 'array', items: { type: 'string' } },
           verdict: { type: 'string', enum: ['confirmed', 'plausible'] },
+          route: {
+            type: 'string',
+            enum: ['fix', 'design', 'owner'],
+            description:
+              'fix = the caller fixes it autonomously (stays within current layout/hierarchy/content); design = needs /design-portfolio (prototypes + sign-off); owner = needs Parker (fact, media, contact detail, dependency, brand change)',
+          },
+          route_reason: { type: 'string', description: 'one line: why this route' },
         },
         required: [
           'id',
@@ -165,6 +172,8 @@ const VERIFIED = {
           'files',
           'lenses',
           'verdict',
+          'route',
+          'route_reason',
         ],
       },
     },
@@ -182,7 +191,7 @@ const VERIFIED = {
 const verified = await agent(
   `${COMMON}
 
-You are the adversarial verifier. Below are raw findings from six lens reviewers. For EACH one, re-open its evidence (the screenshot or file:line) and try to refute it. Reject it (with a reason) if the evidence doesn't show the problem, if it's approved identity per the anti-slop.md existing-pattern table, if it contradicts CLAUDE.md or docs/identity/site-style.md, or if it's pure taste with no rule behind it. Merge duplicates (keep every lens name and check ID). Re-check severity and fix_class: M only if there is one objectively correct fix. Mark "confirmed" when you reproduced it from the evidence, "plausible" when it's likely but you couldn't fully confirm. Rank most severe first and number them F1, F2, …
+You are the adversarial verifier. Below are raw findings from six lens reviewers. For EACH one, re-open its evidence (the screenshot or file:line) and try to refute it. Reject it (with a reason) if the evidence doesn't show the problem, if it's approved identity per the anti-slop.md existing-pattern table, if it contradicts CLAUDE.md or docs/identity/site-style.md, or if it's pure taste with no rule behind it. Merge duplicates (keep every lens name and check ID). Re-check severity and fix_class: M only if there is one objectively correct fix. Mark "confirmed" when you reproduced it from the evidence, "plausible" when it's likely but you couldn't fully confirm. Then route each surviving finding. The caller fixes "fix" findings autonomously with no human review until the end, so be strict: "fix" only when the change keeps the current layout, information hierarchy, and content (a token swap, a missing hover/focus/active state, a contrast or spacing correction, a gate or attribute that's missing). Anything that changes layout, sizes/order of items, what is shown, or adds a new interaction is "design". Anything that needs a fact, image/media choice, contact detail, dependency, or brand decision (fonts, accent, signature elements) from Parker is "owner". When torn between fix and design, choose design. Rank most severe first and number them F1, F2, …
 
 Raw findings (JSON):
 ${JSON.stringify(raw, null, 1)}`,
