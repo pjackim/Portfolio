@@ -77,8 +77,10 @@ const projects = defineCollection({
             repo: z.url().optional(),
             demo: z.url().optional(),
             video: z.url().optional(),
+            /** Kinds that exist but aren't public — shown as a disabled "private" label. */
+            private: z.array(z.enum(['repo', 'demo', 'video'])).default([]),
           })
-          .default({}),
+          .default({ private: [] }),
         legacyPaths: z.array(z.string().regex(LEGACY_PATH)).default([]),
       })
       .refine(

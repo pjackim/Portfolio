@@ -1,7 +1,8 @@
 ---
 # Sources: ../BodyCam (github.com/mort-sh/BodyCam-External) — README.md, CLAUDE.md (Where offsets
 # come from, Architecture), docs/superpowers/specs/2026-09-04-bodycam-external-tool-design.md,
-# pyproject.toml; git history 2026-09-04 → 2026-09-26.
+# pyproject.toml, bodycam/cli.py (reward command), bodycam/gamemodes.py; git history
+# 2026-09-04 → 2026-09-26 (204 commits, 165 modules).
 title: 'BodyCam External'
 summary: 'An out-of-process Python tool that reads and writes the memory of Bodycam, an Unreal Engine 5.5 game, driven from a PyQt6 control panel and CLI.'
 year: 2026
@@ -11,8 +12,8 @@ capabilities: [offensive-security, engines-systems, engineering-practice]
 stack: [Python, pymem, PyQt6, Keystone, Capstone, Unreal Engine 5, Reverse engineering]
 cover: ./cover.webp
 coverAlt: 'Placeholder cover reading “Cover pending”.'
-featured: false
-order: 100
+featured: true
+order: 7
 showOnHome: false
 draft: true
 highlights:
@@ -22,7 +23,8 @@ highlights:
   - Captured every changed value once before the first write and restored it on detach or map change.
   - Built a frameless PyQt6 control panel in the game's own menu language, plus a click-through ESP and crosshair overlay.
 media: []
-links: {}
+links:
+  private: [repo]
 legacyPaths: []
 ---
 
@@ -45,9 +47,10 @@ The main change from that project is where offsets come from. MordMod's were fou
 - **Control panel.** A frameless PyQt6 window built in the game's own menu language, with tabs split by reach ("affects only me" vs "affects everyone, host required"), bindable global hotkeys, saved profiles, and a context pane explaining the last row clicked.
 - **Overlay and editor.** A click-through ESP and crosshair overlay that tracks the game window, and a crosshair world editor for looking at, placing, grabbing, and cloning actors.
 - **CLI.** A Typer command line that mirrors the panel, plus a GVAS reader/writer for the game's loadout save file.
+- **Reward manipulation.** A `bodycam reward` command that credits Reissad Points (the in-game currency) by writing to the game's Steam-leaderboard-backed persistence and waiting for the client to observe the new cached total.
 
 ## Outcome & lessons
 
-Built over three weeks in September 2026 across roughly 70 modules. There is no unit test suite, since most modules can't run without a live game: verification is byte-compiling every file plus hand-run probes against the running game, and the save writer must round-trip the loadout file byte for byte.
+Built over three weeks in September 2026 across roughly 165 modules. There is no unit test suite, since most modules can't run without a live game: verification is byte-compiling every file plus hand-run probes against the running game, and the save writer must round-trip the loadout file byte for byte.
 
 The main lesson is that a dispatched call is not a call that did anything. ProcessEvent returning only proves the VM ran the function, so features that can only confirm dispatch say so rather than claiming success.

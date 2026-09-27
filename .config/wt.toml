@@ -4,13 +4,12 @@
 # Blocking: a new worktree is unusable until node_modules exists.
 pre-start = "npm ci"
 
-# Same gate as `npm run lint` (prettier --check, astro check, media lint).
-pre-commit = "npm run lint"
+# The pieces of `npm run lint`, run concurrently (~9s instead of ~13s). This also gates the
+# squash commit `wt merge` makes, so it is the only check a merge runs.
+[[pre-commit]]
+format = "npm run -s format:check"
+check = "npm run -s check"
+media = "npm run -s check:media"
 
-# Build, then the Playwright suite against `astro preview` of that build. The per-branch
-# port keeps parallel worktrees from reusing another worktree's preview server.
-[[pre-merge]]
-build = "npm run build:only"
-
-[[pre-merge]]
-e2e = "E2E_PORT={{ branch | hash_port }} npm run test:e2e"
+# No pre-merge hook: build + Playwright took minutes per merge. GitHub CI (ci.yml) runs the
+# full gate on push; run `npm run ci` locally when a change needs it before landing.

@@ -118,6 +118,27 @@ Shared pieces: the rubric `docs/design/review-checklist.md`, the style profile
 `docs/identity/site-style.md`, `.claude/workflows/audit-lenses.js`, and
 `.claude/skills/audit-portfolio/{scripts/capture.ts,scripts/evidence.ts,references/verify-and-land.md}`.
 
+## Subagents
+
+Custom agents in `.claude/agents/`. Their hooks live in `.claude/hooks/`.
+
+- **`portfolio-manager`** (Opus 5.5): adds or updates projects, skills, and timeline entries.
+  It keeps asking questions until every field is known and sourced. Run it as the session
+  agent (`claude --agent portfolio-manager`) so it can ask directly. When delegated, it
+  returns a `NEEDS_INPUT` block; ask the user, then resume it by name.
+- **`fact-checker`** (read-only): gives each claim in the changed copy a verdict against its
+  cited source.
+- **`convention-guard`** (read-only): checks a diff against the rules in this file.
+- **`ci-gate`** (background): runs `npm run ci`, plus LHCI on request, and reports only the
+  failures.
+- **`live-verifier`** (foreground, Playwright MCP): checks the affected pages in both
+  themes, with motion on and off, at phone and desktop widths.
+- **`media-manager`** (worktree): link and YouTube health, orphaned files, renames based on
+  image content, size budgets, and re-encoding from originals.
+- **`media-finder`** (worktree, foreground for Chrome): finds visible media gaps on one
+  project's pages, sources official or owner-published assets, and re-checks until each gap
+  is closed. It records every asset's source in the project's `# Sources:` header.
+
 ## Commands
 
 - `npm ci` — install (Node ≥22.18 locally, 24 in CI; see `.nvmrc`). npm is the package manager
@@ -207,7 +228,8 @@ check:media` — media lint (also part of `lint`)
   `src/content`; size budgets are enforced by `check:media` (`scripts/media/check.ts`).
 - **Content is fact-only.** Everything in `src/data/site.ts`, `src/data/taxonomy.ts`, and every
   project's frontmatter/body must trace to the legacy site (`git show d8782d1:<path>`), the
-  résumé PDF, or something Parker stated directly (cite it in a comment, e.g. "per the author
+  résumé PDF, the project's own repository (cited in its `# Sources:` header), or something
+  Parker stated directly (cite it in a comment, e.g. "per the author
   (Sept 2026)"). Never invent accomplishments, metrics, employers, dates, skills, contact
   details, or links; omit what isn't stated.
 - **No UI framework, no `<ClientRouter/>`, no Markdown plugins.** View transitions are native
