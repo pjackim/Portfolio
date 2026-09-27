@@ -38,9 +38,12 @@ link. Concretely:
 - **Big, forgiving targets.** A whole project card is a single link with a visible hover and
   focus state, not a small "read more".
 
-The research behind these rules, with concrete numbers, code, and how each maps onto this
-repo, is in `docs/design-research/` (start at its `README.md`). Read the relevant file before
-designing a section, card, layout, or copy.
+**Before any UI, layout, motion, or copy work, read the matching file in
+`docs/design-research/`** (its `README.md` maps each task to a file). Those files hold the
+sourced patterns behind these goals: scanning, cards, disclosure, grids, motion, typography,
+anti-generic ("AI slop") checks, and design tools. Each one ends with how it applies to this
+repo. Follow them. Where one conflicts with these goals or the repo's constraints below, the
+goals and constraints win.
 
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at
@@ -59,7 +62,11 @@ designing a section, card, layout, or copy.
      template.
    - Motion should reward attention and point at the work: loops that play in view, hover and
      focus feedback on cards, reveals that pace a scroll. It shouldn't decorate for its own
-     sake or make people wait for content.
+     sake or make people wait for content (`docs/design-research/motion.md`).
+   - Distinct, never generic. Avoid the default "AI-generated" look
+     (`docs/design-research/anti-slop.md`). The hero's signature elements (mono eyebrow, typed
+     caret, reticle) are approved identity: keep them, but don't copy them into every new
+     section.
    - Interaction stays inside the site's constraints: vanilla client JS within the 30 KB/page
      budget, motion that respects `prefers-reduced-motion` and the motion toggle, WCAG 2.2 AA,
      and the Lighthouse budgets. Delight never costs accessibility or speed.
