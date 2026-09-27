@@ -46,9 +46,8 @@ repo. Follow them. Where one conflicts with these goals or the repo's constraint
 goals and constraints win. Outside design skills (including the locally installed taste-skill
 family) assume React/Tailwind/GSAP; translate them with `docs/design/stack-translation.md`
 before using any of their advice. The site's own look and voice are defined in
-`docs/identity/site-style.md`. For end-to-end UI work, use the project skills
-`/design-portfolio <feature>` and `/audit-portfolio [focus]` (report only; `/audit-portfolio fix`
-applies a report).
+`docs/identity/site-style.md`. For end-to-end UI work, use the project skills in
+[Design and audit skills](#design-and-audit-skills).
 
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at
@@ -85,6 +84,33 @@ applies a report).
      icon plus label, tap-to-mail/tap-to-call, no forms.
    - Only publish channels Parker has supplied. Never guess a phone number, handle, or URL; if
      one is missing, ask.
+
+## Design and audit skills
+
+Project skills in `.claude/skills/` that run the full design loop. Both work in a `wt`
+worktree, verify live in Chrome, and end with a **staged, uncommitted merge** into the branch
+they started from, which the human approves before it's committed.
+
+- **`/design-portfolio <feature>`**: build or redesign a feature. It explores the code and
+  docs, interviews the user until the design brief is confirmed, prototypes at least 2 variants
+  on the real page for sign-off, then builds, verifies, and gets an independent review without
+  further prompting.
+- **`/audit-portfolio [focus]`**: **audit only, never changes code.** It tests the pages live
+  (capture script, Playwright specs, a Chrome pass, and the `audit-lenses` reviewer subagents)
+  and writes `docs/audits/<date>-<focus>.md`. Every issue gets a screenshot committed in
+  `docs/audits/<date>-<focus>/` and a concrete proposed solution. No focus means every page
+  type.
+- **`/audit-portfolio fix [report path or focus]`**: the **only** way audit fixes get applied.
+  It implements every open finding in the newest matching report (or the one named) without
+  prompting, takes after shots, re-reviews what it touched, and updates the report's statuses.
+  Findings that need something only Parker can supply or decide (a fact, media, a contact
+  detail, a dependency, a brand change) are skipped and listed for him. Layout-changing
+  ("design") findings are applied exactly as the report proposes, with no prototype round, so
+  review those in the report first or send them through `/design-portfolio` instead.
+
+Shared pieces: the rubric `docs/design/review-checklist.md`, the style profile
+`docs/identity/site-style.md`, `.claude/workflows/audit-lenses.js`, and
+`.claude/skills/audit-portfolio/{scripts/capture.ts,scripts/evidence.ts,references/verify-and-land.md}`.
 
 ## Commands
 
