@@ -1,0 +1,67 @@
+{
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "worktrunk@worktrunk": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "github@claude-plugins-official": true
+  },
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "CBM_LOG_LEVEL": "error",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/m0rt/.local/bin/codebase-memory-mcp.exe",
+            "args": ["hook-augment"],
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/m0rt/.local/bin/codebase-memory-mcp.exe",
+            "args": ["hook-augment"],
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/m0rt/.local/bin/codebase-memory-mcp.exe",
+            "args": ["hook-augment"],
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/m0rt/.local/bin/codebase-memory-mcp.exe",
+            "args": ["hook-augment"],
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
