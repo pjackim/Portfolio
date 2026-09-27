@@ -206,7 +206,7 @@
   }
 
   :root:not([data-motion='off']) .lightbox[open] .lightbox__frame::after {
-    animation-delay: 390ms;
+    animation-delay: calc(340ms + var(--reticle-beat));
   }
 
   :root:not([data-motion='off']) .lightbox__full,

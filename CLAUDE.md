@@ -110,9 +110,8 @@ check:media` — media lint (also part of `lint`)
   tasks for all of the above live in `.vscode/tasks.json`
 - `npm run graph` — open the codebase-memory-mcp graph UI on this checkout (indexes it if
   missing; `-- --reindex` to refresh; starts a UI server if none is listening)
-- `npm run cbm -- <tool> [args]` (same as `bun run cbm <tool> [args]`) — run one
-  codebase-memory-mcp graph tool from a shell, with `--project`/`--repo-path` auto-injected;
-  `bun run cbm help` lists tools and flags
+- `bun run cbm <tool> [args]` (or `npm run cbm -- <tool> [args]`) — query this checkout's
+  code graph; see [Code discovery](#code-discovery-codebase-memory-mcp)
 
 ## Architecture
 
@@ -221,26 +220,40 @@ switch`, which changes global state other sessions and terminals rely on.
 
 ## Code discovery: `codebase-memory-mcp`
 
-The repo is indexed in `codebase-memory-mcp` (user-scoped server; project name
-`C-Users-m0rt-projects-Portfolio`). Prefer its graph tools for finding and tracing code:
-`search_graph` (by `name_pattern` or `query`), `trace_path` (callers/callees),
-`get_code_snippet`, `query_graph` (Cypher), `get_architecture`. Reach for Grep/Glob for
-string literals, config values, and non-code files.
+This checkout is indexed as a code graph (project `C-Users-m0rt-projects-Portfolio`). Prefer
+it to Grep/Glob for finding and tracing code; keep Grep/Glob for string literals, config
+values, and non-code files. Query it with `bun run cbm` (`scripts/cbm-cli.ts`), which wraps
+`codebase-memory-mcp cli` and fills in `--quiet` plus this checkout's `--project` (or
+`--repo-path`), so you never type the project name. `npm run cbm -- <tool> ...` also works;
+npm needs the `--`.
 
-- **Coverage is partial.** Only `.ts` (`src/lib/`, `src/scripts/`, `scripts/`, `tests/`),
-  CSS, YAML and TOML are parsed into symbols. `.astro` files are File/Module nodes with no
-  edges, and Markdown content isn't parsed — so `trace_path`/`in_degree` **undercount**
-  callers of anything used from components or layouts (e.g. `withBase` shows 2 callers). For
-  "who uses X", combine the graph with `Grep` over `src/**/*.astro`.
-- **No MCP tools (a script or subagent shell)?** Use the `bun run cbm <tool>` wrapper. It
-  runs `codebase-memory-mcp cli` and injects the project or repo path for you, e.g.
-  `bun run cbm trace_path withBase` or `bun run cbm search --name-pattern '.*apply.*'`.
-  `bun run cbm help` lists its aliases and positional shortcuts.
-- **Keep it fresh.** The index doesn't auto-update. After pulling or switching branches, or
-  before relying on call graphs, run `index_repository` with `repo_path` set to the repo
-  root (`mode: "full"`), or `bun run cbm index_repository` from a shell; `detect_changes`
-  shows what moved since a ref. A worktree needs its own index (its path becomes a separate
-  project name).
+```sh
+bun run cbm help                                                 # tools, aliases, shortcuts
+bun run cbm trace_path --help                                    # one tool's flags
+bun run cbm search --label Function --name-pattern '.*apply.*'   # search_graph
+bun run cbm trace_path withBase --direction inbound              # callers / callees
+bun run cbm get_code_snippet <qualified_name>                    # source of one symbol
+bun run cbm query 'MATCH (f:Function) RETURN f.name LIMIT 5'     # query_graph (Cypher)
+bun run cbm get_architecture overview                            # or routes, hotspots, ...
+bun run cbm index_repository                                     # re-index this checkout
+```
+
+- **Output.** Plain text by default, which is the most compact to read. Add `--format json`
+  for structured results or `--json` for the raw MCP envelope when scripting; `--dry-run`
+  prints the exact CLI command instead of running it.
+- **Guards.** `manage_adr update` needs `--content <str>` or `--content-file <path>`, and
+  `delete_project` needs an explicit `--project`; the wrapper refuses both otherwise.
+- **Coverage.** `.ts` and `.astro` code, CSS, YAML and TOML are parsed into symbols; Markdown
+  files are nodes with no symbols, and anything in `.gitignore` or `.cbmignore` (`.claude/`,
+  `docs/codebase/`, lockfiles) is skipped. For content and copy, use Grep.
+- **Keep it fresh.** The index doesn't auto-update. After pulling, switching branches, or a
+  large edit, run `bun run cbm index_repository` (`fast` for a quicker pass);
+  `bun run cbm detect_changes` lists changed symbols and their impact. A worktree is a
+  separate project, so run `index_repository` from inside it.
+- **MCP tools.** The same tools reach Claude sessions as `mcp__codebase-memory-mcp__*` from
+  the shared HTTP server in `.mcp.json` (`http://127.0.0.1:9750/mcp`); pass
+  `project: "C-Users-m0rt-projects-Portfolio"` to them. If they're missing (server down, or a
+  subagent without MCP), use `bun run cbm`, which runs locally and doesn't need the server.
 
 ## Coordinating with other Claude sessions
 

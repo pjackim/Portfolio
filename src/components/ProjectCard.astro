@@ -256,7 +256,7 @@ const titleHead = words.join(' ');
   .card__summary {
     margin-block-start: var(--space-2xs);
     color: var(--text-muted);
-    font-size: 0.9375rem;
+    font-size: var(--step-0);
     line-height: 1.6;
   }
 
@@ -274,6 +274,12 @@ const titleHead = words.join(' ');
   .card:has(a:focus-visible) .card__title a,
   .card:has(a:focus-visible) .card__arrow {
     color: var(--accent);
+  }
+
+  /* Pressed (mouse or touch): the frame and brackets go to the accent at once, so the largest
+     target on the page acknowledges a tap even where there is no hover. No movement. */
+  .card:has(a:active) {
+    border-color: var(--accent);
   }
 
   @media (hover: hover) {
@@ -359,6 +365,11 @@ const titleHead = words.join(' ');
     filter: saturate(1.1);
   }
 
+  .card:has(a:active) .card__hud::before,
+  .card:has(a:active) .card__hud::after {
+    opacity: 1;
+  }
+
   @media (hover: hover) {
     .card:hover .card__hud::before,
     .card:hover .card__hud::after,
@@ -432,14 +443,14 @@ const titleHead = words.join(' ');
       transition: translate var(--dur-base) var(--ease-out);
     }
 
-    /* Brackets wait a little wide of the frame and snap in: 160 ms, the second pair 50 ms
-       behind. Leaving, they let go together. */
+    /* Brackets wait a little wide of the frame and snap in (--reticle-snap), the second pair a
+       beat behind (--reticle-beat). Leaving, they let go together. */
     :global(:root:not([data-motion='off'])) .card__hud::before,
     :global(:root:not([data-motion='off'])) .card__hud::after {
       scale: 1.08;
       transition:
-        opacity 160ms var(--ease-out),
-        scale 160ms var(--ease-out);
+        opacity var(--reticle-snap) var(--ease-out),
+        scale var(--reticle-snap) var(--ease-out);
     }
 
     :global(:root:not([data-motion='off'])) .card__readout {
@@ -466,18 +477,18 @@ const titleHead = words.join(' ');
     }
 
     :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__hud::after {
-      transition-delay: 50ms;
+      transition-delay: var(--reticle-beat);
     }
 
     :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__readout {
       translate: 0 0;
-      transition-delay: 90ms;
+      transition-delay: var(--reticle-settle);
     }
 
     :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__scan {
       animation-name: card-scan;
-      animation-duration: 700ms;
-      animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+      animation-duration: var(--reticle-scan);
+      animation-timing-function: var(--reticle-scan-ease);
     }
 
     @media (hover: hover) {
@@ -495,18 +506,18 @@ const titleHead = words.join(' ');
       }
 
       :global(:root:not([data-motion='off'])) .card:hover .card__hud::after {
-        transition-delay: 50ms;
+        transition-delay: var(--reticle-beat);
       }
 
       :global(:root:not([data-motion='off'])) .card:hover .card__readout {
         translate: 0 0;
-        transition-delay: 90ms;
+        transition-delay: var(--reticle-settle);
       }
 
       :global(:root:not([data-motion='off'])) .card:hover .card__scan {
         animation-name: card-scan;
-        animation-duration: 700ms;
-        animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+        animation-duration: var(--reticle-scan);
+        animation-timing-function: var(--reticle-scan-ease);
       }
 
       :global(:root:not([data-motion='off'])) .card::before {

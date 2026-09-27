@@ -7,6 +7,16 @@
  * it), --reticle-arm and --reticle-stroke. Zero specificity (`:where`): the component's own rules
  * add opacity, motion and halo on top.
  */
+/* Lock-on timing, shared by every reticle (the card HUD, the lightbox frame) instead of repeated
+   literals. Plain values, not motion-gated themselves: only the rules that consume them are. */
+:root {
+  --reticle-snap: 160ms; /* brackets close in on a card */
+  --reticle-beat: 50ms; /* the second bracket pair lands this far behind the first */
+  --reticle-settle: 90ms; /* the card's "Open project" readout follows the brackets */
+  --reticle-scan: 700ms; /* the card's one scanline sweep */
+  --reticle-scan-ease: cubic-bezier(0.45, 0, 0.25, 1); /* slow start, settles on the edge */
+}
+
 :where(.reticle)::before,
 :where(.reticle)::after {
   content: '';
