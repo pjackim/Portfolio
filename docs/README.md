@@ -18,8 +18,12 @@ goals live in [`CLAUDE.md`](../CLAUDE.md); how to add projects and media is in t
   (check IDs, how to verify each check, whether a fix is mechanical or a judgement call) used to
   grade UI work.
 - [`audits/`](./audits/): dated `/audit-portfolio` reports.
+- [`prompts/`](./prompts/): dated `/taste` prompts, each opening with the rough request it
+  translated.
 
 Two project skills run the full loop: `/design-portfolio <feature>` (explore → brief →
 prototypes → build → verify → staged merge) and `/audit-portfolio [focus]` (live testing → lens
 review → report with a screenshot and proposed solution per issue; no code changes).
-`/audit-portfolio fix` then implements a report's solutions without prompting.
+`/audit-portfolio fix` then implements a report's solutions without prompting. `/taste <rough
+request>` sits in front of `/design-portfolio`: it turns a vague ask into a full taste-skill
+prompt and offers to run it.

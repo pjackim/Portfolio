@@ -35,9 +35,10 @@ library · a strict CSP (no inline `style=`, no `'unsafe-inline'`) · ≤ 30 KB 
 
 ## Installed design skills
 
-The taste-skill family is installed locally (`.agents/skills/`, `.claude/skills/`, listed in
-`skills-lock.json`). They are useful for **principles**. Their code defaults all need the table
-above.
+The taste-skill family is installed locally in `.claude/skills/` (folder names differ from the
+upstream names; [taste-skill.md](./taste-skill.md#skill-files) maps them). They are useful for
+**principles**. Their code defaults all need the table above. To drive them with a proper brief,
+see [taste-skill.md](./taste-skill.md) or run `/taste`.
 
 | Skill                             | Take                                                                                   | Ignore                                                             |
 | --------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |

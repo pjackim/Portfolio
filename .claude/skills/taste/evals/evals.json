@@ -1,0 +1,26 @@
+{
+  "skill_name": "taste",
+  "evals": [
+    {
+      "id": 1,
+      "name": "cards-feel-boring",
+      "prompt": "the project cards feel kinda boring and generic, make them cooler",
+      "expected_output": "A redesign-preserve prompt for ProjectCard/ProjectGrid that keeps the reticle identity, decodes 'cooler' into a concrete Goal 2 interaction or hierarchy move, and drives design-taste-frontend with the site's overrides.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "case-study-premium",
+      "prompt": "make the case study pages feel more premium, rn they're basically just a wall of text",
+      "expected_output": "A redesign prompt for ProjectLayout/case-study components that treats 'premium' as restraint and 'wall of text' as layer-cake/progressive disclosure, never invents media, and keeps Problem/Approach/What I built/Outcome.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "bento-under-hero",
+      "prompt": "add something sick right under the hero that shows off my skills, like one of those bento grid things with stats and stuff",
+      "expected_output": "A new-surface prompt that refuses invented stats (fact-only), steers stats to real readouts, N items = N cells, and flags the conflict with existing sections/capabilities rather than duplicating them.",
+      "files": []
+    }
+  ]
+}

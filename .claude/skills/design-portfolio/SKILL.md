@@ -13,6 +13,11 @@ is staged.
 
 `$ARGUMENTS` is the feature. If it's empty, ask for it and stop.
 
+If `$ARGUMENTS` is a `docs/prompts/*.md` file written by `/taste`, read it first and follow its
+steps: its brief, design read, and dials answer step 2's branches, so interview only about what
+it leaves open or what step 1 contradicts, and present it as the brief for gate 1. Its written
+audits join step 5's verification.
+
 ## The sources you design from
 
 Read these in step 1. They win over any outside skill's defaults, in this order:

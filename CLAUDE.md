@@ -107,6 +107,12 @@ they started from, which the human approves before it's committed.
   detail, a dependency, a brand change) are skipped and listed for him. Layout-changing
   ("design") findings are applied exactly as the report proposes, with no prototype round, so
   review those in the report first or send them through `/design-portfolio` instead.
+- **`/taste <rough request>`**: turns a vague design ask ("make the work section pop") into a
+  prompt that drives the installed taste-skill family within the site's goals, identity, and
+  stack. It reads the code and docs, interviews one question at a time until the brief is
+  complete, commits the prompt to `docs/prompts/<date>-<slug>.md`, then offers to run it
+  through `/design-portfolio`. What it knows about taste-skill lives in
+  `docs/design/taste-skill.md`.
 
 Shared pieces: the rubric `docs/design/review-checklist.md`, the style profile
 `docs/identity/site-style.md`, `.claude/workflows/audit-lenses.js`, and
