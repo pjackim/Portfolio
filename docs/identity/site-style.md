@@ -27,7 +27,8 @@ crisp when touched.
 | Readouts and status strip   | `Readouts.astro`, `StatusStrip.astro`              | Zero-padded numbers (`pad2`), terse keys (`Now`, `Edu`).                                                                                                                                                                     |
 | Directional arrows          | `Arrow.astro`                                      | `down` = on-page jump, `up-right` = leaves the page/site, `right` = go deeper. Nudge on hover.                                                                                                                               |
 
-These belong to the hero and the core components. **Reuse the component, don't re-draw the
+Each of these is specified step by step, with its timings, in [brand.md](brand.md). These
+belong to the hero and the core components. **Reuse the component, don't re-draw the
 effect**, and don't add a new signature per section (see [anti-slop.md](../design-research/anti-slop.md)).
 
 ## Palette roles
