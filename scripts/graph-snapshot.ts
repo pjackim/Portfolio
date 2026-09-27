@@ -7,23 +7,8 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { ROOT, cbm, ensureProject } from './cbm.ts';
+import { ARCHITECTURE_ASPECTS, ROOT, cbm, ensureProject } from './cbm.ts';
 
-const ASPECTS = [
-  'overview',
-  'structure',
-  'dependencies',
-  'routes',
-  'languages',
-  'packages',
-  'entry_points',
-  'hotspots',
-  'boundaries',
-  'layers',
-  'file_tree',
-  'clusters',
-  'cycles',
-];
 const OUT_DIR = join(ROOT, 'docs', 'codebase');
 
 const args = process.argv.slice(2);
@@ -34,7 +19,7 @@ try {
   const project = ensureProject(args.includes('--reindex'));
   mkdirSync(OUT_DIR, { recursive: true });
 
-  for (const aspect of ASPECTS) {
+  for (const aspect of ARCHITECTURE_ASPECTS) {
     const raw = cbm(
       'cli',
       '--quiet',

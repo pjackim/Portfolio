@@ -2,8 +2,25 @@
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
-export const BIN = 'codebase-memory-mcp';
+export const BIN = process.env.CBM_BIN || 'codebase-memory-mcp';
 export const ROOT = resolve(import.meta.dirname, '..');
+
+/** `get_architecture --aspects` values, per `codebase-memory-mcp cli get_architecture --help` (excludes `all`). */
+export const ARCHITECTURE_ASPECTS = [
+  'overview',
+  'structure',
+  'dependencies',
+  'routes',
+  'languages',
+  'packages',
+  'entry_points',
+  'hotspots',
+  'boundaries',
+  'layers',
+  'file_tree',
+  'clusters',
+  'cycles',
+] as const;
 
 /** Run the CLI and return stdout; throws an Error with a readable message on failure. */
 export function cbm(...args: string[]): string {
