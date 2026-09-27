@@ -103,13 +103,36 @@ typescript` would pick up 7.x. Dependabot is configured to ignore major bumps of
 - **The legacy site is fully recoverable** at commit `d8782d1` (`git show d8782d1:<path>`, or
   `git archive d8782d1 <path> | tar -x -C .cache/legacy`) if you need to check original copy,
   images, or markup.
-- **`gh` defaults to the fork parent.** Git's `origin` is `pjackim/Portfolio`, but that repo
-  is a fork of `j4ck1m/Portfolio`, and `gh` resolves its default repository to the parent
-  (the `upstream` remote in this clone) — pass `--repo pjackim/Portfolio` on every `gh`
-  command. Never push from here; every change lands as a commit for the human to push/PR.
+- **Never push from here.** Every change lands as a commit for the human to push/PR. GitHub
+  access otherwise goes through `gh` — see [GitHub: use the `gh` CLI](#github-use-the-gh-cli).
 - **Verify web changes live before calling them done.** Use the Chrome browser tools (or
   `npm run preview` + a manual check) to load the actual page and confirm the change renders
   as expected — a passing build/type-check is not sufficient proof for UI work.
+
+## GitHub: use the `gh` CLI
+
+Default to `gh` for anything GitHub — issues, PRs, CI runs/logs, releases, Pages, repo
+settings, raw API calls — rather than the GitHub MCP connector, web fetches of github.com, or
+guessing from memory. When unsure of a command or flag, check `gh help <command>` (e.g. `gh
+help run`, `gh pr view --help`, `gh help environment`) or the manual at
+<https://cli.github.com/manual>.
+
+- **Act as `pjackim`.** This machine has two `gh` accounts logged in (`pjackim`, `mort-sh`).
+  Confirm with `gh auth status` that `pjackim` is active; if it isn't, scope the token per
+  command (`GH_TOKEN=$(gh auth token --user pjackim) gh …`) instead of running `gh auth
+switch`, which changes global state other sessions and terminals rely on.
+- **Always target `pjackim/Portfolio`.** Git's `origin` is `pjackim/Portfolio`, but that repo
+  is a fork of `j4ck1m/Portfolio`, and `gh` resolves its default repository to the parent
+  (the `upstream` remote; `gh repo set-default --view` prints `j4ck1m/Portfolio`). Pass
+  `--repo pjackim/Portfolio` (or `-R`) on every repo-scoped command, or `GH_REPO=pjackim/Portfolio`
+  for a batch; for `gh api`, spell the path out (`repos/pjackim/Portfolio/...`).
+- **Useful here:** `gh run list/view/watch --log-failed` for CI and deploy failures (`ci.yml`,
+  `deploy.yml`, `links.yml`); `gh pr` / `gh issue` for tracking work; `gh api` for anything
+  without a dedicated subcommand (e.g. `repos/pjackim/Portfolio/pages`).
+- **Read freely, write with care.** Read-only commands (`list`, `view`, `status`, `api` GETs)
+  need no confirmation. Anything visible to others — creating/commenting on/closing issues or
+  PRs, re-running or cancelling workflows, editing repo settings — needs the human's go-ahead
+  first, and pushing stays off-limits (see above).
 
 <!-- BEGIN:worktrunk-worktree-policy -->
 
