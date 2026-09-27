@@ -20,5 +20,6 @@ goals live in [`CLAUDE.md`](../CLAUDE.md); how to add projects and media is in t
 - [`audits/`](./audits/): dated `/audit-portfolio` reports.
 
 Two project skills run the full loop: `/design-portfolio <feature>` (explore → brief →
-prototypes → build → verify → staged merge) and `/audit-portfolio [focus]` (evidence → lens
-review → report → approved fixes).
+prototypes → build → verify → staged merge) and `/audit-portfolio [focus]` (live testing → lens
+review → report with a screenshot and proposed solution per issue; no code changes).
+`/audit-portfolio fix` then implements a report's solutions without prompting.

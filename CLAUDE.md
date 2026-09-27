@@ -47,7 +47,8 @@ goals and constraints win. Outside design skills (including the locally installe
 family) assume React/Tailwind/GSAP; translate them with `docs/design/stack-translation.md`
 before using any of their advice. The site's own look and voice are defined in
 `docs/identity/site-style.md`. For end-to-end UI work, use the project skills
-`/design-portfolio <feature>` and `/audit-portfolio [focus]`.
+`/design-portfolio <feature>` and `/audit-portfolio [focus]` (report only; `/audit-portfolio fix`
+applies a report).
 
 1. **Showcase Parker Jackim's work and who he is.**
    - A visitor should leave knowing what Parker has built, his history (graphic design at

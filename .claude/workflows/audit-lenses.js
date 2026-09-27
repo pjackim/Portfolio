@@ -39,7 +39,10 @@ You are one reviewer in a design audit of Parker Jackim's portfolio (Astro 7 sta
 Evidence lives in ${A.captureDir}: manifest.json (per view: overflow, thirdPartyRequests, jsBytes, inlineStyleAttrs, consoleErrors, imagesWithoutAlt) and PNGs named <page>__<width>__<scheme>[__motion]__{fold|full}.png. Open the PNGs with Read and look at them; "__fold" is what a scanning visitor sees first.
 Rubric: docs/design/review-checklist.md (cite check IDs). Identity: docs/identity/site-style.md (and any other docs/identity/*.md). Goals and constraints: CLAUDE.md. Read the docs/design/ files your checks link to.
 Approved identity is NOT a finding: the anti-slop.md "existing pattern" table (hero eyebrow, typed caret, numbered section headings, reticle/spotlight, Geist, existing em-dashes) is deliberate. Flag only new spread of those patterns.
-Every finding needs concrete evidence: a screenshot file name plus what is visible in it, or a file:line with the offending code quoted. No evidence, no finding. Prefer fewer, real findings over many speculative ones. Also list what is working well in your lens (short), so fixes don't break it.${BRIEF}`;
+Every finding needs concrete evidence: a screenshot file name plus what is visible in it, or a file:line with the offending code quoted. No evidence, no finding. Prefer fewer, real findings over many speculative ones.
+Every finding also needs:
+- "fix": a concrete, implementable solution a later agent can apply without re-deciding anything: the files, the exact change (selectors, properties, token names, markup, copy), and how to verify it. Not "consider improving X". If the right solution genuinely needs a choice only Parker can make, say what the choice is and propose a default.
+- "shot": how to photograph the issue for the report: the page path, a CSS selector that tightly frames the problem (prefer a component or element over a whole section), the width and scheme where it's clearest, and the state (hover, focus, or none) that exposes it. For code-only issues, frame the element the code styles. Also list what is working well in your lens (short), so fixes don't break it.${BRIEF}`;
 
 const FINDINGS = {
   type: 'object',
@@ -61,7 +64,23 @@ const FINDINGS = {
             type: 'string',
             description: 'screenshot file + what it shows, and/or file:line + quoted code',
           },
-          fix: { type: 'string', description: 'the concrete proposed fix' },
+          fix: {
+            type: 'string',
+            description:
+              'concrete, implementable solution: files, exact change, how to verify (no "consider…")',
+          },
+          shot: {
+            type: 'object',
+            description: 'evidence shot spec for scripts/evidence.ts',
+            properties: {
+              path: { type: 'string', description: "route relative to base, '' = home" },
+              selector: { type: 'string', description: 'CSS selector framing the issue' },
+              width: { type: 'number', enum: [390, 768, 1280, 1920] },
+              scheme: { type: 'string', enum: ['light', 'dark'] },
+              state: { type: 'string', enum: ['none', 'hover', 'focus'] },
+            },
+            required: ['path', 'selector', 'width', 'scheme', 'state'],
+          },
           fix_class: {
             type: 'string',
             enum: ['M', 'J'],
@@ -73,7 +92,17 @@ const FINDINGS = {
             description: 'files a fix would touch',
           },
         },
-        required: ['title', 'checks', 'severity', 'where', 'evidence', 'fix', 'fix_class', 'files'],
+        required: [
+          'title',
+          'checks',
+          'severity',
+          'where',
+          'evidence',
+          'fix',
+          'shot',
+          'fix_class',
+          'files',
+        ],
       },
     },
     strengths: { type: 'array', items: { type: 'string' } },
@@ -156,7 +185,7 @@ const VERIFIED = {
             type: 'string',
             enum: ['fix', 'design', 'owner'],
             description:
-              'fix = the caller fixes it autonomously (stays within current layout/hierarchy/content); design = needs /design-portfolio (prototypes + sign-off); owner = needs Parker (fact, media, contact detail, dependency, brand change)',
+              'fix = keeps current layout/hierarchy/content; design = changes layout, sizes/order, what is shown, or adds an interaction; owner = needs Parker (fact, media, contact detail, dependency, brand change)',
           },
           route_reason: { type: 'string', description: 'one line: why this route' },
         },
@@ -168,6 +197,7 @@ const VERIFIED = {
           'where',
           'evidence',
           'fix',
+          'shot',
           'fix_class',
           'files',
           'lenses',
@@ -191,7 +221,7 @@ const VERIFIED = {
 const verified = await agent(
   `${COMMON}
 
-You are the adversarial verifier. Below are raw findings from six lens reviewers. For EACH one, re-open its evidence (the screenshot or file:line) and try to refute it. Reject it (with a reason) if the evidence doesn't show the problem, if it's approved identity per the anti-slop.md existing-pattern table, if it contradicts CLAUDE.md or docs/identity/site-style.md, or if it's pure taste with no rule behind it. Merge duplicates (keep every lens name and check ID). Re-check severity and fix_class: M only if there is one objectively correct fix. Mark "confirmed" when you reproduced it from the evidence, "plausible" when it's likely but you couldn't fully confirm. Then route each surviving finding. The caller fixes "fix" findings autonomously with no human review until the end, so be strict: "fix" only when the change keeps the current layout, information hierarchy, and content (a token swap, a missing hover/focus/active state, a contrast or spacing correction, a gate or attribute that's missing). Anything that changes layout, sizes/order of items, what is shown, or adds a new interaction is "design". Anything that needs a fact, image/media choice, contact detail, dependency, or brand decision (fonts, accent, signature elements) from Parker is "owner". When torn between fix and design, choose design. Rank most severe first and number them F1, F2, …
+You are the adversarial verifier. Below are raw findings from six lens reviewers. For EACH one, re-open its evidence (the screenshot or file:line) and try to refute it. Reject it (with a reason) if the evidence doesn't show the problem, if it's approved identity per the anti-slop.md existing-pattern table, if it contradicts CLAUDE.md or docs/identity/site-style.md, or if it's pure taste with no rule behind it. Merge duplicates (keep every lens name and check ID). Re-check severity and fix_class: M only if there is one objectively correct fix. Mark "confirmed" when you reproduced it from the evidence, "plausible" when it's likely but you couldn't fully confirm. Then check that every surviving finding's "fix" is concrete enough to implement without re-deciding anything (sharpen it if not) and that its "shot" selector really frames the problem. Then route it. A later "/audit-portfolio fix" run implements fix- and design-routed findings exactly as written, without asking, so be strict: "fix" only when the change keeps the current layout, information hierarchy, and content (a token swap, a missing hover/focus/active state, a contrast or spacing correction, a gate or attribute that's missing). Anything that changes layout, sizes/order of items, what is shown, or adds a new interaction is "design". Anything that needs a fact, image/media choice, contact detail, dependency, or brand decision (fonts, accent, signature elements) from Parker is "owner". When torn between fix and design, choose design. Rank most severe first and number them F1, F2, …
 
 Raw findings (JSON):
 ${JSON.stringify(raw, null, 1)}`,

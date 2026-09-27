@@ -6,13 +6,13 @@ verify it, and a **fix class**:
 
 - **M (mechanical):** there is one objectively correct fix (a contrast value, a missing gate, a
   literal that should be a token).
-- **J (judgement):** fixing it takes a design call. If the call stays within the current layout,
-  hierarchy, and content, `/audit-portfolio` still makes it autonomously. If it changes any of
-  those, it goes through `/design-portfolio` (prototypes and sign-off).
+- **J (judgement):** fixing it takes a design call, so the audit report must spell out the
+  chosen solution concretely.
 
-`/audit-portfolio` turns this into a **route** per finding: **fix** (made autonomously),
-**design** (handed to `/design-portfolio`), or **owner** (needs a fact, media, dependency, or
-brand decision from Parker).
+`/audit-portfolio` also gives each finding a **route**: **fix** (keeps the current layout,
+hierarchy, and content), **design** (changes one of those), or **owner** (needs a fact, media,
+dependency, or brand decision from Parker). An audit only reports. `/audit-portfolio fix`
+implements fix and design findings as written and leaves owner findings for Parker.
 
 Severity when reporting: **P0** breaks a hard constraint (CSP, a11y failure, broken link,
 fabricated fact) · **P1** undermines a goal for most visitors · **P2** off-style or craft
