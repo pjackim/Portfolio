@@ -47,6 +47,16 @@ const { projects, class: className } = Astro.props;
     margin-block-start: var(--space-l);
   }
 
+  /* Entrance direction (interactions spec §3, the "My Skills" reference feel): single column
+     below 800px, so every card rises like a skill-bar row on its own — the `rise` preset
+     (global.css), set directly as the vars rather than via `data-reveal-from` since which
+     preset applies depends on the viewport, not the card. */
+  .project-grid > :global(.card) {
+    --reveal-x: 0;
+    --reveal-y: var(--reveal-rise, 24px);
+    --reveal-clip: inset(0);
+  }
+
   @media (width >= 50rem) {
     .project-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -60,9 +70,32 @@ const { projects, class: className } = Astro.props;
       margin-block-start: var(--space-xl);
     }
 
-    /* Entrance stagger: the right-hand card of a row lands a beat after the left. */
+    /* Two columns: the left column slides in from the start edge, the right from the end —
+       the "My Skills" bars' left/right pairing — and the right-hand card of a row lands a
+       beat after the left (existing stagger). Bounded to the gutter (fix wave #2): at these
+       widths `--gutter` (tokens.css) can be narrower than the 2.5rem preset distance, and a
+       card sliding in from further out than its own margin overflows the viewport horizontally
+       (measured 800–~1280px). */
+    .project-grid > :global(.card:nth-child(odd)) {
+      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
+    }
+
     .project-grid > :global(.card:nth-child(even)) {
+      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
       --i: 1;
+    }
+
+    /* The odd last card spans both columns (ProjectCard's horizontal layout): back to `rise`,
+       since it has no column side to slide from. Higher specificity than the odd rule above
+       wins regardless of source order. */
+    .project-grid > :global(.card:last-child:nth-child(odd)) {
+      --reveal-x: 0;
+      --reveal-y: var(--reveal-rise, 24px);
+      --reveal-clip: inset(0);
     }
   }
 </style>

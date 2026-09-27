@@ -3,6 +3,21 @@
  * Experience (spec-design-content §2, §5c): an ordered readout table — period · title · org ·
  * place on hairline rows; on phones the period sits on its own mono line. Periods get
  * `<time>` where they hold a real date; missing fields are simply left out.
+ *
+ * Entrance reveal (interactions spec §3, the "My Skills" reference feel): each row plays its own
+ * children in sequence — period, role, place — as one `data-reveal="contents"` unit (global.css,
+ * src/scripts/reveal.ts), `--i` 0/1/2 set directly on each part below. Rows visible together
+ * stagger among themselves too, on the same 3-row cycle ArchiveRow uses (`--row-i`, added into
+ * each part's `--i` rather than replacing it, so the two levels compose instead of collide) —
+ * the shared cap in global.css keeps a long list from waiting long regardless. The bottom
+ * hairline draws out from the inline start as the row lands, a second, purely decorative
+ * animation layered on top (the shared `draw-inline` keyframes, global.css, so reveal.ts's
+ * `reveal`-only completion check on the row never waits on it — same technique as the capability
+ * tick in CapabilityGroups.astro). The real `border-block-end` is never touched, so the row's box
+ * is pixel-identical at rest, with motion off, and with no JS: the drawn line is an `::after` laid
+ * exactly over it (`position: absolute`), scoped to `[data-reveal-state]` so it doesn't exist at
+ * all whenever the row has no reveal state, so a row that was already on screen at load — or is
+ * read with motion off — shows the plain hairline it always has.
  */
 import type { ExperienceEntry } from '../data/site';
 import DateText from './DateText.astro';
@@ -17,7 +32,7 @@ const { entries, class: className } = Astro.props;
 
 <ol class:list={['experience', className]} role="list">
   {entries.map(({ period, title, org, place }) => (
-    <li class="experience__row">
+    <li class="experience__row" data-reveal="contents">
       {period && (
         <p class="experience__period mono-label">
           <DateText text={period} />
@@ -48,10 +63,35 @@ const { entries, class: className } = Astro.props;
   }
 
   .experience__row {
+    position: relative; /* containing block for the drawn-hairline ::after below */
     display: grid;
     gap: 0.25rem;
     padding-block: var(--space-s);
     border-block-end: var(--hairline);
+  }
+
+  /* Row-level stagger, a 3-row cycle (ArchiveRow's convention) rather than growing without
+     bound: composed into each part's own `--i` below (added, not assigned), so a row's three
+     parts still land period → role → place in order, just a beat later for each row after the
+     first in the cycle. */
+  .experience__row:nth-child(3n + 2) {
+    --row-i: 1;
+  }
+
+  .experience__row:nth-child(3n) {
+    --row-i: 2;
+  }
+
+  .experience__period {
+    --i: var(--row-i, 0);
+  }
+
+  .experience__role {
+    --i: calc(var(--row-i, 0) + 1);
+  }
+
+  .experience__place {
+    --i: calc(var(--row-i, 0) + 2);
   }
 
   .experience__role {
@@ -89,6 +129,73 @@ const { entries, class: className } = Astro.props;
     .experience__place {
       grid-column: 3;
       text-align: end;
+    }
+  }
+
+  /* Skill-bar homage (interactions spec §3, the direct "My Skills" reference), the same
+     technique as the capability tick (CapabilityGroups.astro): a decorative draw-out laid over
+     the row's own `border-block-end`, scoped to this row's `data-reveal-state` so it plays once,
+     with the entrance, and never on a row already on screen at load.
+
+     Default is fully drawn (`scale: 1 1`) — harmless, sitting exactly over the real border — so
+     a row that never gets a reveal state (above the fold, no-JS, motion off) looks exactly as it
+     does today. `pending` hides it; `in` animates it back in and, once reveal.ts clears the
+     state, the rule stops matching and the row is left at the default (fully drawn) again —
+     never at the hidden `scale: 0 1` the animation started from, so nothing snaps (task 3's
+     lesson).
+
+     Scoped to `[data-reveal-state]` (fix wave minor 3): the row only gets this `::after` at
+     all while it's playing (or about to play) an entrance. A row that never gets a reveal
+     state at all — already on screen at load, motion off, no JS — has no `::after` and shows
+     only its real `border-block-end`, exactly as before this feature (also a forced-colors
+     safety: no pseudo-element pretending to be a border for a user agent that recolours borders
+     but not arbitrary backgrounds).
+
+     Timing budget (fix round 1: the first pass compared the wrong pair — row-i 0's close time
+     against row-i 2's draw finish, rows that never co-occur; corrected per row below; fix wave
+     minor 4: the row-i term now runs through the shared `--reveal-step` token instead of a
+     hardcoded 90ms, so it stays in step if that token ever changes — the 180ms cap is simply
+     twice its 90ms default, matching `--row-i`'s max of 2): the row's own
+     `data-reveal-state="in"` window closes once its slowest part's `reveal`
+     (`--i` above, capped at `--reveal-cap` like every `reveal`, default 560ms `--reveal-dur`)
+     finishes. The draw starts at `min(--row-i * --reveal-step, 180ms) + 220ms` and runs 300ms
+     — compared against its OWN row's close time, not another row's:
+       `--row-i` 0: slowest part is `--i` 2 → 180ms + 560ms = 740ms close; draw 220 + 300 = 520ms
+         → 220ms margin.
+       `--row-i` 1: slowest part is `--i` 3 → 270ms (capped) + 560ms = 830ms close; draw
+         90 + 220 + 300 = 610ms → 220ms margin.
+       `--row-i` 2: slowest part is `--i` 4, also capped at 270ms → 830ms close; draw
+         180 + 220 + 300 = 700ms → 130ms margin, the tightest of the three (checked by hand, as
+         CapabilityGroups.astro does). */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion='off']) .experience__row[data-reveal-state]::after {
+      content: '';
+      position: absolute;
+      /* Sits exactly on the 1px border, not inside the padding box it bounds. */
+      inset-inline: 0;
+      inset-block-end: -1px;
+      block-size: 1px;
+      /* Must match the real border-block-end (--hairline, tokens.css) exactly, never --line-ui
+         (fix round 1: was visibly a different, lighter colour) — the point of the default
+         `scale: 1 1` below is that it's indistinguishable from the plain border. */
+      background-color: var(--line);
+      scale: 1 1;
+      /* LTR-only (global.css), so the inline-start edge is the physical left. */
+      transform-origin: 0% 50%;
+    }
+
+    :root:not([data-motion='off']) .experience__row[data-reveal-state='pending']::after {
+      scale: 0 1;
+    }
+
+    :root:not([data-motion='off']) .experience__row[data-reveal-state='in']::after {
+      scale: 0 1;
+      /* Shared with CapabilityGroups' tick draw (fix wave minor 4): `draw-inline`, global.css. */
+      animation-name: draw-inline;
+      animation-duration: 300ms;
+      animation-timing-function: var(--ease-out);
+      animation-delay: calc(min(calc(var(--row-i, 0) * var(--reveal-step, 90ms)), 180ms) + 220ms);
+      animation-fill-mode: backwards;
     }
   }
 </style>

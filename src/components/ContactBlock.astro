@@ -4,6 +4,22 @@
  * mono mailto link, then GitHub · LinkedIn · Résumé. No form, no phone. The photo is the legacy
  * site's contact selfie (d8782d1:Images/self/canyonSelfie.JPG), cropped square like it was there.
  * It sits beside the text from `--contact-photo` up and above it on phones.
+ *
+ * Entrance reveal (interactions spec §3, the "My Skills" reference feel): the photo slides in from
+ * the start (`data-reveal data-reveal-from="start"`), and the text column's lead, email and link
+ * row rise in sequence on `.contact__body` (`data-reveal="contents" data-reveal-from="rise"`, global.css
+ * — the same `about__bio` paragraph-by-paragraph feel), `--i` 0/1/2 below. The email's underline
+ * fades in once it lands, a second, purely decorative animation on top of a different property
+ * (`text-decoration-color`, so reveal.ts's `reveal`-only completion check never waits on it —
+ * same idea as the capability tick's own keyframes, CapabilityGroups.astro, minus the geometry:
+ * fix wave #1 dropped the scaled `::after` bar this used to be, which was measured from the
+ * inline box's bottom, not the real underline's baseline-relative position, so it drew ~0.3em
+ * too low and then jumped to the real underline's position once the entrance ended). The real
+ * underline (`text-decoration-line: underline`, the base `a` rule and this component's own) is
+ * never touched or replaced — only its colour animates, from transparent to its resting value —
+ * so the underline's geometry is identical throughout, it still works if the email wraps, and
+ * at rest, with motion off, or with no JS, the email is exactly today's plain underlined mailto
+ * link.
  */
 import { Picture } from 'astro:assets';
 import portrait from '../assets/profile/parker-jackim.webp';
@@ -32,10 +48,12 @@ const links = [
     sizes="(width >= 48rem) 9rem, 6rem"
     alt={`${site.name}, smiling, in a sandstone canyon`}
     class="contact__photo"
+    data-reveal
+    data-reveal-from="start"
     loading="lazy"
     decoding="async"
   />
-  <div class="contact__body">
+  <div class="contact__body" data-reveal="contents" data-reveal-from="rise">
     <p class="contact__lead">Email is the fastest way to reach me.</p>
     <p class="contact__email">
       <a href={`mailto:${site.email}`}>{site.email}</a>
@@ -105,12 +123,23 @@ const links = [
     line-height: 1.2;
     letter-spacing: -0.02em;
     overflow-wrap: anywhere;
+    --i: 1;
+    /* Lengthens only this child's own `reveal` (global.css) — the shared `--reveal-dur-long`
+       token (global.css, fix wave minor 5) — so the underline colour fade below (a separate
+       animation on the anchor inside it) has a window to finish in before `data-reveal-state`
+       clears; see the budget note there. Same technique as the capability items list,
+       CapabilityGroups.astro. */
+    --reveal-dur: var(--reveal-dur-long, 780ms);
   }
 
   .contact__email a {
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
     text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+  }
+
+  .contact__links {
+    --i: 2;
   }
 
   @media (hover: hover) {
@@ -175,6 +204,57 @@ const links = [
       :global(:root:not([data-motion='off'])) .contact__links a:hover :global(.arrow) {
         translate: 2px -2px;
       }
+    }
+  }
+
+  /* Skill-bar homage (interactions spec §3, the direct "My Skills" reference; fix wave #1):
+     the email's underline fades in — its `text-decoration-color` animates from transparent to
+     its resting value — once the block lands. The real underline (`text-decoration-line`, the
+     base `a` rule and this component's own, both untouched) is never swapped for anything: no
+     `::after`, no scale, no geometry to get wrong (the bug this replaces: a scaled `::after` bar
+     measured from the inline box's bottom, ~0.3em off the real underline's baseline-relative
+     position, that then jumped to the real underline once the entrance ended).
+
+     Default is the resting colour (the `.contact__email a` rule above) so a block already on
+     screen at load is unaffected; `pending` sets it transparent, `in` animates it back to that
+     resting colour, and once reveal.ts clears the state this rule stops matching — leaving the
+     plain, un-animated underline in its resting colour, exactly where it always was, so nothing
+     jumps (task 3's lesson, same as before).
+
+     Timing budget: `.contact`'s reveal window stays open until every child's `reveal`
+     (global.css) finishes — the email's own, lengthened above, is the longest at its `--i` 1
+     delay (≤ 90ms) + 780ms, i.e. ≥ 870ms. The fade below starts at ≤ 90ms + 250ms and runs
+     350ms, finishing at ≤ 690ms — a ≥ 180ms margin (checked by hand, as CapabilityGroups.astro
+     does). */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @keyframes contact-email-underline-in {
+      from {
+        text-decoration-color: transparent;
+      }
+
+      to {
+        text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+      }
+    }
+
+    :global(:root:not([data-motion='off']))
+      .contact__body[data-reveal-state='pending']
+      .contact__email
+      a {
+      text-decoration-color: transparent;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .contact__body[data-reveal-state='in']
+      .contact__email
+      a {
+      animation-name: contact-email-underline-in;
+      animation-duration: 350ms;
+      animation-timing-function: var(--ease-out);
+      animation-delay: calc(
+        min(calc(1 * var(--reveal-step, 90ms)), var(--reveal-cap, 270ms)) + 250ms
+      );
+      animation-fill-mode: backwards;
     }
   }
 </style>

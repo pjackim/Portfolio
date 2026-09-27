@@ -5,9 +5,14 @@
  * one column on phones. Project titles come from the collection; an unknown slug fails the
  * build (as does `validateProjects`).
  *
- * Entrance reveal (interactions spec §3): each box's contents play in once the box scrolls into
- * view (`data-reveal="contents"`, global.css, src/scripts/reveal.ts) — never the box itself,
- * whose opaque background is what draws the hairlines. A row lands left to right (`--i`).
+ * Entrance reveal (interactions spec §3, the "My Skills" reference feel): each box's contents
+ * play in once the box scrolls into view (`data-reveal="contents"`, global.css,
+ * src/scripts/reveal.ts) — never the box itself, whose opaque background is what draws the
+ * hairlines. A row lands left to right (`--i`), and each column's contents slide in from that
+ * column's side — left column from the start edge, right column from the end, a middle column
+ * (3-up only) rises — set directly as the reveal vars per breakpoint (as ProjectGrid.astro does
+ * for its cards) rather than a static `data-reveal-from`, since which preset applies depends on
+ * the column count, which only CSS knows at each width.
  */
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { getProjects } from '../lib/projects';
@@ -73,12 +78,35 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     overflow: hidden;
   }
 
+  /* Entrance direction, mobile default: a single column, so every box rises on its own like a
+     skill-bar row (the `rise` preset — set as vars directly since which preset applies depends
+     on the column count below). */
+  .capability {
+    --reveal-x: 0;
+    --reveal-y: var(--reveal-rise, 24px);
+    --reveal-clip: inset(0);
+  }
+
   @media (40rem <= width < 64rem) {
     .capabilities {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    /* Two columns: left slides in from the start edge, right from the end — the "My Skills"
+       bars' left/right pairing. Bounded to the gutter (fix wave #2, consistency with
+       ProjectGrid): `.capabilities` clips its own overflow, so this can't itself cause a
+       document-level horizontal scrollbar, but the distance stays the same shared,
+       gutter-bounded expression as every other sideways preset. */
+    .capability:nth-child(odd) {
+      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
+    }
+
     .capability:nth-child(even) {
+      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
       --i: 1;
     }
   }
@@ -88,11 +116,25 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    /* Three columns: outer two slide in from their side, the middle rises (it has no side to
+       call its own). */
+    .capability:nth-child(3n + 1) {
+      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
+    }
+
     .capability:nth-child(3n + 2) {
+      --reveal-x: 0;
+      --reveal-y: var(--reveal-rise, 24px);
+      --reveal-clip: inset(0);
       --i: 1;
     }
 
     .capability:nth-child(3n) {
+      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
       --i: 2;
     }
   }
@@ -130,6 +172,11 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     font-size: 0.9375rem;
     line-height: 1.45;
     list-style: none;
+    /* Lengthens only this child's own `reveal` (global.css) — the shared `--reveal-dur-long`
+       token (global.css, fix wave minor 5) — so the tick draw-out below (nested inside it) has
+       a window to finish in before `data-reveal-state` clears; see the budget note there. The
+       label and "Seen in" block keep the default 560ms. */
+    --reveal-dur: var(--reveal-dur-long, 780ms);
   }
 
   /* Short hairline tick as the marker. */
@@ -147,6 +194,67 @@ const groups = CAPABILITY_GROUPS.map((group) => ({
     align-self: start;
     margin-block-start: 0.725em;
     background-color: var(--line-ui);
+  }
+
+  /* Per-row stagger for the tick draw-out below — a beat after the row above, capped (spec
+     "My Skills" feel), distinct from `--i` (the box's own column stagger) so the two chain
+     instead of collide. */
+  .capability__items li:nth-child(2) {
+    --tick-i: 1;
+  }
+  .capability__items li:nth-child(3) {
+    --tick-i: 2;
+  }
+  .capability__items li:nth-child(4) {
+    --tick-i: 3;
+  }
+  .capability__items li:nth-child(5) {
+    --tick-i: 4;
+  }
+  .capability__items li:nth-child(6) {
+    --tick-i: 5;
+  }
+  .capability__items li:nth-child(7) {
+    --tick-i: 6;
+  }
+  .capability__items li:nth-child(n + 8) {
+    --tick-i: 7;
+  }
+
+  /* Skill-bar homage (interactions spec §3, the direct "My Skills" reference): each tick draws
+     out from its inline-start edge once the box's label has landed, a short beat after the row
+     above (capped). Scoped to the same motion gate as the shared `reveal` engine (global.css)
+     and to the box's own `data-reveal-state="in"` window — it is part of that entrance, not a
+     separate one.
+
+     Timing budget (every row of every group must finish drawing before the state clears — task
+     3 fix round 1): the box's own `--i` column delay is included here too, matching the reveal
+     engine's `> *` rule exactly, so a tick only starts once ITS column's label has actually
+     begun revealing — but because that same `--i` term also pushes out when the state clears
+     (the items list's own `reveal`, below), it cancels out of the slack and every column gets
+     the same budget:
+       column delay (--i, ≤ 180ms here: at most 2 columns beyond the first) + 160ms (after the
+       label starts drawing) + row stagger (≤ 300ms total, 6+ rows coalesce at the cap — under
+       the ~450ms feel limit) + 180ms duration = ≤ 820ms, against a window that closes at
+       column delay + 780ms (the items list's own lengthened `--reveal-dur`, set above) — i.e.
+       ≥ 780ms once the shared column delay is dropped from both sides. That leaves a ~140ms
+       margin on every row, in every group up to the largest (8 items → `--tick-i` caps at 7),
+       every column, every breakpoint (checked by hand, not just the tightest case). */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion='off']) [data-reveal-state='in'] .capability__items li::before {
+      /* LTR-only (global.css), so the inline-start edge is the physical left. */
+      transform-origin: 0% 50%;
+      /* Shared with ExperienceList's hairline draw (fix wave minor 4): `draw-inline`,
+         global.css. */
+      animation-name: draw-inline;
+      animation-duration: 180ms;
+      animation-timing-function: var(--ease-out);
+      animation-delay: calc(
+        min(calc(var(--i, 0) * var(--reveal-step, 90ms)), var(--reveal-cap, 270ms)) + 160ms +
+          min(calc(var(--tick-i, 0) * 50ms), 300ms)
+      );
+      animation-fill-mode: backwards;
+    }
   }
 
   .capability__seen {

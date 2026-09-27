@@ -143,6 +143,9 @@ check:media` — media lint (also part of `lint`)
   component that needs it, plus Astro's built-in hover prefetch. Motion is user-toggleable
   (`data-motion="off"` on `<html>`, persisted in `localStorage`) on top of
   `prefers-reduced-motion`. Script budget is 30 KB/page, enforced by `lighthouserc.json`.
+  Scroll entrances stay declarative: `reveal.ts` only toggles `data-reveal-state`; direction,
+  distance, and stagger are CSS presets (`data-reveal-from="start|end|rise"` + `--i`) in
+  `global.css`, so a new section opts in without touching the script.
 - **Build info** — `src/lib/build-info.ts` derives the footer year from `SOURCE_DATE_EPOCH` or
   HEAD's commit date (not wall clock), so builds are byte-reproducible; don't introduce
   `new Date()` into rendered output.

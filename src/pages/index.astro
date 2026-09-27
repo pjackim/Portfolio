@@ -32,7 +32,7 @@ const workHref = withBase('work/');
   <section id="about" class="home-section container" aria-labelledby="about-title">
     <span id="about-section" class="legacy-anchor"></span>
     <SectionHeading index="01" label="About" id="about-title" />
-    <div class="about__bio">
+    <div class="about__bio" data-reveal="contents" data-reveal-from="rise">
       {site.about.map((paragraph) => (
         <p>{paragraph}</p>
       ))}
@@ -106,6 +106,16 @@ const workHref = withBase('work/');
     max-inline-size: 30em;
     font-size: var(--step-1);
     line-height: 1.6;
+  }
+
+  /* Entrance reveal (interactions spec §3): the bio rises paragraph by paragraph
+     (`data-reveal-from="rise"`, global.css), each a beat after the one above (`--i`). */
+  .about__bio > :global(p:nth-child(2)) {
+    --i: 1;
+  }
+
+  .about__bio > :global(p:nth-child(3)) {
+    --i: 2;
   }
 
   @media (width >= 48rem) {

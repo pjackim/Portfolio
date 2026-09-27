@@ -271,25 +271,47 @@ a {
   animation-timing-function: var(--ease-out);
 }
 
+/* Reveal magnitudes (interactions spec §3; fix wave minor 5): the sideways/vertical distances
+   and the lengthened window a couple of entrances need for a secondary decorative animation to
+   finish inside, shared as tokens instead of repeated literals across ProjectGrid,
+   CapabilityGroups, ExperienceList and ContactBlock. Plain values, not motion-gated themselves —
+   only the rules that consume them (below, and each component's own) are. */
+:root {
+  --reveal-shift: 2.5rem; /* start/end preset distance; also ProjectGrid's/CapabilityGroups' columns */
+  --reveal-rise: 24px; /* rise preset distance */
+  --reveal-dur-long: 780ms; /* CapabilityGroups' items list, ContactBlock's email — top of the 480–800ms band */
+}
+
 /* One-shot entrance reveals (interactions spec §3; Ruling G6), below the fold only: cards
    after the first row, capability boxes, archive rows, case-study figures. src/scripts/reveal.ts
    marks items that are entirely below the viewport once the page has loaded `pending`, and
    `in` once one's top edge is a tenth of the viewport into view (any height of item); it plays
    once, then the state is dropped. Visible by
    default: without the script, with motion off, in print, the states never apply.
-   The entrance: a clip-path wipe up from the bottom 12%, a fade and a 12px rise. It ends where
-   the item already is (fill `backwards` only), so no inset(0) clip outlives it to cut off a hover
-   wash or a focus ring. `--i` (from :nth-child rules where items share a row) delays an item a
-   beat per column, capped; one-column lists stagger as they scroll in. `data-reveal="contents"`
-   plays on the element's children instead (boxes whose background must never go see-through,
-   like the capability grid, whose hairlines are its background showing through gaps). The /work/
-   filter's arriving rows wipe in on the same keyframes (WorkFilter.astro). */
+   The entrance is one keyframes, parametrised by custom properties (they resolve per element,
+   so one `reveal` plays differently per item) rather than a keyframes per variant — reveal.ts
+   keys on the name `reveal` alone. Unset, the defaults reproduce the original feel exactly: a
+   clip-path wipe up from the bottom 12%, a fade and a 12px rise. It ends where the item already
+   is (fill `backwards` only), so no inset(0) clip outlives it to cut off a hover wash or a focus
+   ring. `--i` (from :nth-child rules where items share a row) delays an item a beat per column,
+   capped; one-column lists stagger as they scroll in. `data-reveal="contents"` plays on the
+   element's children instead (boxes whose background must never go see-through, like the
+   capability grid, whose hairlines are its background showing through gaps). The /work/ filter's
+   arriving rows wipe in on the same keyframes (WorkFilter.astro).
+
+   `data-reveal-from`, set on the same element as `data-reveal` (or on a `contents` child),
+   swaps the direction via those same properties — a preset, not a new animation:
+     - `start` — slides in from the inline-start edge, translate + opacity only (no clip wipe).
+     - `end`   — the mirror of `start`.
+     - `rise`  — a plain fadeInUp: a taller rise, no clip.
+   The site is `lang="en"`, LTR-only (CLAUDE.md) — `start`/`end` are left/right, not logical;
+   revisit with `:dir(rtl)` if that ever changes. */
 @media screen and (prefers-reduced-motion: no-preference) {
   @keyframes reveal {
     from {
       opacity: 0;
-      translate: 0 12px;
-      clip-path: inset(0 0 12% 0);
+      translate: var(--reveal-x, 0) var(--reveal-y, 12px);
+      clip-path: var(--reveal-clip, inset(0 0 12% 0));
     }
 
     to {
@@ -307,10 +329,46 @@ a {
   :root:not([data-motion='off']) [data-reveal-state='in']:not([data-reveal='contents']),
   :root:not([data-motion='off']) [data-reveal='contents'][data-reveal-state='in'] > * {
     animation-name: reveal;
-    animation-duration: 560ms;
+    animation-duration: var(--reveal-dur, 560ms);
     animation-timing-function: var(--ease-out);
-    animation-delay: min(calc(var(--i, 0) * 90ms), 270ms);
+    animation-delay: min(calc(var(--i, 0) * var(--reveal-step, 90ms)), var(--reveal-cap, 270ms));
     animation-fill-mode: backwards;
+  }
+
+  /* Custom properties inherit, so setting one of these on the `[data-reveal="contents"]`
+     parent reaches its children the same way it would reach the element itself — no separate
+     `> *` rule needed either way. */
+  :root:not([data-motion='off']) [data-reveal-from='start'] {
+    --reveal-x: calc(-1 * var(--reveal-shift));
+    --reveal-y: 0;
+    --reveal-clip: inset(0);
+  }
+
+  :root:not([data-motion='off']) [data-reveal-from='end'] {
+    --reveal-x: var(--reveal-shift);
+    --reveal-y: 0;
+    --reveal-clip: inset(0);
+  }
+
+  :root:not([data-motion='off']) [data-reveal-from='rise'] {
+    --reveal-y: var(--reveal-rise);
+    --reveal-clip: inset(0);
+  }
+
+  /* Shared by CapabilityGroups' tick and ExperienceList's hairline draw — a decorative
+     scale-in used as a secondary animation layered on top of a `reveal`, under its own name so
+     reveal.ts's `reveal`-only completion check never waits on it (fix wave minor 4: was
+     duplicated per component as `capability-tick` / `experience-hairline-draw`). ContactBlock's
+     email underline no longer needs this shape (fix wave #1): it animates the real underline's
+     colour, not a drawn bar's width. */
+  @keyframes draw-inline {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
   }
 }
 

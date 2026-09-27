@@ -175,6 +175,27 @@ const titleHead = words.join(' ');
 
   /* Motion (the gate, global.css): the wipe, the slide and the nudge. */
   @media (prefers-reduced-motion: no-preference) {
+    /* Entrance (interactions spec §3, the "My Skills" reference feel): a short slide in from
+       the start edge rather than the rise-and-wipe default, and rows visible together stagger
+       on a 3-row cycle — about as many as sit in the viewport at once — rather than growing
+       delay without bound (the cap in global.css already bounds it, but the cycle keeps the
+       rhythm even for a long list). WorkFilter's reflow plays the same `reveal` keyframes on a
+       view-transition pseudo-element, which doesn't inherit these vars from the row it
+       replaces — it keeps the plain rise-and-wipe default there, which still reads fine. */
+    :global(:root:not([data-motion='off'])) .archive-row {
+      --reveal-x: -1.5rem;
+      --reveal-y: 0;
+      --reveal-clip: inset(0);
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row:nth-child(3n + 2) {
+      --i: 1;
+    }
+
+    :global(:root:not([data-motion='off'])) .archive-row:nth-child(3n) {
+      --i: 2;
+    }
+
     :global(:root:not([data-motion='off'])) .archive-row::before {
       transition: clip-path var(--dur-base) var(--ease-out);
     }

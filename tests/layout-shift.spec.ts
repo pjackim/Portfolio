@@ -80,3 +80,46 @@ for (const viewport of [
     }
   });
 }
+
+/**
+ * No horizontal overflow while sideways entrances are mid-flight (scroll-motion task 2): the
+ * home page's cards (`ProjectGrid`, `--reveal-x` up to 2.5rem) and archive rows (`ArchiveRow`,
+ * `--reveal-x: -1.5rem`) translate in from off their resting position, and the /work/ index rows
+ * do the same — none of that may widen the document past the viewport, at a phone width and a
+ * wide desktop one, while items are still `pending` (translated furthest off-screen) or partway
+ * through the animation.
+ *
+ * 820, 1024 and 1180 (fix wave finding 2) sit inside ProjectGrid's two-column range
+ * (`width >= 50rem`, i.e. 800px) but below the point where `--gutter` (tokens.css,
+ * `clamp(1rem, 0.5rem + 2.5vw, 2.5rem)`) reaches the full 2.5rem preset distance (1280px) — the
+ * exact band the unbounded `--reveal-x` overflowed in, checked here right after load while every
+ * below-the-fold card sits at its `pending`, furthest-off-position start offset.
+ */
+for (const width of [360, 820, 1024, 1180, 1280]) {
+  test.describe(`no horizontal overflow at ${width}px`, () => {
+    test.use({ viewport: { width, height: 900 } });
+
+    for (const path of ['', 'work/']) {
+      test(`${path || 'home'} stays within the viewport width mid-entrance`, async ({ page }) => {
+        await gotoRel(page, path);
+        await page.waitForLoadState('load');
+        // Items below the fold are still `pending` (translated to their furthest offset) right
+        // after load: check before anything has had a chance to scroll into view.
+        await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+          true,
+        );
+        // Scroll through the page in small steps so items cross the trigger line and animate
+        // mid-flight — the moment their translate is between the start offset and 0.
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += 200) {
+          await page.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), y);
+          const overflowed = await page.evaluate(
+            () => document.documentElement.scrollWidth > innerWidth,
+          );
+          expect(overflowed, `overflow at scrollY=${y}`).toBe(false);
+        }
+      });
+    }
+  });
+}
