@@ -29,3 +29,7 @@ docs/codebase/
 
 # wt worktrees (path set in user config [projects."github.com/pjackim/Portfolio"])
 .claude/worktrees/
+
+# design-sync output and scratch
+ds-bundle/
+.design-sync/.*
