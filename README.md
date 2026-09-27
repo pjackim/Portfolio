@@ -7,17 +7,28 @@ per project. Static site, no backend.
 
 ## Goals
 
-In priority order — when they pull against each other, the higher one wins:
+**Design for a fast, lazy scanner.** Assume visitors give the site a few seconds, read very
+little prose, and don't click. What matters has to be visible at a glance: a real picture of
+each project with a 2–3 sentence summary, short informative headings, key facts pulled out as
+highlights and tags, and the full case study one click away for anyone who wants depth.
 
-1. **Showcase Parker's work and who he is** — his projects, his history, and the depth of his
-   abilities, shown through real work rather than claimed. All content stays fact-only (see
-   [Frontmatter reference](#frontmatter-reference)).
-2. **A modern, professional, satisfying, interactive experience** — the hero sets the bar:
-   polished and credible, but alive and rewarding to explore. Interaction never costs
-   accessibility (WCAG 2.2 AA, reduced motion) or performance (the Lighthouse budgets below).
-3. **Easy to recognise and contact** — a consistent identity (profile photo, monogram, name)
-   and every contact channel Parker publishes (email, GitHub, LinkedIn, résumé, …) one step
-   away from any page. Contact details live in `src/data/site.ts`.
+In priority order (when they pull against each other, the higher one wins):
+
+1. **Showcase Parker's work and who he is**
+   - His projects, his history, and the depth of his abilities, shown through real work
+     (images, loops, outcomes) rather than claimed.
+   - Strongest work first and biggest. Case studies open with a scannable summary before the
+     narrative.
+   - All content stays fact-only (see [Frontmatter reference](#frontmatter-reference)).
+2. **A modern, professional, satisfying, interactive experience**
+   - The hero sets the bar: polished and credible, but alive and rewarding to explore.
+   - Motion points at the work (in-view loops, card hover/focus feedback, scroll reveals) and
+     never costs accessibility (WCAG 2.2 AA, reduced motion) or performance (the Lighthouse
+     budgets below).
+3. **Easy to recognise and contact**
+   - A consistent identity: profile photo, monogram, and name.
+   - Every contact channel Parker publishes (email, GitHub, LinkedIn, résumé, …) is one
+     zero-friction step away from any page. Contact details live in `src/data/site.ts`.
 
 ## Stack
 

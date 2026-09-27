@@ -15,27 +15,60 @@ sourced from the frozen legacy site (commit `d8782d1`) and the résumé PDF.
 
 Every change should serve these, and when they conflict, the higher one wins.
 
-1. **Showcase Parker Jackim's work and who he is.** A visitor should leave knowing what Parker
-   has built, his history (graphic design at 10 → AES tool at 15 → CSU computer science →
-   security research at JHU APL), and that his abilities are high-tier. Projects are the
-   evidence: lead with the strongest work, show the real artifact (media, code, outcome) over
-   adjectives, and make case studies explain the problem, the approach, and what he built. The
-   fact-only rule below still binds — "high-tier" is earned by presenting real work sharply,
-   never by inflating claims.
-2. **A modern, professional, highly satisfying and interactive experience.** The hero
-   (`Hero.astro` + `src/scripts/hero*.ts`, `focus-line.ts`, `scramble.ts`, `readouts.ts`) is
-   the reference for the right balance — polished and credible, but alive and rewarding to
-   poke at. New sections and pages should reach that bar rather than fall back to a static
-   template. Interaction stays inside the site's constraints: vanilla client JS within the
-   30 KB/page budget, motion that respects `prefers-reduced-motion` and the motion toggle,
-   WCAG 2.2 AA, and the Lighthouse budgets. Delight never costs accessibility or speed.
-3. **Make Parker easy to recognise and contact.** His profile photo
-   (`src/assets/profile/parker-jackim.webp`), the monogram (`src/lib/monogram.ts`), and his
-   name should read as one consistent identity across the header, contact section, favicon,
-   and OG card. Contact channels (email, GitHub, LinkedIn, résumé, and any others such as a
-   phone number) belong in `src/data/site.ts` and should be one obvious step away from any
-   page. Only publish channels Parker has supplied — never guess a phone number, handle, or
-   URL; if one is missing, ask.
+**Ground rule for all three: design for a fast, lazy scanner.** Assume the visitor gives the
+site a few seconds, reads almost none of the prose (NN/g: ~20% of the words on a page, at
+most), and does not click. Anything important has to be _seen_, not read or reached through a
+link. Concretely:
+
+- **Picture first, then 2–3 sentences.** Every project a visitor can see shows a real,
+  tasteful image or loop of the thing Parker built, plus a 2–3 sentence summary that says what
+  it is and why it's impressive. The work should land without a click; the full case study
+  stays one click away for anyone who wants more depth.
+- **Layer-cake structure.** Pages should read like a stack of headings and visuals the eye can
+  skip between. Keep headings short and informative, lead every block with the most important
+  fact (inverted pyramid), keep paragraphs short, and pull key facts out into highlights,
+  tags, and short labels rather than sentences.
+- **Progressive disclosure.** Put the essentials on the surface (image, title, one-line
+  hook, 2–3 key facts) and the detail behind the click, an expand, or the case-study page.
+  Never hide something essential behind hover-only or click-only UI, because touch and
+  keyboard users must get it too.
+- **Visual hierarchy does the work.** Size, position, and contrast show what matters most:
+  the strongest projects get the biggest, earliest slots (a varied-size / bento-style grid
+  beats a uniform list), and there are few enough items on screen that nothing competes.
+- **Big, forgiving targets.** A whole project card is a single link with a visible hover and
+  focus state, not a small "read more".
+
+1. **Showcase Parker Jackim's work and who he is.**
+   - A visitor should leave knowing what Parker has built, his history (graphic design at
+     10 → AES tool at 15 → CSU computer science → security research at JHU APL), and that his
+     abilities are high-tier, even if all they did was scroll.
+   - Projects are the evidence. Lead with the strongest work and show the real artifact
+     (screenshot, loop, diagram, outcome) instead of adjectives.
+   - Case studies open with a scannable summary (what it is, Parker's role, the outcome, the
+     media) before the `Problem → Approach → What I built → Outcome` narrative.
+   - The fact-only rule below still binds. "High-tier" is earned by presenting real work
+     sharply, never by inflating claims.
+2. **A modern, professional, highly satisfying and interactive experience.**
+   - The hero (`Hero.astro` + `src/scripts/hero*.ts`, `focus-line.ts`, `scramble.ts`,
+     `readouts.ts`) is the reference: polished and credible, but alive and rewarding to poke
+     at. New sections and pages should reach that bar rather than fall back to a static
+     template.
+   - Motion should reward attention and point at the work: loops that play in view, hover and
+     focus feedback on cards, reveals that pace a scroll. It shouldn't decorate for its own
+     sake or make people wait for content.
+   - Interaction stays inside the site's constraints: vanilla client JS within the 30 KB/page
+     budget, motion that respects `prefers-reduced-motion` and the motion toggle, WCAG 2.2 AA,
+     and the Lighthouse budgets. Delight never costs accessibility or speed.
+3. **Make Parker easy to recognise and contact.**
+   - His profile photo (`src/assets/profile/parker-jackim.webp`), the monogram
+     (`src/lib/monogram.ts`), and his name read as one consistent identity across the header,
+     contact section, favicon, and OG card. His face should show up early, not only at the
+     bottom of the page.
+   - Contact channels (email, GitHub, LinkedIn, résumé, and any others such as a phone number)
+     live in `src/data/site.ts` and are one obvious, zero-friction step away from any page:
+     icon plus label, tap-to-mail/tap-to-call, no forms.
+   - Only publish channels Parker has supplied. Never guess a phone number, handle, or URL; if
+     one is missing, ask.
 
 ## Commands
 
