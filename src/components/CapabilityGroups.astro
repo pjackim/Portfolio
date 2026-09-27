@@ -1,22 +1,31 @@
 ---
 /**
- * Capabilities (spec-design-content §3, §5b): six hairline boxes — mono label, items, and
- * "Seen in" links to the projects that show the evidence. 3 × 2 on desktop, 2 × 3 on tablets,
- * one column on phones. Project titles come from the collection; an unknown slug fails the
- * build (as does `validateProjects`).
+ * Capabilities (Portfolio.dc.html, Claude Design, Sept 2026): a list of groups on the left, one
+ * open panel on the right. The panel reads as a readout: a mono header (index / group, skill
+ * count), then a row per skill with its evidence as chips — links to the case studies that show
+ * it, or a stated credential. Every group, skill and piece of evidence comes from
+ * `CAPABILITY_GROUPS` (src/data/taxonomy.ts); an unknown project slug fails the build.
  *
- * Entrance reveal (interactions spec §3, the "My Skills" reference feel): each box's contents
- * play in once the box scrolls into view (`data-reveal="contents"`, global.css,
- * src/scripts/reveal.ts) — never the box itself, whose opaque background is what draws the
- * hairlines. A row lands left to right (`--i`), and each column's contents slide in from that
- * column's side — left column from the start edge, right column from the end, a middle column
- * (3-up only) rises — set directly as the reveal vars per breakpoint (as ProjectGrid.astro does
- * for its cards) rather than a static `data-reveal-from`, since which preset applies depends on
- * the column count, which only CSS knows at each width.
+ * The group picker is a radio group, not scripted tabs: choosing a group is a native form
+ * control (click, tap, arrow keys, screen-reader "radio, 2 of 6"), and CSS shows the chosen
+ * group's panel (`:has(:checked)`), so it works before and without any script. Browsers without
+ * `:has()` show every group's panel, stacked. The accent bar slides to the chosen group.
+ *
+ * Motion (all behind the motion gate):
+ * - Entrance (global.css reveal engine): the groups slide in from the start edge one after
+ *   another, then the panel wipes open from the left.
+ * - Lock-on (src/scripts/capabilities.ts sets `data-lock` once the entrance lands, or on the
+ *   first pick): each time a group's panel appears its accent corners snap in a beat apart, one
+ *   scanline sweeps it top to bottom, the skills rise in a row at a time and their chips slide in
+ *   after them, and the group label flickers. The script also picks a group after a short hover
+ *   (hover intent), as the design does; clicking or keys are never needed for anything else.
  */
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
+import { pad2 } from '../lib/format';
 import { getProjects } from '../lib/projects';
 import { withBase } from '../lib/url';
+import MotionLayer from './MotionLayer.astro';
+import '../styles/reticle.css';
 
 interface Props {
   class?: string;
@@ -24,264 +33,530 @@ interface Props {
 
 const { class: className } = Astro.props;
 
-const titles = new Map((await getProjects()).map((p) => [p.id, p.data.title]));
-const groups = CAPABILITY_GROUPS.map((group) => ({
+/** Chip text for a project: its title up to any em-dash subtitle ("Mordhau — Runtime …"). */
+const titles = new Map(
+  (await getProjects()).map((p) => [p.id, p.data.title.split(' — ')[0]!.trim()]),
+);
+const groups = CAPABILITY_GROUPS.map((group, g) => ({
   ...group,
-  seenIn: group.seenIn.map((slug) => {
-    const title = titles.get(slug);
-    if (title === undefined) {
-      throw new Error(`CapabilityGroups: "${group.id}" seenIn "${slug}" is not a project id`);
-    }
-    return { href: withBase(`work/${slug}/`), title };
-  }),
+  index: pad2(g + 1),
+  count: pad2(group.items.length),
+  items: group.items.map(({ name, seenIn = [], note }) => ({
+    name,
+    note,
+    evidence: seenIn.map((slug) => {
+      const title = titles.get(slug);
+      if (title === undefined) {
+        throw new Error(`CapabilityGroups: "${group.id}" item "${name}" cites unknown "${slug}"`);
+      }
+      return { href: withBase(`work/${slug}/`), title };
+    }),
+  })),
 }));
 ---
 
-<ul class:list={['capabilities', className]} role="list" aria-label="Capabilities">
-  {groups.map(({ label, items, seenIn }) => (
-    <li class="capability" data-reveal="contents">
-      <h3 class="capability__label mono-label">{label}</h3>
-      <ul class="capability__items" role="list">
-        {items.map((item) => (
-          <li>{item}</li>
+<div class:list={['caps', className]} data-caps>
+  <p class="caps__head mono-label" aria-hidden="true">
+    <span>Capabilities</span>
+    <span class="caps__head-rule"></span>
+    <span>Select a group</span>
+  </p>
+  <div class="caps__body">
+    <fieldset class="caps__groups">
+      <legend class="visually-hidden">Capability group</legend>
+      <span class="caps__bar" aria-hidden="true"></span>
+      <div class="caps__tabs" data-reveal="contents" data-reveal-from="start">
+        {groups.map(({ id, tab, index, count }, g) => (
+          <label class="caps__tab">
+            <input
+              class="caps__radio visually-hidden"
+              type="radio"
+              name="capability-group"
+              value={id}
+              checked={g === 0}
+              aria-describedby={`cap-${id}-count`}
+            />
+            <span class="caps__tab-index" aria-hidden="true">
+              {index}
+            </span>
+            <span class="caps__tab-name">{tab}</span>
+            <span class="caps__tab-count" id={`cap-${id}-count`}>
+              {count}
+              <span class="visually-hidden"> skills</span>
+            </span>
+            <span class="caps__tab-chevron" aria-hidden="true">
+              ›
+            </span>
+          </label>
         ))}
-      </ul>
-      {seenIn.length > 0 && (
-        <div class="capability__seen">
-          <p class="mono-label">Seen in</p>
-          <ul role="list">
-            {seenIn.map(({ href, title }) => (
-              <li>
-                <a href={href} data-astro-prefetch>
-                  {title}
-                </a>
+      </div>
+    </fieldset>
+
+    <div class="caps__panel" data-reveal>
+      {groups.map(({ id, label, index, count, items }) => (
+        <section class="caps__group reticle" aria-labelledby={`cap-${id}`}>
+          <span class="caps__sweep" aria-hidden="true" />
+          <div class="caps__meta mono-label">
+            <div class="caps__title">
+              <span class="caps__title-index" aria-hidden="true">
+                {index} /
+              </span>
+              <h3 class="caps__label" id={`cap-${id}`}>
+                {label}
+              </h3>
+            </div>
+            <span aria-hidden="true">{count} skills · evidence</span>
+          </div>
+          <ul class="caps__skills" role="list">
+            {items.map(({ name, note, evidence }) => (
+              <li class="caps__skill">
+                <span class="caps__skill-name">{name}</span>
+                {(evidence.length > 0 || note) && (
+                  <span class="caps__evidence">
+                    <span class="visually-hidden">Evidence: </span>
+                    {evidence.map(({ href, title }) => (
+                      <a class="caps__chip" href={href} data-astro-prefetch>
+                        {title}
+                      </a>
+                    ))}
+                    {note && <span class="caps__chip caps__chip--note">{note}</span>}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
-        </div>
-      )}
-    </li>
-  ))}
-</ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</div>
+<MotionLayer />
 
 <style>
-  /* Shared hairlines: the list's background shows through 1px gaps between opaque cells. */
-  .capabilities {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1px;
-    padding: 0;
-    border: var(--hairline);
-    border-radius: var(--radius-s);
+  .caps {
+    --tab-h: 3.5rem;
+    --ease-quint: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .caps__head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .caps__head-rule {
+    flex: 1;
+    block-size: 1px;
     background-color: var(--line);
-    list-style: none;
-    overflow: hidden;
   }
 
-  /* Entrance direction, mobile default: a single column, so every box rises on its own like a
-     skill-bar row (the `rise` preset — set as vars directly since which preset applies depends
-     on the column count below). */
-  .capability {
-    --reveal-x: 0;
-    --reveal-y: var(--reveal-rise, 24px);
-    --reveal-clip: inset(0);
+  .caps__body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-m) var(--space-l);
+    margin-block-start: var(--space-m);
   }
 
-  @media (40rem <= width < 64rem) {
-    .capabilities {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    /* Two columns: left slides in from the start edge, right from the end — the "My Skills"
-       bars' left/right pairing. Bounded to the gutter (fix wave #2, consistency with
-       ProjectGrid): `.capabilities` clips its own overflow, so this can't itself cause a
-       document-level horizontal scrollbar, but the distance stays the same shared,
-       gutter-bounded expression as every other sideways preset. */
-    .capability:nth-child(odd) {
-      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
-    }
-
-    .capability:nth-child(even) {
-      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
-      --i: 1;
-    }
+  /* ── The group picker ── */
+  .caps__groups {
+    position: relative;
+    flex: 1 1 15rem;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-block-end: var(--hairline);
   }
 
   @media (width >= 64rem) {
-    .capabilities {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    /* Three columns: outer two slide in from their side, the middle rises (it has no side to
-       call its own). */
-    .capability:nth-child(3n + 1) {
-      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
-    }
-
-    .capability:nth-child(3n + 2) {
-      --reveal-x: 0;
-      --reveal-y: var(--reveal-rise, 24px);
-      --reveal-clip: inset(0);
-      --i: 1;
-    }
-
-    .capability:nth-child(3n) {
-      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
-      --i: 2;
+    .caps__groups {
+      max-inline-size: 19rem;
     }
   }
 
-  /* Each box subgrids three rows (label, items, "Seen in"), so labels that wrap to two
-     lines don't push one box's items out of line with its neighbours'. */
-  .capability {
-    display: grid;
-    grid-row: span 3;
-    grid-template-rows: auto 1fr auto;
-    align-content: start;
-    padding: var(--space-m);
-    background-color: var(--bg);
+  .caps__bar {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 1;
+    inline-size: 2px;
+    block-size: var(--tab-h);
+    translate: 0 calc(var(--active, 0) * var(--tab-h));
+    background-color: var(--accent);
   }
 
-  @supports (grid-template-rows: subgrid) {
-    .capability {
-      grid-template-rows: subgrid;
-      row-gap: 0;
-    }
-  }
-
-  .capability__label {
-    color: var(--text);
-    text-wrap: balance;
-  }
-
-  .capability__items {
-    display: grid;
-    align-content: start;
-    gap: 0.375rem;
-    margin-block-start: var(--space-s);
-    padding: 0;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    line-height: 1.45;
-    list-style: none;
-    /* Lengthens only this child's own `reveal` (global.css) — the shared `--reveal-dur-long`
-       token (global.css, fix wave minor 5) — so the tick draw-out below (nested inside it) has
-       a window to finish in before `data-reveal-state` clears; see the budget note there. The
-       label and "Seen in" block keep the default 560ms. */
-    --reveal-dur: var(--reveal-dur-long, 780ms);
-  }
-
-  /* Short hairline tick as the marker. */
-  .capability__items li {
-    display: grid;
-    grid-template-columns: 0.875rem minmax(0, 1fr);
-    align-items: baseline;
-  }
-
-  /* Centred on the first line (line box 1.45em). */
-  .capability__items li::before {
-    content: '';
-    inline-size: 0.5rem;
-    block-size: 1px;
-    align-self: start;
-    margin-block-start: 0.725em;
-    background-color: var(--line-ui);
-  }
-
-  /* Per-row stagger for the tick draw-out below — a beat after the row above, capped (spec
-     "My Skills" feel), distinct from `--i` (the box's own column stagger) so the two chain
-     instead of collide. */
-  .capability__items li:nth-child(2) {
-    --tick-i: 1;
-  }
-  .capability__items li:nth-child(3) {
-    --tick-i: 2;
-  }
-  .capability__items li:nth-child(4) {
-    --tick-i: 3;
-  }
-  .capability__items li:nth-child(5) {
-    --tick-i: 4;
-  }
-  .capability__items li:nth-child(6) {
-    --tick-i: 5;
-  }
-  .capability__items li:nth-child(7) {
-    --tick-i: 6;
-  }
-  .capability__items li:nth-child(n + 8) {
-    --tick-i: 7;
-  }
-
-  /* Skill-bar homage (interactions spec §3, the direct "My Skills" reference): each tick draws
-     out from its inline-start edge once the box's label has landed, a short beat after the row
-     above (capped). Scoped to the same motion gate as the shared `reveal` engine (global.css)
-     and to the box's own `data-reveal-state="in"` window — it is part of that entrance, not a
-     separate one.
-
-     Timing budget (every row of every group must finish drawing before the state clears — task
-     3 fix round 1): the box's own `--i` column delay is included here too, matching the reveal
-     engine's `> *` rule exactly, so a tick only starts once ITS column's label has actually
-     begun revealing — but because that same `--i` term also pushes out when the state clears
-     (the items list's own `reveal`, below), it cancels out of the slack and every column gets
-     the same budget:
-       column delay (--i, ≤ 180ms here: at most 2 columns beyond the first) + 160ms (after the
-       label starts drawing) + row stagger (≤ 300ms total, 6+ rows coalesce at the cap — under
-       the ~450ms feel limit) + 180ms duration = ≤ 820ms, against a window that closes at
-       column delay + 780ms (the items list's own lengthened `--reveal-dur`, set above) — i.e.
-       ≥ 780ms once the shared column delay is dropped from both sides. That leaves a ~140ms
-       margin on every row, in every group up to the largest (8 items → `--tick-i` caps at 7),
-       every column, every breakpoint (checked by hand, not just the tightest case). */
-  @media screen and (prefers-reduced-motion: no-preference) {
-    :root:not([data-motion='off']) [data-reveal-state='in'] .capability__items li::before {
-      /* LTR-only (global.css), so the inline-start edge is the physical left. */
-      transform-origin: 0% 50%;
-      /* Shared with ExperienceList's hairline draw (fix wave minor 4): `draw-inline`,
-         global.css. */
-      animation-name: draw-inline;
-      animation-duration: 180ms;
-      animation-timing-function: var(--ease-out);
-      animation-delay: calc(
-        min(calc(var(--i, 0) * var(--reveal-step, 90ms)), var(--reveal-cap, 270ms)) + 160ms +
-          min(calc(var(--tick-i, 0) * 50ms), 300ms)
-      );
-      animation-fill-mode: backwards;
-    }
-  }
-
-  .capability__seen {
-    display: grid;
-    align-content: start;
-    gap: 0.375rem;
-    margin-block-start: var(--space-m);
-    padding-block-start: var(--space-s);
+  .caps__tab {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    box-sizing: border-box;
+    block-size: var(--tab-h);
+    padding-inline: 0.875rem;
     border-block-start: var(--hairline);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition:
+      background-color 260ms var(--ease-quint),
+      color 260ms var(--ease-quint);
   }
 
-  .capability__seen ul {
-    display: grid;
-    gap: 0.25rem;
-    padding: 0;
-    font-size: 0.9375rem;
-    line-height: 1.45;
-    list-style: none;
+  .caps__tab-index {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    transition: color 260ms var(--ease-quint);
   }
 
-  .capability__seen a {
-    text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+  .caps__tab-name {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    font-size: var(--step-0);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: translate 380ms var(--ease-quint);
+  }
+
+  .caps__tab-count {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .caps__tab-chevron {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    opacity: 0;
+    translate: -6px 0;
+    transition:
+      opacity 260ms var(--ease-quint),
+      translate 380ms var(--ease-quint);
   }
 
   @media (hover: hover) {
-    .capability__seen a:hover {
-      text-decoration-color: currentColor;
+    .caps__tab:hover {
+      background-color: var(--surface);
+      color: var(--text);
+    }
+  }
+
+  .caps__tab:has(:checked) {
+    background-color: var(--surface);
+    color: var(--text);
+  }
+
+  .caps__tab:has(:checked) .caps__tab-index {
+    color: var(--accent);
+  }
+
+  .caps__tab:has(:checked) .caps__tab-name {
+    translate: 4px 0;
+  }
+
+  .caps__tab:has(:checked) .caps__tab-chevron {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* The radio is visually hidden; its focus ring is drawn on the whole row. */
+  .caps__tab:has(:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  /* ── The open panel ── */
+  .caps__panel {
+    position: relative;
+    flex: 3 1 27.5rem;
+    min-inline-size: 0;
+    padding: 1.625rem clamp(1.25rem, 3vw, 2.25rem) 1.125rem;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+    /* Entrance: wipes open from the left, a beat after the groups start. */
+    --reveal-x: 0;
+    --reveal-y: 0;
+    --reveal-clip: inset(0 100% 0 0);
+    --reveal-dur: 700ms;
+    --i: 2;
+  }
+
+  /* Corners on the panel's own edge (the reticle is on each group, so each gets its own
+     lock-on when it appears; the group is unpositioned, so they sit on the panel). */
+  .caps__group {
+    --reticle-inset: -1px;
+  }
+
+  .caps__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .caps__title {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5ch;
+  }
+
+  .caps__title-index {
+    color: var(--text);
+  }
+
+  .caps__label {
+    position: relative;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+
+  .caps__label[data-decrypt] {
+    color: transparent;
+  }
+
+  .caps__label :global(.caps__decrypt) {
+    position: absolute;
+    inset: 0;
+    color: var(--text-subtle);
+  }
+
+  @media (forced-colors: active) {
+    .caps__label :global(.caps__decrypt) {
+      display: none;
+    }
+  }
+
+  .caps__skills {
+    margin-block-start: 0.875rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .caps__skill {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem 1.25rem;
+    margin-inline: -0.75rem;
+    padding: 1rem 0.75rem;
+    border-block-start: var(--hairline);
+    border-radius: var(--radius-xs);
+    transition: background-color 220ms var(--ease-quint);
+  }
+
+  @media (hover: hover) {
+    .caps__skill:hover {
+      background-color: color-mix(in oklch, var(--surface-2) 55%, transparent);
+    }
+  }
+
+  .caps__skill-name {
+    font-size: var(--step-2);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+
+  .caps__evidence {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .caps__chip {
+    padding: 0.25rem 0.5625rem;
+    border-radius: var(--radius-xs);
+    background-color: var(--surface-2);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.4;
+    text-decoration: none;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    a.caps__chip:hover {
+      background-color: color-mix(in oklch, var(--accent) 16%, var(--surface-2));
+      color: var(--text);
+    }
+  }
+
+  .caps__chip--note {
+    border: var(--hairline);
+    background-color: transparent;
+  }
+
+  .caps__sweep {
+    display: none;
+  }
+
+  /* ── Which group is open: the chosen radio's panel, and the bar beside it ── */
+  @supports selector(:has(*)) {
+    .caps__group {
+      display: none;
+    }
+
+    .caps:has(.caps__tab:nth-of-type(1) :checked) .caps__group:nth-of-type(1),
+    .caps:has(.caps__tab:nth-of-type(2) :checked) .caps__group:nth-of-type(2),
+    .caps:has(.caps__tab:nth-of-type(3) :checked) .caps__group:nth-of-type(3),
+    .caps:has(.caps__tab:nth-of-type(4) :checked) .caps__group:nth-of-type(4),
+    .caps:has(.caps__tab:nth-of-type(5) :checked) .caps__group:nth-of-type(5),
+    .caps:has(.caps__tab:nth-of-type(6) :checked) .caps__group:nth-of-type(6),
+    .caps:has(.caps__tab:nth-of-type(7) :checked) .caps__group:nth-of-type(7),
+    .caps:has(.caps__tab:nth-of-type(8) :checked) .caps__group:nth-of-type(8) {
+      display: block;
+    }
+
+    .caps:has(.caps__tab:nth-of-type(2) :checked) {
+      --active: 1;
+    }
+    .caps:has(.caps__tab:nth-of-type(3) :checked) {
+      --active: 2;
+    }
+    .caps:has(.caps__tab:nth-of-type(4) :checked) {
+      --active: 3;
+    }
+    .caps:has(.caps__tab:nth-of-type(5) :checked) {
+      --active: 4;
+    }
+    .caps:has(.caps__tab:nth-of-type(6) :checked) {
+      --active: 5;
+    }
+    .caps:has(.caps__tab:nth-of-type(7) :checked) {
+      --active: 6;
+    }
+    .caps:has(.caps__tab:nth-of-type(8) :checked) {
+      --active: 7;
+    }
+  }
+
+  /* Without :has() every panel shows, so no bar points at one of them. */
+  @supports not selector(:has(*)) {
+    .caps__bar {
+      display: none;
+    }
+
+    .caps__group + .caps__group {
+      margin-block-start: var(--space-l);
+    }
+  }
+
+  /* Entrance stagger: the groups land a beat apart (capped by the engine). */
+  .caps__tab:nth-of-type(2) {
+    --i: 1;
+  }
+  .caps__tab:nth-of-type(3) {
+    --i: 2;
+  }
+  .caps__tab:nth-of-type(n + 4) {
+    --i: 3;
+  }
+
+  /* Stagger for the lock-on: rows a beat apart, capped. */
+  .caps__skill:nth-child(2) {
+    --row: 1;
+  }
+  .caps__skill:nth-child(3) {
+    --row: 2;
+  }
+  .caps__skill:nth-child(4) {
+    --row: 3;
+  }
+  .caps__skill:nth-child(5) {
+    --row: 4;
+  }
+  .caps__skill:nth-child(6) {
+    --row: 5;
+  }
+  .caps__skill:nth-child(n + 7) {
+    --row: 6;
+  }
+
+  /* ── Motion ── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .caps__bar {
+      transition: translate 420ms cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    /* Lock-on: plays whenever a group's panel appears, once the script has armed it. */
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__group::before,
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__group::after {
+      animation: caps-corners 320ms var(--ease-quint) 40ms backwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__group::after {
+      animation-delay: 100ms;
+    }
+
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__sweep {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 0 / 100% 1px;
+      opacity: 0;
+      pointer-events: none;
+      animation: caps-sweep 560ms cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__skill {
+      animation: caps-rise 420ms var(--ease-quint) backwards;
+      animation-delay: calc(40ms + var(--row, 0) * 45ms);
+    }
+
+    :global(:root:not([data-motion='off'])) .caps[data-lock] .caps__chip {
+      animation: caps-chip 360ms var(--ease-quint) backwards;
+      animation-delay: calc(140ms + var(--row, 0) * 45ms);
+    }
+
+    @keyframes caps-corners {
+      from {
+        opacity: 0;
+        scale: 1.04;
+      }
+    }
+
+    @keyframes caps-sweep {
+      from {
+        background-position: 0 0;
+        opacity: 1;
+      }
+
+      85% {
+        opacity: 1;
+      }
+
+      to {
+        background-position: 0 100%;
+        opacity: 0;
+      }
+    }
+
+    @keyframes caps-rise {
+      from {
+        opacity: 0;
+        translate: 0 8px;
+      }
+    }
+
+    @keyframes caps-chip {
+      from {
+        opacity: 0;
+        translate: -6px 0;
+      }
     }
   }
 </style>

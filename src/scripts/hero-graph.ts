@@ -19,6 +19,7 @@
  * hosts get a stronger hand than on the light one, so the structure reads in a still frame —
  * still well behind the text (the CSS mask keeps it off the h1).
  */
+import { readTokenColors } from './canvas-colors';
 import { motionAllowed, onMotionChange } from './motion';
 
 const MIN_NODES = 24;
@@ -203,29 +204,13 @@ export function createHeroGraph(canvas: HTMLCanvasElement, surface: HTMLElement)
 
   // ── Setup ────────────────────────────────────────────────────────────────
 
-  /**
-   * Resolves the tokens (light-dark() compositions) to concrete colours in one style pass: each
-   * goes into a colour property that paints nothing on a canvas, and is read back computed.
-   * Transitions are switched off for the read: the reduced-motion / Motion-off safety nets give
-   * every property a 0.01ms transition, and a transitioning property reads back its start value
-   * (the inherited text colour), not the token.
-   */
+  /** Resolves the tokens to concrete colours (src/scripts/canvas-colors.ts). */
   function readColors(): void {
-    const { style } = canvas;
-    style.setProperty('transition-property', 'none', 'important');
-    style.setProperty('color', 'var(--line-ui)');
-    style.setProperty('text-decoration-color', 'var(--text-subtle)');
-    style.setProperty('column-rule-color', 'var(--accent)');
-    const computed = getComputedStyle(canvas);
-    colors = {
-      edge: computed.color,
-      node: computed.textDecorationColor,
-      accent: computed.columnRuleColor,
-    };
-    style.removeProperty('color');
-    style.removeProperty('text-decoration-color');
-    style.removeProperty('column-rule-color');
-    style.removeProperty('transition-property');
+    colors = readTokenColors(canvas, {
+      edge: '--line-ui',
+      node: '--text-subtle',
+      accent: '--accent',
+    });
     // The scheme in use: the toggle's pin, else the system's.
     const pinned = document.documentElement.dataset.scheme;
     const dark = pinned === 'dark' || (pinned !== 'light' && systemDark.matches);

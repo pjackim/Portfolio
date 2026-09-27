@@ -14,6 +14,16 @@ export interface StatusEntry {
   value: string;
 }
 
+/** One stop on the About timeline (Portfolio.dc.html, Claude Design, Sept 2026). */
+export interface TimelineEntry {
+  /** Mono marker: an age, a year, "Then" or "Now"; uppercased by CSS. */
+  when: string;
+  title: string;
+  text: string;
+  /** The current stop: drawn as the accent bar, and its marker in full text colour. */
+  now?: boolean;
+}
+
 export interface ExperienceEntry {
   /** Display string, only when the repo states a date. */
   period?: string;
@@ -39,7 +49,8 @@ export interface Site {
   /** Mono eyebrow above the h1; stored in mixed case, uppercased by CSS. */
   eyebrow: string;
   lede: string;
-  about: readonly string[];
+  /** Oldest first; the last entry is the current role. */
+  timeline: readonly TimelineEntry[];
   status: readonly StatusEntry[];
   /** Reverse chronological; only entries stated in the repo; no invented dates. */
   experience: readonly ExperienceEntry[];
@@ -74,19 +85,48 @@ export const site: Site = {
     'My interests run from reverse engineering and machine learning to building software, ' +
     'and I want my work to be high-impact and in service of my country.',
 
-  about: [
-    // index.html:176-177, paradox.html:72-76, aes.html:79, résumé (Education; Teacher, iD Tech)
-    'I started in graphic design at 10, building interfaces for a game-hacking community, ' +
-      'and the interface work pulled me into programming. At 15 I wrote an AES-256 ' +
-      'encryption tool. I went on to study computer science at Colorado State University ' +
-      'and teach programming for iD Tech, and have been drawn to vulnerabilities and how ' +
-      'they are exploited ever since.',
-    // index.html:156; AI practice per the author (Sept 2026): custom agent harnesses, AI
-    // tooling, skills, and AI quality processes.
-    'Today I work across security research, software engineering, and applied AI: ' +
-      'building agent harnesses, developer tooling, and the quality processes that make ' +
-      'AI output trustworthy enough to ship. Whatever the domain, the approach is the ' +
-      'same: assume nothing, verify everything, design for the failure case.',
+  timeline: [
+    // index.html:176-177 ("I started learning graphic design when I was 10 … user interfaces
+    // for videogame cheats"); paradox.html:72-76 (the game-hacking group)
+    {
+      when: 'Age 10',
+      title: 'Graphic design',
+      text: 'I started building interfaces for a game-hacking community.',
+    },
+    // index.html:177 ("Designing UI piqued my interest in programming")
+    {
+      when: 'Then',
+      title: 'Programming',
+      text: 'The interface work pulled me into writing the software behind it.',
+    },
+    // aes.html:79 ("I was 15 when I wrote this program, making it one of my first substantial
+    // independent projects")
+    {
+      when: 'Age 15',
+      title: 'AES-256 encryption tool',
+      text: 'One of my first substantial independent projects.',
+    },
+    // résumé (Experience: Freelance Developer, 2016 – Present); mordhaumod.html (Hardpoint,
+    // commissioned by Mordhau's competitive community)
+    {
+      when: '2016',
+      title: 'Freelance developer',
+      text: 'Self-employed, including a commissioned Unreal Engine 4 game mode for Mordhau.',
+    },
+    // résumé (Education: August 2019 –; Teacher, iD Tech, May–Aug 2021, Online);
+    // foresthack.html:79-82 (the game-hacking curriculum)
+    {
+      when: '2019',
+      title: 'Computer Science, Colorado State University',
+      text: 'Taught online at iD Tech and wrote a game-hacking curriculum alongside it.',
+    },
+    // index.html:156 (role, interests), :166 (aiding my country)
+    {
+      when: 'Now',
+      title: 'Cyber security researcher, JHU APL',
+      text: 'Reverse engineering, machine learning and embedded systems, in service of my country.',
+      now: true,
+    },
   ],
 
   // The focus areas aren't repeated here: the hero's typed FOCUS line carries them.

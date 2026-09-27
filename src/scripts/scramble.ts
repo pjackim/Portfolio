@@ -125,3 +125,26 @@ export function scramble(
     raf = requestAnimationFrame(frame);
   });
 }
+
+/**
+ * A heading's arrival flicker (the section headings, the capability panel's label): a sparse
+ * signal flicker (about a third of the glyphs glitch for a moment and settle, within 400 ms) on
+ * an `aria-hidden` layer with the same text, appended to `host` with class `layerClass`. The
+ * host gets `data-decrypt` while it runs: its stylesheet makes the host's own glyphs transparent
+ * and lays the layer exactly over them (same box, font and wrapping), so nothing moves and the
+ * host's text and accessible name never change. The layer is removed when it lands.
+ */
+export function flicker(host: HTMLElement, layerClass: string): void {
+  const text = host.textContent?.trim() ?? '';
+  if (!text || host.dataset.decrypt !== undefined) return;
+  const layer = document.createElement('span');
+  layer.className = layerClass;
+  layer.setAttribute('aria-hidden', 'true');
+  layer.textContent = text;
+  host.append(layer);
+  host.dataset.decrypt = '';
+  void scramble(layer, text, { duration: 400, density: 0.35 }).then(() => {
+    layer.remove();
+    delete host.dataset.decrypt;
+  });
+}

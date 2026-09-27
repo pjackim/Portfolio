@@ -89,11 +89,13 @@ function mentionsTerm(text: string, term: string): boolean {
  * groups also name — the key ones, not incidental tooling such as "CLI" or "tkinter".
  */
 export function personJsonLd(featured: readonly Project[]): object {
-  const capabilityText = CAPABILITY_GROUPS.flatMap((g) => g.items)
+  const capabilityText = CAPABILITY_GROUPS.flatMap((g) => g.items.map((item) => item.name))
     .join(' · ')
     .toLowerCase();
   const terms = [
-    ...CAPABILITY_GROUPS.flatMap((g) => (g.id === 'languages' ? g.items : [g.label])),
+    ...CAPABILITY_GROUPS.flatMap((g) =>
+      g.id === 'languages' ? g.items.map((item) => item.name) : [g.label],
+    ),
     ...featured.flatMap((p) => p.data.stack).filter((term) => mentionsTerm(capabilityText, term)),
   ];
   const knowsAbout = new Map<string, string>();

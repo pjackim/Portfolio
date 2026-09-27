@@ -5,6 +5,7 @@
  * `*-section` spans keep the legacy site's deep links (#about-section, #portfolio-section,
  * #social-section) landing on the matching section.
  */
+import AboutTimeline from '../components/AboutTimeline.astro';
 import ArchiveList from '../components/ArchiveList.astro';
 import CapabilityGroups from '../components/CapabilityGroups.astro';
 import ContactBlock from '../components/ContactBlock.astro';
@@ -32,11 +33,7 @@ const workHref = withBase('work/');
   <section id="about" class="home-section container" aria-labelledby="about-title">
     <span id="about-section" class="legacy-anchor"></span>
     <SectionHeading index="01" label="About" id="about-title" />
-    <div class="about__bio" data-reveal="contents" data-reveal-from="rise">
-      {site.about.map((paragraph) => (
-        <p>{paragraph}</p>
-      ))}
-    </div>
+    <AboutTimeline />
     <CapabilityGroups class="about__capabilities" />
   </section>
 
@@ -78,12 +75,11 @@ const workHref = withBase('work/');
 </BaseLayout>
 
 <style>
-  /* --readout-rail: the date column of Experience and Earlier work. On wider screens the
-     About and Contact text starts at the same offset, so the lower half of the page reads
-     down one text edge while headings, rules and grids keep the container edge. */
+  /* --readout-rail: the date column of Experience and Earlier work, and the About timeline's
+     marker column, so the lower half of the page reads down one text edge while headings,
+     rules and grids keep the container edge. */
   .home-section {
     --readout-rail: 9rem;
-    --text-edge: calc(var(--readout-rail) + var(--space-m));
     padding-block-start: var(--space-section);
     /* In-page jumps (#work, #about, #contact) land just above the heading, not on the
        section's top padding (html's scroll-padding already clears the sticky header). */
@@ -98,38 +94,7 @@ const workHref = withBase('work/');
     display: block;
   }
 
-  /* Lede-size text: at step-1, 66ch of Geist holds ~95 characters a line; 30em keeps the
-     bio near 60–65. */
-  .about__bio {
-    display: grid;
-    gap: var(--space-s);
-    max-inline-size: 30em;
-    font-size: var(--step-1);
-    line-height: 1.6;
-  }
-
-  /* Entrance reveal (interactions spec §3): the bio rises paragraph by paragraph
-     (`data-reveal-from="rise"`, global.css), each a beat after the one above (`--i`). */
-  .about__bio > :global(p:nth-child(2)) {
-    --i: 1;
-  }
-
-  .about__bio > :global(p:nth-child(3)) {
-    --i: 2;
-  }
-
-  @media (width >= 48rem) {
-    .about__bio {
-      margin-inline-start: var(--text-edge);
-    }
-  }
-
-  /* Contact's photo fills the readout rail, so its text lands on the same text edge. */
-  .home-section > :global(.contact) {
-    --contact-photo: var(--readout-rail);
-  }
-
   .home-section > :global(.about__capabilities) {
-    margin-block-start: var(--space-2xl);
+    margin-block-start: clamp(3.5rem, 6vw, 6rem);
   }
 </style>

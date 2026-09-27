@@ -495,8 +495,8 @@ test.describe('arrow nudges', () => {
       await page.locator('.case__back').hover();
       await expectNudge('.case__back');
       await gotoRel(page, '');
-      await page.locator('.contact__links a').first().hover();
-      await expectNudge('.contact__links a');
+      await page.locator('.contact__channel').first().hover();
+      await expectNudge('.contact__channel');
       await gotoRel(page, '404.html');
       await page.locator('.not-found__actions a:has(.arrow)').hover();
       await expectNudge('.not-found__actions a:has(.arrow)');
@@ -507,11 +507,11 @@ test.describe('arrow nudges', () => {
 test.describe('entrance reveals, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
-  // /work/'s first rows, and home landed on at a fragment (as the legacy deep links do), where
-  // the capability boxes are on screen at load. (Home's own first screen holds no reveal items:
+  // /work/'s first rows, and home landed on at a fragment, where the experience rows are on
+  // screen at load. (Home's own first screen holds no reveal items:
   // the hero and the first card row never reveal — checked below.)
   for (const height of [900, 1200]) {
-    for (const path of ['work/', '#about']) {
+    for (const path of ['work/', '#experience']) {
       test(`everything on screen at load is shown, unanimated (${path}, 1440×${height})`, async ({
         page,
       }) => {
@@ -676,101 +676,72 @@ test.describe('entrance reveals, motion on', () => {
     await expect(target).toHaveCSS('opacity', '1');
   });
 
-  test("capability contents enter from their column's side, and the tick markers end fully drawn", async ({
+  test('capabilities: picking a group opens its panel, moves the bar, and locks on', async ({
     page,
   }) => {
-    // 1280px is the 3-up breakpoint (>= 64rem): col 1 `start`, col 2 `rise`, col 3 `end`.
     await page.setViewportSize({ width: 1280, height: 900 });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const capability = (n: number) => page.locator('.capability').nth(n);
-    // The direction vars are set per column unconditionally (CapabilityGroups.astro), so they
-    // can be read at rest, before the box ever plays.
-    // Raw (unresolved) custom-property values — fix wave finding 2's gutter-bounded expression
-    // (`min(var(--reveal-shift), var(--gutter))`, CapabilityGroups.astro), substituted as
-    // written.
-    expect(
-      await capability(0).evaluate((el) =>
-        getComputedStyle(el).getPropertyValue('--reveal-x').trim(),
-      ),
-    ).toBe('calc(-1 * min(2.5rem, clamp(1rem, .5rem + 2.5vw, 2.5rem)))');
-    expect(
-      await capability(1).evaluate((el) =>
-        getComputedStyle(el).getPropertyValue('--reveal-x').trim(),
-      ),
-    ).toBe('0');
-    expect(
-      await capability(1).evaluate((el) =>
-        getComputedStyle(el).getPropertyValue('--reveal-y').trim(),
-      ),
-    ).toBe('24px');
-    expect(
-      await capability(2).evaluate((el) =>
-        getComputedStyle(el).getPropertyValue('--reveal-x').trim(),
-      ),
-    ).toBe('min(2.5rem, clamp(1rem, .5rem + 2.5vw, 2.5rem))');
+    const groups = page.locator('.caps__group');
+    const count = await groups.count();
+    expect(count).toBeGreaterThan(1);
+    // Before any pick: the first group only (a radio group, so no script needed).
+    await expect(groups.first()).toBeVisible();
+    for (let i = 1; i < count; i++) await expect(groups.nth(i)).toBeHidden();
 
-    const box = capability(0);
-    await expect(box).toHaveAttribute('data-reveal-state', 'pending');
-
-    // The stronger claim (task 3 fix round 1): every tick must actually have *finished* drawing
-    // by the moment its box's state clears — never still at its `scale: 0 1` start, never
-    // mid-draw, never not yet started. Checked on the group with the most rows (the tightest
-    // timing budget), found dynamically rather than assumed by index. Armed before the scroll
-    // that plays it — both rows of boxes land in one 1280×900 viewport at this scroll position,
-    // so the same scroll plays every box, including whichever one is largest.
-    const groupLocators = page.locator('.capability');
-    const groupCount = await groupLocators.count();
-    let largest = { index: 0, count: -1 };
-    for (let i = 0; i < groupCount; i++) {
-      const count = await groupLocators.nth(i).locator('.capability__items li').count();
-      if (count > largest.count) largest = { index: i, count };
-    }
-    const largestBox = groupLocators.nth(largest.index);
-    await expect(largestBox).toHaveAttribute('data-reveal-state', 'pending');
-    // Once `data-reveal-state` is removed, the rule driving `draw-inline` stops matching and
-    // the CSS animation is gone from `getAnimations()` on the next style flush — whether it had
-    // already finished or was cut off mid-draw looks identical that way, so reading state after
-    // the fact can't tell them apart. `animationend` vs. `animationcancel` can: a tick that
-    // completes naturally fires `animationend`; one interrupted by the rule going away (still
-    // running, or never reaching its delay) fires `animationcancel` instead. (Animation events
-    // bubble, so one listener on the box catches every row's ::before.)
-    await largestBox.evaluate((el) => {
-      window.__tickLog = { start: 0, end: 0, cancel: 0 };
-      const onEvent = (event: Event) => {
-        const animationEvent = event as AnimationEvent;
-        if (animationEvent.animationName !== 'draw-inline') return;
-        if (event.type === 'animationstart') window.__tickLog!.start += 1;
-        else if (event.type === 'animationend') window.__tickLog!.end += 1;
-        else if (event.type === 'animationcancel') window.__tickLog!.cancel += 1;
-      };
-      el.addEventListener('animationstart', onEvent);
-      el.addEventListener('animationend', onEvent);
-      el.addEventListener('animationcancel', onEvent);
+    await scrollIntoView(page, '.caps', 'center');
+    await expect(page.locator('.caps__panel')).not.toHaveAttribute('data-reveal-state', {
+      timeout: 3000,
     });
+    await page.locator('.caps__tab').nth(2).click();
+    await expect(page.locator('.caps__radio').nth(2)).toBeChecked();
+    await expect(groups.nth(2)).toBeVisible();
+    await expect(groups.first()).toBeHidden();
+    await expect(page.locator('[data-caps]')).toHaveAttribute('data-lock', '');
+    // The bar sits on the third tab once its slide ends.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const bar = document.querySelector('.caps__bar')!.getBoundingClientRect();
+          const tab = document.querySelectorAll('.caps__tab')[2]!.getBoundingClientRect();
+          return Math.round(bar.top - tab.top);
+        }),
+      )
+      .toBe(0);
+    // Every chip is a link to a case study.
+    const hrefs = await groups
+      .nth(2)
+      .locator('a.caps__chip')
+      .evaluateAll((els) => els.map((el) => el.getAttribute('href')));
+    for (const href of hrefs) expect(href).toMatch(/\/Portfolio\/work\/[a-z0-9-]+\/$/);
+  });
 
-    // One scroll plays every box in both rows at once.
-    await scrollIntoView(page, '.capability', 'center');
-    await expect(box).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
-    // The tick draw-out (a different keyframe name, so reveal.ts's `reveal`-only completion
-    // check isn't held up by it) is scoped to that same `data-reveal-state="in"` window and can
-    // be cut off before it finishes — at rest they must still read as fully drawn, never left
-    // at their hidden `scale: 0 1` start (interactions spec §3; task 3 brief).
-    const tickScales = await box
-      .locator('.capability__items li')
-      .evaluateAll((els) => els.map((el) => getComputedStyle(el, '::before').scale));
-    expect(tickScales.length).toBeGreaterThan(0);
-    for (const scale of tickScales) expect(scale).toBe('none');
+  test('capabilities: arrow keys move between groups', async ({ page }) => {
+    await gotoRel(page, '');
+    await page.locator('.caps__radio').first().focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(page.locator('.caps__radio').nth(1)).toBeChecked();
+    await expect(page.locator('.caps__group').nth(1)).toBeVisible();
+  });
 
-    await expect(largestBox).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
-    // Give any in-flight tick a chance to fire its (already-due) `animationend` before reading —
-    // the event and the attribute removal both happen off the same rAF-driven completion check,
-    // so they can land in either order within a frame or two.
-    await twoFrames(page);
-    const tickLog = await page.evaluate(() => window.__tickLog);
-    expect(tickLog!.cancel, 'a tick was cut off before it finished drawing').toBe(0);
-    expect(tickLog!.start).toBe(largest.count);
-    expect(tickLog!.end).toBe(largest.count);
+  test('about timeline: every stop ends shown once the reader has scrolled past it', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoRel(page, '');
+    await page.waitForLoadState('load');
+    await expect(page.locator('[data-timeline]')).toHaveAttribute('data-live', '', {
+      timeout: 5000,
+    });
+    await scrollIntoView(page, '.caps', 'center');
+    await expect(page.locator('.timeline__stop[data-tl]')).toHaveCount(0, { timeout: 5000 });
+    await expect
+      .poll(() =>
+        page
+          .locator('.timeline__title')
+          .evaluateAll((els) => els.every((el) => getComputedStyle(el).opacity === '1')),
+      )
+      .toBe(true);
   });
 
   test('experience rows stagger among themselves, and the hairline finishes drawing with zero cancels', async ({
@@ -796,7 +767,7 @@ test.describe('entrance reveals, motion on', () => {
     const last = rows.nth(rowCount - 1);
     await expect(first).toHaveAttribute('data-reveal-state', 'pending');
 
-    // Same technique as the capability tick test above: `animationend` vs. `animationcancel`
+    // `animationend` vs. `animationcancel`
     // tells a hairline that finished naturally from one cut off when its row's
     // `data-reveal-state` goes away (task 3's lesson, reused here for a different secondary
     // draw). Listened for on every row at once — the event bubbles from the row's own `::after`.
@@ -862,8 +833,8 @@ test.describe('entrance reveals, motion on', () => {
   test('the contact block ends fully visible at 1920×1080 after scrolling to the bottom', async ({
     page,
   }) => {
-    // The brief's explicit case: 05 Contact is the last thing on a short page, so reveal.ts
-    // (which only ever hides items entirely below the viewport) must never leave it hidden.
+    // Contact is the last thing on a short page, so reveal.ts (which only ever hides items
+    // entirely below the viewport) must never leave it hidden.
     await page.setViewportSize({ width: 1920, height: 1080 });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
@@ -871,51 +842,31 @@ test.describe('entrance reveals, motion on', () => {
       scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
     );
     await expect(
-      page.locator('.contact__body[data-reveal-state], .contact__photo[data-reveal-state]'),
+      page.locator('.contact__figure[data-reveal-state], .contact__channels[data-reveal-state]'),
     ).toHaveCount(0, { timeout: 3000 });
     const opacities = await page
-      .locator('.contact__lead, .contact__email, .contact__links')
+      .locator('.contact__frame, .contact__caption, .contact__channels > li')
       .evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity));
     for (const opacity of opacities) expect(opacity).toBe('1');
-    await expect(page.locator('.contact__email a')).toBeInViewport();
-    await expect(page.locator('.contact__links a').last()).toBeInViewport();
+    await expect(page.locator('.contact__channel').first()).toBeInViewport();
+    await expect(page.locator('.contact__channel').last()).toBeInViewport();
   });
 
-  test("the email's underline never grows a ::after and its colour fade finishes with zero cancels (fix wave #1)", async ({
+  test("the photo's corners and scanline finish inside its entrance, with zero cancels", async ({
     page,
   }) => {
-    // Fix wave #1 (finding 1): the old fake `::after` bar was measured from the inline box's
-    // bottom, not the real underline's baseline-relative position, drew ~0.3em too low, and
-    // then jumped to the real underline's position once the entrance ended. Replaced with a
-    // colour fade on the real underline itself (`text-decoration-color`, ContactBlock.astro) —
-    // there is no `::after` at all, ever, and `text-decoration-line` never toggles off, so the
-    // underline's position is identical at every moment: on load, mid-entrance, and at rest.
-    await page.setViewportSize({ width: 1440, height: 1600 });
-    await gotoRel(page, '#contact');
-    await page.waitForLoadState('load');
-    const email = page.locator('.contact__email a');
-    await expect(page.locator('.contact__body')).not.toHaveAttribute('data-reveal-state');
-    expect(await email.evaluate((el) => getComputedStyle(el, '::after').content)).toBe('none');
-    expect(await email.evaluate((el) => getComputedStyle(el).textDecorationLine)).toBe('underline');
-
-    // A short viewport instead: the block plays, checked at every stage — pending, mid-entrance,
-    // and settled — never a `::after`, never anything but a real underline.
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const contact = page.locator('.contact__body');
-    await expect(contact).toHaveAttribute('data-reveal-state', 'pending');
-    expect(await email.evaluate((el) => getComputedStyle(el, '::after').content)).toBe('none');
-    expect(await email.evaluate((el) => getComputedStyle(el).textDecorationLine)).toBe('underline');
-
-    // `animationend` vs. `animationcancel` (same technique as the capability tick and experience
-    // hairline tests above): the colour fade must actually finish, never be cut off by
-    // `data-reveal-state` going away first.
-    await email.evaluate((el) => {
+    const figure = page.locator('.contact__figure');
+    await expect(figure).toHaveAttribute('data-reveal-state', 'pending');
+    // `animationend` vs. `animationcancel` (the experience hairline technique above): the
+    // lock-on is scoped to the figure's reveal window and must finish before it closes.
+    await figure.evaluate((el) => {
       window.__tickLog = { start: 0, end: 0, cancel: 0 };
       const onEvent = (event: Event) => {
-        const animationEvent = event as AnimationEvent;
-        if (animationEvent.animationName !== 'contact-email-underline-in') return;
+        const name = (event as AnimationEvent).animationName;
+        if (name !== 'contact-corners' && name !== 'contact-sweep') return;
         if (event.type === 'animationstart') window.__tickLog!.start += 1;
         else if (event.type === 'animationend') window.__tickLog!.end += 1;
         else if (event.type === 'animationcancel') window.__tickLog!.cancel += 1;
@@ -924,22 +875,14 @@ test.describe('entrance reveals, motion on', () => {
       el.addEventListener('animationend', onEvent);
       el.addEventListener('animationcancel', onEvent);
     });
-
     await scrollIntoView(page, '.contact', 'center');
-    // Mid-entrance: still no ::after, still a real, positioned underline — only its colour is
-    // animating.
-    expect(await email.evaluate((el) => getComputedStyle(el, '::after').content)).toBe('none');
-    expect(await email.evaluate((el) => getComputedStyle(el).textDecorationLine)).toBe('underline');
-
-    await expect(contact).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(figure).not.toHaveAttribute('data-reveal-state', { timeout: 4000 });
     await twoFrames(page);
-    expect(await email.evaluate((el) => getComputedStyle(el, '::after').content)).toBe('none');
-    expect(await email.evaluate((el) => getComputedStyle(el).textDecorationLine)).toBe('underline');
-
     const tickLog = await page.evaluate(() => window.__tickLog);
-    expect(tickLog!.cancel, 'the underline colour fade was cut off before it finished').toBe(0);
-    expect(tickLog!.start).toBe(1);
-    expect(tickLog!.end).toBe(1);
+    expect(tickLog!.cancel, 'the lock-on was cut off before it finished').toBe(0);
+    // Two corner pairs and one sweep.
+    expect(tickLog!.start).toBe(3);
+    expect(tickLog!.end).toBe(3);
   });
 
   test('switching motion off shows everything still waiting', async ({ page }) => {

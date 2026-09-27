@@ -37,93 +37,134 @@ export const GROUP_LABELS: Record<Group, string> = {
   design: 'Design & 3D',
 };
 
+/**
+ * One skill in a capability group. `seenIn` names the projects whose frontmatter (`stack`,
+ * `summary` or `highlights`) shows it, rendered as evidence chips linking to their case studies;
+ * `note` is non-project evidence stated in the résumé (a certification).
+ */
+export interface CapabilityItem {
+  name: string;
+  seenIn?: readonly string[];
+  note?: string;
+}
+
 export interface CapabilityGroup {
   id: Capability;
   label: string;
-  items: readonly string[];
-  /** Project slugs shown as "Seen in:" links. Empty ⇒ render no "Seen in" line. */
-  seenIn: readonly string[];
+  /** Short name for the group's tab on the home page (the open panel shows `label`). */
+  tab: string;
+  items: readonly CapabilityItem[];
 }
 
-/** The six capability boxes on the home page, in display order. */
+/** Every project slug a group cites as evidence, in first-cited order. */
+export const groupSeenIn = (group: CapabilityGroup): string[] => [
+  ...new Set(group.items.flatMap((item) => item.seenIn ?? [])),
+];
+
+/**
+ * The capability groups on the home page (Portfolio.dc.html, Claude Design, Sept 2026: a tab per
+ * group, a row per skill with its evidence), in display order. Each item's `seenIn` is read off
+ * the cited project's own frontmatter; see the note beside it.
+ */
 export const CAPABILITY_GROUPS: readonly CapabilityGroup[] = [
   {
-    // mordhauhack.html:90-91, foresthack.html:92-102/:139, résumé (Memory Hacking, DETER Lab)
+    // mordhauhack.html:90-91, foresthack.html:92-102/:139, aes.html:79, résumé (Memory Hacking,
+    // DETER Lab)
     id: 'offensive-security',
     label: CAPABILITY_LABELS['offensive-security'],
+    tab: 'Offensive security',
     items: [
-      'Reverse engineering',
-      'Memory patching',
-      'DLL injection',
-      'Mono injection',
-      'Dumping game objects with ILSpy',
-      'Discovering basic network vulnerabilities',
-      'DETER testbeds: SQLi, buffer overflow DoS, SYN flooding, L7 privilege escalation',
+      // mordhau stack; the-forest highlights ("Reverse-engineered the game")
+      { name: 'Reverse engineering', seenIn: ['mordhau', 'the-forest'] },
+      { name: 'Memory patching', seenIn: ['mordhau'] }, // mordhau stack
+      { name: 'DLL injection', seenIn: ['mordhau'] }, // mordhau stack
+      { name: 'Mono injection', seenIn: ['the-forest'] }, // the-forest stack
+      { name: 'Dumping game objects with ILSpy', seenIn: ['the-forest'] }, // the-forest highlights
+      { name: 'Discovering basic network vulnerabilities', seenIn: ['the-forest'] }, // ditto
+      // aes.html:79 ("It implements AES 256 as a recursive directory encryptor")
+      { name: 'AES-256 encryption', seenIn: ['aes-256'] },
+      // résumé (DETER Lab); no project page
+      { name: 'DETER testbeds: SQLi, buffer overflow DoS, SYN flooding, L7 privilege escalation' },
     ],
-    seenIn: ['mordhau', 'the-forest', 'aes-256'],
   },
   {
-    // credential_correlation.html:90-106
+    // credential_correlation.html:90-106 (every item: credential-correlation stack + highlights)
     id: 'data-ml',
     label: CAPABILITY_LABELS['data-ml'],
+    tab: 'Data & ML',
     items: [
-      'Curating and featurizing a ~120M-credential dataset',
-      'Hadoop MapReduce',
-      'Apache Spark',
-      'Cluster computing',
-      'Machine learning',
+      {
+        name: 'Curating and featurizing a ~120M-credential dataset',
+        seenIn: ['credential-correlation'],
+      },
+      { name: 'Hadoop MapReduce', seenIn: ['credential-correlation'] },
+      { name: 'Apache Spark', seenIn: ['credential-correlation'] },
+      { name: 'Cluster computing', seenIn: ['credential-correlation'] },
+      { name: 'Machine learning', seenIn: ['credential-correlation'] },
     ],
-    seenIn: ['credential-correlation'],
   },
   {
     // index.html:207-348 (skills), résumé (Programming Languages)
     id: 'languages',
     label: CAPABILITY_LABELS.languages,
-    items: ['Python', 'C++', 'C#', 'Java', 'Bash', 'JavaScript (React)', 'HTML & CSS'],
-    seenIn: [],
+    tab: 'Languages',
+    items: [
+      // résumé: "PCAP Certified Associate in Python Programming · Summer 2020"
+      { name: 'Python', note: 'PCAP · 2020' },
+      { name: 'C++', seenIn: ['mordhau', 'aes-256'] }, // both stacks
+      { name: 'C#', seenIn: ['the-forest'] }, // the-forest stack
+      { name: 'Java' },
+      { name: 'Bash', seenIn: ['arch-linux'] }, // arch-linux stack
+      { name: 'JavaScript (React)', seenIn: ['trip-planner', 'hero-trivia'] }, // both stacks
+      { name: 'HTML & CSS' },
+    ],
   },
   {
     // tripsite.html:92-110, mordhaumod.html:83-84, résumé (Trip Planner)
     id: 'engineering-practice',
     label: CAPABILITY_LABELS['engineering-practice'],
+    tab: 'Engineering practice',
     items: [
-      'CMMI configuration & change management',
-      'Baselines and integrity & maintainability audits',
-      'SCRUM',
-      'Test-driven development',
-      'Iterative design',
-      'Interoperability protocols',
-      'Database implementation',
-      'GitHub, ZenHub & Code Climate',
+      // trip-planner highlights (CMMI, database search, shared protocols) and stack
+      { name: 'CMMI configuration & change management', seenIn: ['trip-planner'] },
+      { name: 'Baselines and integrity & maintainability audits', seenIn: ['trip-planner'] },
+      { name: 'SCRUM', seenIn: ['trip-planner', 'nodes'] }, // both stacks
+      { name: 'Test-driven development', seenIn: ['hardpoint'] }, // hardpoint stack
+      // hardpoint stack; nodes summary ("shaped by iterative design")
+      { name: 'Iterative design', seenIn: ['hardpoint', 'nodes'] },
+      { name: 'Interoperability protocols', seenIn: ['trip-planner'] },
+      { name: 'Database implementation', seenIn: ['trip-planner'] },
+      { name: 'GitHub, ZenHub & Code Climate', seenIn: ['trip-planner'] },
     ],
-    seenIn: ['trip-planner', 'hardpoint'],
   },
   {
     // mordhaumod.html:81-82, foresthack.html:78, archlinux.html:89-100
     id: 'engines-systems',
     label: CAPABILITY_LABELS['engines-systems'],
+    tab: 'Engines & systems',
     items: [
-      'Unreal Engine 4 server & client replication',
-      'Unity',
-      'Arch Linux',
-      'Bash scripting',
-      'Linux permissions & file-system structure',
-      'Vim',
+      { name: 'Unreal Engine 4 server & client replication', seenIn: ['hardpoint'] }, // stack
+      { name: 'Unity', seenIn: ['the-forest', 'ant-game'] }, // both stacks
+      // arch-linux stack (Linux, Bash, Vim) and summary
+      { name: 'Arch Linux', seenIn: ['arch-linux'] },
+      { name: 'Bash scripting', seenIn: ['arch-linux'] },
+      { name: 'Linux permissions & file-system structure', seenIn: ['arch-linux'] },
+      { name: 'Vim', seenIn: ['arch-linux'] },
     ],
-    seenIn: ['hardpoint', 'the-forest', 'arch-linux'],
   },
   {
     // index.html:221-344 (skills), ant_game.html:88-93, paradox.html:86-89
     id: 'design-3d',
     label: CAPABILITY_LABELS['design-3d'],
+    tab: 'Design & 3D',
     items: [
-      'Photoshop, Illustrator & Premiere',
-      'Cinema 4D',
-      'ZBrush sculpting',
-      'Substance Painter texturing',
-      'Maya rigging',
-      'UI & UX design',
+      { name: 'Photoshop, Illustrator & Premiere', seenIn: ['paradox'] }, // paradox stack
+      { name: 'Cinema 4D', seenIn: ['paradox', 'nodes'] }, // both stacks
+      { name: 'ZBrush sculpting', seenIn: ['ant-game'] }, // ant-game stack
+      { name: 'Substance Painter texturing', seenIn: ['ant-game'] }, // ant-game stack
+      { name: 'Maya rigging', seenIn: ['ant-game'] }, // ant-game stack
+      // paradox summary ("graphical user interfaces")
+      { name: 'UI & UX design', seenIn: ['paradox'] },
     ],
-    seenIn: ['ant-game', 'paradox'],
   },
 ];

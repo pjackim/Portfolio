@@ -1,260 +1,299 @@
 ---
 /**
- * Contact (spec-design-content §2, §5f): the profile photo, then one line, the email as a large
- * mono mailto link, then GitHub · LinkedIn · Résumé. No form, no phone. The photo is the legacy
- * site's contact selfie (d8782d1:Images/self/canyonSelfie.JPG), cropped square like it was there.
- * It sits beside the text from `--contact-photo` up and above it on phones.
+ * Contact (Portfolio.dc.html, Claude Design, Sept 2026): the profile photo in a 4:5 frame with
+ * accent corners and a mono caption (name · location), beside a readout of channels — one full-
+ * width row each, a mono kind on the left and the value large on the right, the whole row one
+ * link. Email shows the address itself (tap to mail); GitHub the handle; LinkedIn the name on
+ * the profile; the résumé its format. No form, no phone. Photo above the list on phones.
  *
- * Entrance reveal (interactions spec §3, the "My Skills" reference feel): the photo slides in from
- * the start (`data-reveal data-reveal-from="start"`), and the text column's lead, email and link
- * row rise in sequence on `.contact__body` (`data-reveal="contents" data-reveal-from="rise"`, global.css
- * — the same `about__bio` paragraph-by-paragraph feel), `--i` 0/1/2 below. The email's underline
- * fades in once it lands, a second, purely decorative animation on top of a different property
- * (`text-decoration-color`, so reveal.ts's `reveal`-only completion check never waits on it —
- * same idea as the capability tick's own keyframes, CapabilityGroups.astro, minus the geometry:
- * fix wave #1 dropped the scaled `::after` bar this used to be, which was measured from the
- * inline box's bottom, not the real underline's baseline-relative position, so it drew ~0.3em
- * too low and then jumped to the real underline's position once the entrance ended). The real
- * underline (`text-decoration-line: underline`, the base `a` rule and this component's own) is
- * never touched or replaced — only its colour animates, from transparent to its resting value —
- * so the underline's geometry is identical throughout, it still works if the email wraps, and
- * at rest, with motion off, or with no JS, the email is exactly today's plain underlined mailto
- * link.
+ * The photo is the legacy site's contact selfie (d8782d1:Images/self/canyonSelfie.JPG), square;
+ * the frame crops it to 4:5 around the centre.
+ *
+ * Entrance (global.css reveal engine, behind the motion gate): the photo wipes down into its frame,
+ * the caption rises after it, then the corners close in a beat apart and one accent scanline
+ * sweeps up the photo; the channel rows rise in one after another. The corner and sweep
+ * animations run inside the figure's reveal window (the caption's lengthened reveal holds it
+ * open until they finish), so nothing jumps when it closes.
  */
 import { Picture } from 'astro:assets';
 import portrait from '../assets/profile/parker-jackim.webp';
 import { site } from '../data/site';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
+import '../styles/reticle.css';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
-const links = [
-  { href: site.github, label: 'GitHub' },
-  { href: site.linkedin, label: 'LinkedIn' },
-  { href: withBase(site.resume), label: 'Résumé', meta: 'PDF' },
+const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
+const channels = [
+  { kind: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { kind: 'GitHub', value: githubHandle, href: site.github },
+  { kind: 'LinkedIn', value: site.name, href: site.linkedin },
+  { kind: 'Résumé', value: 'PDF', href: withBase(site.resume) },
 ];
 ---
 
 <div class:list={['contact', className]}>
-  <Picture
-    src={portrait}
-    formats={['avif', 'webp']}
-    fallbackFormat="webp"
-    widths={[192, 288, 384]}
-    sizes="(width >= 48rem) 9rem, 6rem"
-    alt={`${site.name}, smiling, in a sandstone canyon`}
-    class="contact__photo"
-    data-reveal
-    data-reveal-from="start"
-    loading="lazy"
-    decoding="async"
-  />
-  <div class="contact__body" data-reveal="contents" data-reveal-from="rise">
-    <p class="contact__lead">Email is the fastest way to reach me.</p>
-    <p class="contact__email">
-      <a href={`mailto:${site.email}`}>{site.email}</a>
-    </p>
-    <ul class="contact__links" role="list">
-      {links.map(({ href, label, meta }) => (
-        <li>
-          <a href={href} rel={meta ? 'noopener' : undefined}>
-            <span class="contact__label">{label}</span>
-            {meta && (
-              <span class="contact__meta">
-                <span aria-hidden="true">·</span> {meta}
-              </span>
-            )}
+  <figure class="contact__figure" data-reveal="contents">
+    <div class="contact__frame reticle">
+      <div class="contact__photo-box">
+        <Picture
+          src={portrait}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[240, 360, 480, 640]}
+          sizes="(width >= 48rem) 17rem, 15rem"
+          alt={`${site.name}, smiling, in a sandstone canyon`}
+          class="contact__photo"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="contact__sweep" aria-hidden="true"></span>
+      </div>
+    </div>
+    <figcaption class="contact__caption mono-label">
+      <span class="contact__name">{site.name}</span>
+      <span>{site.location}</span>
+    </figcaption>
+  </figure>
+
+  <ul class="contact__channels" role="list" data-reveal="contents" data-reveal-from="rise">
+    {channels.map(({ kind, value, href }) => (
+      <li>
+        <a class="contact__channel" href={href}>
+          <span class="contact__kind mono-label">{kind}</span>
+          <span class="contact__value">
+            <span class="contact__value-text">{value}</span>
             <Arrow dir="up-right" />
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
 </div>
 
 <style>
-  /* Phones: photo above the text. From 48rem the photo takes a `--contact-photo` column (the
-     home page sets it to the readout rail, so the text keeps the page's text edge). */
   .contact {
     display: grid;
-    gap: var(--space-m);
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
     align-items: start;
-  }
-
-  .contact__body {
-    display: grid;
-    gap: var(--space-m);
-    min-inline-size: 0;
-  }
-
-  .contact__photo {
-    inline-size: 6rem;
-    block-size: auto;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: var(--radius-s);
-    background-color: var(--surface-2);
   }
 
   @media (width >= 48rem) {
     .contact {
-      grid-template-columns: var(--contact-photo, 9rem) minmax(0, 1fr);
-    }
-
-    .contact__photo {
-      inline-size: 100%;
+      grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
     }
   }
 
-  .contact__lead {
-    color: var(--text-muted);
-    font-size: var(--step-1);
+  /* ── Photo ── */
+  .contact__figure {
+    inline-size: 100%;
+    max-inline-size: 15rem;
+    margin: 0;
   }
 
-  /* Sized to fit 23 mono characters inside a 320px viewport; breaks anywhere as a last resort. */
-  .contact__email {
-    font-family: var(--font-mono);
-    font-size: clamp(1.1875rem, 0.7rem + 2.6vw, 2.5rem);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    overflow-wrap: anywhere;
-    --i: 1;
-    /* Lengthens only this child's own `reveal` (global.css) — the shared `--reveal-dur-long`
-       token (global.css, fix wave minor 5) — so the underline colour fade below (a separate
-       animation on the anchor inside it) has a window to finish in before `data-reveal-state`
-       clears; see the budget note there. Same technique as the capability items list,
-       CapabilityGroups.astro. */
-    --reveal-dur: var(--reveal-dur-long, 780ms);
-  }
-
-  .contact__email a {
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-    text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
-  }
-
-  .contact__links {
-    --i: 2;
-  }
-
-  @media (hover: hover) {
-    .contact__email a:hover {
-      text-decoration-color: currentColor;
+  @media (width >= 48rem) {
+    .contact__figure {
+      max-inline-size: none;
     }
   }
 
-  .contact__links {
+  .contact__frame {
+    position: relative;
+
+    --reticle-inset: -7px;
+    /* Entrance: the photo wipes down into the frame. */
+    --reveal-x: 0;
+    --reveal-y: 0;
+    --reveal-clip: inset(0 0 100% 0);
+    --reveal-dur: 750ms;
+  }
+
+  .contact__photo-box {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+  }
+
+  .contact__photo {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .contact__sweep {
+    display: none;
+  }
+
+  .contact__caption {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--space-l);
-    margin-block-start: var(--space-2xs);
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-block-start: 1rem;
+    font-size: 0.75rem;
+
+    --reveal-y: 8px;
+    --reveal-clip: inset(0);
+    --reveal-dur: 900ms;
+    --i: 3;
+  }
+
+  .contact__name {
+    color: var(--text);
+  }
+
+  /* ── Channels ── */
+  .contact__channels {
+    min-inline-size: 0;
     padding: 0;
+    border-block-end: var(--hairline);
     list-style: none;
   }
 
-  .contact__links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35em;
-    min-block-size: 2.75rem;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-decoration: none;
+  .contact__channels > li:nth-child(2) {
+    --i: 1;
   }
 
-  /* Only the word is underlined, not the meta or the arrow. */
-  .contact__label {
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: var(--line-ui);
-    text-underline-offset: 0.2em;
-    transition: text-decoration-color var(--dur-fast) var(--ease-standard);
+  .contact__channels > li:nth-child(3) {
+    --i: 2;
+  }
+
+  .contact__channels > li:nth-child(n + 4) {
+    --i: 3;
+  }
+
+  .contact__channel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-m);
+    padding-block: 1.375rem;
+    border-block-start: var(--hairline);
+    color: var(--text);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .contact__kind {
+    flex: 0 0 100%;
+    font-size: 0.875rem;
+  }
+
+  @media (width >= 48rem) {
+    .contact__kind {
+      flex-basis: 11.625rem;
+    }
+  }
+
+  .contact__value {
+    display: inline-flex;
+    flex: 1 1 18.75rem;
+    align-items: center;
+    gap: 0.4em;
+    min-inline-size: 0;
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .contact__value-text {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__value :global(.arrow) {
+    flex: none;
+    inline-size: 0.75em;
+    block-size: 0.75em;
+    color: var(--text-subtle);
+    transition: color var(--dur-fast) var(--ease-standard);
   }
 
   @media (hover: hover) {
-    .contact__links a:hover {
-      color: var(--text);
-    }
-
-    .contact__links a:hover .contact__label {
-      text-decoration-color: var(--accent);
+    .contact__channel:hover,
+    .contact__channel:hover :global(.arrow) {
+      color: var(--accent);
     }
   }
 
-  .contact__meta {
-    color: var(--text-subtle);
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    letter-spacing: 0.04em;
+  .contact__channel:focus-visible {
+    outline-offset: -2px;
   }
 
-  /* Motion (the gate, global.css): the arrow nudges toward where it points. */
+  /* ── Motion (the gate, global.css) ── */
   @media (prefers-reduced-motion: no-preference) {
-    :global(:root:not([data-motion='off'])) .contact__links :global(.arrow) {
-      transition: translate var(--dur-base) var(--ease-out);
+    :global(:root:not([data-motion='off'])) .contact__value :global(.arrow) {
+      transition:
+        color var(--dur-fast) var(--ease-standard),
+        translate var(--dur-base) var(--ease-out);
     }
 
     @media (hover: hover) {
-      :global(:root:not([data-motion='off'])) .contact__links a:hover :global(.arrow) {
+      :global(:root:not([data-motion='off'])) .contact__channel:hover :global(.arrow) {
         translate: 2px -2px;
       }
     }
-  }
 
-  /* Skill-bar homage (interactions spec §3, the direct "My Skills" reference; fix wave #1):
-     the email's underline fades in — its `text-decoration-color` animates from transparent to
-     its resting value — once the block lands. The real underline (`text-decoration-line`, the
-     base `a` rule and this component's own, both untouched) is never swapped for anything: no
-     `::after`, no scale, no geometry to get wrong (the bug this replaces: a scaled `::after` bar
-     measured from the inline box's bottom, ~0.3em off the real underline's baseline-relative
-     position, that then jumped to the real underline once the entrance ended).
+    /* Lock-on, inside the figure's entrance: corners close in a beat apart once the photo is
+       in, then a scanline sweeps up it. Ends by ~1.16 s; the caption's reveal (--i 3, 900 ms)
+       holds the window open to ~1.17 s. */
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::before,
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::after {
+      animation: contact-corners 200ms var(--ease-out) 700ms backwards;
+    }
 
-     Default is the resting colour (the `.contact__email a` rule above) so a block already on
-     screen at load is unaffected; `pending` sets it transparent, `in` animates it back to that
-     resting colour, and once reveal.ts clears the state this rule stops matching — leaving the
-     plain, un-animated underline in its resting colour, exactly where it always was, so nothing
-     jumps (task 3's lesson, same as before).
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::after {
+      animation-delay: 760ms;
+    }
 
-     Timing budget: `.contact`'s reveal window stays open until every child's `reveal`
-     (global.css) finishes — the email's own, lengthened above, is the longest at its `--i` 1
-     delay (≤ 90ms) + 780ms, i.e. ≥ 870ms. The fade below starts at ≤ 90ms + 250ms and runs
-     350ms, finishing at ≤ 690ms — a ≥ 180ms margin (checked by hand, as CapabilityGroups.astro
-     does). */
-  @media screen and (prefers-reduced-motion: no-preference) {
-    @keyframes contact-email-underline-in {
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__sweep {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 100% 1px;
+      opacity: 0;
+      pointer-events: none;
+      animation: contact-sweep 600ms cubic-bezier(0.45, 0, 0.25, 1) 560ms;
+    }
+
+    @keyframes contact-corners {
       from {
-        text-decoration-color: transparent;
+        opacity: 0;
+        scale: 1.08;
+      }
+    }
+
+    @keyframes contact-sweep {
+      from {
+        background-position: 0 100%;
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 1;
       }
 
       to {
-        text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+        background-position: 0 0;
+        opacity: 0;
       }
-    }
-
-    :global(:root:not([data-motion='off']))
-      .contact__body[data-reveal-state='pending']
-      .contact__email
-      a {
-      text-decoration-color: transparent;
-    }
-
-    :global(:root:not([data-motion='off']))
-      .contact__body[data-reveal-state='in']
-      .contact__email
-      a {
-      animation-name: contact-email-underline-in;
-      animation-duration: 350ms;
-      animation-timing-function: var(--ease-out);
-      animation-delay: calc(
-        min(calc(1 * var(--reveal-step, 90ms)), var(--reveal-cap, 270ms)) + 250ms
-      );
-      animation-fill-mode: backwards;
     }
   }
 </style>

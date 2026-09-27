@@ -3,7 +3,7 @@
  * which excludes drafts outside dev and enforces the collection invariants at build time.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { CAPABILITY_GROUPS, GROUPS, type Group } from '../data/taxonomy';
+import { CAPABILITY_GROUPS, GROUPS, groupSeenIn, type Group } from '../data/taxonomy';
 import { REMOVED_LEGACY } from './legacy';
 
 export type Project = CollectionEntry<'projects'>;
@@ -63,7 +63,7 @@ export function validateProjects(projects: readonly Project[]): void {
 
   const ids = new Set(projects.map((p) => p.id));
   for (const group of CAPABILITY_GROUPS) {
-    for (const slug of group.seenIn) {
+    for (const slug of groupSeenIn(group)) {
       if (!ids.has(slug)) {
         throw new Error(
           `taxonomy: CAPABILITY_GROUPS "${group.id}" seenIn "${slug}" is not a published project id`,

@@ -5,7 +5,7 @@
  */
 import { pad2 } from '../lib/format';
 import { motionAllowed, onMotionChange } from './motion';
-import { scramble } from './scramble';
+import { flicker } from './scramble';
 
 /**
  * Spotlight: one delegated, passive `pointermove` listener on the grid writes the pointer's
@@ -74,23 +74,7 @@ function countUp(el: HTMLElement, duration = 420): void {
  * while the h2's own glyphs are transparent. The h2 — and so the section's accessible name —
  * keeps its text throughout, and the layer is removed when it lands.
  */
-const FLICKER_MS = 400;
-const FLICKER_DENSITY = 0.35;
-
-function decrypt(title: HTMLElement): void {
-  const text = title.textContent?.trim() ?? '';
-  if (!text) return;
-  const layer = document.createElement('span');
-  layer.className = 'section-heading__decrypt';
-  layer.setAttribute('aria-hidden', 'true');
-  layer.textContent = text;
-  title.append(layer);
-  title.dataset.decrypt = '';
-  void scramble(layer, text, { duration: FLICKER_MS, density: FLICKER_DENSITY }).then(() => {
-    layer.remove();
-    delete title.dataset.decrypt;
-  });
-}
+const decrypt = (title: HTMLElement): void => flicker(title, 'section-heading__decrypt');
 
 /**
  * The rule draws out from the label (a timed CSS animation, SectionHeading.astro). Only a heading
