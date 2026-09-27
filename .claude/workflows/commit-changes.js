@@ -42,6 +42,7 @@ const INVENTORY = {
   type: 'object',
   properties: {
     branch: { type: 'string', description: 'current branch, or "(detached)"' },
+    head: { type: 'string', description: 'full sha from `git rev-parse HEAD`' },
     operation_in_progress: {
       type: 'string',
       description: 'merge | rebase | cherry-pick | revert | bisect, or empty string if none',
@@ -91,7 +92,7 @@ const INVENTORY = {
       },
     },
   },
-  required: ['branch', 'operation_in_progress', 'files', 'stashes'],
+  required: ['branch', 'head', 'operation_in_progress', 'files', 'stashes'],
 };
 const PLAN = {
   type: 'object',
@@ -226,7 +227,7 @@ const [survey, inv] = await parallel([
   () =>
     agent(
       `${WHERE} Inventory every uncommitted change. Read-only: ${GIT_RULES}
-1. \`git status --porcelain=v1 -uall\` (untracked directories expanded to files), \`git branch --show-current\`, and check .git for MERGE_HEAD / rebase-merge / rebase-apply / CHERRY_PICK_HEAD / REVERT_HEAD / BISECT_LOG.
+1. \`git status --porcelain=v1 -uall\` (untracked directories expanded to files), \`git branch --show-current\`, \`git rev-parse HEAD\`, and check .git for MERGE_HEAD / rebase-merge / rebase-apply / CHERRY_PICK_HEAD / REVERT_HEAD / BISECT_LOG.
 2. For each entry: repo-relative path with forward slashes (for renames give the new path and old_path), status, whether anything is already staged, and a one-line note of what changed — use \`git diff\`/\`git diff --cached\` for tracked files and read untracked files (skim large ones; just note binaries).
 3. \`git stash list\`, and for each entry \`git stash show --include-untracked --name-only <ref>\` plus a glance at \`git stash show -p <ref>\`: list its files, what it holds, and whether it overlaps files changed in the working tree. Do not apply it.`,
       { label: 'inventory', phase: 'Survey', schema: INVENTORY, effort: 'low' },
@@ -326,7 +327,7 @@ Your files (only these; other agents own every other changed file):
 ${lane.files.map((p) => `- ${p} [${byPath.get(p).status}] ${byPath.get(p).note}`).join('\n')}
 
 Review the actual changes (\`git diff HEAD -- <path>\` for tracked files, read untracked ones). Then:
-- Split your files into well-scoped logical commits (often just one). Each file goes in exactly one commit; whole files only (no partial hunks). Order them so each commit makes sense on top of the previous.
+- Split your files into well-scoped logical commits (often just one). Prefer fewer, cohesive commits: several parallel changes of the same kind (e.g. adding N similar files) are one commit; split only where a change would make sense to revert on its own. Each file goes in exactly one commit; whole files only (no partial hunks). Order them so each commit makes sense on top of the previous.
 - Write each commit's subject in the repo's commit style (<=72 chars, imperative) plus an optional one-line body.
 - Move a file to excluded if it should not be committed (secret, machine-local, generated, clearly unfinished/broken), with the reason.
 - List real concerns you noticed (bugs, leftover debug code, secrets) in concerns.
@@ -400,7 +401,7 @@ const failedLanes = lanes.filter((_, i) => !laneResults[i]).map((l) => l.id);
 if (failedLanes.length) log(`Lanes that died (left uncommitted): ${failedLanes.join(', ')}`);
 const committed = done.reduce((n, r) => n + r.results.filter((x) => x.ok).length, 0);
 const final = await agent(
-  `${WHERE} Read-only check. Run \`git status --porcelain=v1 -uall\` and \`git log --oneline -${committed + 5}\`; return the status lines and the log lines for commits made just now (the most recent ${committed}).`,
+  `${WHERE} Read-only check. Run \`git status --porcelain=v1 -uall\` and \`git log --oneline ${inv.head}..HEAD\`; return both outputs line by line (${committed} new commit(s) expected).`,
   { label: 'converge', phase: 'Converge', schema: FINAL, effort: 'low' },
 );
 
