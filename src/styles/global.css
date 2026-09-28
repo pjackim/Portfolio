@@ -468,7 +468,9 @@ a {
 
   /* Except the theme switch's knob: the wipe uncovers the header within a few frames, so on the
      page itself the knob would just jump. Captured on its own, it slides from the old side to
-     the new one above the wipe. Only one switch is ever rendered, so the name stays unique. */
+     the new one above the wipe. The name stays unique only because the header's breakpoint
+     CSS renders one switch at a time (`.site-header__end` or `.phone-theme`): if both ever showed,
+     the browser would skip the transition (the scheme still switches). */
   html:root.vt-theme:not([data-motion='off']) .theme-toggle:not([hidden]) .theme-toggle__knob {
     view-transition-name: theme-knob;
   }

@@ -24,6 +24,8 @@ import Readouts from './Readouts.astro';
 import StatusStrip from './StatusStrip.astro';
 
 const eyebrow = site.eyebrow.split(' · ');
+// Phones set the name on two lines (Portfolio.dc.html `data-mhero`): first name, then the rest.
+const [firstName, ...otherNames] = site.name.split(' ');
 // The lede's first sentence is the phone intro; the rest joins it from 40rem up.
 const cut = site.lede.indexOf('. ') + 1;
 const [ledeFirst, ledeRest] =
@@ -60,7 +62,8 @@ const readouts = [
       </span>
     </p>
     <h1 class="hero__title" id="hero-title">
-      {site.name}
+      <span class="hero__name-first">{firstName}</span>
+      <span class="hero__name-rest">{otherNames.join(' ')}</span>
     </h1>
     <p class="hero__lede">
       {ledeFirst}
@@ -138,7 +141,8 @@ const readouts = [
     position: relative;
     isolation: isolate;
     overflow: clip;
-    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem) 0;
+    --hero-pad-top: clamp(4rem, 2rem + 8vw, 9rem);
+    padding-block: var(--hero-pad-top) 0;
   }
 
   .hero__inner {
@@ -155,7 +159,7 @@ const readouts = [
     content: '';
     position: absolute;
     z-index: -2;
-    inset-block: calc(-1 * clamp(3.5rem, 2rem + 6vw, 7.5rem) - var(--cell)) 0;
+    inset-block: calc(-1 * var(--hero-pad-top) - var(--cell)) 0;
     inset-inline: calc(-1 * var(--bleed));
     background-image:
       linear-gradient(to right, var(--line) 1px, transparent 1px),
@@ -243,8 +247,11 @@ const readouts = [
   .hero__eyebrow {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 0.75rem;
+    column-gap: 0.875rem;
     align-items: start;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 
   .hero__signal {
@@ -269,31 +276,34 @@ const readouts = [
     }
   }
 
+  /* Display scale from Portfolio.dc.html: 42px on the narrowest wide layout up to 76px. */
   .hero__title {
-    margin-block-start: var(--space-m);
-    font-size: var(--step-5);
+    margin-block-start: 1.375rem;
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 4.75rem);
     font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
   }
 
   .hero__lede {
-    max-inline-size: 60ch;
-    margin-block-start: var(--space-m);
+    max-inline-size: 62ch;
+    margin-block-start: 1.625rem;
     color: var(--text-muted);
-    font-size: var(--step-1);
-    line-height: 1.55;
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+    line-height: 1.6;
+    text-wrap: pretty;
   }
 
   /* ── Typed focus line (src/scripts/focus-line.ts) ──
      Two layers share one grid cell: the static line (final text — the no-JS, motion-off and
      settled state, and always the height reserve) and the live layer the script types into. */
   .hero__focus {
-    margin-block-start: var(--space-s);
+    margin-block-start: 1.375rem;
     color: var(--text-muted);
     font-family: var(--font-mono);
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-size: 0.9375rem;
+    line-height: 1.6;
   }
 
   .hero__focus-stack {
@@ -305,7 +315,7 @@ const readouts = [
   .hero__focus-stack > * {
     display: flex;
     grid-area: 1 / 1;
-    column-gap: 0.6em;
+    column-gap: 0.875rem;
   }
 
   .hero__focus-body {
@@ -355,7 +365,7 @@ const readouts = [
     align-items: center;
     justify-content: space-between;
     gap: var(--space-xs) var(--space-m);
-    padding-block: var(--space-s);
+    padding-block: 1.25rem;
   }
 
   /* The chip's slot is its widest state from first paint (MotionToggle), so whether it shares
@@ -383,14 +393,21 @@ const readouts = [
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-m) var(--space-l);
-    margin-block-start: var(--space-xl);
+    gap: 1rem 1.75rem;
+    margin-block-start: 2.625rem;
   }
 
   .hero__buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-xs);
+    gap: 0.875rem;
+  }
+
+  /* The hero's CTAs a step up from the site's default button (48px, 16px type). */
+  .hero__buttons .button {
+    min-block-size: 3rem;
+    padding-inline: 1.375rem;
+    font-size: 1rem;
   }
 
   /* Phones: the two buttons share the row (or stack full-width when it's too narrow). */
@@ -409,7 +426,7 @@ const readouts = [
   .hero__links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--space-m);
+    gap: 0 1.625rem;
     padding: 0;
     list-style: none;
   }
@@ -419,9 +436,9 @@ const readouts = [
     align-items: center;
     gap: 0.3em;
     min-block-size: 2.75rem;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 400;
     text-decoration: none;
   }
 
@@ -445,7 +462,7 @@ const readouts = [
   }
 
   .hero__inner > :global(.hero__status) {
-    margin-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+    margin-block-start: clamp(3rem, 2rem + 4vw, 5.5rem);
   }
 
   /* ── Motion (behind the global gate: OS allows it and the toggle isn't off) ── */
@@ -610,20 +627,50 @@ const readouts = [
       display: none;
     }
 
+    .hero__eyebrow {
+      column-gap: 0.625rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .hero__signal {
+      inline-size: 7px;
+      block-size: 7px;
+      margin-block-start: calc((1lh - 7px) / 2);
+    }
+
+    /* The name as the chapter opener: two tight lines, first name then surname and an accent
+       full stop (decorative, hidden from assistive tech). */
     .hero__title {
-      margin-block-start: 0.875rem;
-      font-size: 2.5rem;
-      line-height: 1.02;
+      margin-block-start: 1rem;
+      font-size: clamp(3.25rem, 17vw, 4.25rem);
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+    }
+
+    .hero__name-first {
+      display: block;
+    }
+
+    /* Generated, with empty alt text, so the name is still read as "Parker Jackim". */
+    .hero__name-rest::after {
+      content: '.';
+      content: '.' / '';
+      color: var(--accent);
     }
 
     .hero__lede {
-      margin-block-start: 0.75rem;
-      font-size: var(--step-1);
+      max-inline-size: 30ch;
+      margin-block-start: 1.125rem;
+      font-size: 1.0625rem;
       line-height: 1.5;
     }
 
     .hero__focus {
       display: block;
+      margin-block-start: 0.875rem;
+      font-size: 0.875rem;
+      line-height: 1.4;
     }
 
     .hero__actions {
@@ -632,21 +679,35 @@ const readouts = [
       padding-block-start: var(--space-xl);
     }
 
+    /* Two equal 52px actions with the sticky CTA bar's radius (HomeMobilePanels), so the pair
+       reads as the same controls when the bar takes over. */
     .hero__buttons {
+      display: grid;
       flex: 1 1 100%;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
     }
 
     .hero__buttons .button {
-      flex: 1 1 auto;
       justify-content: center;
-      padding-inline: 0.875rem;
+      min-block-size: 3.25rem;
+      padding-inline: 0.75rem;
+      border-radius: 0.75rem;
+    }
+
+    .hero__buttons .button--primary {
+      font-weight: 600;
+    }
+
+    .hero__buttons .button--secondary {
+      background-color: color-mix(in oklch, var(--bg) 70%, transparent);
     }
 
     .hero__scroll-hint {
       display: flex;
       align-items: center;
-      gap: var(--space-xs);
-      margin-block-start: var(--space-m);
+      gap: 0.75rem;
+      margin-block-start: 1.375rem;
       color: var(--text-subtle);
       font-family: var(--font-mono);
       font-size: 0.6875rem;

@@ -34,15 +34,15 @@ issue a careful visitor would notice · **P3** polish.
 
 ## S. Style fidelity ([site-style.md](../identity/site-style.md))
 
-| ID  | Check                                                                                                | Verify                                                                   | Fix |
-| --- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --- |
-| S1  | One accent, used for state/focus/signal only; no second hue, gradient fill, tinted section, or glow. | Screenshots both themes; grep `oklch(`/`#` literals outside `tokens.css` | M/J |
-| S2  | Depth is tone + hairline: no `box-shadow` elevation, glass, or blur-as-decoration.                   | grep `box-shadow`, `backdrop-filter`                                     | M   |
-| S3  | Radii only `--radius-xs`/`--radius-s`; no pills or large rounded cards.                              | grep `border-radius`                                                     | M   |
-| S4  | Type roles match the profile: mono only for labels/data, display short, lede muted, body `--step-0`. | Screenshots; component CSS                                               | M/J |
-| S5  | Signature elements reused through their components, not re-drawn, and not multiplied per section.    | grep for new eyebrows, carets, reticle copies                            | J   |
-| S6  | Voice: plain first person, terse mono keys, destination-named actions, no hype, no new em-dashes.    | Read visible copy                                                        | M/J |
-| S7  | A new section feels like the same instrument as the hero (same palette, labels, motion personality). | Side-by-side screenshots with the hero                                   | J   |
+| ID  | Check                                                                                                                  | Verify                                                                   | Fix |
+| --- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --- |
+| S1  | One accent, used for state/focus/signal only; no second hue, gradient fill, tinted section, or glow.                   | Screenshots both themes; grep `oklch(`/`#` literals outside `tokens.css` | M/J |
+| S2  | Depth is tone + hairline: no `box-shadow` elevation, glass, or blur-as-decoration (site-style lists the 3 sanctioned). | grep `box-shadow`, `backdrop-filter`                                     | M   |
+| S3  | Radii only `--radius-xs`/`--radius-s`; no pills or large rounded cards (site-style's exceptions aside).                | grep `border-radius`                                                     | M   |
+| S4  | Type roles match the profile: mono only for labels/data, display short, lede muted, body `--step-0`.                   | Screenshots; component CSS                                               | M/J |
+| S5  | Signature elements reused through their components, not re-drawn, and not multiplied per section.                      | grep for new eyebrows, carets, reticle copies                            | J   |
+| S6  | Voice: plain first person, terse mono keys, destination-named actions, no hype, no new em-dashes.                      | Read visible copy                                                        | M/J |
+| S7  | A new section feels like the same instrument as the hero (same palette, labels, motion personality).                   | Side-by-side screenshots with the hero                                   | J   |
 
 ## C. Craft ([typography-and-layout.md](./typography-and-layout.md), [anti-slop.md](./anti-slop.md))
 
