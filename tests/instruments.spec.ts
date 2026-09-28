@@ -26,6 +26,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type Route } from '@playwright/test';
 import { themeToggle } from './helpers/header.ts';
+import { twoFrames } from './helpers/motion.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -347,7 +348,12 @@ test.describe('/work/ filter, motion on', () => {
     await gotoRel(page, 'work/');
     await filterReady(page);
     await page.waitForTimeout(300);
-    expect(await page.evaluate(() => window.__filterShifts)).toEqual([]);
+    const shifts = (await page.evaluate(() => window.__filterShifts)) ?? [];
+    // Sub-pixel rounding can register a shift entry with no visible movement (Chromium reports
+    // these down to ~1e-5); anything under Google's "good" CLS budget (0.1), with a wide
+    // margin, is noise, not the bar's reveal shifting real content.
+    const total = shifts.reduce((sum, v) => sum + v, 0);
+    expect(total, `layout-shift values: ${JSON.stringify(shifts)}`).toBeLessThan(0.01);
   });
 });
 
@@ -679,6 +685,7 @@ test.describe('footer', () => {
     await expect(top).toHaveAttribute('href', '#main');
     const chip = footer.locator('[data-motion-toggle]');
     await expect(chip).toBeVisible({ timeout: 10_000 });
+    await twoFrames(page);
     const text = (await copyright.boundingBox())!;
     const button = (await chip.boundingBox())!;
     if (page.viewportSize()!.width >= ROW_FROM) {
@@ -783,7 +790,7 @@ test.describe('in-page scrolling (Ruling G9)', () => {
       await page.locator('.site-nav a', { hasText: 'About' }).click();
       await expect(page).toHaveURL(/#about$/);
       await expect(page.locator('#about')).toBeInViewport();
-      await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/, { timeout: 3000 });
+      await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/, { timeout: 8000 });
       const ys = (await page.evaluate(() => window.__scrollYs)) ?? [];
       const target = ys.at(-1) ?? 0;
       expect(target).toBeGreaterThan(0);

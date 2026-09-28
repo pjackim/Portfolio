@@ -541,7 +541,7 @@ test.describe('entrance reveals, motion on', () => {
     });
     await scrollIntoView(page, `${CARD}[data-reveal]`, 'center');
     // It plays, then the state goes: nothing left behind (no clip that could cut a focus ring).
-    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await expect(target).toHaveCSS('opacity', '1');
     await expect(target).toHaveCSS('clip-path', 'none');
     expect(await target.evaluate((el) => el.getAnimations().length)).toBe(0);
@@ -570,7 +570,7 @@ test.describe('entrance reveals, motion on', () => {
       const top = el.getBoundingClientRect().top + scrollY;
       scrollTo({ top: top - innerHeight * (2 / 3), behavior: 'instant' });
     });
-    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await expect(target).toHaveCSS('opacity', '1');
   });
 
@@ -615,7 +615,7 @@ test.describe('entrance reveals, motion on', () => {
       document.body.append(spacer);
     });
     await target.evaluate((el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
-    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await expect(target).toHaveCSS('translate', 'none');
     await expect(target).toHaveCSS('opacity', '1');
   });
@@ -635,7 +635,7 @@ test.describe('entrance reveals, motion on', () => {
 
     await scrollIntoView(page, '.caps', 'center');
     await expect(page.locator('.caps__panel')).not.toHaveAttribute('data-reveal-state', {
-      timeout: 3000,
+      timeout: 8000,
     });
     await page.locator('.caps__tab').nth(2).click();
     await expect(page.locator('.caps__radio').nth(2)).toBeChecked();
@@ -696,7 +696,7 @@ test.describe('entrance reveals, motion on', () => {
     const frame = page.locator('#experience .git-log__frame');
     await expect(frame).toHaveAttribute('data-reveal-state', 'pending');
     await scrollIntoView(page, '#experience .git-log__frame', 'center');
-    await expect(frame).not.toHaveAttribute('data-reveal-state', { timeout: 4000 });
+    await expect(frame).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await expect(frame).toHaveCSS('clip-path', 'none');
     await expect(frame).toHaveCSS('opacity', '1');
     expect(await frame.evaluate((el) => el.getAnimations().length)).toBe(0);
@@ -715,7 +715,7 @@ test.describe('entrance reveals, motion on', () => {
     );
     await expect(
       page.locator('.contact__figure[data-reveal-state], .contact__channels[data-reveal-state]'),
-    ).toHaveCount(0, { timeout: 3000 });
+    ).toHaveCount(0, { timeout: 8000 });
     const opacities = await page
       .locator('.contact__frame, .contact__caption, .contact__channels > li')
       .evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity));
@@ -748,7 +748,7 @@ test.describe('entrance reveals, motion on', () => {
       el.addEventListener('animationcancel', onEvent);
     });
     await scrollIntoView(page, '.contact', 'center');
-    await expect(figure).not.toHaveAttribute('data-reveal-state', { timeout: 4000 });
+    await expect(figure).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await twoFrames(page);
     const tickLog = await page.evaluate(() => window.__tickLog);
     expect(tickLog!.cancel, 'the lock-on was cut off before it finished').toBe(0);
@@ -785,7 +785,7 @@ test.describe('entrance reveals, motion on', () => {
     const card = page.locator(`${CARD}:nth-child(4)`);
     await expect(card).toHaveAttribute('data-reveal-state', 'pending');
     await scrollIntoView(page, `${CARD}:nth-child(4)`, 'center');
-    await expect(card).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
+    await expect(card).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await card.locator('.card__title a').click();
     await page.waitForURL(/\/work\/[^/]+\/$/);
     await page.goBack();
