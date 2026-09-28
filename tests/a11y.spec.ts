@@ -10,7 +10,12 @@
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { interactionsLoaded, revealsInFlightOnScreen, twoFrames } from './helpers/motion.ts';
+import {
+  interactionsLoaded,
+  revealsInFlightOnScreen,
+  runningTransitions,
+  twoFrames,
+} from './helpers/motion.ts';
 import { gotoRel, NOT_FOUND_PAGE, routeName, ROUTES } from './helpers/routes.ts';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
@@ -56,6 +61,9 @@ for (const colorScheme of ['dark', 'light'] as const) {
           // The hero's chip (hidden on phones, where the footer's is the control).
           const chip = page.locator('[data-motion-toggle]').locator('visible=true').first();
           await expect(chip).toBeVisible({ timeout: 10_000 });
+          // Nothing caught mid-fade (the phone's sticky bar, the nav's segments): axe would
+          // measure a half-transparent colour's contrast.
+          await expect.poll(() => runningTransitions(page), { timeout: 3000 }).toBe(0);
         }
         expect(await axeReport(page), 'axe violations (rule id + targets)').toEqual([]);
         // The heading code (if the page has headings) must be in before the jump, so the
@@ -69,6 +77,8 @@ for (const colorScheme of ['dark', 'light'] as const) {
         await twoFrames(page);
         await expect(page.locator('.section-heading__decrypt')).toHaveCount(0, { timeout: 3000 });
         await expect.poll(() => revealsInFlightOnScreen(page), { timeout: 3000 }).toBe(0);
+        // At the foot of the phone home page, the sticky bar has just faded out.
+        await expect.poll(() => runningTransitions(page), { timeout: 3000 }).toBe(0);
         expect(await axeReport(page), 'axe violations at the foot (rule id + targets)').toEqual([]);
       });
     }
