@@ -144,7 +144,18 @@ const begin = () => {
     requestAnimationFrame(start);
   };
   addEventListener('scrollend', go, { once: true });
-  setTimeout(go, 1500);
+  // Poll: some browsers (WebKit) delay or skip scrollend on fragment navigation; once the page
+  // is actually at the target, there is no reason to wait longer.
+  const poll = setInterval(() => {
+    if (landedOn(target!)) {
+      clearInterval(poll);
+      go();
+    }
+  }, 50);
+  setTimeout(() => {
+    clearInterval(poll);
+    go();
+  }, 1500);
 };
 if (document.readyState === 'complete') begin();
 else addEventListener('load', begin, { once: true });
