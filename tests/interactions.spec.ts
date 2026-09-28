@@ -20,7 +20,7 @@
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { interactionsLoaded, twoFrames } from './helpers/motion.ts';
+import { framesSettled, interactionsLoaded, twoFrames } from './helpers/motion.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 test.use({ viewport: { width: 1280, height: 800 } });
@@ -34,7 +34,7 @@ declare global {
     __states?: string[];
     __revealed?: string[];
     __armed?: number[];
-    __flicker?: { samples: string[]; set: number; cleared: number };
+    __flicker?: { samples: string[]; times: number[]; set: number; cleared: number };
     __sweep?: { animations: string[]; scan: number };
     __tickLog?: { start: number; end: number; cancel: number };
   }
@@ -274,13 +274,17 @@ test.describe('section headings, motion on', () => {
     page,
   }) => {
     await page.addInitScript(() => {
-      window.__flicker = { samples: [], set: -1, cleared: -1 };
+      window.__flicker = { samples: [], times: [], set: -1, cleared: -1 };
       document.addEventListener('DOMContentLoaded', () => {
         const title = document.querySelector('#experience-title')!;
         new MutationObserver(() => {
           const flicker = window.__flicker!;
           const layer = title.querySelector('.section-heading__decrypt');
-          if (layer) flicker.samples.push(layer.textContent ?? '');
+          if (layer) {
+            // The layer's text is rewritten every frame, so these are the effect's frames.
+            flicker.samples.push(layer.textContent ?? '');
+            flicker.times.push(performance.now());
+          }
           const on = title.hasAttribute('data-decrypt');
           if (on && flicker.set < 0) flicker.set = performance.now();
           if (!on && flicker.set >= 0 && flicker.cleared < 0) flicker.cleared = performance.now();
@@ -296,11 +300,17 @@ test.describe('section headings, motion on', () => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
     await expect.poll(() => interactionsLoaded(page)).toBe(true);
-    await scrollIntoView(page, '#experience .section-heading', 'center');
+    // Park the heading at the bottom edge, inside the observer's 12% bottom margin so it hasn't
+    // arrived yet, and let the section behind it finish painting. Then bring it in by a short
+    // scroll, so the flicker is timed on a settled page, not on the first paint of #experience.
+    await scrollIntoView(page, '#experience .section-heading', 'end');
+    await framesSettled(page);
+    expect(await page.evaluate(() => window.__flicker!.set), 'not arrived yet').toBe(-1);
+    await page.evaluate(() => scrollBy({ top: innerHeight * 0.3, behavior: 'instant' }));
     await expect
       .poll(() => page.evaluate(() => window.__flicker!.cleared), { timeout: 5000 })
       .toBeGreaterThan(0);
-    const { samples, set, cleared } = (await page.evaluate(() => window.__flicker))!;
+    const { samples, times, set, cleared } = (await page.evaluate(() => window.__flicker))!;
     const final = 'Experience';
     const letters = [...final].filter((ch) => /[a-z0-9]/i.test(ch)).length;
     // Every glyph position that ever showed something other than its own letter.
@@ -315,8 +325,17 @@ test.describe('section headings, motion on', () => {
     expect(touched.size, `glyphs touched of ${letters}`).toBeLessThanOrEqual(
       Math.ceil(letters * 0.4),
     );
-    // A flicker, not a decrypt: over within ~400 ms (a frame or two of slack each side).
-    expect(cleared - set).toBeLessThan(560);
+    // A flicker, not a decrypt: its own clock runs 400 ms (a full decrypt's, 600). scramble.ts
+    // starts that clock on its first frame and stops on the first frame at or past 400 ms, so
+    // its last running frame is under 400 ms after its first, however late frames land. Timed
+    // wall-clock instead, a slow runner's long frames would add up to a frame gap at each end.
+    // Samples: [0] the layer arriving, [1] the first frame, …, [-2] the last running frame,
+    // [-1] the frame that writes the letters back. The slack covers a sample trailing its
+    // frame's rAF timestamp by the other frame callbacks that ran first.
+    expect(times.length, 'the flicker ran over several frames').toBeGreaterThan(3);
+    expect(times.at(-2)! - times[1]!).toBeLessThan(400 + 50);
+    // And it is still over quickly for the reader, even on a slow runner.
+    expect(cleared - set).toBeLessThan(1500);
     await expect(page.locator('#experience-title')).toHaveText(final);
   });
 
