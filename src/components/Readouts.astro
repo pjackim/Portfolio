@@ -1,0 +1,170 @@
+---
+/**
+ * Instrument readouts (interactions spec §2), e.g. `15 PROJECTS · 06 CASE STUDIES` — the
+ * successor to the 2021 site's counter-up.
+ *
+ * Every digit is a clipped reel of 0–9 twice over (one text node, wrapped one digit per line),
+ * parked by CSS on its value in the second turn, so the static (SSR, no-JS, motion-off) state
+ * reads correctly; src/scripts/readouts.ts turns the drums once the row is on screen. Each turns
+ * in place: from the same digit one turn up, a full revolution, back onto it — so it never
+ * blinks to 0 or any other value before it moves. The reels are `aria-hidden`; each item's real
+ * text (`spoken`) sits in a visually hidden twin. Tabular mono digits: widths never change.
+ */
+export interface Readout {
+  /** As displayed, e.g. "06"; digits roll, other characters stay put. */
+  value: string;
+  label: string;
+  /** What assistive tech reads, e.g. "6 case studies". */
+  spoken: string;
+}
+
+interface Props {
+  items: readonly Readout[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+/** Two turns of the drum as one text node; `min-content` wraps it to one digit per line. */
+const REEL = [...'01234567890123456789'].join(' ');
+---
+
+<ul class:list={['readouts', className]} role="list" data-readouts>
+  {items.map(({ value, label, spoken }, i) => (
+    <li class="readout">
+      <span class="visually-hidden">{spoken}</span>
+      <span class="readout__visual" aria-hidden="true">
+        {i > 0 && <span class="readout__sep">·</span>}
+        <span class="readout__value">
+          {[...value].map((ch) =>
+            /\d/.test(ch) ? (
+              <span class="readout__digit" data-digit={ch}>
+                <span class="readout__reel" data-reel set:text={REEL} />
+              </span>
+            ) : (
+              <span>{ch}</span>
+            ),
+          )}
+        </span>
+        <span class="readout__label">{label}</span>
+      </span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .readouts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-subtle);
+  }
+
+  /* Not selectable: copying the row picks up the visually hidden twins ("15 projects"), not
+     two turns of every drum. */
+  .readout__visual {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .readout__sep {
+    padding-inline: 0.75em;
+    color: var(--line-ui);
+  }
+
+  .readout__value {
+    display: inline-flex;
+    margin-inline-end: 0.6em;
+    color: var(--text);
+  }
+
+  /* One line-box tall window onto the reel. */
+  .readout__digit {
+    display: inline-block;
+    block-size: 1lh;
+    overflow: clip;
+  }
+
+  .readout__reel {
+    display: block;
+    inline-size: min-content;
+    white-space: normal;
+    translate: 0 calc((10 + var(--d, 0)) * -1lh);
+  }
+
+  .readout__digit[data-digit='1'] {
+    --d: 1;
+  }
+  .readout__digit[data-digit='2'] {
+    --d: 2;
+  }
+  .readout__digit[data-digit='3'] {
+    --d: 3;
+  }
+  .readout__digit[data-digit='4'] {
+    --d: 4;
+  }
+  .readout__digit[data-digit='5'] {
+    --d: 5;
+  }
+  .readout__digit[data-digit='6'] {
+    --d: 6;
+  }
+  .readout__digit[data-digit='7'] {
+    --d: 7;
+  }
+  .readout__digit[data-digit='8'] {
+    --d: 8;
+  }
+  .readout__digit[data-digit='9'] {
+    --d: 9;
+  }
+
+  /* Phones: one readout per line, no separators. */
+  @media (width < 30rem) {
+    .readouts {
+      flex-direction: column;
+    }
+
+    .readout__sep {
+      display: none;
+    }
+  }
+
+  /* The turn (motion gate, global.css): each drum starts on its own digit one turn up (the same
+     glyph as at rest, so nothing changes until it moves), makes one full revolution and eases
+     back onto it, staggered by --i (set by the script). Waiting its turn it shows that same
+     glyph, so no reel is ever seen parked on another value. */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes readout-roll {
+      from {
+        translate: 0 calc(var(--d, 0) * -1lh);
+      }
+    }
+
+    /* In transit, digits fade out toward the window's edges like an instrument drum; the
+       band a glyph occupies at rest (cap height, centred) stays fully opaque. */
+    :global(:root:not([data-motion='off'])) .readouts[data-roll='rolling'] .readout__digit {
+      mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+    }
+
+    :global(:root:not([data-motion='off'])) .readouts[data-roll='rolling'] .readout__reel {
+      animation-name: readout-roll;
+      animation-duration: 620ms;
+      animation-timing-function: cubic-bezier(0.16, 0.84, 0.3, 1);
+      animation-delay: calc(var(--i, 0) * 45ms);
+      animation-fill-mode: backwards;
+    }
+  }
+</style>

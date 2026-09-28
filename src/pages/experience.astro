@@ -1,0 +1,23 @@
+---
+/**
+ * Experience (Portfolio.dc.html, Claude Design, Sept 2026): the git log on its own page — where
+ * the phone layout's ~/experience/ and home card go. Same component as the home page's section.
+ */
+import GitLog from '../components/GitLog.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Experience — Parker Jackim"
+  description="Parker Jackim's roles, projects and qualifications, newest first, with the skills each one brought in."
+>
+  <div class="standalone container">
+    <PageHeader
+      index="02"
+      title="Experience"
+      intro="Roles, projects and qualifications, newest first, with the skills each brought in."
+    />
+    <GitLog class="standalone__body" />
+  </div>
+</BaseLayout>

@@ -1,0 +1,299 @@
+---
+/**
+ * Contact (Portfolio.dc.html, Claude Design, Sept 2026): the profile photo in a 4:5 frame with
+ * accent corners and a mono caption (name · location), beside a readout of channels — one full-
+ * width row each, a mono kind on the left and the value large on the right, the whole row one
+ * link. Email shows the address itself (tap to mail); GitHub the handle; LinkedIn the name on
+ * the profile; the résumé its format. No form, no phone. Photo above the list on phones.
+ *
+ * The photo is the legacy site's contact selfie (d8782d1:Images/self/canyonSelfie.JPG), square;
+ * the frame crops it to 4:5 around the centre.
+ *
+ * Entrance (global.css reveal engine, behind the motion gate): the photo wipes down into its frame,
+ * the caption rises after it, then the corners close in a beat apart and one accent scanline
+ * sweeps up the photo; the channel rows rise in one after another. The corner and sweep
+ * animations run inside the figure's reveal window (the caption's lengthened reveal holds it
+ * open until they finish), so nothing jumps when it closes.
+ */
+import { Picture } from 'astro:assets';
+import portrait from '../assets/profile/parker-jackim.webp';
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+import '../styles/reticle.css';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
+const channels = [
+  { kind: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { kind: 'GitHub', value: githubHandle, href: site.github },
+  { kind: 'LinkedIn', value: site.name, href: site.linkedin },
+  { kind: 'Résumé', value: 'PDF', href: withBase(site.resume) },
+];
+---
+
+<div class:list={['contact', className]}>
+  <figure class="contact__figure" data-reveal="contents">
+    <div class="contact__frame reticle">
+      <div class="contact__photo-box">
+        <Picture
+          src={portrait}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[240, 360, 480, 640]}
+          sizes="(width >= 48rem) 17rem, 15rem"
+          alt={`${site.name}, smiling, in a sandstone canyon`}
+          class="contact__photo"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="contact__sweep" aria-hidden="true"></span>
+      </div>
+    </div>
+    <figcaption class="contact__caption mono-label">
+      <span class="contact__name">{site.name}</span>
+      <span>{site.location}</span>
+    </figcaption>
+  </figure>
+
+  <ul class="contact__channels" role="list" data-reveal="contents" data-reveal-from="rise">
+    {channels.map(({ kind, value, href }) => (
+      <li>
+        <a class="contact__channel" href={href}>
+          <span class="contact__kind mono-label">{kind}</span>
+          <span class="contact__value">
+            <span class="contact__value-text">{value}</span>
+            <Arrow dir="up-right" />
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (width >= 48rem) {
+    .contact {
+      grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+    }
+  }
+
+  /* ── Photo ── */
+  .contact__figure {
+    inline-size: 100%;
+    max-inline-size: 15rem;
+    margin: 0;
+  }
+
+  @media (width >= 48rem) {
+    .contact__figure {
+      max-inline-size: none;
+    }
+  }
+
+  .contact__frame {
+    position: relative;
+
+    --reticle-inset: -7px;
+    /* Entrance: the photo wipes down into the frame. */
+    --reveal-x: 0;
+    --reveal-y: 0;
+    --reveal-clip: inset(0 0 100% 0);
+    --reveal-dur: 750ms;
+  }
+
+  .contact__photo-box {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+  }
+
+  .contact__photo {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .contact__sweep {
+    display: none;
+  }
+
+  .contact__caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-block-start: 1rem;
+    font-size: 0.75rem;
+
+    --reveal-y: 8px;
+    --reveal-clip: inset(0);
+    --reveal-dur: 900ms;
+    --i: 3;
+  }
+
+  .contact__name {
+    color: var(--text);
+  }
+
+  /* ── Channels ── */
+  .contact__channels {
+    min-inline-size: 0;
+    padding: 0;
+    border-block-end: var(--hairline);
+    list-style: none;
+  }
+
+  .contact__channels > li:nth-child(2) {
+    --i: 1;
+  }
+
+  .contact__channels > li:nth-child(3) {
+    --i: 2;
+  }
+
+  .contact__channels > li:nth-child(n + 4) {
+    --i: 3;
+  }
+
+  .contact__channel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-m);
+    padding-block: 1.375rem;
+    border-block-start: var(--hairline);
+    color: var(--text);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .contact__kind {
+    flex: 0 0 100%;
+    font-size: 0.875rem;
+  }
+
+  @media (width >= 48rem) {
+    .contact__kind {
+      flex-basis: 11.625rem;
+    }
+  }
+
+  .contact__value {
+    display: inline-flex;
+    flex: 1 1 18.75rem;
+    align-items: center;
+    gap: 0.4em;
+    min-inline-size: 0;
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .contact__value-text {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__value :global(.arrow) {
+    flex: none;
+    inline-size: 0.75em;
+    block-size: 0.75em;
+    color: var(--text-subtle);
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .contact__channel:hover,
+    .contact__channel:hover :global(.arrow) {
+      color: var(--accent);
+    }
+  }
+
+  .contact__channel:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* ── Motion (the gate, global.css) ── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .contact__value :global(.arrow) {
+      transition:
+        color var(--dur-fast) var(--ease-standard),
+        translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      :global(:root:not([data-motion='off'])) .contact__channel:hover :global(.arrow) {
+        translate: 2px -2px;
+      }
+    }
+
+    /* Lock-on, inside the figure's entrance: corners close in a beat apart once the photo is
+       in, then a scanline sweeps up it. Ends by ~1.16 s; the caption's reveal (--i 3, 900 ms)
+       holds the window open to ~1.17 s. */
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::before,
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::after {
+      animation: contact-corners 200ms var(--ease-out) 700ms backwards;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__frame::after {
+      animation-delay: 760ms;
+    }
+
+    :global(:root:not([data-motion='off']))
+      .contact__figure[data-reveal-state='in']
+      .contact__sweep {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 100% 1px;
+      opacity: 0;
+      pointer-events: none;
+      animation: contact-sweep 600ms cubic-bezier(0.45, 0, 0.25, 1) 560ms;
+    }
+
+    @keyframes contact-corners {
+      from {
+        opacity: 0;
+        scale: 1.08;
+      }
+    }
+
+    @keyframes contact-sweep {
+      from {
+        background-position: 0 100%;
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      to {
+        background-position: 0 0;
+        opacity: 0;
+      }
+    }
+  }
+</style>

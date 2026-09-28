@@ -1,0 +1,95 @@
+---
+/**
+ * Home (Portfolio.dc.html, Claude Design, Sept 2026): hero → 01 About → 02 Experience →
+ * 03 Selected work → 04 Contact. Each section is labelled by its h2. Capabilities have their
+ * own page (/capabilities/), and every project is on /work/. The empty `*-section` spans keep
+ * the legacy site's deep links (#about-section, #portfolio-section, #social-section) landing
+ * on the matching section.
+ *
+ * Phones (under 40rem) get the same four sections as scroll-snap panels instead
+ * (HomeMobilePanels, after the hero's full-height chapter opener — Hero.astro's phone
+ * treatment) — the desktop sections below are not shown there.
+ */
+import AboutTimeline from '../components/AboutTimeline.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import GitLog from '../components/GitLog.astro';
+import Hero from '../components/Hero.astro';
+import HomeMobilePanels from '../components/HomeMobilePanels.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeatured } from '../lib/projects';
+import { personJsonLd } from '../lib/seo';
+import { withBase } from '../lib/url';
+
+const featured = await getFeatured();
+---
+
+<BaseLayout
+  title="Parker Jackim — Cyber Security Researcher"
+  description="Portfolio of Parker Jackim: reverse engineering, credential-security ML, Unreal Engine networking, and React engineering."
+  jsonLd={personJsonLd(featured)}
+>
+  <Hero />
+
+  <HomeMobilePanels class="container" featured={featured} />
+
+  <section id="about" class="home-section container" aria-labelledby="about-title">
+    <span id="about-section" class="legacy-anchor"></span>
+    <SectionHeading index="01" label="About" id="about-title" />
+    <AboutTimeline />
+  </section>
+
+  <section id="experience" class="home-section container" aria-labelledby="experience-title">
+    <SectionHeading index="02" label="Experience" id="experience-title" />
+    <GitLog />
+  </section>
+
+  <section id="work" class="home-section container" aria-labelledby="work-title">
+    <span id="portfolio-section" class="legacy-anchor"></span>
+    <SectionHeading
+      index="03"
+      label="Selected work"
+      id="work-title"
+      action={{ href: withBase('work/'), text: 'All work →' }}
+    />
+    <ProjectGrid projects={featured} />
+  </section>
+
+  <section
+    id="contact"
+    class="home-section home-section--last container"
+    aria-labelledby="contact-title"
+  >
+    <span id="social-section" class="legacy-anchor"></span>
+    <SectionHeading index="04" label="Contact" id="contact-title" />
+    <ContactBlock />
+  </section>
+</BaseLayout>
+
+<style>
+  /* --readout-rail: the About timeline's marker column, so the lower half of the page reads
+     down one text edge while headings, rules and grids keep the container edge. */
+  .home-section {
+    --readout-rail: 9rem;
+    padding-block-start: var(--space-section);
+    /* In-page jumps (#work, #about, #contact) land just above the heading, not on the
+       section's top padding (html's scroll-padding already clears the sticky header). */
+    scroll-margin-top: calc(var(--space-l) - var(--space-section));
+  }
+
+  .home-section--last {
+    padding-block-end: var(--space-section);
+  }
+
+  .legacy-anchor {
+    display: block;
+  }
+
+  /* Phones: HomeMobilePanels instead of the sections. */
+  @media (width < 40rem) {
+    .home-section {
+      display: none;
+    }
+  }
+</style>

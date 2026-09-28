@@ -1,0 +1,23 @@
+---
+/**
+ * Capabilities (Portfolio.dc.html, Claude Design, Sept 2026): the capability groups on their own
+ * page, linked from the header — a tab per group, a row per skill with the work it came from.
+ */
+import CapabilityGroups from '../components/CapabilityGroups.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Capabilities — Parker Jackim"
+  description="Parker Jackim's skills by area, from offensive security and reverse engineering to data and ML, engines and design, each with the work it came from."
+>
+  <div class="standalone container">
+    <PageHeader
+      index="··"
+      title="Capabilities"
+      intro="Skills grouped by area, each with the work it came from."
+    />
+    <CapabilityGroups class="standalone__body" />
+  </div>
+</BaseLayout>

@@ -1,0 +1,133 @@
+---
+/**
+ * Header of a standalone page — /work/, /about/, /experience/, /capabilities/ (Portfolio.dc.html,
+ * Claude Design, Sept 2026): a mono "← Home" link, the display h1 and a one-line intro.
+ *
+ * Phones get the section heading's mono row instead ("02 / EXPERIENCE ────"): the header's
+ * ~/section prompt already says where you are and takes you anywhere else, so the back link
+ * goes, and the page starts on its content a screen sooner.
+ */
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+
+interface Props {
+  /** Zero-padded section number, shown on phones ("02"). */
+  index: string;
+  title: string;
+  intro?: string;
+  class?: string;
+}
+
+const { index, title, intro, class: className } = Astro.props;
+---
+
+<header class:list={['page-header', className]}>
+  <a class="page-header__back mono-label" href={withBase('')}>
+    <Arrow dir="left" />
+    Home
+  </a>
+  <div class="page-header__heading">
+    <span class="page-header__index" aria-hidden="true">
+      {index}
+      <span class="page-header__slash">/</span>
+    </span>
+    <h1 class="page-header__title">{title}</h1>
+    <span class="page-header__rule" aria-hidden="true"></span>
+  </div>
+  {intro && <p class="page-header__intro">{intro}</p>}
+</header>
+
+<style>
+  .page-header {
+    padding-block-start: clamp(2rem, 1rem + 3vw, 4rem);
+  }
+
+  .page-header__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: 2.75rem;
+    color: var(--text-subtle);
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+    .page-header__back:hover {
+      color: var(--text);
+    }
+  }
+
+  .page-header__index,
+  .page-header__rule {
+    display: none;
+  }
+
+  .page-header__title {
+    margin-block-start: 0.875rem;
+    font-size: var(--step-5);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .page-header__intro {
+    max-inline-size: 60ch;
+    margin-block-start: 1.125rem;
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    text-wrap: pretty;
+  }
+
+  @media (width < 40rem) {
+    .page-header {
+      padding-block-start: var(--space-m);
+    }
+
+    .page-header__back {
+      display: none;
+    }
+
+    .page-header__heading {
+      display: flex;
+      align-items: baseline;
+      gap: 0.625em;
+      font-family: var(--font-mono);
+    }
+
+    .page-header__index {
+      display: inline;
+      flex: none;
+      color: var(--accent);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .page-header__slash {
+      color: var(--text-subtle);
+    }
+
+    .page-header__title {
+      margin: 0;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .page-header__rule {
+      display: block;
+      flex: 1;
+      align-self: center;
+      block-size: 1px;
+      margin-inline-start: 0.5rem;
+      background-color: var(--line);
+    }
+
+    .page-header__intro {
+      margin-block-start: var(--space-xs);
+      font-size: var(--step-0);
+    }
+  }
+</style>

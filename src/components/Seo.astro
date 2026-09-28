@@ -1,0 +1,48 @@
+---
+/**
+ * Per-page meta (spec-design-content §6): title, description, canonical, robots, Open Graph
+ * and Twitter card, icons, sitemap link. A `noindex` page (404) gets no canonical or `og:url`
+ * — its URL is whatever path was missing, never a page of its own.
+ */
+import { site } from '../data/site';
+import { DEFAULT_OG_IMAGE, type OgImage } from '../lib/seo';
+import { withBase } from '../lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Share image; defaults to `public/og-default.png`. */
+  ogImage?: OgImage | undefined;
+  ogType?: 'website' | 'article' | undefined;
+  noindex?: boolean | undefined;
+}
+
+const {
+  title,
+  description,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+const canonical = noindex ? undefined : new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{canonical && <link rel="canonical" href={canonical} />}
+{noindex && <meta name="robots" content="noindex" />}
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+{canonical && <meta property="og:url" content={canonical} />}
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content={ogImage.src} />
+<meta property="og:image:width" content={String(ogImage.width)} />
+<meta property="og:image:height" content={String(ogImage.height)} />
+<meta property="og:image:alt" content={ogImage.alt} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href={withBase('favicon.ico')} sizes="32x32" />
+<link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+<link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
+<link rel="sitemap" href={withBase('sitemap-index.xml')} />

@@ -1,0 +1,122 @@
+---
+/**
+ * Selected work as a bento grid (Portfolio.dc.html, Claude Design, Sept 2026 — "1b, size by
+ * importance"): the featured case studies in `order`, the first the lead cell. From 960px, a
+ * 12-column grid of 240px rows: the lead spans 7 columns and 2 rows, the next two 5 columns each
+ * beside it, the rest 4 columns, three to a row; a short last row widens its cards to fill it
+ * (so any count from 3 to 8 comes out whole). 640–959px: the lead full width, the rest in pairs.
+ * Below that, one column.
+ *
+ * Cards numbered by rendered position; the lead's cover loads eagerly, and cards past the first
+ * row rise in as they scroll into view. The list is the spotlight's delegation root
+ * (`data-spotlight`, src/scripts/interactions.ts via the motion layer).
+ */
+import type { CollectionEntry } from 'astro:content';
+import MotionLayer from './MotionLayer.astro';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  projects: readonly CollectionEntry<'projects'>[];
+  class?: string;
+}
+
+const { projects, class: className } = Astro.props;
+---
+
+<ol class:list={['project-grid', className]} role="list" data-spotlight>
+  {projects.map((project, i) => (
+    <ProjectCard project={project} index={i} lead={i === 0} eager={i === 0} reveal={i >= 3} />
+  ))}
+</ol>
+<MotionLayer />
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1rem, 0.5rem + 1.25vw, 1.375rem);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Entrances rise (the `rise` preset, global.css), the second card of a row a beat later. */
+  .project-grid > :global(.card) {
+    grid-column: 1 / -1;
+    --reveal-x: 0;
+    --reveal-y: var(--reveal-rise, 24px);
+    --reveal-clip: inset(0);
+  }
+
+  .project-grid > :global(.card:nth-child(even)) {
+    --i: 1;
+  }
+
+  /* Tablets: the lead full width, the rest in pairs; an odd one out takes the whole row. */
+  @media (width >= 40rem) {
+    .project-grid > :global(.card:not(:first-child)) {
+      grid-column: span 6;
+    }
+
+    .project-grid > :global(.card:last-child:nth-child(even)) {
+      grid-column: 1 / -1;
+    }
+
+    /* A half-width card's head stacks: title, then index and year. */
+    .project-grid > :global(.card:not(:first-child) .card__head) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* The bento: covers fill their cells instead of keeping 16:10. */
+  @media (width >= 60rem) {
+    .project-grid {
+      grid-auto-rows: 15rem;
+    }
+
+    .project-grid > :global(.card) {
+      grid-column: span 4;
+    }
+
+    .project-grid > :global(.card:first-child) {
+      grid-column: 1 / span 7;
+      grid-row: span 2;
+    }
+
+    .project-grid > :global(.card:nth-child(2)),
+    .project-grid > :global(.card:nth-child(3)) {
+      grid-column: span 5;
+    }
+
+    /* Rows of three from the 4th card: one left over fills the row, two left over halve it. */
+    .project-grid > :global(.card:last-child:nth-child(3n + 4)) {
+      grid-column: 1 / -1;
+    }
+
+    .project-grid > :global(.card:nth-last-child(2):nth-child(3n + 4)),
+    .project-grid > :global(.card:last-child:nth-child(3n + 5)) {
+      grid-column: span 6;
+    }
+
+    .project-grid > :global(.card:not(:first-child) .card__head) {
+      flex-direction: row;
+      align-items: baseline;
+    }
+
+    .project-grid > :global(.card .card__media) {
+      aspect-ratio: auto;
+    }
+
+    .project-grid > :global(.card:nth-child(3n + 1)) {
+      --i: 0;
+    }
+
+    .project-grid > :global(.card:nth-child(3n + 2)) {
+      --i: 1;
+    }
+
+    .project-grid > :global(.card:nth-child(3n)) {
+      --i: 2;
+    }
+  }
+</style>

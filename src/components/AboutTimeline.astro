@@ -1,0 +1,273 @@
+---
+/**
+ * About timeline (Portfolio.dc.html, Claude Design, Sept 2026): the path from graphic design at
+ * 10 to security research at JHU APL, one stop per `site.timeline` entry. A real ordered list
+ * either way; only its layout changes.
+ *
+ * - Narrow (below 62.5rem): a vertical rail. Each stop's mono marker sits in the readout rail
+ *   (the home page's date column), a hollow square on a hairline marks it, and the current stop
+ *   is a solid accent bar at the rail's foot.
+ * - Wide: a constellation. Stops alternate either side of the centre on a jittered zig-zag
+ *   (src/lib/timeline.ts), and a canvas behind them (src/scripts/about-timeline.ts, fetched by the
+ *   motion layer after load) draws a drifting field of points, the path through the stops, and an
+ *   accent trace that follows the reader's scroll down the path, revealing each stop as it
+ *   arrives. Before the canvas is live (no JS, or not loaded yet) each stop shows a static node
+ *   square instead, and every stop is visible. With motion off the trace is simply drawn in full.
+ */
+import { site } from '../data/site';
+import { pageStyle } from '../lib/page-style';
+import { timelineHeight, timelineX, timelineY } from '../lib/timeline';
+import MotionLayer from './MotionLayer.astro';
+
+interface Props {
+  /** Heading level of each stop's title: 3 inside the home page's section, 2 on /about/. */
+  level?: 2 | 3;
+  class?: string;
+}
+
+const { level = 3, class: className } = Astro.props;
+const Title = level === 2 ? 'h2' : 'h3';
+const stops = site.timeline;
+const listStyle = pageStyle(Astro.locals, { '--tl-h': `${timelineHeight(stops.length)}px` });
+const stopStyle = (i: number) =>
+  pageStyle(Astro.locals, { '--tl-x': `${timelineX(i)}%`, '--tl-y': `${timelineY(i)}px` });
+---
+
+<div class:list={['timeline', className]} data-timeline>
+  <canvas class="timeline__canvas" aria-hidden="true"></canvas>
+  <ol class="timeline__list" role="list" data-style={listStyle}>
+    {stops.map(({ when, title, text, now }, i) => (
+      <li class="timeline__stop" data-now={now ? '' : undefined} data-style={stopStyle(i)}>
+        <p class="timeline__when mono-label">{when}</p>
+        <span class="timeline__mark" aria-hidden="true" />
+        <Title class="timeline__title">{title}</Title>
+        <p class="timeline__text">{text}</p>
+      </li>
+    ))}
+  </ol>
+</div>
+<MotionLayer />
+
+<style>
+  .timeline {
+    position: relative;
+  }
+
+  .timeline__canvas {
+    display: none;
+  }
+
+  .timeline__list {
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ── Narrow: marker · rail · stop ── */
+  .timeline__stop {
+    display: grid;
+    grid-template-columns: var(--tl-when-col, 4.2rem) 1rem minmax(0, 1fr);
+    grid-template-areas:
+      'when mark title'
+      '.    mark text';
+    column-gap: 1.125rem;
+  }
+
+  @media (width >= 48rem) {
+    .timeline__stop {
+      --tl-when-col: var(--readout-rail, 9rem);
+
+      column-gap: var(--space-m);
+    }
+  }
+
+  .timeline__when {
+    grid-area: when;
+    padding-block-start: 0.25rem;
+  }
+
+  .timeline__stop[data-now] .timeline__when {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .timeline__mark {
+    position: relative;
+    grid-area: mark;
+  }
+
+  /* The rail: from this stop's square down to the next one (the first starts at its square). */
+  .timeline__mark::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    inline-size: 1px;
+    background-color: var(--line);
+  }
+
+  .timeline__stop:first-child .timeline__mark::before {
+    inset-block-start: 0.875rem;
+  }
+
+  .timeline__stop:last-child .timeline__mark::before {
+    inset-block-end: auto;
+    block-size: 0.625rem;
+  }
+
+  /* The node: a hollow square; the current stop is a solid accent bar. */
+  .timeline__mark::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 9px;
+    inset-inline-start: 50%;
+    inline-size: 9px;
+    block-size: 9px;
+    translate: -50% 0;
+    border: 1px solid var(--line-ui);
+    background-color: var(--bg);
+  }
+
+  .timeline__stop[data-now] .timeline__mark::after {
+    inset-block-start: 6px;
+    block-size: 16px;
+    border: 0;
+    background-color: var(--accent);
+  }
+
+  .timeline__title {
+    grid-area: title;
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .timeline__text {
+    grid-area: text;
+    max-inline-size: 56ch;
+    margin-block-start: 0.375rem;
+    padding-block-end: 2.125rem;
+    color: var(--text-muted);
+    text-wrap: pretty;
+  }
+
+  .timeline__stop:last-child .timeline__text {
+    padding-block-end: 0;
+  }
+
+  /* ── Wide: the constellation ── */
+  @media (width >= 62.5rem) {
+    .timeline__canvas {
+      display: block;
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      pointer-events: none;
+    }
+
+    .timeline__list {
+      position: relative;
+      block-size: var(--tl-h);
+    }
+
+    /* A stop's block starts 35px above its node, so the node lands level with its title. Left
+       stops end 30px short of their node and right-align; right stops start 30px past it. */
+    .timeline__stop {
+      display: flex;
+      position: absolute;
+      inset-block-start: calc(var(--tl-y) - 35px);
+      flex-direction: column;
+    }
+
+    .timeline__stop:nth-child(odd) {
+      inset-inline: 0 calc(100% - var(--tl-x) + 30px);
+      align-items: flex-end;
+      text-align: end;
+    }
+
+    .timeline__stop:nth-child(even) {
+      inset-inline: calc(var(--tl-x) + 30px) 0;
+      align-items: flex-start;
+    }
+
+    .timeline__when {
+      padding: 0;
+      line-height: 21px;
+    }
+
+    .timeline__title {
+      margin-block-start: 0.375rem;
+      line-height: 28px;
+    }
+
+    .timeline__text {
+      max-inline-size: 40ch;
+      padding: 0;
+    }
+
+    /* The static node, until the canvas takes over: the rail is gone, the square sits on the
+       stop's node point (35px down, 30px beyond the text edge). The canvas measures these. */
+    .timeline__mark {
+      position: absolute;
+      inset-block-start: 35px;
+      inline-size: 0;
+      block-size: 0;
+    }
+
+    .timeline__stop:nth-child(odd) .timeline__mark {
+      inset-inline-end: -30px;
+    }
+
+    .timeline__stop:nth-child(even) .timeline__mark {
+      inset-inline-start: -30px;
+    }
+
+    .timeline__mark::before {
+      display: none;
+    }
+
+    .timeline__mark::after,
+    .timeline__stop[data-now] .timeline__mark::after {
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      translate: -50% -50%;
+    }
+
+    .timeline[data-live] .timeline__mark {
+      visibility: hidden;
+    }
+
+    /* Arrival (about-timeline.ts sets `data-tl="off"` on stops the trace hasn't reached): each
+       line rises out of a slight blur a beat after the one above; leaving is quicker, bottom
+       line first. `data-arming` holds the first hide still, so nothing on screen blinks. */
+    .timeline[data-live] .timeline__stop > :not(.timeline__mark) {
+      transition:
+        opacity 520ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms),
+        translate 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms),
+        filter 520ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms);
+    }
+
+    .timeline[data-live] .timeline__stop[data-tl='off'] > :not(.timeline__mark) {
+      opacity: 0;
+      translate: 0 8px;
+      filter: blur(3px);
+      transition:
+        opacity 240ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms),
+        translate 280ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms),
+        filter 240ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms);
+    }
+
+    .timeline[data-arming] .timeline__stop > * {
+      transition: none !important;
+    }
+
+    .timeline__title {
+      --k: 1;
+    }
+
+    .timeline__text {
+      --k: 2;
+    }
+  }
+</style>

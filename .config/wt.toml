@@ -1,0 +1,88 @@
+# Worktrunk project config — https://worktrunk.dev/config/#project-configuration
+# Shared by every checkout of this repo. Personal settings (worktree-path, merge/commit
+# defaults, LLM commit messages) live in the user config: `wt config show` prints both.
+# Worktrees go in .claude/worktrees/<branch> (user config), gitignored here.
+#
+# Hook types (https://worktrunk.dev/hook/): pre-* block and abort on failure; post-* run in the
+# background, logged under `wt config state logs`. `wt merge` runs pre-commit → post-commit →
+# pre-merge → pre-remove → post-remove + post-merge. New or changed commands ask for approval
+# on first run (`wt config approvals`).
+#
+# Ports: every per-worktree server uses `{{ branch | hash_port }}`, so parallel worktrees never
+# collide and `wt list` can show each one's URL.
+
+# ── Hooks ─────────────────────────────────────────────────────────────────────────────────────
+
+# Blocking: a new worktree is unusable until node_modules exists. The site reads no .env files,
+# so dependencies are all it needs.
+pre-start = "npm ci"
+
+# Blocking: stop this worktree's astro dev/preview and Playwright servers before it is deleted.
+# On Windows an open handle makes removal fail ("unable to unlink … Invalid argument"). Skipped
+# on branches that predate the script, and never fails, so it can't block a removal.
+pre-remove = "if [ -f scripts/wt/stop-servers.ts ]; then node scripts/wt/stop-servers.ts; fi; true"
+
+# The pieces of `npm run lint`, run concurrently (~9s instead of ~13s). This also gates the
+# squash commit `wt merge` makes, so it is the only check a merge runs.
+[[pre-commit]]
+format = "npm run -s format:check"
+check = "npm run -s check"
+media = "npm run -s check:media"
+
+# No pre-merge hook: build + Playwright took minutes per merge. GitHub CI (ci.yml) runs the
+# full gate on push; run `wt ci` (below) locally when a change needs it before landing.
+#
+# Not used here: post-start (no background setup is needed; `wt dev` starts a server on
+# demand), post-merge (deploys happen on push via deploy.yml, and pushing is the human's
+# call), post-switch/post-commit.
+
+# ── `wt list` ─────────────────────────────────────────────────────────────────────────────────
+
+# URL column (dimmed when nothing is listening): the server `wt dev` / `wt preview` start.
+[list]
+url = "http://localhost:{{ branch | hash_port }}/Portfolio/"
+
+# ── Aliases: `wt <name>`, run in the current worktree ─────────────────────────────────────────
+
+[aliases]
+# Dev server (drafts render) on this worktree's port.
+dev = "npx astro dev --port {{ branch | hash_port }}"
+# Production build + preview (drafts hidden) on this worktree's port.
+preview = "npm run build:only && npx astro preview --port {{ branch | hash_port }} --ignore-lock"
+# The full local gate (lint + build + Playwright), with the preview on this worktree's port.
+ci = "E2E_PORT={{ branch | hash_port }} npm run ci"
+# Stop this worktree's servers (the pre-remove hook, on demand).
+stop = "node scripts/wt/stop-servers.ts"
+# Index this worktree into the code graph (each worktree is its own project; see CLAUDE.md).
+index = "npm run -s cbm -- index_repository"
+url = "echo http://localhost:{{ branch | hash_port }}/Portfolio/"
+
+# ── `wt step copy-ignored` ────────────────────────────────────────────────────────────────────
+
+# Never copy these gitignored paths between worktrees: other worktrees (they live inside the
+# repo), dependencies (pre-start installs them with `npm ci`), and build, test, and cache
+# output that each worktree regenerates. Built-in excludes (.git and other VCS/tool state)
+# still apply.
+[step.copy-ignored]
+exclude = [
+  ".claude/worktrees/",
+  "node_modules/",
+  "dist/",
+  ".astro/",
+  ".cache/",
+  ".lighthouseci/",
+  "playwright-report/",
+  "test-results/",
+  "blob-report/",
+  ".codebase-memory/",
+  "docs/codebase/",
+  "ds-bundle/",
+]
+
+# ── Forge ─────────────────────────────────────────────────────────────────────────────────────
+
+# origin is github.com/pjackim/Portfolio, which worktrunk detects on its own. Override only
+# for an SSH alias or a self-hosted host:
+# [forge]
+# platform = "github"
+# hostname = "github.example.com"

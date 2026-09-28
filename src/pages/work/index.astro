@@ -1,0 +1,53 @@
+---
+/**
+ * Work (Portfolio.dc.html, Claude Design, Sept 2026): every published project in two sections,
+ * the case studies (by `order`) and the archive (newest first), each a WorkShowcase: a rotating
+ * lead over an index of rows. A capability filter (WorkFilter, interactions spec §4) narrows
+ * both; `?capability=<id>` links straight to a filtered view.
+ */
+import PageHeader from '../../components/PageHeader.astro';
+import WorkFilter from '../../components/WorkFilter.astro';
+import WorkShowcase from '../../components/WorkShowcase.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArchive, getFeatured } from '../../lib/projects';
+
+const [featured, archive] = await Promise.all([getFeatured(), getArchive()]);
+const WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const written = WORDS[featured.length] ?? String(featured.length);
+---
+
+<BaseLayout
+  title="All work — Parker Jackim"
+  description="Every project by Parker Jackim: security and reverse-engineering case studies, software, and design and 3D work."
+>
+  <div class="standalone container">
+    <PageHeader
+      index="03"
+      title="Work"
+      intro={`Every project in one place. ${written} are written up as case studies; the rest are in the archive, newest first.`}
+    />
+    <WorkFilter class="standalone__body" projects={[...featured, ...archive]} />
+    <div class="work__groups" data-filter-list>
+      <WorkShowcase id="cs" label="Case studies" cta="Open case study" projects={featured} eager />
+      <WorkShowcase
+        id="ar"
+        label="Archive"
+        cta="Open project"
+        projects={archive}
+        start={featured.length + 1}
+      />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .work__groups {
+    margin-block-start: clamp(2.5rem, 1.75rem + 3vw, 3.5rem);
+  }
+
+  @media (width < 40rem) {
+    .work__groups {
+      margin-block-start: var(--space-l);
+    }
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+/**
+ * About (Portfolio.dc.html, Claude Design, Sept 2026): the timeline on its own page — where the
+ * phone layout's ~/about/ goes (on wide screens the header's About link goes to the home page's
+ * section). Same component as the home page, so the two never drift.
+ */
+import AboutTimeline from '../components/AboutTimeline.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About — Parker Jackim"
+  description="Parker Jackim's path from graphic design at 10 to cyber security research at the Johns Hopkins University Applied Physics Laboratory."
+>
+  <div class="standalone container">
+    <PageHeader
+      index="01"
+      title="About"
+      intro="From graphic design at 10 to security research at JHU APL."
+    />
+    <AboutTimeline class="standalone__body" level={2} />
+  </div>
+</BaseLayout>

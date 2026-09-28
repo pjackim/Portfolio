@@ -1,23 +1,360 @@
 {
-    "version": "2.0.0",
-    "command": "explorer",    
-    "windows": {
-        "command": "explorer.exe"
-    },
-    "args": [
-        "index.html"
-    ],
-    "tasks": [
-        {
-            "label": "explorer.exe",
-            "args": [
-                "index.html"
-            ],
-            "problemMatcher": [],
-            "group": {
-                "_id": "build",
-                "isDefault": false
-            }
+  // Run via "Tasks: Run Task" (Ctrl+Shift+P), Ctrl+Shift+B (default build) or the default test task.
+  // Scripts run through `bun run`; installs stay on `npm ci` because package-lock.json is the lockfile.
+  "version": "2.0.0",
+  "tasks": [
+    // ── Dev ────────────────────────────────────────────────────────────────
+    {
+      "label": "Dev: start (LAN, hot reload)",
+      "detail": "astro dev --host — HMR, reachable from other devices at http://<this-ip>:4321/Portfolio/",
+      "type": "shell",
+      "command": "bun run dev --host",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "astro",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": {
+          "activatesOnStart": true,
+          "beginsPattern": "astro",
+          "endsPattern": "ready in|Local"
         }
-    ]
+      },
+      "presentation": { "panel": "dedicated", "reveal": "always", "clear": true },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "Dev: start (localhost only)",
+      "detail": "astro dev — HMR at http://localhost:4321/Portfolio/",
+      "type": "shell",
+      "command": "bun run dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "astro",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": {
+          "activatesOnStart": true,
+          "beginsPattern": "astro",
+          "endsPattern": "ready in|Local"
+        }
+      },
+      "presentation": { "panel": "dedicated", "reveal": "always", "clear": true },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "Preview: build + serve (LAN)",
+      "detail": "Production build served by astro preview on the LAN — what GitHub Pages will host",
+      "type": "shell",
+      "command": "bun run preview --host",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "astro",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": { "activatesOnStart": true, "beginsPattern": "astro", "endsPattern": "Local" }
+      },
+      "presentation": { "panel": "dedicated", "reveal": "always", "clear": true },
+      "runOptions": { "instanceLimit": 1 }
+    },
+
+    // ── Build / check ──────────────────────────────────────────────────────
+    {
+      "label": "Build",
+      "detail": "astro check + astro build → dist/",
+      "type": "shell",
+      "command": "bun run build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": {
+        // astro check: `src/x.astro:12:3 - error ts(2322): message`
+        "owner": "astro-check",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(\\S.*?):(\\d+):(\\d+) - (error|warning)\\s*(?:(\\S+): )?(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      }
+    },
+    {
+      "label": "Build: fast (skip type check)",
+      "detail": "astro build → dist/",
+      "type": "shell",
+      "command": "bun run build:only",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: types",
+      "detail": "astro check",
+      "type": "shell",
+      "command": "bun run check",
+      "problemMatcher": {
+        // astro check: `src/x.astro:12:3 - error ts(2322): message`
+        "owner": "astro-check",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(\\S.*?):(\\d+):(\\d+) - (error|warning)\\s*(?:(\\S+): )?(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      }
+    },
+    {
+      "label": "Check: format",
+      "detail": "prettier --check .",
+      "type": "shell",
+      "command": "bun run format:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: media",
+      "detail": "Media lint — formats, naming, size budgets",
+      "type": "shell",
+      "command": "bun run check:media",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint",
+      "detail": "format check + astro check + media check (the pre-commit gate)",
+      "type": "shell",
+      "command": "bun run lint",
+      "problemMatcher": {
+        // astro check: `src/x.astro:12:3 - error ts(2322): message`
+        "owner": "astro-check",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(\\S.*?):(\\d+):(\\d+) - (error|warning)\\s*(?:(\\S+): )?(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      }
+    },
+    {
+      "label": "Format: fix",
+      "detail": "prettier --write .",
+      "type": "shell",
+      "command": "bun run format",
+      "problemMatcher": []
+    },
+
+    // ── Tests ──────────────────────────────────────────────────────────────
+    {
+      "label": "Test: e2e (all browsers)",
+      "detail": "Build, then Playwright on chromium + mobile-chrome + webkit",
+      "type": "shell",
+      "command": "bun run test:e2e",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: e2e (chromium only)",
+      "detail": "Build, then Playwright on chromium — the quick loop",
+      "type": "shell",
+      "command": "bun run test:e2e --project=chromium",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: e2e (filter by title)",
+      "detail": "Build, then Playwright on chromium for tests matching a -g pattern",
+      "type": "shell",
+      "command": "bun run test:e2e --project=chromium -g \"${input:e2eGrep}\"",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: e2e UI mode",
+      "detail": "Build, then open the Playwright UI runner",
+      "type": "shell",
+      "command": "bunx playwright test --ui",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: open last e2e report",
+      "detail": "playwright show-report",
+      "type": "shell",
+      "command": "bunx playwright show-report",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: Lighthouse CI",
+      "detail": "Build, then LHCI budgets from lighthouserc.json",
+      "type": "shell",
+      "command": "bun run test:lhci",
+      "dependsOn": ["Build: fast (skip type check)"],
+      "problemMatcher": []
+    },
+
+    // ── CI ─────────────────────────────────────────────────────────────────
+    {
+      "label": "CI: full local verification",
+      "detail": "Mirrors ci.yml: format → media → types → build → e2e → Lighthouse",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Check: format",
+        "Check: media",
+        "Check: types",
+        "Build: fast (skip type check)",
+        "CI: e2e step",
+        "CI: Lighthouse step"
+      ],
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "CI: quick (no Lighthouse)",
+      "detail": "npm run ci — lint + build + e2e",
+      "type": "shell",
+      "command": "bun run ci",
+      "group": "test",
+      "problemMatcher": {
+        // astro check: `src/x.astro:12:3 - error ts(2322): message`
+        "owner": "astro-check",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(\\S.*?):(\\d+):(\\d+) - (error|warning)\\s*(?:(\\S+): )?(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      }
+    },
+    {
+      "label": "CI: format, then verify",
+      "detail": "prettier --write, then the full local verification",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Format: fix", "CI: full local verification"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    // Steps for the CI sequence above: same commands as the Test tasks, minus their own build.
+    {
+      "label": "CI: e2e step",
+      "type": "shell",
+      "command": "bun run test:e2e",
+      "hide": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "CI: Lighthouse step",
+      "type": "shell",
+      "command": "bun run test:lhci",
+      "hide": true,
+      "problemMatcher": []
+    },
+
+    // ── Setup / cleanup ────────────────────────────────────────────────────
+    {
+      "label": "Setup: install dependencies",
+      "detail": "npm ci (package-lock.json is authoritative)",
+      "type": "shell",
+      "command": "npm ci",
+      "problemMatcher": []
+    },
+    {
+      "label": "Setup: install Playwright browsers",
+      "detail": "playwright install chromium webkit",
+      "type": "shell",
+      "command": "bunx playwright install chromium webkit",
+      "problemMatcher": []
+    },
+    {
+      "label": "Setup: full (deps + browsers)",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Setup: install dependencies", "Setup: install Playwright browsers"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: build + test output",
+      "detail": "Remove dist, .astro, .cache, node_modules/.astro, test-results, playwright-report, blob-report, .lighthouseci",
+      "type": "shell",
+      "command": "bun run clean",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: everything (incl. node_modules)",
+      "detail": "Stop the dev server first — Windows locks files it has open",
+      "type": "shell",
+      "command": "bun run clean --all",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean: everything + reinstall",
+      "detail": "clean --all, then npm ci",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Clean: everything (incl. node_modules)", "Setup: install dependencies"],
+      "problemMatcher": []
+    },
+
+    // ── Tools ──────────────────────────────────────────────────────────────
+    {
+      "label": "Tools: open codebase graph UI",
+      "detail": "codebase-memory-mcp graph for this checkout (indexes it first if needed)",
+      "type": "shell",
+      "command": "bun run graph",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: re-index + open codebase graph UI",
+      "type": "shell",
+      "command": "bun run graph --reindex",
+      "problemMatcher": []
+    },
+
+    // ── Content ────────────────────────────────────────────────────────────
+    {
+      "label": "Content: new project",
+      "detail": "Scaffold src/content/projects/<slug>/index.md",
+      "type": "shell",
+      "command": "bun run new ${input:projectSlug}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Content: encode media into project",
+      "detail": "Run the media pipeline on files for a project",
+      "type": "shell",
+      "command": "bun run media ${input:mediaFiles} --project ${input:projectSlug}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Content: regenerate OG image + icons",
+      "detail": "Render public/og-default.png, favicon and touch icon from src/lib/monogram.ts",
+      "type": "shell",
+      "command": "bun run og",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "projectSlug",
+      "type": "promptString",
+      "description": "Project slug (kebab-case, e.g. trip-planner)"
+    },
+    {
+      "id": "mediaFiles",
+      "type": "promptString",
+      "description": "Media file paths, space-separated (quote paths with spaces)"
+    },
+    {
+      "id": "e2eGrep",
+      "type": "promptString",
+      "description": "Playwright -g pattern (test title substring or regex)"
+    }
+  ]
 }

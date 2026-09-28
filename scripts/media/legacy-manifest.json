@@ -1,0 +1,389 @@
+[
+  {
+    "src": "Images/correlation_visualizer/googlesearch.png",
+    "project": "credential-correlation",
+    "name": "password-checker-search",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/correlation_visualizer/credentials.png",
+    "project": "credential-correlation",
+    "name": "dummy-credentials",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/correlation_visualizer/trap1.png",
+    "project": "credential-correlation",
+    "name": "checker-rated-strong",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/correlation_visualizer/trap2.png",
+    "project": "credential-correlation",
+    "name": "checker-crack-time",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/correlation_visualizer/Software.png",
+    "project": "credential-correlation",
+    "name": "gui-visualizer",
+    "kind": "image",
+    "lossless": true
+  },
+  { "youtube": "klYKJ2U_WKk", "project": "credential-correlation", "cover": true },
+
+  {
+    "src": "Images/fovhack/screenshot-overview.jpg",
+    "project": "mordhau",
+    "name": "cover",
+    "kind": "image",
+    "lossless": true,
+    "cover": true,
+    "crop": { "left": 902, "top": 547, "width": 514, "height": 321 }
+  },
+  {
+    "src": "Images/fovhack/screenshot-gameplay.jpg",
+    "project": "mordhau",
+    "name": "gameplay-toggles",
+    "kind": "image",
+    "lossless": true,
+    "crop": { "left": 0, "top": 145, "width": 514, "height": 244 }
+  },
+
+  {
+    "src": "Images/cs314/map.png",
+    "project": "trip-planner",
+    "name": "cover",
+    "kind": "image",
+    "lossless": true,
+    "cover": true
+  },
+  {
+    "src": "Images/cs314/website.gif",
+    "project": "trip-planner",
+    "name": "full-demo",
+    "kind": "video",
+    "mode": "click",
+    "speed": 2
+  },
+  {
+    "src": "Images/cs314/iterative_design.gif",
+    "project": "trip-planner",
+    "name": "iterative-design",
+    "kind": "video",
+    "mode": "loop"
+  },
+  {
+    "src": "Images/cs314/database.gif",
+    "project": "trip-planner",
+    "name": "database-search",
+    "kind": "video",
+    "mode": "click"
+  },
+  {
+    "src": "Images/cs314/interopt.gif",
+    "project": "trip-planner",
+    "name": "interoperability",
+    "kind": "video",
+    "mode": "loop"
+  },
+  {
+    "src": "Images/cs314/file.png",
+    "project": "trip-planner",
+    "name": "trip-manager",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/cs314/optimize.gif",
+    "project": "trip-planner",
+    "name": "tour-optimization",
+    "kind": "video",
+    "mode": "loop"
+  },
+
+  {
+    "src": "Images/Forest Hack/ESP.png",
+    "project": "the-forest",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  {
+    "src": "Images/Forest Hack/Screenshot_1.png",
+    "project": "the-forest",
+    "name": "menus-in-game",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Forest Hack/UX.png",
+    "project": "the-forest",
+    "name": "menu-panels",
+    "kind": "image",
+    "lossless": true
+  },
+  { "youtube": "lbqOiXaPm08", "project": "the-forest" },
+
+  {
+    "src": "Images/hardpoint/hpt-thumbnail.jpg",
+    "project": "hardpoint",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  {
+    "src": "Images/hardpoint/hpt-action1.jpg",
+    "project": "hardpoint",
+    "name": "capture-zone-corridor",
+    "kind": "image"
+  },
+  {
+    "src": "Images/hardpoint/hpt-action2.jpg",
+    "project": "hardpoint",
+    "name": "capture-zone-melee",
+    "kind": "image"
+  },
+  { "youtube": "EdJRI_kEXt8", "project": "hardpoint" },
+
+  { "youtube": "DhG7bB0exLA", "project": "aes-256", "cover": true },
+  {
+    "src": "Images/aes/Screenshot_1.png",
+    "project": "aes-256",
+    "name": "aes-source-code",
+    "kind": "image",
+    "lossless": true
+  },
+
+  {
+    "src": "Images/hero_trivia/Hero_Trivia_1.png",
+    "project": "hero-trivia",
+    "name": "cover",
+    "kind": "image",
+    "cover": true,
+    "crop": { "left": 0, "top": 0, "width": 1894, "height": 937 }
+  },
+  {
+    "src": "Images/hero_trivia/hero_trivia_gameplay.gif",
+    "project": "hero-trivia",
+    "name": "gameplay",
+    "kind": "video",
+    "mode": "loop"
+  },
+  {
+    "src": "Images/hero_trivia/hero_trivia_variety.gif",
+    "project": "hero-trivia",
+    "name": "puzzle-variety",
+    "kind": "video",
+    "mode": "loop"
+  },
+
+  {
+    "src": "Images/arch linux/screenshot1.png",
+    "project": "arch-linux",
+    "name": "cover",
+    "kind": "image",
+    "lossless": true,
+    "cover": true
+  },
+  {
+    "src": "Images/arch linux/bottom.png",
+    "project": "arch-linux",
+    "name": "tiling-workspace",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/arch linux/trim.png",
+    "project": "arch-linux",
+    "name": "launcher-panel",
+    "kind": "image",
+    "lossless": true
+  },
+
+  {
+    "src": "Images/Ant Game/Ant Model/ant2.png",
+    "project": "ant-game",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/ant1.png",
+    "project": "ant-game",
+    "name": "sculpt-three-quarter",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/ant3.png",
+    "project": "ant-game",
+    "name": "sculpt-thorax-closeup",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/ant4.png",
+    "project": "ant-game",
+    "name": "sculpt-top-view",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/texture1.png",
+    "project": "ant-game",
+    "name": "textured-front-view",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/texture2.png",
+    "project": "ant-game",
+    "name": "textured-head-closeup",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/texture3.png",
+    "project": "ant-game",
+    "name": "textured-side-dirt",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Model/texture4.png",
+    "project": "ant-game",
+    "name": "textured-side-forest",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Ant Game/Ant Rig/ant_rig1.png",
+    "project": "ant-game",
+    "name": "rig-mesh",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/Ant Game/Ant Rig/ant_rig2.png",
+    "project": "ant-game",
+    "name": "rig-joints",
+    "kind": "image",
+    "lossless": true
+  },
+  { "youtube": "MBJ0LGR1R4o", "project": "ant-game" },
+
+  {
+    "src": "Images/Paradox/paradox2.png",
+    "project": "paradox",
+    "name": "zexilemodz-banner",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/Paradox/exileLogo.png",
+    "project": "paradox",
+    "name": "zexilemodz-logo",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/Paradox/paradox3.png",
+    "project": "paradox",
+    "name": "cover",
+    "kind": "image",
+    "lossless": true,
+    "cover": true
+  },
+  {
+    "src": "Images/Paradox/red_paradox.png",
+    "project": "paradox",
+    "name": "paradox-logo",
+    "kind": "image",
+    "lossless": true
+  },
+  { "youtube": "a7VCZaQSSMg", "project": "paradox" },
+
+  {
+    "src": "Images/Nodes/transparant_bracelet.png",
+    "project": "nodes",
+    "name": "cover",
+    "kind": "image",
+    "lossless": true,
+    "cover": true
+  },
+  {
+    "src": "Images/Nodes/node_diagram.png",
+    "project": "nodes",
+    "name": "bead-diagram",
+    "kind": "image",
+    "lossless": true
+  },
+
+  {
+    "src": "Images/Spectre/black_bg.png",
+    "project": "spectre",
+    "name": "atlas-wordmark-dark",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Spectre/centered_bg.png",
+    "project": "spectre",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  {
+    "src": "Images/Spectre/logo_white.png",
+    "project": "spectre",
+    "name": "octopus-logo",
+    "kind": "image",
+    "lossless": true
+  },
+  {
+    "src": "Images/Spectre/white_bg.png",
+    "project": "spectre",
+    "name": "specter-wordmark-light",
+    "kind": "image",
+    "lossless": true
+  },
+
+  {
+    "src": "Images/Over The Rainbow/over_the_rainbow.png",
+    "project": "over-the-rainbow",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  { "youtube": "Oz2oDcXTusM", "project": "over-the-rainbow" },
+
+  {
+    "src": "Images/Go Green/brochure_text.png",
+    "project": "go-green",
+    "name": "brochure-with-text",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Go Green/brochure.png",
+    "project": "go-green",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  },
+  {
+    "src": "Images/Go Green/original.jpg",
+    "project": "go-green",
+    "name": "reference-photo",
+    "kind": "image"
+  },
+
+  {
+    "src": "Images/Lost City/forest.png",
+    "project": "lost-city",
+    "name": "forest-version",
+    "kind": "image"
+  },
+  {
+    "src": "Images/Lost City/city_creep.png",
+    "project": "lost-city",
+    "name": "cover",
+    "kind": "image",
+    "cover": true
+  }
+]

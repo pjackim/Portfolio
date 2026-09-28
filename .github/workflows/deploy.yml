@@ -1,0 +1,96 @@
+# Astro build and deploy to GitHub Pages (spec-architecture.md §7). `verify` re-runs the CI
+# quality gate as a reusable workflow (its Lighthouse step no-ops here — it only runs
+# `if: github.event_name == 'pull_request'`); `build` compiles the site and uploads the Pages
+# artifact; `deploy` publishes it; `smoke-prod` waits out Pages CDN propagation and then runs
+# the `@prod`-tagged Playwright subset against the live URL.
+#
+# Rollback: `git revert -m 1 <merge-commit>` on `master` redeploys the legacy static site only
+# if the Pages-passthrough workflow (PR A, commit 855a30b) was merged to master before this one
+# — the revert then restores that commit's deploy.yml, and the Pages source stays "GitHub
+# Actions". If PR A was never merged first, reverting leaves no working deploy workflow on
+# master; also switch the repo's Pages source back to "Deploy from a branch: master /".
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # No timeout-minutes here: a job that calls a reusable workflow with `uses:` can't set one
+  # (actionlint syntax-check) — the called workflow's own `quality` job already has one.
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build site and upload Pages artifact
+        uses: withastro/action@3eafd002e65cc31b4f0eae0bb05450d521562247 # v6.1.3
+        with:
+          node-version: '24'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  smoke-prod:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+      - name: Normalize deployed URL
+        id: url
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: echo "url=${PAGE_URL%/}/" >> "$GITHUB_OUTPUT"
+      - name: Wait for Pages CDN propagation
+        env:
+          URL: ${{ steps.url.outputs.url }}
+        run: |
+          for _ in $(seq 1 10); do
+            if curl -fsS "${URL}work/" > /dev/null; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::${URL}work/ never became reachable after 10 attempts" >&2
+          exit 1
+      - name: Post-deploy smoke tests
+        env:
+          BASE_URL: ${{ steps.url.outputs.url }}
+        run: npx playwright test --grep @prod --project=chromium
