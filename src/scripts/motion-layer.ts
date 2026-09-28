@@ -16,6 +16,11 @@ import './motion-toggle';
 import './smooth-scroll';
 import './work-filter';
 
+// Controls that should answer as soon as they show, in their own chunks so only the pages that
+// have them pay: the Experience git log's toggles and chips, and /work/'s rotating leads.
+if (document.querySelector('[data-git-log]')) void import('./git-log');
+if (document.querySelector('[data-showcase]')) void import('./work-showcase');
+
 const hasHero = document.querySelector('[data-hero]') !== null;
 const hasInteractions = document.querySelector('[data-section-heading], [data-spotlight]') !== null;
 const hasCase = document.querySelector('[data-case-index], [data-lightbox]') !== null;

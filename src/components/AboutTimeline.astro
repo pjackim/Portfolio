@@ -20,10 +20,13 @@ import { timelineHeight, timelineX, timelineY } from '../lib/timeline';
 import MotionLayer from './MotionLayer.astro';
 
 interface Props {
+  /** Heading level of each stop's title: 3 inside the home page's section, 2 on /about/. */
+  level?: 2 | 3;
   class?: string;
 }
 
-const { class: className } = Astro.props;
+const { level = 3, class: className } = Astro.props;
+const Title = level === 2 ? 'h2' : 'h3';
 const stops = site.timeline;
 const listStyle = pageStyle(Astro.locals, { '--tl-h': `${timelineHeight(stops.length)}px` });
 const stopStyle = (i: number) =>
@@ -37,7 +40,7 @@ const stopStyle = (i: number) =>
       <li class="timeline__stop" data-now={now ? '' : undefined} data-style={stopStyle(i)}>
         <p class="timeline__when mono-label">{when}</p>
         <span class="timeline__mark" aria-hidden="true" />
-        <h3 class="timeline__title">{title}</h3>
+        <Title class="timeline__title">{title}</Title>
         <p class="timeline__text">{text}</p>
       </li>
     ))}

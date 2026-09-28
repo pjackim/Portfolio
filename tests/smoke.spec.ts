@@ -7,6 +7,7 @@
  * the deployed site.
  */
 import { expect, test, type Page } from '@playwright/test';
+import { themeToggle } from './helpers/header.ts';
 import { gotoRel, prodTag, routeName, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -132,13 +133,14 @@ test.describe('home', () => {
   test('theme toggle flips data-scheme and persists across reload', async ({ page }) => {
     await gotoRel(page, '');
     const html = page.locator('html');
-    const toggle = page.locator('header [data-theme-toggle]');
     await expect(html).not.toHaveAttribute('data-scheme');
 
-    await toggle.click();
+    await themeToggle(page).click();
     await expect(html).toHaveAttribute('data-scheme', 'dark');
     await page.reload();
     await expect(html).toHaveAttribute('data-scheme', 'dark');
+    // (On phones the switch is in the prompt's menu, which the reload closed.)
+    const toggle = themeToggle(page);
     await expect(toggle).toHaveAttribute('aria-label', 'Switch to light theme');
 
     // Back to the system scheme: the pin is cleared, and stays cleared.

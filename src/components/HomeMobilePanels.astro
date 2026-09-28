@@ -1,0 +1,586 @@
+---
+/**
+ * Phone home panels (Portfolio.dc.html, Claude Design, Sept 2026 — `isHomeMob`, snap panels
+ * 0–3): the home page's four sections as scroll-snap panels, right after the hero's chapter
+ * opener (Hero.astro's phone treatment) — About (a horizontal timeline strip), Experience (the
+ * shared `<GitLog>` rail), Selected work (reel cards) and Contact (photo, rows, no dialog). A
+ * sticky "Get in touch" / résumé bar rides along underneath them.
+ *
+ * Phones only (under 40rem); from there up the home page is the full stack of sections
+ * (index.astro) and this isn't rendered. Ids are the desktop sections' own with `-m` suffixed
+ * (a document can't repeat an id) — `src/scripts/nav-scroll.ts` tracks whichever set is actually
+ * laid out.
+ */
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import portrait from '../assets/profile/parker-jackim.webp';
+import GitLog from '../components/GitLog.astro';
+import { site } from '../data/site';
+import { CAPABILITY_GROUPS } from '../data/taxonomy';
+import { pad2 } from '../lib/format';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+
+interface Props {
+  featured: readonly CollectionEntry<'projects'>[];
+  class?: string;
+}
+
+const { featured, class: className } = Astro.props;
+const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
+---
+
+<div class:list={['mobile-home', className]} id="mobile-home-panels">
+  <section class="m-panel" id="about-m" aria-labelledby="about-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">01</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="about-m-title">
+          About
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+      </div>
+      <p class="m-panel__lede">
+        From graphic design at 10 to security research at{' '}
+        <span class="m-panel__accent">JHU APL</span>.
+      </p>
+      <ul class="m-strip" role="list" tabindex="0" aria-label="Timeline, age 10 to now">
+        {site.timeline.map((t) => (
+          <li class:list={['m-strip__card', t.now && 'm-strip__card--now']}>
+            <span class="m-strip__when mono-label">{t.when}</span>
+            <span class="m-strip__title">{t.title}</span>
+            <span class="m-strip__text">{t.text}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="m-strip__hint mono-label" aria-hidden="true">
+        Swipe <span class="m-strip__hint-rule"></span> Age 10 → now
+      </p>
+      <div class="m-rows">
+        <a class="m-row" href={withBase('about/')}>
+          Full story <span class="m-row__meta mono-label">~/about ›</span>
+        </a>
+        <a class="m-row" href={withBase('capabilities/')}>
+          Capabilities{' '}
+          <span class="m-row__meta mono-label">{CAPABILITY_GROUPS.length} groups ›</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="m-panel" id="experience-m" aria-labelledby="experience-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">02</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="experience-m-title">
+          Experience
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+        <a class="m-panel__action" href={withBase('experience/')}>
+          log ›
+        </a>
+      </div>
+      <GitLog class="m-panel__log" />
+    </div>
+  </section>
+
+  <section class="m-panel" id="work-m" aria-labelledby="work-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">03</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="work-m-title">
+          Selected work
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+        <a class="m-panel__action" href={withBase('work/')}>
+          all ›
+        </a>
+      </div>
+      <ul class="m-reel" role="list">
+        {featured.map((p, i) => (
+          <li>
+            <a class="m-reel__card" href={withBase(`work/${p.id}/`)}>
+              <Picture
+                src={p.data.cover}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[360, 540, 720]}
+                sizes="(width < 40rem) 92vw, 360px"
+                alt=""
+                class="m-reel__cover"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <span class="m-reel__body">
+                <span class="m-reel__meta">
+                  <span class="m-reel__meta-text mono-label">
+                    {p.data.year} · {p.data.group}
+                  </span>
+                  <span class="m-reel__idx mono-label">{pad2(i + 1)}</span>
+                </span>
+                <span class="m-reel__title">{p.data.title}</span>
+                <span class="m-reel__summary">{p.data.summary}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="m-panel m-panel--contact" id="contact-m" aria-labelledby="contact-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">04</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="contact-m-title">
+          Contact
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+      </div>
+      <div class="m-contact__who">
+        <Picture
+          src={portrait}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[112, 168, 224]}
+          sizes="112px"
+          alt=""
+          class="m-contact__photo"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="m-contact__id">
+          <span class="m-contact__name">{site.name}</span>
+          <span class="m-contact__place mono-label">{site.location}</span>
+        </span>
+      </div>
+      <div class="m-contact__rows">
+        <a class="m-row m-row--tall" href={`mailto:${site.email}`}>
+          <span class="m-row__kind mono-label">Email</span>
+          <span class="m-row__value">{site.email}</span>
+        </a>
+        <a class="m-row m-row--tall" href={site.github}>
+          <span class="m-row__kind mono-label">GitHub</span>
+          <span class="m-row__value">
+            {githubHandle} <Arrow dir="up-right" class="m-row__icon" />
+          </span>
+        </a>
+        <a class="m-row m-row--tall" href={site.linkedin}>
+          <span class="m-row__kind mono-label">LinkedIn</span>
+          <span class="m-row__value">
+            {site.name} <Arrow dir="up-right" class="m-row__icon" />
+          </span>
+        </a>
+        <a class="m-row m-row--tall m-row--last" href={withBase(site.resume)}>
+          <span class="m-row__kind mono-label">Résumé</span>
+          <span class="m-row__value">
+            PDF <Arrow dir="down" class="m-row__icon" />
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="m-cta">
+    <button type="button" class="m-cta__primary" commandfor="contact-sheet" command="show-modal">
+      Get in touch
+    </button>
+    <a class="m-cta__secondary" href={withBase(site.resume)}>
+      Résumé <span class="m-cta__meta mono-label">PDF</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Phones only. */
+  .mobile-home {
+    display: none;
+  }
+
+  @media (width < 40rem) {
+    .mobile-home {
+      display: block;
+    }
+
+    /* Gentle native scroll-snap across the hero and the four panels below it — proximity, not
+       mandatory, so it never fights a deliberate scroll or a deep link. */
+    :global(html:has(#mobile-home-panels)) {
+      scroll-snap-type: y proximity;
+    }
+
+    :global(html:has(#mobile-home-panels)) :global([data-hero]) {
+      scroll-snap-align: start;
+      scroll-margin-top: var(--header-h);
+    }
+  }
+
+  .m-panel {
+    scroll-snap-align: start;
+    scroll-margin-top: var(--header-h);
+    border-block-start: var(--hairline);
+  }
+
+  .m-panel__pad {
+    padding-block: var(--space-l) var(--space-2xl);
+  }
+
+  .m-panel__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .m-panel__idx {
+    color: var(--accent);
+  }
+
+  .m-panel__slash {
+    color: var(--text-subtle);
+  }
+
+  .m-panel__title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .m-panel__rule {
+    flex: 1;
+    block-size: 1px;
+    background-color: var(--line);
+  }
+
+  .m-panel__action {
+    flex: none;
+    min-block-size: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ── About: lede + horizontal timeline strip ── */
+
+  .m-panel__lede {
+    margin-block-start: var(--space-s);
+    font-size: 1.375rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .m-panel__accent {
+    color: var(--accent);
+  }
+
+  .m-strip {
+    display: flex;
+    gap: 0.625rem;
+    margin: var(--space-m) calc(-1 * var(--gutter)) 0;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    list-style: none;
+  }
+
+  .m-strip__card {
+    flex: 0 0 13rem;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 0.875rem 0.875rem 1rem;
+    border: var(--hairline);
+    border-radius: 0.75rem;
+    background-color: var(--bg);
+  }
+
+  .m-strip__card--now {
+    border-color: var(--accent);
+  }
+
+  .m-strip__when {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-subtle);
+    font-size: 0.71875rem;
+  }
+
+  .m-strip__when::before {
+    content: '';
+    inline-size: 8px;
+    block-size: 8px;
+    border: 1px solid currentColor;
+    background-color: transparent;
+  }
+
+  .m-strip__card--now .m-strip__when {
+    color: var(--accent);
+  }
+
+  .m-strip__card--now .m-strip__when::before {
+    background-color: var(--accent);
+  }
+
+  .m-strip__title {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .m-strip__text {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .m-strip__hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-block-start: var(--space-s);
+    color: var(--text-subtle);
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+
+  .m-strip__hint-rule {
+    inline-size: 1.5rem;
+    block-size: 1px;
+    background-color: var(--line-ui);
+  }
+
+  /* ── Shared link rows (About's Full story/Capabilities, Contact's channels) ── */
+
+  .m-rows {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: var(--space-m);
+  }
+
+  .m-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 3.5rem;
+    border-block-start: var(--hairline);
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .m-row__meta {
+    color: var(--text-subtle);
+  }
+
+  /* ── Experience: the shared GitLog rail, no extra chrome ── */
+
+  .m-panel__log {
+    margin-block-start: var(--space-s);
+  }
+
+  /* ── Selected work: reel cards ── */
+
+  .m-reel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-block-start: var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  .m-reel__card {
+    display: flex;
+    flex-direction: column;
+    border: var(--hairline);
+    border-radius: 0.875rem;
+    background-color: var(--bg);
+    color: inherit;
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .mobile-home :global(.m-reel__cover) {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 16 / 10;
+    border-block-end: var(--hairline);
+    object-fit: cover;
+    background-color: var(--surface-2);
+  }
+
+  .m-reel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 0.875rem 1rem 1rem;
+  }
+
+  .m-reel__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.625rem;
+  }
+
+  .m-reel__meta-text {
+    overflow: hidden;
+    color: var(--text-subtle);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .m-reel__idx {
+    flex: none;
+    color: var(--accent);
+  }
+
+  .m-reel__title {
+    font-size: 1.1875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .m-reel__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 0.90625rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* ── Contact ── */
+
+  .m-contact__who {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-block-start: var(--space-l);
+  }
+
+  .mobile-home :global(.m-contact__photo) {
+    inline-size: 4.5rem;
+    block-size: 4.5rem;
+    border: var(--rule-ui);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .m-contact__id {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .m-contact__name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .m-contact__place {
+    color: var(--text-subtle);
+  }
+
+  .m-contact__rows {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: var(--space-l);
+  }
+
+  .m-row--tall {
+    min-block-size: 4rem;
+  }
+
+  .m-row--last {
+    border-block-end: var(--hairline);
+  }
+
+  .m-row__kind {
+    color: var(--text-subtle);
+  }
+
+  .m-row__value {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .mobile-home :global(.m-row__icon) {
+    color: var(--text-subtle);
+  }
+
+  .m-contact__rows .m-row {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.125rem;
+  }
+
+  /* ── Sticky "Get in touch" / résumé bar: a child of the panels wrapper, so it only becomes
+     stickable once the wrapper (not the hero above it) is in view — appearing right as the About
+     panel arrives, gone with intent (not motion-gated: it's a fixed overlay, not an animation). */
+  .m-cta {
+    position: sticky;
+    inset-block-end: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+    /* Full-bleed: .mobile-home carries `.container`'s inset via width + auto margins, not
+       padding, so a matching negative margin reaches the viewport edge exactly. */
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 0.75rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+    border-block-start: var(--hairline);
+    background-color: color-mix(in oklch, var(--bg) 90%, transparent);
+    backdrop-filter: blur(14px);
+  }
+
+  .m-cta__primary,
+  .m-cta__secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    block-size: 3.25rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .m-cta__primary {
+    border: 0;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+  }
+
+  .m-cta__secondary {
+    border: var(--rule-ui);
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .m-cta__meta {
+    color: var(--text-subtle);
+  }
+</style>

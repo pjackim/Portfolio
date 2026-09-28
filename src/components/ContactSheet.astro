@@ -1,0 +1,329 @@
+---
+/**
+ * Contact sheet (Portfolio.dc.html, Claude Design, Sept 2026 — the phone layout's contact): a
+ * modal bottom sheet with the photo, name and location, one row per channel (email with a copy
+ * button, GitHub, LinkedIn, the résumé) and a "Write an email" button. Every page has it, for the
+ * phone header's email button, the home page's "Get in touch" bar and the ~/contact/ menu entry.
+ *
+ * Opened declaratively: those buttons carry `commandfor="contact-sheet" command="show-modal"`
+ * (invoker commands), and `closedby="any"` lets a tap outside or Escape close it. The inline
+ * script below covers browsers without either, and the copy button. The photo is lazy, so a
+ * sheet that never opens never loads it.
+ */
+import { Picture } from 'astro:assets';
+import portrait from '../assets/profile/parker-jackim.webp';
+import { site } from '../data/site';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+
+const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
+---
+
+<dialog id="contact-sheet" class="sheet" aria-labelledby="contact-sheet-title" closedby="any">
+  <div class="sheet__grip" aria-hidden="true"></div>
+  <div class="sheet__head">
+    <span class="sheet__who">
+      <Picture
+        src={portrait}
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        widths={[56, 112, 168]}
+        sizes="56px"
+        alt=""
+        class="sheet__photo"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="sheet__id">
+        <span class="sheet__name" id="contact-sheet-title">
+          {site.name}
+        </span>
+        <span class="sheet__place mono-label">{site.location}</span>
+      </span>
+    </span>
+    <button type="button" class="sheet__close" commandfor="contact-sheet" command="close">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <path d="M3.5 3.5l9 9M12.5 3.5l-9 9"></path>
+      </svg>
+      <span class="visually-hidden">Close</span>
+    </button>
+  </div>
+  <ul class="sheet__rows" role="list">
+    <li class="sheet__row">
+      <a class="sheet__link" href={`mailto:${site.email}`}>
+        <span class="sheet__kind mono-label">Email</span>
+        <span class="sheet__value">{site.email}</span>
+      </a>
+      <button type="button" class="sheet__copy" data-copy={site.email}>
+        <span data-copy-label>copy</span>
+        <span class="visually-hidden">email address</span>
+      </button>
+    </li>
+    <li class="sheet__row">
+      <a class="sheet__link" href={site.github}>
+        <span class="sheet__kind mono-label">GitHub</span>
+        <span class="sheet__value">{githubHandle}</span>
+      </a>
+      <Arrow dir="up-right" class="sheet__icon" />
+    </li>
+    <li class="sheet__row">
+      <a class="sheet__link" href={site.linkedin}>
+        <span class="sheet__kind mono-label">LinkedIn</span>
+        <span class="sheet__value">{site.name}</span>
+      </a>
+      <Arrow dir="up-right" class="sheet__icon" />
+    </li>
+    <li class="sheet__row">
+      <a class="sheet__link" href={withBase(site.resume)}>
+        <span class="sheet__kind mono-label">Résumé</span>
+        <span class="sheet__value">PDF</span>
+      </a>
+      <Arrow dir="down" class="sheet__icon" />
+    </li>
+  </ul>
+  <a class="sheet__cta" href={`mailto:${site.email}`}>
+    Write an email
+  </a>
+</dialog>
+
+<script>
+  // Import-free, so Astro inlines it. Invoker commands where the browser has none; light
+  // dismiss where `closedby` isn't supported; the copy button.
+  export {};
+  const sheet = document.getElementById('contact-sheet');
+  if (sheet instanceof HTMLDialogElement) {
+    if (!('command' in HTMLButtonElement.prototype)) {
+      document.addEventListener('click', (event) => {
+        const button = (event.target as Element).closest('button[commandfor="contact-sheet"]');
+        if (!button) return;
+        if (button.getAttribute('command') === 'close') sheet.close();
+        else sheet.showModal();
+      });
+    }
+    // Opening from the phone menu: the menu (a popover) goes, so the sheet isn't under it.
+    document.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('button[commandfor="contact-sheet"]')) {
+        for (const menu of document.querySelectorAll('[popover]')) {
+          if (menu.matches(':popover-open')) (menu as HTMLElement).hidePopover();
+        }
+      }
+    });
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      sheet.addEventListener('click', (event) => {
+        if (event.target === sheet) sheet.close();
+      });
+    }
+    const copy = sheet.querySelector<HTMLButtonElement>('[data-copy]');
+    const label = copy?.querySelector('[data-copy-label]');
+    copy?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(copy.dataset.copy ?? '').then(
+        () => {
+          if (!label) return;
+          label.textContent = 'copied';
+          setTimeout(() => (label.textContent = 'copy'), 2000);
+        },
+        () => {},
+      );
+    });
+  }
+</script>
+
+<style>
+  .sheet {
+    position: fixed;
+    inset: auto 0 0;
+    inline-size: 100%;
+    max-inline-size: 36rem;
+    max-block-size: calc(100dvh - 2rem);
+    margin: auto auto 0;
+    padding: 0.625rem 1.25rem calc(1.75rem + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    border: 0;
+    border-block-start: var(--rule-ui);
+    border-radius: 1.375rem 1.375rem 0 0;
+    background-color: var(--surface);
+    color: var(--text);
+    box-shadow: 0 -20px 60px rgb(0 0 0 / 0.4);
+  }
+
+  .sheet::backdrop {
+    background-color: rgb(0 0 0 / 0.55);
+  }
+
+  .sheet__grip {
+    inline-size: 2.5rem;
+    block-size: 5px;
+    margin-inline: auto;
+    border-radius: 3px;
+    background-color: var(--line-ui);
+  }
+
+  .sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.875rem;
+    margin-block-start: 1.125rem;
+  }
+
+  .sheet__who {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .sheet :global(.sheet__photo) {
+    inline-size: 3.5rem;
+    block-size: 3.5rem;
+    border: var(--rule-ui);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .sheet__id {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sheet__name {
+    font-size: 1.1875rem;
+    font-weight: 600;
+  }
+
+  .sheet__close {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--surface-2);
+    color: var(--text);
+  }
+
+  .sheet__close svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  .sheet__rows {
+    margin-block-start: var(--space-s);
+    padding: 0;
+    border-block-end: var(--hairline);
+    list-style: none;
+  }
+
+  .sheet__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    min-block-size: 3.75rem;
+    border-block-start: var(--hairline);
+  }
+
+  .sheet__link {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-inline-size: 0;
+    padding-block: 0.625rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  /* The row is the link's target, all but the copy button. */
+  .sheet__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .sheet__kind {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .sheet__value {
+    overflow: hidden;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sheet :global(.sheet__icon) {
+    flex: none;
+    color: var(--text-subtle);
+  }
+
+  .sheet__copy {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    min-inline-size: 2.75rem;
+    block-size: 2.75rem;
+    padding-inline: 0.75rem;
+    border: var(--rule-ui);
+    border-radius: var(--radius-s);
+    background-color: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .sheet__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 3.375rem;
+    margin-block-start: 1.125rem;
+    border-radius: 0.75rem;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+    .sheet__cta:hover {
+      background-color: var(--accent-hover);
+      color: var(--on-accent);
+    }
+  }
+
+  /* Motion (the gate, global.css): the sheet slides up, the backdrop fades in. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .sheet,
+    :global(:root:not([data-motion='off'])) .sheet::backdrop {
+      transition:
+        translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 220ms var(--ease-standard),
+        overlay 320ms allow-discrete,
+        display 320ms allow-discrete;
+    }
+
+    :global(:root:not([data-motion='off'])) .sheet:not([open]) {
+      translate: 0 100%;
+    }
+
+    :global(:root:not([data-motion='off'])) .sheet:not([open])::backdrop {
+      opacity: 0;
+    }
+
+    @starting-style {
+      :global(:root:not([data-motion='off'])) .sheet[open] {
+        translate: 0 100%;
+      }
+
+      :global(:root:not([data-motion='off'])) .sheet[open]::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+</style>

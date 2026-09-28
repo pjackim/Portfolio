@@ -132,6 +132,22 @@ a {
   margin-inline: auto;
 }
 
+/* A standalone section page (/work/, /about/, /experience/, /capabilities/): PageHeader, then
+   the section's component. */
+.standalone {
+  padding-block-end: var(--space-section);
+}
+
+.standalone > .standalone__body {
+  margin-block-start: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+@media (width < 40rem) {
+  .standalone > .standalone__body {
+    margin-block-start: var(--space-m);
+  }
+}
+
 .visually-hidden {
   position: absolute;
   inline-size: 1px;

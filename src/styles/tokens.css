@@ -34,6 +34,15 @@
   --accent-hover-l: oklch(46% 0.128 41); /* #903913 */
   --danger-d: oklch(66% 0.2 24); /* #f45152 — 404 code only: a true red, darker than the accent */
   --danger-l: oklch(48% 0.18 22); /* #ac172b */
+  /* Skill families: the Experience git log's lanes and chips (Portfolio.dc.html). Security is
+     the accent; the others sit at the accent's lightness in each scheme, so each clears 4.5:1
+     as small mono text on --bg. */
+  --family-software-d: oklch(74% 0.12 245);
+  --family-software-l: oklch(50% 0.13 245);
+  --family-teaching-d: oklch(76% 0.12 160);
+  --family-teaching-l: oklch(50% 0.12 160);
+  --family-design-d: oklch(74% 0.13 320);
+  --family-design-l: oklch(50% 0.15 320);
 
   /* 1a. Colour — composed */
   --bg: light-dark(var(--bg-l), var(--bg-d));
@@ -48,6 +57,12 @@
   --accent-hover: light-dark(var(--accent-hover-l), var(--accent-hover-d));
   --on-accent: var(--bg);
   --danger: light-dark(var(--danger-l), var(--danger-d));
+  --family-security: var(--accent);
+  --family-software: light-dark(var(--family-software-l), var(--family-software-d));
+  --family-teaching: light-dark(var(--family-teaching-l), var(--family-teaching-d));
+  --family-design: light-dark(var(--family-design-l), var(--family-design-d));
+  --family-edu: var(--line-ui);
+  --family-main: var(--text);
 
   /* 1b. Type — fluid scale, 360 → 1280px */
   --step--1: clamp(0.7812rem, 0.769rem + 0.0544vw, 0.8125rem);
@@ -146,6 +161,9 @@
     --accent: var(--accent-l);
     --accent-hover: var(--accent-hover-l);
     --danger: var(--danger-l);
+    --family-software: var(--family-software-l);
+    --family-teaching: var(--family-teaching-l);
+    --family-design: var(--family-design-l);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -161,6 +179,9 @@
       --accent: var(--accent-d);
       --accent-hover: var(--accent-hover-d);
       --danger: var(--danger-d);
+      --family-software: var(--family-software-d);
+      --family-teaching: var(--family-teaching-d);
+      --family-design: var(--family-design-d);
     }
   }
 
@@ -176,5 +197,8 @@
     --accent: var(--accent-d);
     --accent-hover: var(--accent-hover-d);
     --danger: var(--danger-d);
+    --family-software: var(--family-software-d);
+    --family-teaching: var(--family-teaching-d);
+    --family-design: var(--family-design-d);
   }
 }

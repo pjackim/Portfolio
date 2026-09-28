@@ -66,10 +66,17 @@ for (const viewport of [
           await page.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), y);
           await page.waitForTimeout(120);
         }
+        // Every image that renders (the closed contact sheet's photo, lazy, never loads).
         await expect
-          .poll(() => page.evaluate(() => [...document.images].every((img) => img.complete)), {
-            timeout: 10_000,
-          })
+          .poll(
+            () =>
+              page.evaluate(() =>
+                [...document.images]
+                  .filter((img) => img.getClientRects().length > 0)
+                  .every((img) => img.complete),
+              ),
+            { timeout: 10_000 },
+          )
           .toBe(true);
         await page.waitForTimeout(200);
 
@@ -83,11 +90,11 @@ for (const viewport of [
 
 /**
  * No horizontal overflow while sideways entrances are mid-flight (scroll-motion task 2): the
- * home page's cards (`ProjectGrid`, `--reveal-x` up to 2.5rem) and archive rows (`ArchiveRow`,
- * `--reveal-x: -1.5rem`) translate in from off their resting position, and the /work/ index rows
- * do the same — none of that may widen the document past the viewport, at a phone width and a
- * wide desktop one, while items are still `pending` (translated furthest off-screen) or partway
- * through the animation.
+ * home page's cards (`ProjectGrid`, `--reveal-x` up to 2.5rem) translate in from off their
+ * resting position — none of that may widen the document past the viewport, at a phone width
+ * and a wide desktop one, while items are still `pending` (translated furthest off-screen) or
+ * partway through the animation. /work/ (its showcases, their floating previews) and the phone
+ * home (the hub, no entrances) are held to the same, scrolled through.
  *
  * 820, 1024 and 1180 (fix wave finding 2) sit inside ProjectGrid's two-column range
  * (`width >= 50rem`, i.e. 800px) but below the point where `--gutter` (tokens.css,
@@ -105,7 +112,9 @@ for (const width of [360, 820, 1024, 1180, 1280]) {
         await page.waitForLoadState('load');
         // Items below the fold are still `pending` (translated to their furthest offset) right
         // after load: check before anything has had a chance to scroll into view.
-        await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        if (path === '' && width >= 640) {
+          await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        }
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );

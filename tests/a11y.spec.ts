@@ -53,7 +53,9 @@ for (const colorScheme of ['dark', 'light'] as const) {
           await expect(page.locator('[data-focus-line]')).toHaveAttribute('data-state', 'done', {
             timeout: 10_000,
           });
-          await expect(page.locator('.hero [data-motion-toggle]')).toBeVisible();
+          // The hero's chip (hidden on phones, where the footer's is the control).
+          const chip = page.locator('[data-motion-toggle]').locator('visible=true').first();
+          await expect(chip).toBeVisible({ timeout: 10_000 });
         }
         expect(await axeReport(page), 'axe violations (rule id + targets)').toEqual([]);
         // The heading code (if the page has headings) must be in before the jump, so the

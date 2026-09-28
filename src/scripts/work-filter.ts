@@ -27,7 +27,7 @@ function wire(bar: HTMLElement, list: HTMLElement): void {
   const rail = bar.querySelector<HTMLElement>('[role="group"]');
   const chips = [...bar.querySelectorAll<HTMLButtonElement>('button[data-capability]')];
   const ids = new Set(chips.map((chip) => chip.dataset.capability ?? '').filter(Boolean));
-  const rows = [...list.querySelectorAll<HTMLElement>('[data-capabilities]')];
+  const rows = [...list.querySelectorAll<HTMLElement>('[data-filter-row]')];
   const status = bar.querySelector<HTMLElement>('[data-filter-status]');
   const readout = bar.querySelector<HTMLElement>('[data-filter-shown]');
 

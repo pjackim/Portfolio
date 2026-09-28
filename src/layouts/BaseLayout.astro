@@ -14,6 +14,7 @@
  */
 import { Font } from 'astro:assets';
 import Seo from '../components/Seo.astro';
+import ContactSheet from '../components/ContactSheet.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { cspHash } from '../lib/csp';
@@ -114,6 +115,7 @@ if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
       <Fragment set:html={main} />
     </main>
     <SiteFooter />
+    <ContactSheet />
     <!-- One-shot entrance reveals (src/scripts/reveal.ts): import-free, so it is inlined. -->
     <script src="../scripts/reveal.ts"></script>
     {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}

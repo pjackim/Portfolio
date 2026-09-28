@@ -1,26 +1,28 @@
 ---
 /**
- * Home (spec-design-content §2): hero → 01 About → 02 Experience → 03 Selected work →
- * 04 Earlier work → 05 Contact. Each section is labelled by its h2. The empty
- * `*-section` spans keep the legacy site's deep links (#about-section, #portfolio-section,
- * #social-section) landing on the matching section.
+ * Home (Portfolio.dc.html, Claude Design, Sept 2026): hero → 01 About → 02 Experience →
+ * 03 Selected work → 04 Contact. Each section is labelled by its h2. Capabilities have their
+ * own page (/capabilities/), and every project is on /work/. The empty `*-section` spans keep
+ * the legacy site's deep links (#about-section, #portfolio-section, #social-section) landing
+ * on the matching section.
+ *
+ * Phones (under 40rem) get the same four sections as scroll-snap panels instead
+ * (HomeMobilePanels, after the hero's full-height chapter opener — Hero.astro's phone
+ * treatment) — the desktop sections below are not shown there.
  */
 import AboutTimeline from '../components/AboutTimeline.astro';
-import ArchiveList from '../components/ArchiveList.astro';
-import CapabilityGroups from '../components/CapabilityGroups.astro';
 import ContactBlock from '../components/ContactBlock.astro';
-import ExperienceList from '../components/ExperienceList.astro';
+import GitLog from '../components/GitLog.astro';
 import Hero from '../components/Hero.astro';
+import HomeMobilePanels from '../components/HomeMobilePanels.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { site } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getFeatured, getHomeArchive } from '../lib/projects';
+import { getFeatured } from '../lib/projects';
 import { personJsonLd } from '../lib/seo';
 import { withBase } from '../lib/url';
 
-const [featured, archive] = await Promise.all([getFeatured(), getHomeArchive()]);
-const workHref = withBase('work/');
+const featured = await getFeatured();
 ---
 
 <BaseLayout
@@ -30,16 +32,17 @@ const workHref = withBase('work/');
 >
   <Hero />
 
+  <HomeMobilePanels class="container" featured={featured} />
+
   <section id="about" class="home-section container" aria-labelledby="about-title">
     <span id="about-section" class="legacy-anchor"></span>
     <SectionHeading index="01" label="About" id="about-title" />
     <AboutTimeline />
-    <CapabilityGroups class="about__capabilities" />
   </section>
 
   <section id="experience" class="home-section container" aria-labelledby="experience-title">
     <SectionHeading index="02" label="Experience" id="experience-title" />
-    <ExperienceList entries={site.experience} />
+    <GitLog />
   </section>
 
   <section id="work" class="home-section container" aria-labelledby="work-title">
@@ -48,19 +51,9 @@ const workHref = withBase('work/');
       index="03"
       label="Selected work"
       id="work-title"
-      action={{ href: workHref, text: 'All work →' }}
+      action={{ href: withBase('work/'), text: 'All work →' }}
     />
     <ProjectGrid projects={featured} />
-  </section>
-
-  <section id="earlier-work" class="home-section container" aria-labelledby="earlier-work-title">
-    <SectionHeading
-      index="04"
-      label="Earlier work"
-      id="earlier-work-title"
-      action={{ href: workHref, text: 'Full index →' }}
-    />
-    <ArchiveList items={archive} limit={6} />
   </section>
 
   <section
@@ -69,15 +62,14 @@ const workHref = withBase('work/');
     aria-labelledby="contact-title"
   >
     <span id="social-section" class="legacy-anchor"></span>
-    <SectionHeading index="05" label="Contact" id="contact-title" />
+    <SectionHeading index="04" label="Contact" id="contact-title" />
     <ContactBlock />
   </section>
 </BaseLayout>
 
 <style>
-  /* --readout-rail: the date column of Experience and Earlier work, and the About timeline's
-     marker column, so the lower half of the page reads down one text edge while headings,
-     rules and grids keep the container edge. */
+  /* --readout-rail: the About timeline's marker column, so the lower half of the page reads
+     down one text edge while headings, rules and grids keep the container edge. */
   .home-section {
     --readout-rail: 9rem;
     padding-block-start: var(--space-section);
@@ -94,7 +86,10 @@ const workHref = withBase('work/');
     display: block;
   }
 
-  .home-section > :global(.about__capabilities) {
-    margin-block-start: clamp(3.5rem, 6vw, 6rem);
+  /* Phones: HomeMobilePanels instead of the sections. */
+  @media (width < 40rem) {
+    .home-section {
+      display: none;
+    }
   }
 </style>

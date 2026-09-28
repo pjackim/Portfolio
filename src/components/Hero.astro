@@ -24,6 +24,10 @@ import Readouts from './Readouts.astro';
 import StatusStrip from './StatusStrip.astro';
 
 const eyebrow = site.eyebrow.split(' · ');
+// The lede's first sentence is the phone intro; the rest joins it from 40rem up.
+const cut = site.lede.indexOf('. ') + 1;
+const [ledeFirst, ledeRest] =
+  cut > 0 ? [site.lede.slice(0, cut), site.lede.slice(cut)] : [site.lede, ''];
 const focus = FOCUS_AREAS.map((area) => area.toLowerCase());
 const focusText = focus.join(' · ');
 
@@ -58,7 +62,10 @@ const readouts = [
     <h1 class="hero__title" id="hero-title">
       {site.name}
     </h1>
-    <p class="hero__lede">{site.lede}</p>
+    <p class="hero__lede">
+      {ledeFirst}
+      <span class="hero__lede-rest">{ledeRest}</span>
+    </p>
     <p class="hero__focus" data-focus-line>
       <span class="visually-hidden">Focus: {focus.join(', ')}</span>
       <span class="hero__focus-stack" aria-hidden="true">
@@ -116,6 +123,12 @@ const readouts = [
     <div class="hero__rail">
       <Readouts items={readouts} />
       <MotionToggle class="hero__motion" />
+    </div>
+
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="hero__scroll-rule"></span>
+      <span>04 chapters ↓</span>
     </div>
   </div>
 </section>
@@ -504,8 +517,9 @@ const readouts = [
   /* Scroll: as the hero leaves, its text lifts 24px and dims to 0.4; the grid and the graph
      lag behind at 0.6× the scroll speed (translate 40% of their height over the hero's
      exit-crossing, which spans exactly the hero's height). CSS only, compositor-driven.
-     Longhands only next to animation-timeline (R22). */
-  @media (prefers-reduced-motion: no-preference) {
+     Longhands only next to animation-timeline (R22). Not on phones: the summary there is short
+     and is still being read at the foot of the page, so it stays at full contrast. */
+  @media (prefers-reduced-motion: no-preference) and (width >= 40rem) {
     @supports ((animation-timeline: view()) and (animation-range: entry)) {
       @keyframes hero-exit {
         to {
@@ -562,5 +576,94 @@ const readouts = [
         animation-range: exit-crossing 0% exit-crossing 100%;
       }
     }
+  }
+
+  /* ── Phones: the full-height chapter opener (Portfolio.dc.html `data-mhero`) ──
+     Location, name, the lede's first sentence and the focus line, then the two actions pinned
+     toward the foot of the viewport with a "Scroll · 04 chapters" hint below them. The graph,
+     status strip and readouts (NOW/EDU, project counts, Motion) are the wider layouts' — Motion
+     stays reachable from the footer on phones, and the contact sheet's "Write an email" plus the
+     sticky CTA bar (HomeMobilePanels) carry email/GitHub/LinkedIn instead of the hero's link row. */
+  @media (width < 40rem) {
+    .hero {
+      display: flex;
+      flex-direction: column;
+      min-block-size: calc(100svh - var(--header-h));
+      padding-block-start: 1.875rem;
+      padding-block-end: 1.625rem;
+    }
+
+    .hero__inner {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .hero__backdrop,
+    .hero__inner::before,
+    .hero :global(.hero__status),
+    .hero__rail,
+    .hero__links,
+    .hero__lede-rest,
+    .hero__eyebrow-part:not(:first-child),
+    .hero__eyebrow-sep {
+      display: none;
+    }
+
+    .hero__title {
+      margin-block-start: 0.875rem;
+      font-size: 2.5rem;
+      line-height: 1.02;
+    }
+
+    .hero__lede {
+      margin-block-start: 0.75rem;
+      font-size: var(--step-1);
+      line-height: 1.5;
+    }
+
+    .hero__focus {
+      display: block;
+    }
+
+    .hero__actions {
+      flex-wrap: nowrap;
+      margin-block-start: auto;
+      padding-block-start: var(--space-xl);
+    }
+
+    .hero__buttons {
+      flex: 1 1 100%;
+    }
+
+    .hero__buttons .button {
+      flex: 1 1 auto;
+      justify-content: center;
+      padding-inline: 0.875rem;
+    }
+
+    .hero__scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-block-start: var(--space-m);
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero__scroll-rule {
+      flex: 1;
+      block-size: 1px;
+      background-image: linear-gradient(to right, var(--line-ui), transparent);
+    }
+  }
+
+  .hero__scroll-hint {
+    display: none;
   }
 </style>

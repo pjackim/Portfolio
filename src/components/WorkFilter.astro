@@ -2,10 +2,11 @@
 /**
  * /work/ capability filter (interactions spec §4), the successor to the 2021 site's Isotope grid:
  * a chip bar — `ALL 15` and one chip per capability with its project count — above the grouped
- * archive (ArchiveList `filterable`). Single-select.
+ * sections of /work/ (WorkShowcase). Single-select.
  *
  * The filter state is one attribute, `<html data-capability="<id>">`, and the hiding is pure CSS
- * (below): rows without that capability go, and so do groups left empty. The bootstrap in
+ * (below): rows and lead ticks without that capability go; WorkShowcase's script keeps each
+ * section's lead, count and empty state in step. The bootstrap in
  * BaseLayout sets it before first paint from `?capability=`, so a filtered URL is painted
  * filtered (no layout shift); src/scripts/work-filter.ts sets it on a chip, wrapped in a view
  * transition while motion is allowed — rows glide to their new places (`--vt-name`,
@@ -18,7 +19,7 @@
  * `scripting: none`, and until the script has wired it, it holds its space invisibly (so it
  * appearing moves nothing). Every row shows.
  */
-import { CAPABILITIES, CAPABILITY_LABELS } from '../data/taxonomy';
+import { CAPABILITIES, CAPABILITY_GROUPS, CAPABILITY_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
 import type { Project } from '../lib/projects';
 
@@ -33,10 +34,11 @@ const { projects, class: className } = Astro.props;
     visible label, and the padded count ("01") isn't read out as digits. */
 const plural = (n: number) => `${n} ${n === 1 ? 'project' : 'projects'}`;
 const chips = [
-  { id: '', label: 'All', count: projects.length },
+  { id: '', label: 'All', name: 'All', count: projects.length },
   ...CAPABILITIES.map((id) => ({
     id,
-    label: CAPABILITY_LABELS[id],
+    label: CAPABILITY_GROUPS.find((g) => g.id === id)?.tab ?? CAPABILITY_LABELS[id],
+    name: CAPABILITY_LABELS[id],
     count: projects.filter((p) => p.data.capabilities.includes(id)).length,
   })).filter((chip) => chip.count > 0),
 ];
@@ -56,13 +58,13 @@ const chips = [
     </span>
   </div>
   <div class="work-filter__chips" role="group" aria-label="Filter by capability">
-    {chips.map(({ id, label, count }) => (
+    {chips.map(({ id, label, name, count }) => (
       <button
         type="button"
         class="work-filter__chip"
         data-capability={id}
         aria-pressed={id === '' ? 'true' : 'false'}
-        aria-label={`${label}, ${plural(count)}`}
+        aria-label={`${name}, ${plural(count)}`}
       >
         <span class="work-filter__led" />
         <span class="work-filter__label">{label}</span>
@@ -242,68 +244,38 @@ const chips = [
   }
 
   /* ── The filter: <html data-capability="<id>"> ──
-     A row without that capability goes, and so does a group left with no row. One line per
-     capability in CAPABILITIES (src/data/taxonomy.ts) — the e2e suite checks every chip. An
-     unknown value matches nothing and hides nothing. */
+     A row or tick without that capability goes. One line per capability in CAPABILITIES
+     (src/data/taxonomy.ts) — the e2e suite checks every chip. An unknown value matches nothing
+     and hides nothing. */
   :global(
     html[data-capability='offensive-security']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='offensive-security'])
+      [data-capabilities]:not([data-capabilities~='offensive-security'])
   ),
   :global(
     html[data-capability='data-ml']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='data-ml'])
+      [data-capabilities]:not([data-capabilities~='data-ml'])
   ),
   :global(
     html[data-capability='languages']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='languages'])
+      [data-capabilities]:not([data-capabilities~='languages'])
   ),
   :global(
     html[data-capability='engineering-practice']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='engineering-practice'])
+      [data-capabilities]:not([data-capabilities~='engineering-practice'])
   ),
   :global(
     html[data-capability='engines-systems']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='engines-systems'])
+      [data-capabilities]:not([data-capabilities~='engines-systems'])
   ),
   :global(
     html[data-capability='design-3d']
       [data-filter-list]
-      .archive-row:not([data-capabilities~='design-3d'])
-  ),
-  :global(
-    html[data-capability='offensive-security']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='offensive-security']))
-  ),
-  :global(
-    html[data-capability='data-ml']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='data-ml']))
-  ),
-  :global(
-    html[data-capability='languages']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='languages']))
-  ),
-  :global(
-    html[data-capability='engineering-practice']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='engineering-practice']))
-  ),
-  :global(
-    html[data-capability='engines-systems']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='engines-systems']))
-  ),
-  :global(
-    html[data-capability='design-3d']
-      [data-filter-list]
-      .archive-group:not(:has([data-capabilities~='design-3d']))
+      [data-capabilities]:not([data-capabilities~='design-3d'])
   ) {
     display: none;
   }
@@ -320,20 +292,10 @@ const chips = [
 
     /* The reflow (src/scripts/work-filter.ts): `vt-filter` is on <html> only while a filter
        change's view transition runs, so these names never join a cross-document navigation.
-       Each row, each group's heading and each group's list is its own subject. */
-    :global(:root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-row) {
+       Each row is its own subject. */
+    :global(:root.vt-filter:not([data-motion='off']) [data-filter-list] [data-filter-row]) {
       view-transition-name: var(--vt-name);
       view-transition-class: work-row;
-    }
-
-    :global(
-      :root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-group > .section-heading
-    ) {
-      view-transition-name: var(--vt-head);
-    }
-
-    :global(:root.vt-filter:not([data-motion='off']) [data-filter-list] .archive-group > .archive) {
-      view-transition-name: var(--vt-list);
     }
 
     @keyframes work-row-out {

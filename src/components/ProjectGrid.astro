@@ -1,11 +1,15 @@
 ---
 /**
- * Featured work grid (spec-design-content §2): an ordered list of ProjectCards, two columns
- * from 800px. An odd last card spans both columns in a horizontal layout (see ProjectCard),
- * so any count looks intentional. Cards are numbered by rendered position; the first cover
- * loads eagerly, and cards below the first row play an entrance as they scroll into view —
- * the second column a beat after the first (`--i`). The list is the spotlight's delegation root (`data-spotlight`,
- * src/scripts/interactions.ts via the motion layer).
+ * Selected work as a bento grid (Portfolio.dc.html, Claude Design, Sept 2026 — "1b, size by
+ * importance"): the featured case studies in `order`, the first the lead cell. From 960px, a
+ * 12-column grid of 240px rows: the lead spans 7 columns and 2 rows, the next two 5 columns each
+ * beside it, the rest 4 columns, three to a row; a short last row widens its cards to fill it
+ * (so any count from 3 to 8 comes out whole). 640–959px: the lead full width, the rest in pairs.
+ * Below that, one column.
+ *
+ * Cards numbered by rendered position; the lead's cover loads eagerly, and cards past the first
+ * row rise in as they scroll into view. The list is the spotlight's delegation root
+ * (`data-spotlight`, src/scripts/interactions.ts via the motion layer).
  */
 import type { CollectionEntry } from 'astro:content';
 import MotionLayer from './MotionLayer.astro';
@@ -21,81 +25,98 @@ const { projects, class: className } = Astro.props;
 
 <ol class:list={['project-grid', className]} role="list" data-spotlight>
   {projects.map((project, i) => (
-    <ProjectCard
-      project={project}
-      index={i}
-      eager={i === 0}
-      reveal={i >= 2}
-      wide={i === projects.length - 1 && projects.length % 2 === 1}
-    />
+    <ProjectCard project={project} index={i} lead={i === 0} eager={i === 0} reveal={i >= 3} />
   ))}
 </ol>
 <MotionLayer />
 
 <style>
-  /* No row gap: cards subgrid the rows (see ProjectCard), and a parent row gap would leak
-     into every row inside the cards. Rows of cards are spaced by the cards' top margins. */
   .project-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0 var(--space-l);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1rem, 0.5rem + 1.25vw, 1.375rem);
     padding: 0;
     list-style: none;
   }
 
-  .project-grid > :global(.card + .card) {
-    margin-block-start: var(--space-l);
-  }
-
-  /* Entrance direction (interactions spec §3, the "My Skills" reference feel): single column
-     below 800px, so every card rises like a skill-bar row on its own — the `rise` preset
-     (global.css), set directly as the vars rather than via `data-reveal-from` since which
-     preset applies depends on the viewport, not the card. */
+  /* Entrances rise (the `rise` preset, global.css), the second card of a row a beat later. */
   .project-grid > :global(.card) {
+    grid-column: 1 / -1;
     --reveal-x: 0;
     --reveal-y: var(--reveal-rise, 24px);
     --reveal-clip: inset(0);
   }
 
-  @media (width >= 50rem) {
+  .project-grid > :global(.card:nth-child(even)) {
+    --i: 1;
+  }
+
+  /* Tablets: the lead full width, the rest in pairs; an odd one out takes the whole row. */
+  @media (width >= 40rem) {
+    .project-grid > :global(.card:not(:first-child)) {
+      grid-column: span 6;
+    }
+
+    .project-grid > :global(.card:last-child:nth-child(even)) {
+      grid-column: 1 / -1;
+    }
+
+    /* A half-width card's head stacks: title, then index and year. */
+    .project-grid > :global(.card:not(:first-child) .card__head) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* The bento: covers fill their cells instead of keeping 16:10. */
+  @media (width >= 60rem) {
     .project-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 15rem;
     }
 
-    .project-grid > :global(.card:nth-child(2)) {
-      margin-block-start: 0;
+    .project-grid > :global(.card) {
+      grid-column: span 4;
     }
 
-    .project-grid > :global(.card:nth-child(n + 3)) {
-      margin-block-start: var(--space-xl);
+    .project-grid > :global(.card:first-child) {
+      grid-column: 1 / span 7;
+      grid-row: span 2;
     }
 
-    /* Two columns: the left column slides in from the start edge, the right from the end —
-       the "My Skills" bars' left/right pairing — and the right-hand card of a row lands a
-       beat after the left (existing stagger). Bounded to the gutter (fix wave #2): at these
-       widths `--gutter` (tokens.css) can be narrower than the 2.5rem preset distance, and a
-       card sliding in from further out than its own margin overflows the viewport horizontally
-       (measured 800–~1280px). */
-    .project-grid > :global(.card:nth-child(odd)) {
-      --reveal-x: calc(-1 * min(var(--reveal-shift, 2.5rem), var(--gutter)));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
+    .project-grid > :global(.card:nth-child(2)),
+    .project-grid > :global(.card:nth-child(3)) {
+      grid-column: span 5;
     }
 
-    .project-grid > :global(.card:nth-child(even)) {
-      --reveal-x: min(var(--reveal-shift, 2.5rem), var(--gutter));
-      --reveal-y: 0;
-      --reveal-clip: inset(0);
+    /* Rows of three from the 4th card: one left over fills the row, two left over halve it. */
+    .project-grid > :global(.card:last-child:nth-child(3n + 4)) {
+      grid-column: 1 / -1;
+    }
+
+    .project-grid > :global(.card:nth-last-child(2):nth-child(3n + 4)),
+    .project-grid > :global(.card:last-child:nth-child(3n + 5)) {
+      grid-column: span 6;
+    }
+
+    .project-grid > :global(.card:not(:first-child) .card__head) {
+      flex-direction: row;
+      align-items: baseline;
+    }
+
+    .project-grid > :global(.card .card__media) {
+      aspect-ratio: auto;
+    }
+
+    .project-grid > :global(.card:nth-child(3n + 1)) {
+      --i: 0;
+    }
+
+    .project-grid > :global(.card:nth-child(3n + 2)) {
       --i: 1;
     }
 
-    /* The odd last card spans both columns (ProjectCard's horizontal layout): back to `rise`,
-       since it has no column side to slide from. Higher specificity than the odd rule above
-       wins regardless of source order. */
-    .project-grid > :global(.card:last-child:nth-child(odd)) {
-      --reveal-x: 0;
-      --reveal-y: var(--reveal-rise, 24px);
-      --reveal-clip: inset(0);
+    .project-grid > :global(.card:nth-child(3n)) {
+      --i: 2;
     }
   }
 </style>

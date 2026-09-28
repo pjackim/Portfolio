@@ -7,7 +7,11 @@ repository.
 
 Astro 7 static portfolio site, deployed to GitHub Pages at
 `https://pjackim.github.io/Portfolio/`. One project collection (`src/content/projects/`), a
-home page, a `/work/` index, and per-project case-study pages. No UI framework, no backend, no
+home page, a `/work/` index, per-project case-study pages, and standalone `/about/`,
+`/experience/` and `/capabilities/` pages. Phones (under 40rem) get their own layout: a
+segmented 4-item section nav in the header (scroll-spy fill, `src/scripts/nav-scroll.ts`),
+full-height scroll-snap chapter panels on the home page (`HomeMobilePanels.astro`), a sticky
+"Get in touch" bar, and a contact bottom sheet (`ContactSheet.astro`). No UI framework, no backend, no
 CMS. Content is a mix of Markdown frontmatter/body and hand-authored copy in `src/data/`, all
 sourced from the frozen legacy site (commit `d8782d1`) and the résumé PDF.
 
@@ -113,6 +117,14 @@ they started from, which the human approves before it's committed.
   complete, commits the prompt to `docs/prompts/<date>-<slug>.md`, then offers to run it
   through `/design-portfolio`. What it knows about taste-skill lives in
   `docs/design/taste-skill.md`.
+- **`/add-to-portfolio <path or url>`** (also triggered by "add to portfolio …" or "new
+  portfolio project …"): adds a repo as a new project with no questions asked (unless the
+  request says "ask questions"). It runs `.claude/workflows/add-portfolio-project.js`, which
+  explores the source through six lenses, writes a sourced ledger, sources and encodes media,
+  writes the entry (`draft: true` unless "publish"), verifies it (build, render, fact-checker,
+  convention-guard, a 3-lens accuracy panel, up to 2 fix rounds), and `wt merge`s it into the
+  originating branch. It ends with a report: media counts (local vs external), the final
+  facts, and a per-field accuracy-confidence table.
 
 Shared pieces: the rubric `docs/design/review-checklist.md`, the style profile
 `docs/identity/site-style.md`, `.claude/workflows/audit-lenses.js`, and
@@ -188,9 +200,11 @@ check:media` — media lint (also part of `lint`)
   helpers), `page-style.ts` (per-instance CSS without inline `style=`, to keep the CSP free of
   `'unsafe-inline'`), `monogram.ts` (shared logo geometry; also imported by `scripts/og/`, so it
   stays import-free).
-- **Data files** — `src/data/site.ts` (name, role, bio, experience — every line sourced with a
-  comment back to the legacy file/line or the résumé) and `src/data/taxonomy.ts`
-  (`CAPABILITIES`, `GROUPS`, and the six capability boxes on the home page).
+- **Data files** — `src/data/site.ts` (name, role, bio, timeline, and the Experience git log's
+  commits and skills — every line sourced with a comment back to the legacy file/line, the
+  résumé or the author) and `src/data/taxonomy.ts` (`CAPABILITIES`, `GROUPS`, and the capability
+  groups on `/capabilities/`). The git log's geometry is `src/lib/git-log.ts`, shared by the
+  build and `src/scripts/git-log.ts`.
 - **Redirects** — `src/pages/html/Work/[legacy].html.ts` emits static meta-refresh stubs at the
   exact legacy URLs (`html/Work/<name>.html`) for every project's `legacyPaths`, plus
   `REMOVED_LEGACY` entries (e.g. `alvin` → `work/`). GitHub Pages can't send HTTP redirects, so

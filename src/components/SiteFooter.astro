@@ -1,23 +1,31 @@
 ---
 /**
- * Site footer (spec-design-content §2, §3): one row under a hairline — the copyright readout at
- * the start and the Motion toggle chip at the end, the site-wide motion control on pages
- * without the hero (interactions spec §1). On narrow phones the chip drops below the copyright,
- * at the start. The year is the build's (src/lib/build-info.ts: from the commit, not the wall
+ * Site footer (spec-design-content §2, §3; Portfolio.dc.html): one row under a hairline — the
+ * monogram and copyright readout at the start; at the end the Motion toggle chip, the site-wide
+ * motion control on pages without the hero (interactions spec §1), and a back-to-top link. On
+ * phones the end drops below the copyright, at the start. The year is the build's (src/lib/build-info.ts: from the commit, not the wall
  * clock, so a rebuild is byte-identical).
  */
 import { site } from '../data/site';
 import { buildYear } from '../lib/build-info';
+import Monogram from './Monogram.astro';
 import MotionToggle from './MotionToggle.astro';
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <p class="mono-label">
-      © {buildYear}
-      {site.name}
+    <p class="site-footer__mark mono-label">
+      <Monogram size={17} />
+      <span>
+        © {buildYear} {site.name}
+      </span>
     </p>
-    <MotionToggle class="site-footer__motion" deferLayer />
+    <div class="site-footer__end">
+      <MotionToggle class="site-footer__motion" deferLayer />
+      <a class="site-footer__top mono-label" href="#main">
+        Back to top ↑
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -36,15 +44,53 @@ import MotionToggle from './MotionToggle.astro';
     gap: var(--space-xs) var(--space-l);
   }
 
-  /* Narrow phones: stacked, both at the start. The row needs ~24.5rem (the copyright, the
-     chip's widest slot and the gap), which a 28rem viewport holds inside its gutters. */
-  @media (width < 28rem) {
+  .site-footer__mark {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .site-footer__mark :global(.monogram) {
+    color: var(--text);
+  }
+
+  .site-footer__end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-m);
+  }
+
+  .site-footer__top {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  @media (hover: hover) {
+    .site-footer__top:hover {
+      color: var(--text);
+    }
+  }
+
+  /* Phones: stacked, both at the start. The row needs ~33rem (the copyright, the chip's
+     widest slot, the back-to-top link and the gaps), which a 40rem viewport holds inside its
+     gutters. */
+  @media (width < 40rem) {
     .site-footer__inner {
       flex-direction: column;
       align-items: flex-start;
     }
 
-    .site-footer__inner > :global(.site-footer__motion) {
+    /* The chip at the start of its slot, and the link at the far end (not after the slot's
+       spare width). */
+    .site-footer__end {
+      align-self: stretch;
+      justify-content: space-between;
+    }
+
+    .site-footer__end > :global(.site-footer__motion) {
       justify-items: start;
     }
   }

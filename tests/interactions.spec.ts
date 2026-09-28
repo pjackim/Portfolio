@@ -4,7 +4,6 @@
  *   every card) by hover with a fine pointer and by keyboard focus; faint and static on touch
  *   screens. The spotlight follows the pointer through CSSOM custom properties (one delegated
  *   listener).
- * - Archive rows: the surface wash is clipped away at rest and wipes in on hover and focus.
  * - Section headings: the label flickers once on an aria-hidden layer — a sparse flicker of about
  *   a third of its glyphs within ~400 ms, not a full decrypt (the h2's text and the section's
  *   name never change), the index counts up from 00; nothing plays with motion off.
@@ -15,12 +14,16 @@
  *   afterwards) and off (instant, no class), with no console errors; rapid double clicks leave
  *   nothing behind.
  * - axe finds nothing with the reticle locked on.
- * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
+ * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit), on a wide viewport: the
+ * home page's sections are there from 40rem (phones get a hub instead, tests/phone.spec.ts), and
+ * the phone engines still cover touch and WebKit behaviour here.
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { interactionsLoaded, twoFrames } from './helpers/motion.ts';
 import { gotoRel } from './helpers/routes.ts';
+
+test.use({ viewport: { width: 1280, height: 800 } });
 
 declare global {
   interface Window {
@@ -208,68 +211,6 @@ test.describe('card reticle, reduced motion', () => {
   });
 });
 
-test.describe('archive rows', () => {
-  const wash = (page: Page, selector: string) =>
-    page
-      .locator(selector)
-      .evaluate((el) => getComputedStyle(el, '::before').clipPath.replace(/\s+/g, ' '));
-
-  test('the wash wipes in on hover and on keyboard focus', async ({ page, browserName }) => {
-    await gotoRel(page, 'work/');
-    const row = '.archive-row >> nth=1';
-    expect(await wash(page, row)).toBe('inset(0px 100% 0px 0px)');
-    if (await finePointer(page)) {
-      await page.locator(row).hover();
-      await expect.poll(() => wash(page, row)).toBe('inset(0px)');
-      await page.mouse.move(2, 2);
-      await expect.poll(() => wash(page, row)).toBe('inset(0px 100% 0px 0px)');
-    }
-    await page.locator('.archive-row >> nth=0').locator('a').focus();
-    await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
-    await expect(page.locator(row).locator('a')).toBeFocused();
-    await expect.poll(() => wash(page, row)).toBe('inset(0px)');
-  });
-});
-
-test.describe('archive rows, wrapped titles', () => {
-  test.use({ viewport: { width: 1440, height: 900 } });
-
-  test("keep the year and summary on the title's first line", async ({ page }) => {
-    await gotoRel(page, 'work/');
-    // Top and bottom of the first line of text in each cell (a Range over its first text node).
-    const rows = await page.locator('.archive-row').evaluateAll((els) =>
-      els.map((row) => {
-        const firstLine = (el: Element) => {
-          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
-            acceptNode: (n) =>
-              n.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP,
-          });
-          const range = document.createRange();
-          range.selectNodeContents(walker.nextNode()!);
-          const box = range.getClientRects()[0]!;
-          return { top: box.top, middle: (box.top + box.bottom) / 2 };
-        };
-        const name = row.querySelector('.archive-row__name')!;
-        const lineHeight = parseFloat(getComputedStyle(name).lineHeight);
-        return {
-          wrapped: name.getBoundingClientRect().height > lineHeight * 1.5,
-          title: firstLine(row.querySelector('.archive-row__title')!),
-          year: firstLine(row.querySelector('.archive-row__year')!),
-          summary: firstLine(row.querySelector('.archive-row__summary')!),
-        };
-      }),
-    );
-    const wrapped = rows.filter((row) => row.wrapped);
-    expect(wrapped.length, 'wrapped titles at 1440 on /work/').toBeGreaterThan(0);
-    for (const { title, year } of wrapped) {
-      // Baseline-aligned mono year vs sans title: the tops differ only by the fonts' ascents
-      // (4.0 px, as on an unwrapped row); a year pushed to the second line is ~28 px off.
-      expect(Math.abs(year.top - title.top)).toBeLessThanOrEqual(4.5);
-      expect(Math.abs(year.middle - title.middle)).toBeLessThanOrEqual(4);
-    }
-  });
-});
-
 test.describe('section headings, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
@@ -335,7 +276,7 @@ test.describe('section headings, motion on', () => {
     await page.addInitScript(() => {
       window.__flicker = { samples: [], set: -1, cleared: -1 };
       document.addEventListener('DOMContentLoaded', () => {
-        const title = document.querySelector('#earlier-work-title')!;
+        const title = document.querySelector('#experience-title')!;
         new MutationObserver(() => {
           const flicker = window.__flicker!;
           const layer = title.querySelector('.section-heading__decrypt');
@@ -355,12 +296,12 @@ test.describe('section headings, motion on', () => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
     await expect.poll(() => interactionsLoaded(page)).toBe(true);
-    await scrollIntoView(page, '#earlier-work .section-heading', 'center');
+    await scrollIntoView(page, '#experience .section-heading', 'center');
     await expect
       .poll(() => page.evaluate(() => window.__flicker!.cleared), { timeout: 5000 })
       .toBeGreaterThan(0);
     const { samples, set, cleared } = (await page.evaluate(() => window.__flicker))!;
-    const final = 'Earlier work';
+    const final = 'Experience';
     const letters = [...final].filter((ch) => /[a-z0-9]/i.test(ch)).length;
     // Every glyph position that ever showed something other than its own letter.
     const touched = new Set<number>();
@@ -376,11 +317,12 @@ test.describe('section headings, motion on', () => {
     );
     // A flicker, not a decrypt: over within ~400 ms (a frame or two of slack each side).
     expect(cleared - set).toBeLessThan(560);
-    await expect(page.locator('#earlier-work-title')).toHaveText(final);
+    await expect(page.locator('#experience-title')).toHaveText(final);
   });
 
   test('a heading on screen as the code arrives keeps its rule (no redraw)', async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
+    // Tall enough that About's heading is on screen at load.
+    await page.setViewportSize({ width: 1440, height: 2000 });
     await page.addInitScript(() => {
       window.__rule = [];
       new MutationObserver((records) => {
@@ -388,10 +330,11 @@ test.describe('section headings, motion on', () => {
           window.__rule!.push((r.target as Element).getAttribute('data-rule'));
       }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-rule'] });
     });
-    await gotoRel(page, 'work/');
+    await gotoRel(page, '');
     await expect.poll(() => interactionsLoaded(page)).toBe(true);
-    // /work/'s first group heading is on screen at load: it decrypts, but its rule never hides.
+    // The first section heading is on screen at load: it decrypts, but its rule never hides.
     const first = page.locator('.section-heading').first();
+    await expect(first).toBeInViewport();
     await expect(first.locator('.section-heading__decrypt')).toHaveCount(0, { timeout: 5000 });
     await twoFrames(page);
     expect(await first.getAttribute('data-rule')).toBeNull();
@@ -400,8 +343,8 @@ test.describe('section headings, motion on', () => {
 
   test('forced colours: the decrypt layer never prints over the real heading', async ({ page }) => {
     await page.emulateMedia({ forcedColors: 'active' });
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await gotoRel(page, 'work/');
+    await page.setViewportSize({ width: 1440, height: 2000 });
+    await gotoRel(page, '');
     const layer = page.locator('.section-heading__decrypt').first();
     await layer.waitFor({ state: 'attached', timeout: 10_000 });
     expect(await layer.evaluate((el) => getComputedStyle(el).display)).toBe('none');
@@ -507,11 +450,11 @@ test.describe('arrow nudges', () => {
 test.describe('entrance reveals, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
-  // /work/'s first rows, and home landed on at a fragment, where the experience rows are on
-  // screen at load. (Home's own first screen holds no reveal items:
-  // the hero and the first card row never reveal — checked below.)
+  // Home landed on at a fragment, where the experience log and the later cards are on screen
+  // at load. (Home's own first screen holds no reveal items: the hero and the first card row
+  // never reveal — checked below.)
   for (const height of [900, 1200]) {
-    for (const path of ['work/', '#experience']) {
+    for (const path of ['#experience', '#work']) {
       test(`everything on screen at load is shown, unanimated (${path}, 1440×${height})`, async ({
         page,
       }) => {
@@ -576,16 +519,17 @@ test.describe('entrance reveals, motion on', () => {
   test('never on the hero or the first card row', async ({ page }) => {
     await gotoRel(page, '');
     await expect(page.locator('.hero [data-reveal]')).toHaveCount(0);
-    for (const card of await page.locator(`${CARD}:nth-child(-n + 2)`).all()) {
+    // The bento's first row: the lead and the two cards beside it.
+    for (const card of await page.locator(`${CARD}:nth-child(-n + 3)`).all()) {
       expect(await card.getAttribute('data-reveal')).toBeNull();
     }
-    await expect(page.locator(`${CARD}:nth-child(3)`)).toHaveAttribute('data-reveal');
+    await expect(page.locator(`${CARD}:nth-child(4)`)).toHaveAttribute('data-reveal');
   });
 
   test('an item below the fold waits, then plays once as it scrolls in', async ({ page }) => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const target = page.locator('#earlier-work .archive-row').first();
+    const target = page.locator(`${CARD}[data-reveal]`).first();
     await expect(target).toHaveAttribute('data-reveal-state', 'pending');
     await expect(target).toHaveCSS('opacity', '0');
     await target.evaluate((el) => {
@@ -595,7 +539,7 @@ test.describe('entrance reveals, motion on', () => {
           (window as Window & { __played?: number }).__played! += 1;
       });
     });
-    await scrollIntoView(page, '#earlier-work .archive-row', 'center');
+    await scrollIntoView(page, `${CARD}[data-reveal]`, 'center');
     // It plays, then the state goes: nothing left behind (no clip that could cut a focus ring).
     await expect(target).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
     await expect(target).toHaveCSS('opacity', '1');
@@ -603,7 +547,7 @@ test.describe('entrance reveals, motion on', () => {
     expect(await target.evaluate((el) => el.getAnimations().length)).toBe(0);
     // Once: away and back again, it doesn't replay.
     await scrollIntoView(page, 'header', 'start');
-    await scrollIntoView(page, '#earlier-work .archive-row', 'center');
+    await scrollIntoView(page, `${CARD}[data-reveal]`, 'center');
     await twoFrames(page);
     expect(await page.evaluate(() => (window as Window & { __played?: number }).__played)).toBe(1);
   });
@@ -613,13 +557,13 @@ test.describe('entrance reveals, motion on', () => {
     await page.addInitScript(() => {
       document.addEventListener('DOMContentLoaded', () => {
         document
-          .querySelector<HTMLElement>('#earlier-work .archive-row')!
+          .querySelector<HTMLElement>('.project-grid > .card[data-reveal]')!
           .style.setProperty('min-height', '9000px');
       });
     });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const target = page.locator('#earlier-work .archive-row').first();
+    const target = page.locator(`${CARD}[data-reveal]`).first();
     await expect(target).toHaveAttribute('data-reveal-state', 'pending');
     // Its top a third of the way up the screen: it covers the lower third, ~3% of itself.
     await target.evaluate((el) => {
@@ -680,7 +624,7 @@ test.describe('entrance reveals, motion on', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await gotoRel(page, '');
+    await gotoRel(page, 'capabilities/');
     await page.waitForLoadState('load');
     const groups = page.locator('.caps__group');
     const count = await groups.count();
@@ -717,7 +661,7 @@ test.describe('entrance reveals, motion on', () => {
   });
 
   test('capabilities: arrow keys move between groups', async ({ page }) => {
-    await gotoRel(page, '');
+    await gotoRel(page, 'capabilities/');
     await page.locator('.caps__radio').first().focus();
     await page.keyboard.press('ArrowDown');
     await expect(page.locator('.caps__radio').nth(1)).toBeChecked();
@@ -733,7 +677,7 @@ test.describe('entrance reveals, motion on', () => {
     await expect(page.locator('[data-timeline]')).toHaveAttribute('data-live', '', {
       timeout: 5000,
     });
-    await scrollIntoView(page, '.caps', 'center');
+    await scrollIntoView(page, '#work', 'center');
     await expect(page.locator('.timeline__stop[data-tl]')).toHaveCount(0, { timeout: 5000 });
     await expect
       .poll(() =>
@@ -744,90 +688,18 @@ test.describe('entrance reveals, motion on', () => {
       .toBe(true);
   });
 
-  test('experience rows stagger among themselves, and the hairline finishes drawing with zero cancels', async ({
+  test('the experience log wipes down once as it scrolls in, leaving nothing behind', async ({
     page,
   }) => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const rows = page.locator('.experience__row');
-    const rowCount = await rows.count();
-    expect(rowCount).toBeGreaterThan(2);
-
-    // `--row-i` (ExperienceList.astro) cycles every 3 rows, the same convention as ArchiveRow;
-    // it can be read at rest, before any row ever plays.
-    const rowI = await rows.evaluateAll((els) =>
-      els.map((el) => getComputedStyle(el).getPropertyValue('--row-i').trim() || '0'),
-    );
-    expect(rowI[0]).toBe('0');
-    expect(rowI[1]).toBe('1');
-    expect(rowI[2]).toBe('2');
-    if (rowCount > 3) expect(rowI[3]).toBe('0');
-
-    const first = rows.first();
-    const last = rows.nth(rowCount - 1);
-    await expect(first).toHaveAttribute('data-reveal-state', 'pending');
-
-    // `animationend` vs. `animationcancel`
-    // tells a hairline that finished naturally from one cut off when its row's
-    // `data-reveal-state` goes away (task 3's lesson, reused here for a different secondary
-    // draw). Listened for on every row at once — the event bubbles from the row's own `::after`.
-    await rows.evaluateAll((els) => {
-      window.__tickLog = { start: 0, end: 0, cancel: 0 };
-      const onEvent = (event: Event) => {
-        const animationEvent = event as AnimationEvent;
-        if (animationEvent.animationName !== 'draw-inline') return;
-        if (event.type === 'animationstart') window.__tickLog!.start += 1;
-        else if (event.type === 'animationend') window.__tickLog!.end += 1;
-        else if (event.type === 'animationcancel') window.__tickLog!.cancel += 1;
-      };
-      for (const el of els) {
-        el.addEventListener('animationstart', onEvent);
-        el.addEventListener('animationend', onEvent);
-        el.addEventListener('animationcancel', onEvent);
-      }
-    });
-
-    // One scroll plays every row at once — a short list, all of it fits near the viewport.
-    await scrollIntoView(page, '.experience', 'center');
-    await expect(first).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
-    await expect(last).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
-    // Give any in-flight hairline a chance to fire its (already-due) `animationend` before
-    // reading — the event and the attribute removal both happen off the same rAF-driven
-    // completion check (reveal.ts), so they can land in either order within a frame or two.
-    await twoFrames(page);
-
-    // Once `data-reveal-state` is gone, the `[data-reveal-state]`-scoped `::after` rule
-    // (ExperienceList.astro, fix wave minor 3) stops matching entirely — the row is back to
-    // showing only its real `border-block-end`, never left rendering the drawn line at its
-    // hidden `scale: 0 1` start.
-    const hairlineContents = await rows.evaluateAll((els) =>
-      els.map((el) => getComputedStyle(el, '::after').content),
-    );
-    for (const content of hairlineContents) expect(content).toBe('none');
-
-    const tickLog = await page.evaluate(() => window.__tickLog);
-    expect(tickLog!.cancel, 'a hairline was cut off before it finished drawing').toBe(0);
-    expect(tickLog!.start).toBe(rowCount);
-    expect(tickLog!.end).toBe(rowCount);
-  });
-
-  test('a row already on screen at load draws no ::after at all (fix wave minor 3)', async ({
-    page,
-  }) => {
-    // A row that never gets a reveal state at all (already on screen at load) used to still
-    // match an unconditional `.experience__row::after` rule (ExperienceList.astro), in the wrong
-    // colour (fix round 1) and then, once that colour was fixed, as an indistinguishable but
-    // still-present pseudo-element sitting exactly over the real border. Fix wave minor 3 scoped
-    // the rule to `[data-reveal-state]` so a row with no reveal state has no `::after` at all —
-    // just its real `border-block-end`. Landing tall enough that Experience is on screen at load
-    // (the `everything on screen at load is shown, unanimated` pattern above) reproduces the
-    // exact "never played" case.
-    await page.setViewportSize({ width: 1440, height: 1600 });
-    await gotoRel(page, '#experience');
-    await page.waitForLoadState('load');
-    const row = page.locator('.experience__row').first();
-    await expect(row).not.toHaveAttribute('data-reveal-state');
-    expect(await row.evaluate((el) => getComputedStyle(el, '::after').content)).toBe('none');
+    const frame = page.locator('#experience .git-log__frame');
+    await expect(frame).toHaveAttribute('data-reveal-state', 'pending');
+    await scrollIntoView(page, '#experience .git-log__frame', 'center');
+    await expect(frame).not.toHaveAttribute('data-reveal-state', { timeout: 4000 });
+    await expect(frame).toHaveCSS('clip-path', 'none');
+    await expect(frame).toHaveCSS('opacity', '1');
+    expect(await frame.evaluate((el) => el.getAnimations().length)).toBe(0);
   });
 
   test('the contact block ends fully visible at 1920×1080 after scrolling to the bottom', async ({
@@ -910,9 +782,9 @@ test.describe('entrance reveals, motion on', () => {
     });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const card = page.locator(`${CARD}:nth-child(3)`);
+    const card = page.locator(`${CARD}:nth-child(4)`);
     await expect(card).toHaveAttribute('data-reveal-state', 'pending');
-    await scrollIntoView(page, `${CARD}:nth-child(3)`, 'center');
+    await scrollIntoView(page, `${CARD}:nth-child(4)`, 'center');
     await expect(card).not.toHaveAttribute('data-reveal-state', { timeout: 3000 });
     await card.locator('.card__title a').click();
     await page.waitForURL(/\/work\/[^/]+\/$/);
@@ -939,10 +811,10 @@ test.describe('entrance reveals, motion on', () => {
   test('a back/forward-cache restore shows waiting items on screen at once', async ({ page }) => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const card = page.locator(`${CARD}:nth-child(3)`);
+    const card = page.locator(`${CARD}:nth-child(4)`);
     await expect(card).toHaveAttribute('data-reveal-state', 'pending');
     // As if the page had been frozen with this card waiting on screen, then restored.
-    await scrollIntoView(page, `${CARD}:nth-child(3)`, 'center');
+    await scrollIntoView(page, `${CARD}:nth-child(4)`, 'center');
     await card.evaluate((el: HTMLElement) => {
       el.dataset.revealState = 'pending';
       dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
@@ -989,7 +861,7 @@ test.describe('theme toggle', () => {
     await gotoRel(page, '');
     await page.waitForLoadState('load');
     const html = page.locator('html');
-    const toggle = page.locator('header [data-theme-toggle]');
+    const toggle = page.locator('.site-header__end [data-theme-toggle]');
     const before = await html.getAttribute('data-scheme');
     await toggle.click();
     await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
@@ -1025,7 +897,9 @@ test.describe('theme toggle', () => {
     const html = page.locator('html');
     const before = await html.getAttribute('data-scheme');
     await page.evaluate(() => {
-      const button = document.querySelector<HTMLButtonElement>('header [data-theme-toggle]')!;
+      const button = document.querySelector<HTMLButtonElement>(
+        '.site-header__end [data-theme-toggle]',
+      )!;
       button.click();
       button.click();
     });
@@ -1051,7 +925,7 @@ test.describe('theme toggle', () => {
     await page.waitForLoadState('load');
     const html = page.locator('html');
     const before = await html.getAttribute('data-scheme');
-    await page.locator('header [data-theme-toggle]').click();
+    await page.locator('.site-header__end [data-theme-toggle]').click();
     await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
     expect(await page.evaluate(() => window.__vtClass)).toEqual(['add', 'remove']);
     await expect(html).not.toHaveClass(/\bvt-theme\b/);
@@ -1072,7 +946,7 @@ test.describe('theme toggle', () => {
       await page.waitForLoadState('load');
       const html = page.locator('html');
       const before = await html.getAttribute('data-scheme');
-      await page.locator('header [data-theme-toggle]').click();
+      await page.locator('.site-header__end [data-theme-toggle]').click();
       await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
       expect(await page.evaluate(() => window.__vtClass)).toEqual([]);
       expect(errors).toEqual([]);

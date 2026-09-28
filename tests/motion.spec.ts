@@ -14,9 +14,14 @@
  *   across a reload — and a navigation made after switching it off has no cross-document view
  *   transition; revealing it never shifts the layout (tablet widths, either motion state). The
  *   monogram caret blinks on the first page of a session only.
+ * - Phones (under 40rem, Portfolio.dc.html "1c Summary first"): the hero is the summary alone,
+ *   with no graph, focus line, readouts or hero chip; the footer chip is the motion control and
+ *   the prompt's monogram is the one that blinks. The instrument tests above run on a wide
+ *   viewport on every project so the phone engines still cover them.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import { expect, test, type Page } from '@playwright/test';
+import { headerMonogram, themeToggle } from './helpers/header.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -34,6 +39,8 @@ const GRAPH = 'canvas[data-hero-graph]';
 const FOCUS_LINE = '[data-focus-line]';
 const TOGGLE = '.hero [data-motion-toggle]';
 const FOCUS_TEXT = 'reverse engineering · machine learning · embedded systems';
+/** Where the hero shows its instruments (all of them hide under 40rem). */
+const WIDE = { width: 1280, height: 800 };
 /** Every built case-study page is a project. */
 const PROJECT_COUNT = ROUTES.filter((route) => /^work\/[^/]+\/$/.test(route)).length;
 
@@ -147,7 +154,7 @@ async function expectFrozen(page: Page, ms = 900): Promise<void> {
 }
 
 test.describe('reduced motion', () => {
-  test.use({ reducedMotion: 'reduce' });
+  test.use({ reducedMotion: 'reduce', viewport: WIDE });
 
   test('the graph is a decorative static frame with no animation loop', async ({ page }) => {
     await countAnimationFrames(page);
@@ -163,7 +170,7 @@ test.describe('reduced motion', () => {
     await graphIs(page, 'static');
     await expectGraphInTokenColours(page);
     // Re-read after a scheme change (the safety net is still on).
-    await page.locator('header [data-theme-toggle]').click();
+    await themeToggle(page).click();
     await expect(page.locator('html')).toHaveAttribute('data-scheme', /light|dark/);
     await expect
       .poll(async () => {
@@ -190,7 +197,7 @@ test.describe('reduced motion', () => {
 
   test('the monogram caret does not blink', async ({ page }) => {
     await gotoRel(page, '');
-    const cursor = page.locator('.site-header .monogram__cursor');
+    const cursor = headerMonogram(page).locator('.monogram__cursor');
     expect(await cursor.evaluate((el) => el.getAnimations().length)).toBe(0);
   });
 
@@ -212,7 +219,7 @@ test.describe('reduced motion', () => {
 });
 
 test.describe('motion on', () => {
-  test.use({ reducedMotion: 'no-preference' });
+  test.use({ reducedMotion: 'no-preference', viewport: WIDE });
 
   test('the graph animates', async ({ page }) => {
     await gotoRel(page, '');
@@ -503,9 +510,9 @@ test.describe('motion on', () => {
 
   test('the monogram caret blinks on the first page of a session only', async ({ page }) => {
     await gotoRel(page, '');
-    const monogram = page.locator('.site-header .monogram');
+    const monogram = headerMonogram(page);
     const blinking = () =>
-      page.locator('.site-header .monogram__cursor').evaluate((el) => el.getAnimations().length);
+      monogram.locator('.monogram__cursor').evaluate((el) => el.getAnimations().length);
     await expect(monogram).toHaveClass(/\bis-blinking\b/);
     expect(await blinking()).toBe(1);
     await gotoRel(page, 'work/');
@@ -514,13 +521,39 @@ test.describe('motion on', () => {
   });
 });
 
+test.describe('phones', () => {
+  test.use({ reducedMotion: 'no-preference', viewport: { width: 390, height: 844 } });
+
+  test('the hero is the full chapter opener, and the footer chip runs motion', async ({ page }) => {
+    await gotoRel(page, '');
+    await expect(page.locator('h1')).toBeVisible();
+    await expect(page.locator('.hero__lede')).toBeVisible();
+    // The focus line and actions are part of the phone hero too (Portfolio.dc.html `data-mhero`);
+    // only the graph, readouts and status strip are the wider layouts'.
+    await expect(page.locator(FOCUS_LINE)).toBeVisible();
+    await expect(page.locator('.hero__actions')).toBeVisible();
+    for (const hidden of [GRAPH, '[data-readouts]', TOGGLE, '.hero .status-strip']) {
+      await expect(page.locator(hidden), hidden).toBeHidden();
+    }
+    // The phone bar's monogram is the one on show, and it blinks on the first page.
+    const monogram = headerMonogram(page);
+    await expect(monogram).toHaveCount(1);
+    await expect(monogram).toHaveClass(/\bis-blinking\b/);
+    const chip = page.locator('footer [data-motion-toggle]');
+    await expect(chip).not.toBeHidden({ timeout: 10_000 });
+    await chip.click();
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+  });
+});
+
 /**
  * Revealing the Motion chip (hidden until its script runs) never shifts the layout: the slot
  * reserves the chip's widest box. Tablet widths are where the rail's readouts and chip sit
- * closest to wrapping; the chip's script is held back so the reveal lands after first paint.
+ * closest to wrapping (from 40rem, where the hero first shows them); the chip's script is held
+ * back so the reveal lands after first paint.
  */
 for (const reducedMotion of ['no-preference', 'reduce'] as const) {
-  for (const width of [600, 700]) {
+  for (const width of [640, 700]) {
     test.describe(`chip reveal at ${width}px (${reducedMotion})`, () => {
       test.use({ reducedMotion, viewport: { width, height: 900 } });
 

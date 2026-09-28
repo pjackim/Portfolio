@@ -1,22 +1,22 @@
 /**
  * /work/ filter, case-study instruments, figure lightbox, footer, in-page scrolling
  * (interactions spec §4, §5; Ruling G9).
- * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability
- *   and the groups left empty; `?capability=` is kept in the URL and restores the filter on load —
+ * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability,
+ *   and a showcase it leaves empty says so; `?capability=` is kept in the URL and restores the filter on load —
  *   painted filtered before any script runs — while an unknown value is ignored (and dropped from
  *   the URL), and a filter whose script never arrives fails open; a polite live
  *   region announces "Showing N of 15 projects"; the chips work from the keyboard; with motion on
- *   the change is a view transition that leaves nothing behind; rows it brings on screen are
- *   never left waiting for an entrance (opacity 1); the bar appearing shifts nothing; without JS
- *   there is no bar and every row shows.
+ *   the change is a view transition that leaves nothing behind; each showcase's lead moves to
+ *   its first project still shown; the bar appearing shifts nothing; without JS there is no bar
+ *   and every row shows.
  * - Case study at 1440: the "On this page" index, whose scrollspy follows the section being read;
  *   below 72rem there is none. The reading-progress bar is decorative. The motion layer (footer
  *   chip, index, lightbox) is fetched only after load there.
  * - Lightbox: opens from a figure image (click) and its "Full size" link (Enter); Esc, the close
  *   button and the backdrop close it; focus goes to the close button and back to the link; the
  *   page can't scroll behind it; it is named "Figure n"; axe finds nothing with it open.
- * - Footer: the copyright line and the Motion chip, on one row (stacked on phones), and nothing
- *   else.
+ * - Footer: the copyright line, the Motion chip and a back-to-top link, on one row (stacked on
+ *   narrow phones), and nothing else.
  * - A page loaded at a fragment lands on it at once; a same-page anchor click glides with motion
  *   on and jumps with it off, keeping the hash.
  * - Without view transitions at all, the theme switch, the filter and the lightbox still work,
@@ -25,7 +25,7 @@
  */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type Route } from '@playwright/test';
-import { interactionsLoaded, twoFrames } from './helpers/motion.ts';
+import { themeToggle } from './helpers/header.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -34,7 +34,6 @@ declare global {
     __filterShifts?: number[];
     __capability?: (string | null)[];
     __vts?: ViewTransition[];
-    __decrypts?: number;
     __loadYs?: number[];
     __scrollYs?: number[];
   }
@@ -43,7 +42,7 @@ declare global {
 const PROJECT_COUNT = ROUTES.filter((route) => /^work\/[^/]+\/$/.test(route)).length;
 const BAR = '[data-work-filter]';
 const CHIP = `${BAR} button[data-capability]`;
-const ROW = '[data-filter-list] .archive-row';
+const ROW = '[data-filter-list] [data-filter-row]';
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 
 /** Safari reaches buttons and links with Option+Tab (plain Tab only visits text fields). */
@@ -51,21 +50,22 @@ const tabKey = (browserName: string) => (browserName === 'webkit' ? 'Alt+Tab' : 
 
 const chip = (page: Page, id: string) => page.locator(`${CHIP}[data-capability="${id}"]`);
 
-/** The filter bar has been wired by the motion layer and shown (its chips work). */
+/** The filter bar and the showcases have been wired by the motion layer (the chips work). */
 async function filterReady(page: Page): Promise<void> {
   await expect(page.locator(`${BAR}[data-ready]`)).toBeAttached();
   await expect(page.locator(CHIP).first()).toBeVisible();
+  await expect(page.locator('[data-showcase]:not([data-ready])')).toHaveCount(0);
 }
 
-/** Slugs of the rows that are rendered, and ids of the groups that are. */
+/** Projects of the rows that are rendered, and the showcases not showing their empty note. */
 function shown(page: Page): Promise<{ rows: string[]; groups: string[] }> {
   return page.evaluate(() => ({
-    rows: [...document.querySelectorAll<HTMLElement>('[data-filter-list] .archive-row')]
+    rows: [...document.querySelectorAll<HTMLElement>('[data-filter-list] [data-filter-row]')]
       .filter((el) => el.getClientRects().length > 0)
-      .map((el) => el.dataset.slug ?? ''),
-    groups: [...document.querySelectorAll<HTMLElement>('[data-filter-list] .archive-group')]
-      .filter((el) => el.getClientRects().length > 0)
-      .map((el) => el.dataset.group ?? ''),
+      .map((el) => el.dataset.project ?? ''),
+    groups: [...document.querySelectorAll<HTMLElement>('[data-filter-list] [data-showcase]')]
+      .filter((el) => !el.hasAttribute('data-empty'))
+      .map((el) => el.getAttribute('aria-labelledby') ?? ''),
   }));
 }
 
@@ -75,12 +75,12 @@ function expected(page: Page, id: string): Promise<{ rows: string[]; groups: str
     const match = (el: Element) =>
       id === '' || (el.getAttribute('data-capabilities') ?? '').split(' ').includes(id);
     return {
-      rows: [...document.querySelectorAll<HTMLElement>('[data-filter-list] .archive-row')]
+      rows: [...document.querySelectorAll<HTMLElement>('[data-filter-list] [data-filter-row]')]
         .filter(match)
-        .map((el) => el.dataset.slug ?? ''),
-      groups: [...document.querySelectorAll<HTMLElement>('[data-filter-list] .archive-group')]
-        .filter((group) => [...group.querySelectorAll('.archive-row')].some(match))
-        .map((el) => el.dataset.group ?? ''),
+        .map((el) => el.dataset.project ?? ''),
+      groups: [...document.querySelectorAll<HTMLElement>('[data-filter-list] [data-showcase]')]
+        .filter((group) => [...group.querySelectorAll('[data-filter-row]')].some(match))
+        .map((el) => el.getAttribute('aria-labelledby') ?? ''),
     };
   }, id);
 }
@@ -136,7 +136,7 @@ test.describe('/work/ filter', () => {
     );
   });
 
-  test('each chip hides the rows without its capability and the groups left empty', async ({
+  test('each chip hides the rows without its capability, and an emptied showcase says so', async ({
     page,
   }) => {
     await gotoRel(page, 'work/');
@@ -157,7 +157,7 @@ test.describe('/work/ filter', () => {
       groupsShown.add(want.groups.length);
     }
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
-    // Not vacuous: some filter does empty a group.
+    // Not vacuous: some filter does empty a showcase.
     expect(Math.min(...groupsShown)).toBeLessThan(Math.max(...groupsShown));
   });
 
@@ -177,7 +177,8 @@ test.describe('/work/ filter', () => {
     // The whole document is parsed; the module (and DOMContentLoaded) is still waiting.
     await page.locator('footer').waitFor({ state: 'attached' });
     await expect(page.locator(`${BAR}[data-ready]`)).toHaveCount(0);
-    expect(await shown(page)).toEqual(await expected(page, 'data-ml'));
+    // (Rows only: a showcase's empty note is the script's.)
+    expect((await shown(page)).rows).toEqual((await expected(page, 'data-ml')).rows);
     await filterReady(page);
     await expect(chip(page, 'data-ml')).toHaveAttribute('aria-pressed', 'true');
     await expect(chip(page, '')).toHaveAttribute('aria-pressed', 'false');
@@ -228,6 +229,44 @@ test.describe('/work/ filter', () => {
       await expect(page.locator(BAR)).toBeHidden();
     });
   }
+
+  test("each showcase's lead stays while shown, else moves to its first project shown", async ({
+    page,
+  }) => {
+    await gotoRel(page, 'work/');
+    await filterReady(page);
+    const state = () =>
+      page.locator('[data-showcase]').evaluateAll((els) =>
+        els.map((el) => ({
+          name: el.getAttribute('aria-labelledby') ?? '',
+          rows: [...el.querySelectorAll<HTMLElement>('[data-filter-row]')]
+            .filter((row) => row.getClientRects().length > 0)
+            .map((row) => row.dataset.project ?? ''),
+          leads: [...el.querySelectorAll<HTMLElement>('[data-lead]:not([hidden])')].map(
+            (lead) => lead.dataset.lead ?? '',
+          ),
+          on: [...el.querySelectorAll<HTMLElement>('[data-filter-row][data-on]')].map(
+            (row) => row.dataset.project ?? '',
+          ),
+        })),
+      );
+    let before = await state();
+    let moved = 0;
+    for (const id of ['design-3d', 'data-ml', 'languages', '']) {
+      await chip(page, id).click();
+      const after = await state();
+      after.forEach(({ name, rows, leads, on }, i) => {
+        if (rows.length === 0) return;
+        const prev = before[i]!.leads[0]!;
+        const want = rows.includes(prev) ? prev : rows[0];
+        if (want !== prev) moved++;
+        expect(leads, `${name} lead with "${id || 'all'}"`).toEqual([want]);
+        expect(on, `${name} marked row with "${id || 'all'}"`).toEqual([want]);
+      });
+      before = after;
+    }
+    expect(moved, 'some filter hid a lead').toBeGreaterThan(0);
+  });
 
   test('a polite live region announces how many projects show', async ({ page }) => {
     await gotoRel(page, 'work/');
@@ -289,65 +328,6 @@ test.describe('/work/ filter, motion on', () => {
       .evaluateAll((els) => [...new Set(els.map((el) => getComputedStyle(el).viewTransitionName))]);
     expect(names).toEqual(['none']);
     expect(await page.locator('html').getAttribute('style')).toBeNull();
-  });
-
-  test('rows it brings on screen are shown, never left waiting for an entrance', async ({
-    page,
-  }) => {
-    await gotoRel(page, 'work/');
-    await page.waitForLoadState('load');
-    await filterReady(page);
-    // Scroll nowhere: the design rows are below the fold, waiting for their entrance.
-    await expect(page.locator(`${ROW}[data-reveal-state="pending"]`).first()).toBeAttached();
-    const waiting = await page
-      .locator(`${ROW}[data-capabilities~="design-3d"][data-reveal-state="pending"]`)
-      .count();
-    expect(waiting, 'design rows waiting below the fold').toBeGreaterThan(0);
-    await chip(page, 'design-3d').click();
-    await expect(page.locator('html')).not.toHaveClass(/\bvt-filter\b/);
-    await twoFrames(page);
-    await twoFrames(page);
-    const rows = await page.locator(ROW).evaluateAll((els) =>
-      els
-        .filter((el) => el.getClientRects().length > 0)
-        .map((el) => ({
-          slug: (el as HTMLElement).dataset.slug,
-          state: el.getAttribute('data-reveal-state'),
-          opacity: getComputedStyle(el).opacity,
-        })),
-    );
-    expect(rows.length).toBe((await expected(page, 'design-3d')).rows.length);
-    for (const row of rows) expect(row, row.slug).toMatchObject({ state: null, opacity: '1' });
-  });
-
-  test('a group heading the reflow brings on screen arrives settled (no decrypt)', async ({
-    page,
-  }) => {
-    await page.addInitScript(() => {
-      window.__decrypts = 0;
-      new MutationObserver((records) => {
-        for (const r of records) {
-          if ((r.target as Element).hasAttribute('data-decrypt')) window.__decrypts! += 1;
-        }
-      }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-decrypt'] });
-    });
-    await gotoRel(page, 'work/');
-    await page.waitForLoadState('load');
-    await filterReady(page);
-    await expect.poll(() => interactionsLoaded(page)).toBe(true);
-    const design = page.locator('.archive-group[data-group="design"] .section-heading');
-    // Below the fold: armed, its rule undrawn, waiting for its first arrival.
-    await expect(design).toHaveAttribute('data-rule', 'armed');
-    const before = await page.evaluate(() => window.__decrypts);
-    await chip(page, 'design-3d').click();
-    await expect(page.locator('html')).not.toHaveClass(/\bvt-filter\b/);
-    await twoFrames(page);
-    await expect(design).toBeInViewport();
-    await expect(design).not.toHaveAttribute('data-rule');
-    await expect(design.locator('.section-heading__rule')).toHaveCSS('scale', 'none');
-    await expect(design.locator('[data-count]')).toHaveText('03');
-    await expect(design.locator('.section-heading__decrypt')).toHaveCount(0);
-    expect(await page.evaluate(() => window.__decrypts)).toBe(before);
   });
 
   test('the bar appearing shifts nothing', async ({ page, browserName }) => {
@@ -653,10 +633,11 @@ test.describe('without view transitions', () => {
     expect(await page.evaluate(() => typeof document.startViewTransition)).toBe('undefined');
     // The theme switches, instantly: no transition class, no scanline.
     const before = await html.getAttribute('data-scheme');
-    await page.locator('header [data-theme-toggle]').click();
+    await themeToggle(page).click();
     await expect.poll(() => html.getAttribute('data-scheme')).not.toBe(before);
     await expect(html).not.toHaveClass(/\bvt-/);
     await expect(page.locator('.theme-scan')).toHaveCount(0);
+    await page.keyboard.press('Escape'); // (the phone menu, if the switch was in it)
     // The filter applies at once.
     await chip(page, 'engines-systems').click();
     await expect(chip(page, 'engines-systems')).toHaveAttribute('aria-pressed', 'true');
@@ -684,15 +665,18 @@ test.describe('without view transitions', () => {
 test.describe('footer', () => {
   test.use({ reducedMotion: 'no-preference' });
 
-  /** Stacked below 28rem (SiteFooter.astro); one row from there up. */
-  const ROW_FROM = 448;
+  /** Stacked below 40rem (SiteFooter.astro); one row from there up. */
+  const ROW_FROM = 640;
 
   const expectLayout = async (page: Page) => {
     const footer = page.locator('footer');
     const copyright = footer.locator('p');
     await expect(copyright).toHaveCount(1);
     await expect(copyright).toHaveText(/^\s*© \d{4}\s+Parker Jackim\s*$/);
-    await expect(footer.locator('a')).toHaveCount(0);
+    const top = footer.locator('a');
+    await expect(top).toHaveCount(1);
+    await expect(top).toHaveText(/Back to top/);
+    await expect(top).toHaveAttribute('href', '#main');
     const chip = footer.locator('[data-motion-toggle]');
     await expect(chip).toBeVisible({ timeout: 10_000 });
     const text = (await copyright.boundingBox())!;
@@ -733,15 +717,16 @@ test.describe('footer', () => {
     });
   }
 
-  test('a small tablet or large phone keeps the one row', async ({ page }) => {
-    await page.setViewportSize({ width: 600, height: 900 });
+  test('a small tablet keeps the one row', async ({ page }) => {
+    await page.setViewportSize({ width: 660, height: 900 });
     await gotoRel(page, 'work/');
     await expectLayout(page);
   });
 });
 
 test.describe('in-page scrolling (Ruling G9)', () => {
-  test.use({ reducedMotion: 'no-preference' });
+  // The home page's sections (#about …) are there from 40rem; phones get them as pages.
+  test.use({ reducedMotion: 'no-preference', viewport: { width: 1280, height: 800 } });
 
   test('a page loaded at a fragment lands on it at once', async ({ page }) => {
     await page.addInitScript(() => {

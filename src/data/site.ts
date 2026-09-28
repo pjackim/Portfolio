@@ -24,12 +24,35 @@ export interface TimelineEntry {
   now?: boolean;
 }
 
-export interface ExperienceEntry {
-  /** Display string, only when the repo states a date. */
-  period?: string;
+/** A skill family: one lane colour in the Experience git log (tokens.css `--family-*`). */
+export type LogFamily = 'security' | 'software' | 'teaching' | 'design';
+
+export const LOG_FAMILIES: readonly LogFamily[] = ['security', 'software', 'teaching', 'design'];
+
+/** A skill a commit merged in, or (`learning`) one still on an open branch. */
+export interface LogSkill {
+  name: string;
+  family: LogFamily;
+  /** Still open: actively learning, per the author. */
+  learning?: boolean;
+}
+
+/**
+ * One commit in the Experience git log (Portfolio.dc.html, Claude Design, Sept 2026): a role,
+ * a milestone or a qualification, with the skills it brought in.
+ */
+export interface LogCommit {
+  /** Stable key (toggle state, ids). */
+  id: string;
+  /** Mono date column: a year, an age or "Now"; only when the repo states it. */
+  when?: string;
   title: string;
-  org?: string;
-  place?: string;
+  org: string;
+  /** Colours the commit's own branch; `edu` is the neutral line for education. */
+  family: LogFamily | 'edu';
+  /** Mono meta at the row's end (place, months); only when stated. */
+  meta?: string;
+  skills: readonly LogSkill[];
 }
 
 export interface Site {
@@ -52,8 +75,8 @@ export interface Site {
   /** Oldest first; the last entry is the current role. */
   timeline: readonly TimelineEntry[];
   status: readonly StatusEntry[];
-  /** Reverse chronological; only entries stated in the repo; no invented dates. */
-  experience: readonly ExperienceEntry[];
+  /** Reverse chronological; the first is HEAD (the current role). No invented dates. */
+  experience: readonly LogCommit[];
 }
 
 const EMPLOYER = 'Johns Hopkins University Applied Physics Laboratory'; // index.html:156
@@ -137,22 +160,121 @@ export const site: Site = {
   ],
 
   experience: [
-    // index.html:156 — the repo gives no dates or work location for this role
-    { title: 'Cyber Security Researcher', org: EMPLOYER },
-    // résumé (Experience): "May 2021 - August 2021 · Online"
-    { period: 'May–Aug 2021', title: 'Teacher', org: 'iD Tech', place: 'Online' },
-    // foresthack.html:79-82 — undated; the project itself is Spring 2020 per the résumé
-    { title: 'Game-hacking curriculum creator & instructor', org: 'Independent' },
-    // résumé: "PCAP Certified Associate in Python Programming · Summer 2020"
-    { period: 'Summer 2020', title: 'PCAP — Certified Associate in Python Programming' },
-    // résumé (Education): "August 2019 – Present" as of June 2022; completion not stated
+    // index.html:156 (role; interests include embedded systems, machine learning and reverse
+    // engineering). The two still-open branches are the author's (Claude Design chat, Sept 2026:
+    // "the 'still open' being things that i am actively learning"). No dates or work location.
     {
-      period: 'From Aug 2019',
-      title: 'Computer Science student',
-      org: SCHOOL,
-      place: 'Fort Collins, Colorado',
+      id: 'apl',
+      when: 'Now',
+      title: 'Cyber Security Researcher',
+      org: 'JHU APL',
+      family: 'security',
+      skills: [
+        { name: 'Reverse engineering', family: 'security' },
+        { name: 'Machine learning', family: 'security', learning: true },
+        { name: 'Embedded systems', family: 'security', learning: true },
+      ],
     },
-    // résumé (Experience): "2016 – Present" as of June 2022
-    { period: 'From 2016', title: 'Freelance Developer', org: 'Self-employed' },
+    // résumé (Experience): "Teacher, iD Tech, May 2021 - August 2021, Online … Minecraft
+    // modding in Java and the foundations of programming in C++ and Python"
+    {
+      id: 'id-tech',
+      when: '2021',
+      title: 'Teacher',
+      org: 'iD Tech',
+      family: 'teaching',
+      meta: 'May–Aug · Online',
+      skills: [
+        { name: 'Teaching ages 7 to 18', family: 'teaching' },
+        { name: 'Minecraft modding in Java', family: 'software' },
+        { name: 'C++ and Python foundations', family: 'teaching' },
+      ],
+    },
+    // hardpoint frontmatter (year 2021, role Freelance developer, stack); mordhaumod.html
+    {
+      id: 'hardpoint',
+      when: '2021',
+      title: 'Hardpoint game mode',
+      org: 'Freelance, for Mordhau',
+      family: 'software',
+      skills: [
+        { name: 'Unreal Engine 4', family: 'software' },
+        { name: 'Server & client replication', family: 'software' },
+        { name: 'Test-driven development', family: 'software' },
+        { name: 'Iterative design', family: 'design' },
+      ],
+    },
+    // foresthack.html:79-82 ("independently created a curriculum and taught students (ages
+    // 18-20) how to cheat in Unity Engine games"); :85-91 (reverse engineering). Undated.
+    {
+      id: 'curriculum',
+      title: 'Game-hacking curriculum',
+      org: 'Independent',
+      family: 'security',
+      skills: [
+        { name: 'Game hacking', family: 'security' },
+        { name: 'Reverse engineering', family: 'security' },
+        { name: 'Curriculum design', family: 'teaching' },
+        { name: 'Teaching ages 18 to 20', family: 'teaching' },
+      ],
+    },
+    // résumé: "PCAP Certified Associate in Python Programming · Summer 2020"
+    {
+      id: 'pcap',
+      when: '2020',
+      title: 'PCAP',
+      org: 'Certified Associate in Python Programming',
+      family: 'software',
+      skills: [{ name: 'Python', family: 'software' }],
+    },
+    // résumé (Education): "August 2019 – Present, Fort Collins, Colorado"; completion not stated
+    {
+      id: 'csu',
+      when: '2019',
+      title: 'Computer Science',
+      org: SCHOOL,
+      family: 'edu',
+      meta: 'Fort Collins, CO',
+      skills: [],
+    },
+    // résumé (Experience): "Freelance Developer, Self Employed, 2016 – Present … functional GUI
+    // templates, video game modding & hacking, identity branding, and teaching"
+    {
+      id: 'freelance',
+      when: '2016',
+      title: 'Freelance Developer',
+      org: 'Self-employed',
+      family: 'software',
+      skills: [
+        { name: 'Functional GUI templates', family: 'design' },
+        { name: 'Video game modding & hacking', family: 'security' },
+        { name: 'Identity branding', family: 'design' },
+      ],
+    },
+    // aes.html:79 ("I was 15 when I wrote this program"; AES 256, C++)
+    {
+      id: 'aes',
+      when: 'Age 15',
+      title: 'AES-256 encryption tool',
+      org: 'Independent project',
+      family: 'security',
+      skills: [
+        { name: 'AES-256 encryption', family: 'security' },
+        { name: 'C++', family: 'software' },
+      ],
+    },
+    // index.html:176-177 ("I started learning graphic design when I was 10 … branding (logos,
+    // banners, etc.), advertisements, and user interfaces for videogame cheats")
+    {
+      id: 'graphic-design',
+      when: 'Age 10',
+      title: 'Graphic design',
+      org: 'Game-hacking community',
+      family: 'design',
+      skills: [
+        { name: 'Branding', family: 'design' },
+        { name: 'User interfaces', family: 'design' },
+      ],
+    },
   ],
 };

@@ -10,8 +10,10 @@
  * - "alpha": covers with transparency sit on a fixed light panel in both schemes, so dark
  *   artwork on a transparent background stays visible in dark mode.
  *
- * Rows are subgridded by ProjectGrid, so meta, titles, summaries and tags line up across a
- * row of cards. ProjectGrid's odd-last-card rule switches a card to the horizontal layout.
+ * Bento card (Portfolio.dc.html, Claude Design, Sept 2026 — "size by importance"): the cover fills
+ * whatever its grid cell leaves above a one-line head (title, then the index and year). Only
+ * the lead card, the biggest cell, carries the summary and stack; the others are picture and
+ * title, one click from the case study. ProjectGrid sizes the cells.
  *
  * Targeting reticle (interactions spec §3), the successor to the 2021 hover-reveal: on hover
  * (fine pointers) or keyboard focus, accent corner brackets snap onto the cover, a scanline
@@ -21,39 +23,36 @@
  */
 import type { CollectionEntry } from 'astro:content';
 import { Picture } from 'astro:assets';
-import { GROUP_LABELS } from '../data/taxonomy';
-import { pad2, projectDate } from '../lib/format';
+import { pad2 } from '../lib/format';
 import { candidateWidths, frameMode, imageFacts } from '../lib/images';
 import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
 import '../styles/reticle.css';
 import Arrow from './Arrow.astro';
-import DateText from './DateText.astro';
 import TagList from './TagList.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
   /** Position in the rendered list, 0-based (shown as 01, 02 …). */
   index: number;
+  /** The lead cell: biggest cover, plus the summary and stack. */
+  lead?: boolean;
   /** Above-the-fold card: load the cover eagerly at high priority. */
   eager?: boolean;
   /** Entrance reveal as it scrolls into view (cards below the first row; spec §4). */
   reveal?: boolean;
-  /** The odd last card, which spans both columns from 800px (ProjectGrid): wider cover. */
-  wide?: boolean;
 }
 
-const { project, index, eager = false, reveal = false, wide = false } = Astro.props;
+const { project, index, lead = false, eager = false, reveal = false } = Astro.props;
 const { id, data } = project;
 
-/** `sizes` per layout, from the rendered cover width. From 800px a card is half the
-    container (1152px from ~1230px up, 1280px from 1760px, 1584px from 2400px — tokens.css),
-    and the full-width horizontal card's cover is 55% of it; 640–799px every card is
-    horizontal (cover 45%); below that the cover is full width. */
+/** `sizes` from the rendered cover width (ProjectGrid): from 960px the lead is 7 of 12 columns
+    and the rest 5 or 4; 640–959px the lead is full width and the rest half; below, full width.
+    Container widths per tokens.css (1152px, 1280px from 1760px, 1584px from 2400px). */
 const SIZES = {
+  lead: '(min-width: 2400px) 910px, (min-width: 1760px) 745px, (min-width: 1216px) 40rem, (min-width: 960px) 56vw, 100vw',
   normal:
-    '(min-width: 2400px) 774px, (min-width: 1760px) 624px, (min-width: 1216px) 36rem, (min-width: 800px) calc(50vw - 3rem), (min-width: 640px) 45vw, 100vw',
-  wide: '(min-width: 2400px) 871px, (min-width: 1760px) 704px, (min-width: 1216px) 40rem, (min-width: 800px) calc(55vw - 2rem), (min-width: 640px) 45vw, 100vw',
+    '(min-width: 2400px) 650px, (min-width: 1760px) 530px, (min-width: 1216px) 30rem, (min-width: 960px) 40vw, (min-width: 640px) 50vw, 100vw',
 };
 
 const facts = await imageFacts(data.cover);
@@ -68,20 +67,16 @@ const style = pageStyle(Astro.locals, {
 });
 
 const href = withBase(`work/${id}/`);
-// The arrow stays glued to the title's last word (never wraps onto a line of its own).
-const words = data.title.split(' ');
-const titleTail = words.pop();
-const titleHead = words.join(' ');
 ---
 
-<li class="card" data-reveal={reveal || undefined}>
+<li class:list={['card', { 'card--lead': lead }]} data-reveal={reveal || undefined}>
   <div class="card__media" data-mode={mode} data-style={style}>
     <Picture
       src={data.cover}
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       widths={widths}
-      sizes={SIZES[wide ? 'wide' : 'normal']}
+      sizes={SIZES[lead ? 'lead' : 'normal']}
       alt=""
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
@@ -97,28 +92,25 @@ const titleHead = words.join(' ');
     </span>
   </div>
   <div class="card__body">
-    <p class="card__meta mono-label">
-      <span class="card__index">{pad2(index + 1)}</span>
-      <span aria-hidden="true">—</span>
-      <span>
-        <DateText text={projectDate(project)} />
-      </span>
-      <span aria-hidden="true">·</span>
-      <span>{GROUP_LABELS[data.group]}</span>
-    </p>
-    <h3 class="card__title">
-      <a href={href} data-astro-prefetch>
-        {titleHead}
-        <span class="card__title-tail">
-          {titleTail}
-          <span class="card__arrow">
-            <Arrow />
-          </span>
-        </span>
-      </a>
-    </h3>
-    <p class="card__summary">{data.summary}</p>
-    <TagList class="card__tags" tags={data.stack} max={4} label="Stack" />
+    <div class="card__head">
+      <h3 class="card__title">
+        <a href={href} data-astro-prefetch>
+          {data.title}
+        </a>
+      </h3>
+      <p class="card__meta mono-label">
+        <span class="card__index">{pad2(index + 1)}</span>
+        <span aria-hidden="true">·</span>
+        <span class="visually-hidden">, </span>
+        <span>{data.year}</span>
+      </p>
+    </div>
+    {lead && (
+      <>
+        <p class="card__summary">{data.summary}</p>
+        <TagList class="card__tags" tags={data.stack} max={4} label="Stack" />
+      </>
+    )}
   </div>
 </li>
 
@@ -126,26 +118,13 @@ const titleHead = words.join(' ');
   .card {
     position: relative;
     isolation: isolate;
-    display: grid;
-    grid-template-rows: auto auto auto 1fr auto;
-    grid-row: span 5;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
     border: var(--hairline);
     border-radius: var(--radius-s);
     background-color: var(--surface);
     transition: border-color var(--dur-fast) var(--ease-standard);
-  }
-
-  @supports (grid-template-rows: subgrid) {
-    .card {
-      grid-template-rows: subgrid;
-      row-gap: 0;
-    }
-  }
-
-  /* The body's children join the card grid (meta, title, summary, tags rows); the horizontal
-     variant turns the body back into a box. */
-  .card__body {
-    display: contents;
   }
 
   /* ── Cover ── */
@@ -155,7 +134,8 @@ const titleHead = words.join(' ');
   .card__media {
     position: relative;
     display: grid;
-    place-self: stretch;
+    flex: 1 1 auto;
+    min-block-size: 0;
     grid-template: minmax(0, 1fr) / minmax(0, 1fr);
     place-items: center;
     aspect-ratio: 16 / 10;
@@ -202,30 +182,41 @@ const titleHead = words.join(' ');
 
   /* ── Text ── */
 
-  .card__meta,
-  .card__title,
-  .card__summary,
-  .card :global(.card__tags) {
-    margin-inline: var(--space-m);
-  }
-
-  .card__meta {
+  .card__body {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0 0.5em;
-    margin-block-start: var(--space-m);
+    flex: none;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding: 1rem 1.125rem 1.125rem;
   }
 
-  .card__index {
-    color: var(--accent);
+  .card--lead .card__body {
+    padding: 1.375rem 1.625rem 1.5rem;
+  }
+
+  .card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+    min-inline-size: 0;
   }
 
   .card__title {
-    margin-block-start: var(--space-2xs);
+    min-inline-size: 0;
+    overflow: hidden;
     font-size: var(--step-1);
     font-weight: 500;
     line-height: 1.3;
     letter-spacing: -0.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card--lead .card__title {
+    font-size: var(--step-3);
+    white-space: normal;
+    text-wrap: balance;
   }
 
   .card__title a {
@@ -242,27 +233,26 @@ const titleHead = words.join(' ');
     border-radius: inherit;
   }
 
-  .card__title-tail {
+  .card__meta {
+    display: flex;
+    flex: none;
+    gap: 0 0.5em;
     white-space: nowrap;
   }
 
-  .card__arrow {
-    display: inline-block;
-    margin-inline-start: 0.1em;
-    color: var(--text-subtle);
-    transition: color var(--dur-fast) var(--ease-standard);
+  .card__index {
+    color: var(--accent);
   }
 
   .card__summary {
-    margin-block-start: var(--space-2xs);
     color: var(--text-muted);
     font-size: var(--step-0);
-    line-height: 1.6;
+    line-height: 1.55;
+    text-wrap: pretty;
   }
 
   .card :global(.card__tags) {
-    align-self: end;
-    margin-block: var(--space-m);
+    margin-block-start: var(--space-3xs);
   }
 
   /* ── Hover / focus (spec §4): keyboard focus mirrors hover ── */
@@ -271,8 +261,7 @@ const titleHead = words.join(' ');
     border-color: var(--line-ui);
   }
 
-  .card:has(a:focus-visible) .card__title a,
-  .card:has(a:focus-visible) .card__arrow {
+  .card:has(a:focus-visible) .card__title a {
     color: var(--accent);
   }
 
@@ -287,8 +276,7 @@ const titleHead = words.join(' ');
       border-color: var(--line-ui);
     }
 
-    .card:hover .card__title a,
-    .card:hover .card__arrow {
+    .card:hover .card__title a {
       color: var(--accent);
     }
   }
@@ -439,10 +427,6 @@ const titleHead = words.join(' ');
         filter var(--dur-base) var(--ease-out);
     }
 
-    :global(:root:not([data-motion='off'])) .card__arrow :global(.arrow) {
-      transition: translate var(--dur-base) var(--ease-out);
-    }
-
     /* Brackets wait a little wide of the frame and snap in (--reticle-snap), the second pair a
        beat behind (--reticle-beat). Leaving, they let go together. */
     :global(:root:not([data-motion='off'])) .card__hud::before,
@@ -462,13 +446,6 @@ const titleHead = words.join(' ');
 
     :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__media :global(img) {
       scale: 1.02;
-    }
-
-    :global(:root:not([data-motion='off']))
-      .card:has(a:focus-visible)
-      .card__arrow
-      :global(.arrow) {
-      translate: 2px 0;
     }
 
     :global(:root:not([data-motion='off'])) .card:has(a:focus-visible) .card__hud::before,
@@ -494,10 +471,6 @@ const titleHead = words.join(' ');
     @media (hover: hover) {
       :global(:root:not([data-motion='off'])) .card:hover .card__media :global(img) {
         scale: 1.02;
-      }
-
-      :global(:root:not([data-motion='off'])) .card:hover .card__arrow :global(.arrow) {
-        translate: 2px 0;
       }
 
       :global(:root:not([data-motion='off'])) .card:hover .card__hud::before,
@@ -534,70 +507,6 @@ const titleHead = words.join(' ');
       :global(:root:not([data-motion='off'])) .card__hud::after {
         scale: 1;
       }
-    }
-  }
-
-  /* ── Horizontal layout: cover left, text right, text centred on the cover ──
-     Tablets (single column, 640–799px): every card, so a lone column of wide covers doesn't
-     turn the grid into a scroll of posters. From 800px (two columns): only an odd last card,
-     which spans both columns (spec §2). The two blocks are the same apart from the cover
-     share and the selector. */
-
-  @media (40rem <= width < 50rem) {
-    .card {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      grid-template-columns: 45% minmax(0, 1fr);
-      grid-template-rows: auto;
-    }
-
-    .card .card__media {
-      border-block-end: 0;
-      border-inline-end: var(--hairline);
-      border-start-end-radius: 0;
-      border-end-start-radius: calc(var(--radius-s) - 1px);
-    }
-
-    .card .card__body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-block: var(--space-2xs);
-    }
-
-    .card :global(.card__tags) {
-      align-self: auto;
-    }
-  }
-
-  @media (width >= 50rem) {
-    :global(.project-grid) > .card:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      grid-template-columns: 55% minmax(0, 1fr);
-      grid-template-rows: auto;
-    }
-
-    :global(.project-grid) > .card:last-child:nth-child(odd) .card__media {
-      border-block-end: 0;
-      border-inline-end: var(--hairline);
-      border-start-end-radius: 0;
-      border-end-start-radius: calc(var(--radius-s) - 1px);
-    }
-
-    :global(.project-grid) > .card:last-child:nth-child(odd) .card__body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-block: var(--space-2xs);
-    }
-
-    :global(.project-grid) > .card:last-child:nth-child(odd) :global(.card__tags) {
-      align-self: auto;
-    }
-
-    :global(.project-grid) > .card:last-child:nth-child(odd) .card__title {
-      font-size: var(--step-2);
     }
   }
 </style>

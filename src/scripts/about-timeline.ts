@@ -451,6 +451,17 @@ export function createTimeline(root: HTMLElement): void {
     ([entry]) => {
       onScreen = entry?.isIntersecting ?? false;
       if (onScreen) kick();
+      // Passed by above (a jump, or a fast scroll the loop never saw): the reader is past every
+      // stop, so the trace is complete and they all show, with no flash or lock-on played unseen.
+      else if (live && entry && entry.boundingClientRect.bottom < 0) {
+        current = target = length;
+        lockedAt ??= -Infinity;
+        flashAt.clear();
+        stops.forEach((_, i) => {
+          reached[i] = true;
+          show(i);
+        });
+      }
     },
     { rootMargin: '200px 0px' },
   ).observe(root);

@@ -1,8 +1,19 @@
 ---
 /**
- * Sticky site header (spec-design-content §2, §3): monogram + wordmark home link, primary
- * nav, theme toggle. Pinned across cross-document view transitions (`site-header`).
- * About/Contact point at the home page anchors so they work from every page.
+ * Sticky site header (Portfolio.dc.html, Claude Design, Sept 2026 — `navDesk`/`navMob`):
+ * monogram + wordmark home link, a 4-item nav (About/Experience/Work/Contact, git-log-numbered
+ * 01–04) with a fill bar per item that tracks scroll progress through its home-page section
+ * (`src/scripts/nav-scroll.ts`), a separate Capabilities link (underlined when current), the
+ * Résumé link and the theme switch. About/Experience/Contact point at the home page's anchors so
+ * they work from every page; Work and Capabilities are their own pages.
+ *
+ * Phones (under 40rem) get the same 4 items as a segmented bar instead: numbered mono labels
+ * whose flex grows for the active one (`mflex`), pj's monogram (no wordmark) and the theme
+ * switch. Capabilities and the résumé live in the About panel and the sticky CTA bar instead of
+ * the header (Portfolio.dc.html's phone nav has no room for a fifth item). Off the home page,
+ * About/Experience go to the home page's anchor; Contact opens the contact sheet directly
+ * (there's no standalone contact page); Work goes to /work/.
+ *
  * The monogram's caret blinks on the first page load of a session only (sessionStorage
  * `caret`); navigations keep the header, so it never re-blinks.
  */
@@ -13,15 +24,63 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const home = withBase('');
 const work = withBase('work/');
-const onWorkIndex = Astro.url.pathname === work;
-const onWorkCase = Astro.url.pathname.startsWith(work) && !onWorkIndex;
+const capabilities = withBase('capabilities/');
+const path = Astro.url.pathname;
+const onHome = path === home;
+const onWorkIndex = path === work;
+const onWorkCase = path.startsWith(work) && !onWorkIndex;
+const about = withBase('about/');
+const experience = withBase('experience/');
 
-// `aria-current="page"` only on `/work/` itself; a case-study page is in the Work section but
-// isn't that page, so it gets `aria-current="true"` — same active visual state, correct semantics.
-const links: { href: string; label: string; current: 'page' | 'true' | undefined }[] = [
-  { href: work, label: 'Work', current: onWorkIndex ? 'page' : onWorkCase ? 'true' : undefined },
-  { href: `${home}#about`, label: 'About', current: undefined },
-  { href: `${home}#contact`, label: 'Contact', current: undefined },
+// The 4-item nav (Portfolio.dc.html navItems: about/experience/work/contact, numbered 01–04).
+// `aria-current="page"` when the section's own standalone page is current (design's `navFx`:
+// `ids.includes(page) ⇒ act = page`), `"true"` for a case-study page (in the Work section but
+// not the index) — same active visual, correct semantics. On the home page every item's active
+// state instead comes from scroll (nav-scroll.ts): none gets a static `aria-current` there, so
+// the fill starts at the About item (`data-default-active`) until the script runs, matching the
+// design's own pre-scroll default.
+// `mobileHref` targets the phone panels' own ids (HomeMobilePanels.astro's `-m` suffix — a
+// document can't repeat an id, so the phone panels can't reuse the desktop sections' ids).
+const navItems: {
+  id: 'about' | 'experience' | 'work' | 'contact';
+  idx: string;
+  label: string;
+  href?: string;
+  mobileHref?: string;
+  current: 'page' | 'true' | undefined;
+}[] = [
+  {
+    id: 'about',
+    idx: '01',
+    label: 'About',
+    href: `${home}#about`,
+    mobileHref: `${home}#about-m`,
+    current: path === about ? 'page' : undefined,
+  },
+  {
+    id: 'experience',
+    idx: '02',
+    label: 'Experience',
+    href: `${home}#experience`,
+    mobileHref: `${home}#experience-m`,
+    current: path === experience ? 'page' : undefined,
+  },
+  {
+    id: 'work',
+    idx: '03',
+    label: 'Work',
+    href: work,
+    mobileHref: work,
+    current: onWorkIndex ? 'page' : onWorkCase ? 'true' : undefined,
+  },
+  {
+    id: 'contact',
+    idx: '04',
+    label: 'Contact',
+    href: `${home}#contact`,
+    mobileHref: `${home}#contact-m`,
+    current: undefined,
+  },
 ];
 ---
 
@@ -34,30 +93,104 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     <div class="site-header__end">
       <nav class="site-nav" aria-label="Primary">
         <ul role="list">
-          {links.map(({ href, label, current }) => (
+          {navItems.map(({ id, idx, label, href, current }) => (
             <li>
-              <a href={href} aria-current={current}>
+              <a
+                href={href}
+                aria-current={current}
+                data-nav-id={id}
+                data-default-active={id === 'about' && onHome ? '' : undefined}
+              >
+                <span class="site-nav__idx mono-label" aria-hidden="true">
+                  {idx}
+                </span>
                 {label}
+                <span class="site-nav__bar" aria-hidden="true">
+                  <span class="site-nav__fill" data-navfill={id}></span>
+                </span>
               </a>
             </li>
           ))}
         </ul>
       </nav>
+      <a
+        class="site-header__caps"
+        href={capabilities}
+        aria-current={path === capabilities ? 'page' : undefined}
+      >
+        Capabilities
+      </a>
+      <a class="site-header__resume" href={withBase(site.resume)}>
+        Résumé <span class="site-header__resume-fmt mono-label">PDF</span>
+      </a>
+      <ThemeToggle />
+    </div>
+
+    <a class="phone-brand" href={home} aria-label={`${site.name} — home`}>
+      <Monogram size={17} />
+    </a>
+    <nav class="phone-nav" aria-label="Primary">
+      {navItems.map(({ id, idx, label, mobileHref, current }) =>
+        id === 'contact' && !onHome ? (
+          <button
+            type="button"
+            class="phone-nav__item"
+            data-nav-id={id}
+            commandfor="contact-sheet"
+            command="show-modal"
+          >
+            <span class="phone-nav__row">
+              <span class="phone-nav__idx" aria-hidden="true">
+                {idx}
+              </span>
+              <span class="phone-nav__label">{label}</span>
+            </span>
+            <span class="phone-nav__bar" aria-hidden="true">
+              <span class="phone-nav__fill" data-navfill={id}></span>
+            </span>
+          </button>
+        ) : (
+          <a
+            href={mobileHref}
+            aria-current={current}
+            data-nav-id={id}
+            data-default-active={id === 'about' && onHome ? '' : undefined}
+            class="phone-nav__item"
+          >
+            <span class="phone-nav__row">
+              <span class="phone-nav__idx" aria-hidden="true">
+                {idx}
+              </span>
+              <span class="phone-nav__label">{label}</span>
+            </span>
+            <span class="phone-nav__bar" aria-hidden="true">
+              <span class="phone-nav__fill" data-navfill={id}></span>
+            </span>
+          </a>
+        ),
+      )}
+    </nav>
+    <div class="phone-theme">
       <ThemeToggle />
     </div>
   </div>
 </header>
+
+<script src="../scripts/nav-scroll.ts"></script>
 
 <script>
   // First page of the session only. Whether it actually blinks is the CSS motion gate's call;
   // the class goes once the 5 s blink window has passed, so switching motion on later never
   // starts it. Import-free on purpose: it stays a tiny inline script, not another request.
   try {
-    const monogram = document.querySelector('.site-header .monogram');
-    if (monogram && !sessionStorage.getItem('caret')) {
+    // Both monograms: the wordmark's (wide screens) and the phone bar's.
+    const monograms = document.querySelectorAll('.site-header .monogram');
+    if (monograms.length && !sessionStorage.getItem('caret')) {
       sessionStorage.setItem('caret', '1');
-      monogram.classList.add('is-blinking');
-      setTimeout(() => monogram.classList.remove('is-blinking'), 5200);
+      for (const m of monograms) m.classList.add('is-blinking');
+      setTimeout(() => {
+        for (const m of monograms) m.classList.remove('is-blinking');
+      }, 5200);
     }
   } catch {
     // Storage blocked: no blink rather than a blink on every page.
@@ -135,6 +268,7 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     position: relative;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
     min-block-size: 2.75rem;
     padding-inline: 0.625rem;
     color: var(--text-muted);
@@ -142,7 +276,29 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     font-weight: 500;
     line-height: 1;
     text-decoration: none;
+    white-space: nowrap;
     transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  /* Git-log-style index mark (design's numbered nav): accent when the link is active, subtle
+     otherwise. Dropped on narrower widths, where the label alone has to fit. */
+  .site-nav__idx {
+    display: none;
+    color: var(--text-subtle);
+    font-size: 0.75rem;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .site-nav a[aria-current] .site-nav__idx,
+  .site-nav a.is-active .site-nav__idx,
+  .site-nav a[data-default-active] .site-nav__idx {
+    color: var(--accent);
+  }
+
+  @media (width >= 64rem) {
+    .site-nav__idx {
+      display: inline;
+    }
   }
 
   @media (hover: hover) {
@@ -151,27 +307,42 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     }
   }
 
-  /* `aria-current` is only ever present on the Work link ('page' on /work/ itself, 'true' on a
-     case-study page below it) — either value gets the same active visual state. */
-  .site-nav a[aria-current] {
+  /* `aria-current` (off the home page) and `.is-active` (nav-scroll.ts, on it) share the same
+     active visual; `data-default-active` (About, before the script runs) matches it too. */
+  .site-nav a[aria-current],
+  .site-nav a.is-active,
+  .site-nav a[data-default-active] {
     color: var(--text);
   }
 
-  /* Active mark: an accent segment laid over the header hairline (the link box ends
-     (header-h − 44px) / 2 above the header's bottom edge). */
-  .site-nav a[aria-current]::after {
-    content: '';
+  /* Fill bar: a segment on the header hairline, in the link's own colour, scaled from 0 (idle)
+     to 1 (current/active) — a static jump with no script, a continuous scroll-linked value with
+     it (nav-scroll.ts sets the inline transform). Grown from the centre on hover/focus instead,
+     in the muted colour, so a hover never looks like the active mark. */
+  .site-nav__bar {
     position: absolute;
     inset-inline: 0.625rem;
     inset-block-end: calc((2.75rem - var(--header-h)) / 2);
+    display: block;
     block-size: 1px;
+    background-color: var(--line);
+    overflow: hidden;
+  }
+
+  .site-nav__fill {
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
     background-color: var(--accent);
   }
 
-  /* Hover/focus underline (interactions spec §3): a segment on the same hairline, in the
-     link's own colour, grown from the centre (with motion; otherwise it just appears). The
-     current page keeps its accent mark instead. */
-  .site-nav a:not([aria-current])::before {
+  .site-nav a[aria-current] .site-nav__fill,
+  .site-nav a[data-default-active] .site-nav__fill {
+    transform: scaleX(1);
+  }
+
+  .site-nav a:not([aria-current]):not(.is-active):not([data-default-active])::before {
     content: '';
     position: absolute;
     inset-inline: 0.625rem;
@@ -197,39 +368,231 @@ const links: { href: string; label: string; current: 'page' | 'true' | undefined
     }
   }
 
-  /* Compact row for phones: fits monogram + wordmark + nav + toggle down to 360px with a
-     clear break between the wordmark and the nav; below 360px the wordmark goes. */
-  @media (width < 30rem) {
+  /* Capabilities: a separate link (design's `navCapsDisp`/`capsDeco`), underlined only when
+     current — it isn't part of the numbered nav or its scroll-spy. */
+  .site-header__caps {
+    display: none;
+    align-items: center;
+    min-block-size: 2.5rem;
+    padding-inline: 0.375rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    text-decoration: none;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.35em;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .site-header__caps[aria-current] {
+    color: var(--text);
+    text-decoration-line: underline;
+  }
+
+  @media (hover: hover) {
+    .site-header__caps:hover {
+      color: var(--text);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .site-header__caps {
+      display: inline-flex;
+    }
+  }
+
+  /* Résumé quick link (design's secondary header group, beside the theme switch): shown once
+     there's room past the nav and Capabilities; both are gone below that width (phones get the
+     segmented bar instead — see below — and tablets keep the nav without them). */
+  .site-header__resume {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: 2.5rem;
+    padding-inline: 0.875rem;
+    border: var(--rule-ui);
+    border-radius: var(--radius-s);
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .site-header__resume-fmt {
+    color: var(--text-subtle);
+  }
+
+  @media (hover: hover) {
+    .site-header__resume:hover {
+      background-color: var(--surface-2);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .site-header__resume {
+      display: inline-flex;
+    }
+  }
+
+  /* Tablets: four links beside the wordmark. */
+  @media (width < 48rem) {
     .site-header__inner {
       gap: 0.75rem;
     }
 
-    .brand {
-      gap: 0.5rem;
-    }
-
-    .brand__name {
-      font-size: 0.875rem;
-    }
-
-    .site-header__end {
-      gap: 0.25rem;
-    }
-
     .site-nav a {
-      padding-inline: 0.3125rem;
-      font-size: 0.8125rem;
+      padding-inline: 0.4375rem;
     }
 
-    .site-nav a[aria-current]::after,
-    .site-nav a:not([aria-current])::before {
-      inset-inline: 0.3125rem;
+    .site-nav__bar {
+      inset-inline: 0.4375rem;
     }
   }
 
-  @media (width < 360px) {
-    .brand__name {
+  /* ── Phones: the segmented nav bar ── */
+
+  .phone-brand,
+  .phone-nav,
+  .phone-theme {
+    display: none;
+  }
+
+  @media (width < 40rem) {
+    .brand,
+    .site-header__end {
       display: none;
+    }
+
+    .site-header__inner {
+      inline-size: auto;
+      margin-inline: 0.75rem;
+      gap: 0.75rem;
+    }
+
+    .phone-brand {
+      display: flex;
+      flex: none;
+      align-items: center;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
+      color: var(--text);
+    }
+
+    .phone-nav {
+      display: flex;
+      flex: 1;
+      align-items: stretch;
+      gap: 4px;
+      min-inline-size: 0;
+    }
+
+    .phone-theme {
+      display: block;
+      flex: none;
+    }
+  }
+
+  .phone-nav__item {
+    flex: 1;
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 0 0.75rem;
+    border: 0;
+    background-color: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    transition: flex var(--dur-base) var(--ease-out);
+  }
+
+  .phone-nav__item.is-active,
+  .phone-nav__item[data-default-active] {
+    flex: 3.4;
+    color: var(--text);
+  }
+
+  .phone-nav__row {
+    display: flex;
+    gap: 7px;
+    min-inline-size: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .phone-nav__idx {
+    flex: none;
+    color: var(--text-subtle);
+  }
+
+  .phone-nav__item.is-active .phone-nav__idx,
+  .phone-nav__item[data-default-active] .phone-nav__idx {
+    color: var(--accent);
+  }
+
+  .phone-nav__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .phone-nav__item.is-active .phone-nav__label,
+  .phone-nav__item[data-default-active] .phone-nav__label {
+    opacity: 1;
+  }
+
+  .phone-nav__bar {
+    position: relative;
+    display: block;
+    block-size: 2px;
+    background-color: var(--line);
+    overflow: hidden;
+  }
+
+  .phone-nav__fill {
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background-color: var(--line-ui);
+  }
+
+  .phone-nav__item.is-active .phone-nav__fill,
+  .phone-nav__item[data-default-active] .phone-nav__fill {
+    background-color: var(--accent);
+  }
+
+  .phone-nav__item[aria-current] .phone-nav__fill {
+    transform: scaleX(1);
+    background-color: var(--accent);
+  }
+
+  .phone-nav__item[aria-current] {
+    flex: 3.4;
+    color: var(--text);
+  }
+
+  .phone-nav__item[aria-current] .phone-nav__idx {
+    color: var(--accent);
+  }
+
+  .phone-nav__item[aria-current] .phone-nav__label {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .phone-nav__item {
+      transition: flex 380ms cubic-bezier(0.16, 1, 0.3, 1);
     }
   }
 </style>
