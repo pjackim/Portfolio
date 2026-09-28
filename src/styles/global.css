@@ -63,8 +63,6 @@ blockquote {
 /* color-scheme lives on :root in tokens.css (system preference, or the data-scheme pin). */
 html {
   accent-color: var(--accent);
-  scrollbar-color: var(--line-ui) var(--bg); /* never transitioned (WebKit flicker) */
-  scrollbar-width: thin;
   /* The page's height is unsettled for the first render or two (progressive parse of one
      long document, `<GitLog>`'s SVG, deferred hero instruments): a scrollbar that appears
      or disappears while that settles shifts every fixed-width row horizontally (Chromium's
@@ -74,6 +72,60 @@ html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+/* Scrollbars (Portfolio.dc.html): a slim rounded thumb on a clear track, no arrow buttons.
+   Chromium 121+ ignores every ::-webkit-scrollbar rule on an element that sets a standard
+   `scrollbar-width`/`scrollbar-color`, so the standard pair is only the fallback for engines
+   without the pseudo-elements (Firefox). The thumb rests at --line-ui rather than the mockup's
+   16% tint: that keeps it at 3:1 against the page like every other UI edge (WCAG 1.4.11); it
+   firms up to --text-subtle under the pointer. Colours never transition (WebKit flicker). */
+/* Physical width/height: the scrollbar pseudo-elements predate logical sizing. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 2.5rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-color: var(--line-ui);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-subtle);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-ui) transparent;
+  }
+}
+
+/* Touch screens scroll by swiping, and their scrollbars are overlays anyway: hide them. */
+@media (pointer: coarse) {
+  * {
+    scrollbar-width: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 body {
@@ -414,6 +466,13 @@ a {
     view-transition-name: none;
   }
 
+  /* Except the theme switch's knob: the wipe uncovers the header within a few frames, so on the
+     page itself the knob would just jump. Captured on its own, it slides from the old side to
+     the new one above the wipe. Only one switch is ever rendered, so the name stays unique. */
+  html:root.vt-theme:not([data-motion='off']) .theme-toggle:not([hidden]) .theme-toggle__knob {
+    view-transition-name: theme-knob;
+  }
+
   /* The new scheme is already settled wherever the sweep reveals it: no colour easing from the
      old scheme's values under the live new-state capture. */
   html:root.vt-theme:not([data-motion='off']) *,
@@ -487,6 +546,11 @@ a {
 
   :root.vt-theme:not([data-motion='off'])::view-transition-new(theme-scan) {
     animation-name: none;
+  }
+
+  :root.vt-theme:not([data-motion='off'])::view-transition-group(theme-knob) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
