@@ -3,12 +3,13 @@
  * Contact sheet (Portfolio.dc.html, Claude Design, Sept 2026 — the phone layout's contact): a
  * modal bottom sheet with the photo, name and location, one row per channel (email with a copy
  * button, GitHub, LinkedIn, the résumé) and a "Write an email" button. Every page has it, for the
- * phone header's email button, the home page's "Get in touch" bar and the ~/contact/ menu entry.
+ * phone nav's Contact item (off the home page) and the home page's "Get in touch" bar.
  *
  * Opened declaratively: those buttons carry `commandfor="contact-sheet" command="show-modal"`
  * (invoker commands), and `closedby="any"` lets a tap outside or Escape close it. The inline
- * script below covers browsers without either, and the copy button. The photo is lazy, so a
- * sheet that never opens never loads it.
+ * script below covers browsers without either, and wires every copy button on the page (this
+ * sheet's and the phone home's Contact panel's, HomeMobilePanels.astro). The photo is lazy, so
+ * a sheet that never opens never loads it.
  */
 import { Picture } from 'astro:assets';
 import portrait from '../assets/profile/parker-jackim.webp';
@@ -88,7 +89,7 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
 
 <script>
   // Import-free, so Astro inlines it. Invoker commands where the browser has none; light
-  // dismiss where `closedby` isn't supported; the copy button.
+  // dismiss where `closedby` isn't supported; the copy buttons.
   export {};
   const sheet = document.getElementById('contact-sheet');
   if (sheet instanceof HTMLDialogElement) {
@@ -100,22 +101,16 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
         else sheet.showModal();
       });
     }
-    // Opening from the phone menu: the menu (a popover) goes, so the sheet isn't under it.
-    document.addEventListener('click', (event) => {
-      if ((event.target as Element).closest('button[commandfor="contact-sheet"]')) {
-        for (const menu of document.querySelectorAll('[popover]')) {
-          if (menu.matches(':popover-open')) (menu as HTMLElement).hidePopover();
-        }
-      }
-    });
     if (!('closedBy' in HTMLDialogElement.prototype)) {
       sheet.addEventListener('click', (event) => {
         if (event.target === sheet) sheet.close();
       });
     }
-    const copy = sheet.querySelector<HTMLButtonElement>('[data-copy]');
-    const label = copy?.querySelector('[data-copy-label]');
-    copy?.addEventListener('click', () => {
+  }
+  // Every `[data-copy]` button copies its value and says so for 2 s in its `[data-copy-label]`.
+  for (const copy of document.querySelectorAll<HTMLButtonElement>('button[data-copy]')) {
+    const label = copy.querySelector('[data-copy-label]');
+    copy.addEventListener('click', () => {
       navigator.clipboard?.writeText(copy.dataset.copy ?? '').then(
         () => {
           if (!label) return;
@@ -138,6 +133,9 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     margin: auto auto 0;
     padding: 0.625rem 1.25rem calc(1.75rem + env(safe-area-inset-bottom));
     overflow-y: auto;
+    /* A swipe at the sheet's own end stays in it: the page behind never scrolls away from the
+       button that opened it. */
+    overscroll-behavior: contain;
     border: 0;
     border-block-start: var(--rule-ui);
     border-radius: 1.375rem 1.375rem 0 0;

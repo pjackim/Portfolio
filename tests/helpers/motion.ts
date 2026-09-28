@@ -29,3 +29,12 @@ export const revealsInFlightOnScreen = (page: Page): Promise<number> =>
         return box.bottom > 0 && box.top < innerHeight;
       }).length,
   );
+
+/** CSS transitions still running (a fade caught mid-way would skew axe's contrast checks). */
+export const runningTransitions = (page: Page): Promise<number> =>
+  page.evaluate(
+    () =>
+      document
+        .getAnimations()
+        .filter((a) => a instanceof CSSTransition && a.playState === 'running').length,
+  );

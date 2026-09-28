@@ -9,18 +9,56 @@
  *   panels (About's horizontal timeline strip, Experience's shared git-log rail, Selected work's
  *   reel cards, Contact's rows) — a sticky "Get in touch" bar opens the contact sheet, a modal
  *   with every channel that Escape closes.
+ * - The ending: the bar rises in with About (never over the hero's buttons) and steps aside
+ *   while Contact is on screen — hidden, not just transparent, so it takes no taps or focus —
+ *   and Contact and the footer fill the last screen exactly (at a short screen, Contact
+ *   scrolls and the footer follows it).
  * - /experience/: a rail of two-line rows, no graph; tapping anywhere on a row opens its skill
  *   chips.
  * - /work/: each showcase's lead is a card, and its rows carry 64px cover thumbnails.
  * - From 40rem the panels, sticky bar and segmented nav are gone and the wordmark nav is back.
  * Runs on every project (desktop Chromium at phone size, Pixel 7, iPhone 15 / WebKit).
  */
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+import { runningTransitions } from './helpers/motion.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 test.use({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
 
 const SHEET = '#contact-sheet';
+const BAR = '.m-cta';
+
+/** Scrolls an element to the top of the snapport (under the header) or the screen's foot. */
+const scrollToElement = (page: Page, selector: string, block: 'start' | 'end') =>
+  page
+    .locator(selector)
+    .evaluate(
+      (el, block) => el.scrollIntoView({ block, behavior: 'instant' }),
+      block as ScrollLogicalPosition,
+    );
+
+/** Where the last screen's pieces are, in viewport px. */
+const lastScreen = (page: Page) =>
+  page.evaluate(() => {
+    const box = (selector: string) => document.querySelector(selector)!.getBoundingClientRect();
+    return {
+      headerBottom: box('.site-header').bottom,
+      contactTop: box('#contact-m').top,
+      contactBottom: box('#contact-m').bottom,
+      footerTop: box('.site-footer').top,
+      footerBottom: box('.site-footer').bottom,
+      barBottom: box('.m-cta').bottom,
+      innerHeight,
+      scrollY,
+      maxScrollY: document.documentElement.scrollHeight - innerHeight,
+    };
+  });
+
+/** Heights of the Contact panel's channel rows. */
+const contactRowHeights = (page: Page) =>
+  page
+    .locator('.m-contact__row')
+    .evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
 
 test('home: the hero, then the four sections as snap panels', async ({ page }) => {
   await gotoRel(page, '');
@@ -100,6 +138,214 @@ test('work: a lead card, and rows with 64px thumbnails', async ({ page }) => {
   const box = (await thumb.boundingBox())!;
   expect(Math.round(box.width)).toBe(64);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test.describe('the ending', () => {
+  test('the sticky bar rises in with About, never over the hero buttons', async ({ page }) => {
+    await gotoRel(page, '');
+    await expect(page.locator('.hero__buttons')).toBeVisible();
+    // Whatever position the snap settles on, the bar's top stays at or below the buttons' foot.
+    for (const top of [0, 10]) {
+      await page.evaluate((top) => scrollTo({ top, behavior: 'instant' }), top);
+      const [bar, buttons] = await page.evaluate(() => [
+        document.querySelector('.m-cta')!.getBoundingClientRect().top,
+        document.querySelector('.hero__buttons')!.getBoundingClientRect().bottom,
+      ]);
+      expect(bar!, `at scrollY ${top}`).toBeGreaterThanOrEqual(buttons! - 0.5);
+    }
+  });
+
+  test('the sticky bar steps aside over the Contact panel and comes back above it', async ({
+    page,
+  }) => {
+    await gotoRel(page, '');
+    const bar = page.locator(BAR);
+    await scrollToElement(page, '#work-m', 'start');
+    await expect(bar).toBeVisible();
+    await expect(bar).toHaveCSS('opacity', '1');
+    await expect(bar).toBeInViewport();
+
+    await scrollToElement(page, '#contact-m', 'start');
+    // Hidden, not just transparent: no taps, no focus, nothing for a screen reader.
+    await expect(bar).toBeHidden();
+    await expect(bar).toHaveCSS('opacity', '0');
+    await page.locator('.m-cta__primary').evaluate((el) => el.focus());
+    await expect(page.locator('.m-cta__primary')).not.toBeFocused();
+    // Every Contact row takes its own taps, down to the last one, where the bar used to ride.
+    for (const row of await page.locator('.m-contact__row').all()) {
+      const hit = await row.evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        const target = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return target?.closest('.m-contact__row') === el;
+      });
+      expect(hit).toBe(true);
+    }
+
+    await scrollToElement(page, '#work-m', 'start');
+    await expect(bar).toBeVisible();
+    await expect(bar).toHaveCSS('opacity', '1');
+  });
+
+  test('Shift+Tab from the Contact rows never lands on an invisible control', async ({ page }) => {
+    await gotoRel(page, '');
+    await scrollToElement(page, '#contact-m', 'start');
+    await expect(page.locator(BAR)).toBeHidden();
+    await page.locator('.m-contact__link').last().focus();
+    for (let step = 0; step < 6; step++) {
+      await page.keyboard.press('Shift+Tab');
+      const focused = page.locator(':focus');
+      await expect(focused).toBeVisible();
+      expect(
+        await focused.evaluate((el) =>
+          el.checkVisibility({ opacityProperty: true, visibilityProperty: true }),
+        ),
+        `step ${step + 1}`,
+      ).toBe(true);
+    }
+  });
+
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 412, height: 915 },
+  ]) {
+    test.describe(`${viewport.width}×${viewport.height}`, () => {
+      test.use({ viewport });
+
+      test('the Contact panel and the footer fill the last screen exactly', async ({ page }) => {
+        await gotoRel(page, '');
+        await scrollToElement(page, '#contact-m', 'start');
+        await expect
+          .poll(async () => {
+            const s = await lastScreen(page);
+            return {
+              contactUnderHeader: Math.abs(s.contactTop - s.headerBottom) <= 2,
+              footerRightAfter: Math.abs(s.footerTop - s.contactBottom) <= 1,
+              footerAtScreenFoot: Math.abs(s.footerBottom - s.innerHeight) <= 2,
+              pageEnd: Math.abs(s.scrollY - s.maxScrollY) <= 2,
+              barBehindHeader: s.barBottom <= s.headerBottom + 1,
+            };
+          })
+          .toEqual({
+            contactUnderHeader: true,
+            footerRightAfter: true,
+            footerAtScreenFoot: true,
+            pageEnd: true,
+            barBehindHeader: true,
+          });
+        await expect(page.locator(BAR)).toBeHidden();
+        // The rows take the spare height, each between 64 and 96px.
+        for (const height of await contactRowHeights(page)) {
+          expect(height).toBeGreaterThanOrEqual(63.5);
+          expect(height).toBeLessThanOrEqual(96.5);
+        }
+      });
+    });
+  }
+
+  test.describe('short screens', () => {
+    test.use({ viewport: { width: 360, height: 640 } });
+
+    test('at 360×640 Contact scrolls, its rows whole, and the footer follows it', async ({
+      page,
+    }) => {
+      await gotoRel(page, '');
+      await scrollToElement(page, '#contact-m', 'start');
+      await expect
+        .poll(async () => {
+          const s = await lastScreen(page);
+          return Math.abs(s.contactTop - s.headerBottom) <= 2;
+        })
+        .toBe(true);
+      const snapped = await lastScreen(page);
+      // Taller than the space left for it: the footer is still below the fold.
+      expect(snapped.footerBottom).toBeGreaterThan(snapped.innerHeight + 2);
+      for (const height of await contactRowHeights(page)) {
+        expect(height).toBeGreaterThanOrEqual(63.5);
+      }
+
+      await scrollToElement(page, '.site-footer', 'end');
+      await expect
+        .poll(async () => {
+          const s = await lastScreen(page);
+          return {
+            footerRightAfter: Math.abs(s.footerTop - s.contactBottom) <= 1,
+            footerAtScreenFoot: Math.abs(s.footerBottom - s.innerHeight) <= 2,
+          };
+        })
+        .toEqual({ footerRightAfter: true, footerAtScreenFoot: true });
+      await expect(page.locator(BAR)).toBeHidden();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+    });
+  });
+
+  test.describe('motion on', () => {
+    test.use({ reducedMotion: 'no-preference' });
+
+    test('the fade settles both ways', async ({ page }) => {
+      await gotoRel(page, '');
+      const bar = page.locator(BAR);
+      const settled = () => bar.evaluate((el) => el.getAnimations().length);
+
+      await scrollToElement(page, '#work-m', 'start');
+      await expect(bar).toHaveCSS('opacity', '1');
+      await expect(bar).toHaveCSS('translate', 'none');
+      await expect(bar).toHaveCSS('visibility', 'visible');
+      await expect.poll(settled).toBe(0);
+
+      await scrollToElement(page, '#contact-m', 'start');
+      await expect(bar).toHaveCSS('opacity', '0');
+      await expect(bar).toHaveCSS('translate', '0px 16px');
+      await expect(bar).toHaveCSS('visibility', 'hidden');
+      await expect.poll(settled).toBe(0);
+
+      await scrollToElement(page, '#work-m', 'start');
+      await expect(bar).toHaveCSS('opacity', '1');
+      await expect(bar).toHaveCSS('translate', 'none');
+      await expect(bar).toHaveCSS('visibility', 'visible');
+      await expect.poll(settled).toBe(0);
+      await expect.poll(() => runningTransitions(page)).toBe(0);
+    });
+  });
+
+  test('Contact leads with the face: a 112px photo above the name', async ({ page }) => {
+    await gotoRel(page, '');
+    await scrollToElement(page, '#contact-m', 'start');
+    const photo = page.locator('.m-contact__photo');
+    await expect(photo).toBeVisible();
+    const photoBox = (await photo.boundingBox())!;
+    const nameBox = (await page.locator('.m-contact__name').boundingBox())!;
+    expect(Math.round(photoBox.width)).toBe(112);
+    expect(photoBox.y + photoBox.height).toBeLessThanOrEqual(nameBox.y);
+  });
+
+  test("Contact's copy button sits beside the email link and copies the address", async ({
+    page,
+    context,
+    browserName,
+  }) => {
+    test.skip(browserName !== 'chromium', 'clipboard permissions are Chromium-only');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await gotoRel(page, '');
+    await scrollToElement(page, '#contact-m', 'start');
+    // The row's one other control: a sibling of its link, never nested in it.
+    const copy = page.locator('.m-contact__row button[data-copy]');
+    await expect(copy).toHaveCount(1);
+    expect(await copy.evaluate((el) => el.closest('a') === null)).toBe(true);
+    await copy.click();
+    await expect(copy).toContainText('copied');
+    const email = await copy.getAttribute('data-copy');
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(email);
+  });
+
+  test('the contact sheet keeps a swipe at its end to itself', async ({ page }) => {
+    await gotoRel(page, '');
+    // Safari has it; Playwright's WebKit build for Windows ships without the property.
+    const supported = await page.evaluate(() => CSS.supports('overscroll-behavior', 'contain'));
+    test.skip(!supported, 'this engine build has no overscroll-behavior');
+    await expect(page.locator(SHEET)).toHaveCSS('overscroll-behavior-y', 'contain');
+  });
 });
 
 test.describe('from 40rem', () => {
