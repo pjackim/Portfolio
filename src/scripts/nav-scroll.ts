@@ -15,6 +15,43 @@
  */
 export {};
 
+/**
+ * Phones don't lay out the desktop sections (index.astro hides them under 40rem), so an
+ * in-page hash that only exists there — the hero's `#work` button, and the legacy deep links
+ * `#about-section`/`#portfolio-section`/`#social-section` (index.astro) — would land nowhere.
+ * Redirect those to their phone-panel equivalent, on load and on click, the same way the
+ * header's own phone nav already does (SiteHeader.astro's `mobileHref`).
+ */
+const FRAGMENT_REDIRECT: Record<string, string> = {
+  work: 'work-m',
+  'about-section': 'about-m',
+  'portfolio-section': 'work-m',
+  'social-section': 'contact-m',
+};
+
+const isLaidOut = (el: Element | null): el is HTMLElement =>
+  el instanceof HTMLElement && el.offsetParent !== null;
+
+function redirectFragment(hash: string): boolean {
+  const id = hash.startsWith('#') ? hash.slice(1) : hash;
+  const alt = FRAGMENT_REDIRECT[id];
+  if (!alt || isLaidOut(document.getElementById(id))) return false;
+  const target = document.getElementById(alt);
+  if (!isLaidOut(target)) return false;
+  target.scrollIntoView({ block: 'start' });
+  history.replaceState(null, '', `#${alt}`);
+  return true;
+}
+
+if (location.hash) redirectFragment(location.hash);
+
+document.addEventListener('click', (event) => {
+  const link = (event.target as Element | null)?.closest?.('a[href*="#"]');
+  if (!(link instanceof HTMLAnchorElement) || !link.hash) return;
+  if (link.origin !== location.origin || link.pathname !== location.pathname) return;
+  if (redirectFragment(link.hash)) event.preventDefault();
+});
+
 const IDS = ['about', 'experience', 'work', 'contact'] as const;
 type Id = (typeof IDS)[number];
 

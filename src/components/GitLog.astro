@@ -21,9 +21,11 @@ import MotionLayer from './MotionLayer.astro';
 
 interface Props {
   class?: string;
+  /** Prefix for the skill lists' ids, so a page can render two logs (home: desktop + phone). */
+  idPrefix?: string;
 }
 
-const { class: className } = Astro.props;
+const { class: className, idPrefix = 'gl' } = Astro.props;
 const commits: readonly LogCommit[] = site.experience;
 const DEFAULT_OPEN = commits[0]?.id;
 const layout = layoutGraph(commits, {
@@ -111,7 +113,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
                 type="button"
                 class="commit__toggle"
                 aria-expanded={open.get(c.id) ? 'true' : 'false'}
-                aria-controls={`gl-${c.id}-skills`}
+                aria-controls={`${idPrefix}-${c.id}-skills`}
               >
                 <span class="commit__toggle-more" aria-hidden="true">
                   +{c.skills.length}
@@ -130,7 +132,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
             )}
           </div>
           {c.skills.length > 0 && (
-            <ul class="commit__skills" id={`gl-${c.id}-skills`} role="list">
+            <ul class="commit__skills" id={`${idPrefix}-${c.id}-skills`} role="list">
               {c.skills.map((s) => (
                 <li
                   class:list={['skill', `gl-f-${s.family}`]}

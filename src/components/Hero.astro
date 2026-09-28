@@ -86,7 +86,7 @@ const readouts = [
 
     <div class="hero__actions">
       <div class="hero__buttons">
-        <a class="button button--primary" href="#work">
+        <a class="button button--primary" href="#work" data-hero-work-link>
           Selected work
           <Arrow dir="down" />
         </a>
@@ -663,7 +663,9 @@ const readouts = [
     }
   }
 
-  .hero__scroll-hint {
-    display: none;
+  @media (width >= 40rem) {
+    .hero__scroll-hint {
+      display: none;
+    }
   }
 </style>
