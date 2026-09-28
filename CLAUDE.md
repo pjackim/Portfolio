@@ -274,9 +274,9 @@ help run`, `gh pr view --help`, `gh help environment`) or the manual at
   Confirm with `gh auth status` that `pjackim` is active; if it isn't, scope the token per
   command (`GH_TOKEN=$(gh auth token --user pjackim) gh …`) instead of running `gh auth
 switch`, which changes global state other sessions and terminals rely on.
-- **Always target `pjackim/Portfolio`.** Git's `origin` is `pjackim/Portfolio`, a fork of
-  `j4ck1m/Portfolio`; the `upstream` remote was removed and no `gh` default repo is set, so
-  don't rely on `gh`'s resolution. Pass
+- **Always target `pjackim/Portfolio`.** Git's `origin` is `pjackim/Portfolio`, but that repo
+  is a fork of `j4ck1m/Portfolio`, and `gh` resolves its default repository to the parent
+  (the `upstream` remote; `gh repo set-default --view` prints `j4ck1m/Portfolio`). Pass
   `--repo pjackim/Portfolio` (or `-R`) on every repo-scoped command, or `GH_REPO=pjackim/Portfolio`
   for a batch; for `gh api`, spell the path out (`repos/pjackim/Portfolio/...`).
 - **Useful here:** `gh run list/view/watch --log-failed` for CI and deploy failures (`ci.yml`,

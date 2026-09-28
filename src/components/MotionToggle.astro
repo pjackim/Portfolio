@@ -29,7 +29,7 @@ const { class: className, deferLayer = false } = Astro.props;
   <span class="motion-toggle motion-toggle--ghost" aria-hidden="true">
     <span>Motion</span>
     <span class="motion-toggle__dot"></span>
-    <span class="motion-toggle__state">Off (system)</span>
+    <span>Off (system)</span>
   </span>
   <button
     type="button"
@@ -130,11 +130,8 @@ const { class: className, deferLayer = false } = Astro.props;
     background-color: var(--accent);
   }
 
-  /* The state word reads in full text colour either way (Portfolio.dc.html); the LED carries
-     on/off. The ghost shares the weight, so the slot stays the widest state's box. */
-  .motion-toggle__state {
+  .motion-toggle[data-state='on'] .motion-toggle__state {
     color: var(--text);
-    font-weight: 600;
   }
 
   /* Motion (the gate, global.css): the chip eases its colours on hover — so switching motion

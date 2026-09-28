@@ -259,13 +259,7 @@ test.describe('motion on', () => {
 
   test('the h1 keeps its server-rendered text, untouched', async ({ page, request }) => {
     const html = await (await request.get('')).text();
-    // The name is split into spans (the phone layout breaks it after the first name): compare
-    // its text, tags stripped and whitespace collapsed.
-    const ssr = /<h1[^>]*>([\s\S]*?)<\/h1>/
-      .exec(html)?.[1]
-      ?.replace(/<[^>]*>/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+    const ssr = /<h1[^>]*>([^<]*)<\/h1>/.exec(html)?.[1]?.trim();
     expect(ssr).toBe('Parker Jackim');
     await page.addInitScript(() => {
       window.__h1Mutations = 0;

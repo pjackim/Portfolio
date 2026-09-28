@@ -76,28 +76,11 @@ import MotionToggle from './MotionToggle.astro';
 
   /* Phones: stacked, both at the start. The row needs ~33rem (the copyright, the chip's
      widest slot, the back-to-top link and the gaps), which a 40rem viewport holds inside its
-     gutters.
-     Each row is pinned to a set height (a floor: text zoom still grows it), so the footer's
-     height is a known sum of its own spacing, `--footer-h`: hairline + padding-block + the two
-     rows and the gap between them. The phone home page sizes its last screen with it
-     (HomeMobilePanels.astro: Contact + footer = the screen under the header). */
+     gutters. */
   @media (width < 40rem) {
-    :global(:root) {
-      --footer-mark-h: 1.125rem;
-      --footer-end-h: 2.75rem;
-      --footer-h: calc(
-        1px + var(--space-m) + var(--space-l) + var(--footer-mark-h) + var(--space-xs) +
-          var(--footer-end-h)
-      );
-    }
-
     .site-footer__inner {
       flex-direction: column;
       align-items: flex-start;
-    }
-
-    .site-footer__mark {
-      min-block-size: var(--footer-mark-h);
     }
 
     /* The chip at the start of its slot, and the link at the far end (not after the slot's
@@ -105,7 +88,6 @@ import MotionToggle from './MotionToggle.astro';
     .site-footer__end {
       align-self: stretch;
       justify-content: space-between;
-      min-block-size: var(--footer-end-h);
     }
 
     .site-footer__end > :global(.site-footer__motion) {

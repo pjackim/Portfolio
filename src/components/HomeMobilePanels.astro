@@ -3,14 +3,8 @@
  * Phone home panels (Portfolio.dc.html, Claude Design, Sept 2026 — `isHomeMob`, snap panels
  * 0–3): the home page's four sections as scroll-snap panels, right after the hero's chapter
  * opener (Hero.astro's phone treatment) — About (a horizontal timeline strip), Experience (the
- * shared `<GitLog>` rail), Selected work (reel cards) and Contact (photo, rows, no dialog).
- *
- * The sticky "Get in touch" / résumé bar rides along under the first three (`.m-lead`): it rises
- * in with About (never over the hero's own buttons), and docks at the end of Selected work, just
- * above Contact, which carries the same channels. Contact and the footer then share the last
- * screen exactly, and at Contact's snap the docked bar sits behind the opaque header — all CSS.
- * On top of that, src/scripts/home-ending.ts fades the bar out (`data-away`) while Contact is on
- * screen, and back in when it leaves; without it the bar simply docks and scrolls away.
+ * shared `<GitLog>` rail), Selected work (reel cards) and Contact (photo, rows, no dialog). A
+ * sticky "Get in touch" / résumé bar rides along underneath them.
  *
  * Phones only (under 40rem); from there up the home page is the full stack of sections
  * (index.astro) and this isn't rendered. Ids are the desktop sections' own with `-m` suffixed
@@ -37,116 +31,105 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
 ---
 
 <div class:list={['mobile-home', className]} id="mobile-home-panels">
-  <div class="m-lead">
-    <section class="m-panel" id="about-m" aria-labelledby="about-m-title">
-      <div class="m-panel__pad">
-        <div class="m-panel__head">
-          <span class="m-panel__idx">01</span>
-          <span class="m-panel__slash">/</span>
-          <h2 class="m-panel__title" id="about-m-title">
-            About
-          </h2>
-          <span class="m-panel__rule" aria-hidden="true"></span>
-        </div>
-        <p class="m-panel__lede">
-          From graphic design at 10 to security research at{' '}
-          <span class="m-panel__accent">JHU APL</span>.
-        </p>
-        <ul class="m-strip" role="list" tabindex="0" aria-label="Timeline, age 10 to now">
-          {site.timeline.map((t) => (
-            <li class:list={['m-strip__card', t.now && 'm-strip__card--now']}>
-              <span class="m-strip__when mono-label">{t.when}</span>
-              <span class="m-strip__title">{t.title}</span>
-              <span class="m-strip__text">{t.text}</span>
-            </li>
-          ))}
-        </ul>
-        <p class="m-strip__hint mono-label" aria-hidden="true">
-          Swipe <span class="m-strip__hint-rule"></span> Age 10 → now
-        </p>
-        <div class="m-rows">
-          <a class="m-row" href={withBase('about/')}>
-            Full story <span class="m-row__meta mono-label">~/about ›</span>
-          </a>
-          <a class="m-row" href={withBase('capabilities/')}>
-            Capabilities{' '}
-            <span class="m-row__meta mono-label">{CAPABILITY_GROUPS.length} groups ›</span>
-          </a>
-        </div>
+  <section class="m-panel" id="about-m" aria-labelledby="about-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">01</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="about-m-title">
+          About
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
       </div>
-    </section>
-
-    <section class="m-panel" id="experience-m" aria-labelledby="experience-m-title">
-      <div class="m-panel__pad">
-        <div class="m-panel__head">
-          <span class="m-panel__idx">02</span>
-          <span class="m-panel__slash">/</span>
-          <h2 class="m-panel__title" id="experience-m-title">
-            Experience
-          </h2>
-          <span class="m-panel__rule" aria-hidden="true"></span>
-          <a class="m-panel__action" href={withBase('experience/')}>
-            log ›
-          </a>
-        </div>
-        <GitLog class="m-panel__log" idPrefix="gl-m" bar={false} />
+      <p class="m-panel__lede">
+        From graphic design at 10 to security research at{' '}
+        <span class="m-panel__accent">JHU APL</span>.
+      </p>
+      <ul class="m-strip" role="list" tabindex="0" aria-label="Timeline, age 10 to now">
+        {site.timeline.map((t) => (
+          <li class:list={['m-strip__card', t.now && 'm-strip__card--now']}>
+            <span class="m-strip__when mono-label">{t.when}</span>
+            <span class="m-strip__title">{t.title}</span>
+            <span class="m-strip__text">{t.text}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="m-strip__hint mono-label" aria-hidden="true">
+        Swipe <span class="m-strip__hint-rule"></span> Age 10 → now
+      </p>
+      <div class="m-rows">
+        <a class="m-row" href={withBase('about/')}>
+          Full story <span class="m-row__meta mono-label">~/about ›</span>
+        </a>
+        <a class="m-row" href={withBase('capabilities/')}>
+          Capabilities{' '}
+          <span class="m-row__meta mono-label">{CAPABILITY_GROUPS.length} groups ›</span>
+        </a>
       </div>
-    </section>
-
-    <section class="m-panel" id="work-m" aria-labelledby="work-m-title">
-      <div class="m-panel__pad">
-        <div class="m-panel__head">
-          <span class="m-panel__idx">03</span>
-          <span class="m-panel__slash">/</span>
-          <h2 class="m-panel__title" id="work-m-title">
-            Selected work
-          </h2>
-          <span class="m-panel__rule" aria-hidden="true"></span>
-          <a class="m-panel__action" href={withBase('work/')}>
-            all ›
-          </a>
-        </div>
-        <ul class="m-reel" role="list">
-          {featured.map((p, i) => (
-            <li>
-              <a class="m-reel__card" href={withBase(`work/${p.id}/`)}>
-                <Picture
-                  src={p.data.cover}
-                  formats={['avif', 'webp']}
-                  fallbackFormat="webp"
-                  widths={[360, 540, 720]}
-                  sizes="(width < 40rem) 92vw, 360px"
-                  alt=""
-                  class="m-reel__cover"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
-                <span class="m-reel__body">
-                  <span class="m-reel__meta">
-                    <span class="m-reel__meta-text mono-label">
-                      {p.data.year} · {p.data.group}
-                    </span>
-                    <span class="m-reel__idx mono-label">{pad2(i + 1)}</span>
-                  </span>
-                  <span class="m-reel__title">{p.data.title}</span>
-                  <span class="m-reel__summary">{p.data.summary}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-
-    <div class="m-cta" data-m-cta>
-      <button type="button" class="m-cta__primary" commandfor="contact-sheet" command="show-modal">
-        Get in touch
-      </button>
-      <a class="m-cta__secondary" href={withBase(site.resume)}>
-        Résumé <span class="m-cta__meta mono-label">PDF</span>
-      </a>
     </div>
-  </div>
+  </section>
+
+  <section class="m-panel" id="experience-m" aria-labelledby="experience-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">02</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="experience-m-title">
+          Experience
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+        <a class="m-panel__action" href={withBase('experience/')}>
+          log ›
+        </a>
+      </div>
+      <GitLog class="m-panel__log" idPrefix="gl-m" />
+    </div>
+  </section>
+
+  <section class="m-panel" id="work-m" aria-labelledby="work-m-title">
+    <div class="m-panel__pad">
+      <div class="m-panel__head">
+        <span class="m-panel__idx">03</span>
+        <span class="m-panel__slash">/</span>
+        <h2 class="m-panel__title" id="work-m-title">
+          Selected work
+        </h2>
+        <span class="m-panel__rule" aria-hidden="true"></span>
+        <a class="m-panel__action" href={withBase('work/')}>
+          all ›
+        </a>
+      </div>
+      <ul class="m-reel" role="list">
+        {featured.map((p, i) => (
+          <li>
+            <a class="m-reel__card" href={withBase(`work/${p.id}/`)}>
+              <Picture
+                src={p.data.cover}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[360, 540, 720]}
+                sizes="(width < 40rem) 92vw, 360px"
+                alt=""
+                class="m-reel__cover"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <span class="m-reel__body">
+                <span class="m-reel__meta">
+                  <span class="m-reel__meta-text mono-label">
+                    {p.data.year} · {p.data.group}
+                  </span>
+                  <span class="m-reel__idx mono-label">{pad2(i + 1)}</span>
+                </span>
+                <span class="m-reel__title">{p.data.title}</span>
+                <span class="m-reel__summary">{p.data.summary}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <section class="m-panel m-panel--contact" id="contact-m" aria-labelledby="contact-m-title">
     <div class="m-panel__pad">
@@ -163,7 +146,7 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
           src={portrait}
           formats={['avif', 'webp']}
           fallbackFormat="webp"
-          widths={[112, 224, 336]}
+          widths={[112, 168, 224]}
           sizes="112px"
           alt=""
           class="m-contact__photo"
@@ -175,46 +158,42 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
           <span class="m-contact__place mono-label">{site.location}</span>
         </span>
       </div>
-      {/* One row per channel, each row its link's target (the copy button apart: a sibling,
-          never nested in the link), built like ContactSheet's rows. */}
-      <ul class="m-contact__rows" role="list">
-        <li class="m-contact__row">
-          <a class="m-contact__link" href={`mailto:${site.email}`}>
-            <span class="m-contact__kind mono-label">Email</span>
-            <span class="m-contact__value">{site.email}</span>
-          </a>
-          <button type="button" class="m-contact__copy" data-copy={site.email}>
-            <span data-copy-label>copy</span>
-            <span class="visually-hidden">email address</span>
-          </button>
-        </li>
-        <li class="m-contact__row">
-          <a class="m-contact__link" href={site.github}>
-            <span class="m-contact__kind mono-label">GitHub</span>
-            <span class="m-contact__value">{githubHandle}</span>
-          </a>
-          <Arrow dir="up-right" class="m-contact__icon" />
-        </li>
-        <li class="m-contact__row">
-          <a class="m-contact__link" href={site.linkedin}>
-            <span class="m-contact__kind mono-label">LinkedIn</span>
-            <span class="m-contact__value">{site.name}</span>
-          </a>
-          <Arrow dir="up-right" class="m-contact__icon" />
-        </li>
-        <li class="m-contact__row">
-          <a class="m-contact__link" href={withBase(site.resume)}>
-            <span class="m-contact__kind mono-label">Résumé</span>
-            <span class="m-contact__value">PDF</span>
-          </a>
-          <Arrow dir="down" class="m-contact__icon" />
-        </li>
-      </ul>
+      <div class="m-contact__rows">
+        <a class="m-row m-row--tall" href={`mailto:${site.email}`}>
+          <span class="m-row__kind mono-label">Email</span>
+          <span class="m-row__value">{site.email}</span>
+        </a>
+        <a class="m-row m-row--tall" href={site.github}>
+          <span class="m-row__kind mono-label">GitHub</span>
+          <span class="m-row__value">
+            {githubHandle} <Arrow dir="up-right" class="m-row__icon" />
+          </span>
+        </a>
+        <a class="m-row m-row--tall" href={site.linkedin}>
+          <span class="m-row__kind mono-label">LinkedIn</span>
+          <span class="m-row__value">
+            {site.name} <Arrow dir="up-right" class="m-row__icon" />
+          </span>
+        </a>
+        <a class="m-row m-row--tall m-row--last" href={withBase(site.resume)}>
+          <span class="m-row__kind mono-label">Résumé</span>
+          <span class="m-row__value">
+            PDF <Arrow dir="down" class="m-row__icon" />
+          </span>
+        </a>
+      </div>
     </div>
   </section>
-</div>
 
-<script src="../scripts/home-ending.ts"></script>
+  <div class="m-cta">
+    <button type="button" class="m-cta__primary" commandfor="contact-sheet" command="show-modal">
+      Get in touch
+    </button>
+    <a class="m-cta__secondary" href={withBase(site.resume)}>
+      Résumé <span class="m-cta__meta mono-label">PDF</span>
+    </a>
+  </div>
+</div>
 
 <style>
   /* Phones only. */
@@ -228,60 +207,23 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     }
 
     /* Gentle native scroll-snap across the hero and the four panels below it — proximity, not
-       mandatory, so it never fights a deliberate scroll or a deep link. The snapport starts
-       right under the sticky header (not html's usual header + 1rem), so a panel lands flush
-       beneath it; the panels and the hero carry no scroll-margin of their own, which would add
-       to that. */
+       mandatory, so it never fights a deliberate scroll or a deep link. */
     :global(html:has(#mobile-home-panels)) {
       scroll-snap-type: y proximity;
-      scroll-padding-top: var(--header-h);
-      /* The sticky "Get in touch" bar covers the last ~5.25rem of the viewport while it rides
-         along; keep keyboard focus scrolling from landing a focused link underneath it (WCAG
-         2.2 2.4.11). */
+      /* The sticky "Get in touch" bar below covers the last ~5.25rem of the viewport; keep
+         keyboard focus scrolling from landing a focused link underneath it (WCAG 2.2 2.4.11). */
       scroll-padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
     }
 
     :global(html:has(#mobile-home-panels)) :global([data-hero]) {
       scroll-snap-align: start;
-    }
-
-    /* The page's end is a snap position of its own. Where Contact is taller than the screen (a
-       short phone), the positions that keep it covering the screen are snap positions too, and
-       without this one a scroll to the bottom settled on the last of them: Contact's foot at
-       the screen's, the footer still under the fold. */
-    :global(html:has(#mobile-home-panels)) :global(.site-footer) {
-      scroll-snap-align: end;
-    }
-
-    /* 01–03: at least a full screen under the header each. */
-    .m-panel {
-      min-block-size: calc(100vh - var(--header-h));
-      min-block-size: calc(100svh - var(--header-h));
-    }
-
-    /* 04: Contact and the footer share the last screen exactly — header, Contact, footer, no
-       gap — so at Contact's snap (which is also the end of the page) the footer's foot meets
-       the screen's. `--footer-h` is the phone footer's own height, a sum of its spacing
-       tokens (SiteFooter.astro). The small viewport height, not the dynamic one: that would
-       re-lay out this panel, and re-run snapping, every time the browser's toolbar settles.
-       A taller Contact (a short screen) just scrolls, the footer after it. */
-    .m-panel--contact {
-      display: flex;
-      flex-direction: column;
-      min-block-size: calc(100vh - var(--header-h) - var(--footer-h, 8.1875rem));
-      min-block-size: calc(100svh - var(--header-h) - var(--footer-h, 8.1875rem));
-    }
-
-    /* The page's end is a resting place too. Without it WebKit (iOS Safari) finds the Contact
-       panel's start within proximity of the bottom and pulls every scroll to the end back to it,
-       so the footer (Motion chip, back to top) could never come into view. */
-    :global(html:has(#mobile-home-panels) .site-footer) {
-      scroll-snap-align: end;
+      scroll-margin-top: var(--header-h);
     }
   }
 
   .m-panel {
     scroll-snap-align: start;
+    scroll-margin-top: var(--header-h);
     border-block-start: var(--hairline);
   }
 
@@ -344,8 +286,6 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     color: var(--accent);
   }
 
-  /* Swiped, with its own hint below: no scrollbar, even with a mouse at phone width (the
-     global touch rule only covers coarse pointers). */
   .m-strip {
     display: flex;
     gap: 0.625rem;
@@ -354,12 +294,7 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gutter);
-    scrollbar-width: none;
     list-style: none;
-  }
-
-  .m-strip::-webkit-scrollbar {
-    display: none;
   }
 
   .m-strip__card {
@@ -430,7 +365,7 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     background-color: var(--line-ui);
   }
 
-  /* ── About's link rows (Full story, Capabilities) ── */
+  /* ── Shared link rows (About's Full story/Capabilities, Contact's channels) ── */
 
   .m-rows {
     display: flex;
@@ -534,26 +469,18 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     -webkit-box-orient: vertical;
   }
 
-  /* ── Contact: the face first, then a row per channel filling the rest of the screen ── */
-
-  .m-panel--contact .m-panel__pad {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding-block-end: 2.5rem;
-  }
+  /* ── Contact ── */
 
   .m-contact__who {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-s);
-    margin-block-start: 1.75rem;
+    align-items: center;
+    gap: 1rem;
+    margin-block-start: var(--space-l);
   }
 
   .mobile-home :global(.m-contact__photo) {
-    inline-size: 7rem;
-    block-size: 7rem;
+    inline-size: 4.5rem;
+    block-size: 4.5rem;
     border: var(--rule-ui);
     border-radius: 50%;
     object-fit: cover;
@@ -562,105 +489,59 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
   .m-contact__id {
     display: flex;
     flex-direction: column;
-    gap: 0.1875rem;
+    gap: 0.25rem;
   }
 
   .m-contact__name {
-    font-size: 2.125rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+    letter-spacing: -0.02em;
   }
 
   .m-contact__place {
     color: var(--text-subtle);
   }
 
-  /* The rows take the panel's spare height, each between 4rem and 6rem. */
   .m-contact__rows {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    margin-block-start: 1.75rem;
-    padding: 0;
-    list-style: none;
+    margin-block-start: var(--space-l);
   }
 
-  .m-contact__row {
-    position: relative;
-    display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-s);
+  .m-row--tall {
     min-block-size: 4rem;
-    max-block-size: 6rem;
-    border-block-start: var(--hairline);
   }
 
-  .m-contact__row:last-child {
+  .m-row--last {
     border-block-end: var(--hairline);
   }
 
-  .m-contact__link {
+  .m-row__kind {
+    color: var(--text-subtle);
+  }
+
+  .m-row__value {
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 0.125rem;
-    min-inline-size: 0;
-    color: var(--text);
-    text-decoration: none;
-  }
-
-  /* The row is the link's target, all but the copy button. */
-  .m-contact__link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .m-contact__kind {
-    color: var(--text-subtle);
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
-  }
-
-  .m-contact__value {
-    overflow: hidden;
-    font-size: 1.1875rem;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 1.0625rem;
     font-weight: 500;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
-  .mobile-home :global(.m-contact__icon) {
-    flex: none;
+  .mobile-home :global(.m-row__icon) {
     color: var(--text-subtle);
-    font-size: 1.125rem;
   }
 
-  .m-contact__copy {
-    position: relative;
-    z-index: 1;
-    flex: none;
-    min-inline-size: 2.75rem;
-    block-size: 2.75rem;
-    padding-inline: 0.75rem;
-    border: var(--rule-ui);
-    border-radius: var(--radius-s);
-    background-color: transparent;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .m-contact__rows .m-row {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.125rem;
   }
 
-  /* ── Sticky "Get in touch" / résumé bar ──
-     In flow at the end of `.m-lead`, and sticky to the foot of the screen while `.m-lead`
-     passes: it can't rise above `.m-lead`'s top, so it comes up with About (below the hero's
-     buttons, never over them), and it docks where it sits, at the end of Selected work. At
-     Contact's snap that's behind the opaque header. `data-away` (home-ending.ts: Contact on
-     screen) fades it out, unless it holds focus; hidden, it is out of the tab order too. The
-     fade is feedback on the scroll; the slide that goes with it is motion, behind the gate. */
+  /* ── Sticky "Get in touch" / résumé bar: a child of the panels wrapper, so it only becomes
+     stickable once the wrapper (not the hero above it) is in view — appearing right as the About
+     panel arrives, gone with intent (not motion-gated: it's a fixed overlay, not an animation). */
   .m-cta {
     position: sticky;
     inset-block-end: 0;
@@ -675,33 +556,6 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
     border-block-start: var(--hairline);
     background-color: color-mix(in oklch, var(--bg) 90%, transparent);
     backdrop-filter: blur(14px);
-    transition:
-      opacity var(--dur-base) var(--ease-out),
-      visibility 0s;
-  }
-
-  /* Hidden at once: with motion off the fade is cut short (global.css's safety net shortens
-     durations, not delays), so the bar must not stay tappable behind a delayed visibility. */
-  .m-cta[data-away]:not(:focus-within) {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    :global(:root:not([data-motion='off'])) .m-cta {
-      transition:
-        opacity var(--dur-base) var(--ease-out),
-        translate var(--dur-slow) var(--ease-out),
-        visibility 0s;
-    }
-
-    :global(:root:not([data-motion='off'])) .m-cta[data-away]:not(:focus-within) {
-      translate: 0 1rem;
-      transition:
-        opacity var(--dur-base) var(--ease-out),
-        translate var(--dur-slow) var(--ease-out),
-        visibility 0s linear var(--dur-slow);
-    }
   }
 
   .m-cta__primary,

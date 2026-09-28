@@ -2,16 +2,13 @@
  * The experience git log and the /work/ showcases (Portfolio.dc.html, Claude Design, Sept 2026).
  * - Git log (/experience/, and home's Experience): every commit, newest first, HEAD open and the
  *   rest folded; a commit's toggle opens its skills and the graph grows to match; a `--grep` chip
- *   opens its family's commits, dims the rest and says so in the command line and in a polite
- *   live region, and "all" goes back; skills still being learned are marked; without JavaScript
- *   there are no controls and HEAD's skills still show.
+ *   opens its family's commits, dims the rest and says so in the command line, and "all" goes
+ *   back; skills still being learned are marked; without JavaScript there are no controls and
+ *   HEAD's skills still show.
  * - Showcases (/work/): each lead's tick fills over 6 s and moves the lead on when it's full;
- *   hover or the status button pauses it (WCAG 2.2.2), and with reduced motion nothing runs and
- *   there is no pause button, only the position; a showcase the filter leaves one project in has
- *   no readout and no ticks; a tick picks a project and focus follows to the same tick in the new
- *   lead; hovering a row (fine pointer) floats its cover, in accent corner brackets, beside the
- *   pointer, inside the list; a row reached by keyboard gets the hover's nudge, and its cover
- *   beside it.
+ *   hover or the status button pauses it (WCAG 2.2.2), and with reduced motion nothing runs; a
+ *   tick picks a project and focus follows to the same tick in the new lead; hovering a row (fine
+ *   pointer) floats its cover beside the pointer, inside the list.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit), on a wide viewport; the
  * phone layouts are tests/phone.spec.ts.
  */
@@ -77,7 +74,6 @@ test.describe('experience log', () => {
       'false',
     );
     await expect(cmd).toHaveText('git log --graph --grep=software');
-    const status = page.locator(`${LOG} [role="status"]`);
     const rows = await page.locator(COMMIT).evaluateAll((els) =>
       els.map((el) => ({
         dim: el.hasAttribute('data-dim'),
@@ -89,13 +85,9 @@ test.describe('experience log', () => {
     );
     expect(rows.some((r) => r.hit)).toBe(true);
     for (const r of rows) expect(r).toEqual({ dim: !r.hit, open: r.hit, hit: r.hit });
-    // The dimming is only visual: the live region says it.
-    const hits = rows.filter((r) => r.hit).length;
-    await expect(status).toHaveText(`${hits} of ${rows.length} commits match software`);
     await page.locator(`${LOG} button[data-grep=""]`).click();
     await expect(cmd).toHaveText('git log --graph --first-parent');
     await expect(page.locator(`${COMMIT}[data-dim]`)).toHaveCount(0);
-    await expect(status).toHaveText(`All ${rows.length} commits`);
   });
 
   test('skills still being learned are marked', async ({ page }) => {
@@ -156,8 +148,6 @@ test.describe('work showcase, motion on', () => {
     await gotoRel(page, 'work/');
     await showcaseReady(page);
     const button = page.locator(`${SHOWCASE} >> nth=0`).locator('[data-showcase-toggle]');
-    await expect(button).toBeVisible();
-    await expect(button).toHaveAccessibleName(/^Pause, Auto/);
     await expect(button).toHaveAttribute('aria-pressed', 'false');
     await button.click();
     await expect(button).toHaveAttribute('aria-pressed', 'true');
@@ -165,33 +155,6 @@ test.describe('work showcase, motion on', () => {
     await page.mouse.move(2, 2);
     await button.blur();
     await expect.poll(() => fillState(page)).toBe('paused');
-  });
-
-  test('a showcase the filter leaves one project in has no readout and no ticks', async ({
-    page,
-  }) => {
-    await gotoRel(page, 'work/');
-    await showcaseReady(page);
-    const first = page.locator(`${SHOWCASE} >> nth=0`);
-    const status = first.locator('.showcase__status');
-    const ticks = first.locator('[data-lead]:not([hidden]) .lead__ticks');
-    await expect(status).toBeVisible();
-    await expect(ticks).toBeVisible();
-    // A capability only one case study has.
-    const only = await first.evaluate((el) => {
-      const rows = [...el.querySelectorAll<HTMLElement>('[data-filter-row]')];
-      const caps = rows.flatMap((row) => (row.dataset.capabilities ?? '').split(' '));
-      return caps.find((cap) => caps.filter((c) => c === cap).length === 1) ?? '';
-    });
-    expect(only, 'some capability only one case study has').not.toBe('');
-    await page.locator(`[data-work-filter] button[data-capability="${only}"]`).click();
-    await expect(first.locator('[data-filter-row]:visible')).toHaveCount(1);
-    await expect(first).not.toHaveAttribute('data-auto');
-    await expect(status).toBeHidden();
-    await expect(ticks).toBeHidden();
-    await page.locator('[data-work-filter] button[data-capability=""]').click();
-    await expect(status).toBeVisible();
-    await expect(ticks).toBeVisible();
   });
 
   test('a tick picks a project, and focus follows to the same tick', async ({ page }) => {
@@ -222,91 +185,18 @@ test.describe('work showcase, motion on', () => {
     const box = (await row.boundingBox())!;
     // Near the row's right end: the preview must still fit inside the list.
     await page.mouse.move(box.x + box.width - 20, box.y + box.height / 2, { steps: 4 });
-    const preview = row.locator('.work-row__preview');
-    await expect(preview).toHaveCSS('opacity', '1');
-    await expect(preview.locator('.work-row__thumb')).toBeVisible();
+    const thumb = row.locator('.work-row__thumb');
+    await expect(thumb).toHaveCSS('opacity', '1');
     const listBox = (await list.boundingBox())!;
     await expect
       .poll(async () => {
-        const t = (await preview.boundingBox())!;
+        const t = (await thumb.boundingBox())!;
         return t.x + t.width <= listBox.x + listBox.width + 1;
       })
       .toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    // Accent brackets on two corners, just outside it (top-left and bottom-right).
-    const brackets = await preview.evaluate((el) => {
-      const probe = document.createElement('span');
-      probe.style.color = 'var(--accent)';
-      document.body.append(probe);
-      const accent = getComputedStyle(probe).color;
-      probe.remove();
-      return (['::before', '::after'] as const).map((pseudo) => {
-        const cs = getComputedStyle(el, pseudo);
-        const top = cs.borderTopWidth !== '0px';
-        return {
-          accent,
-          color: top ? cs.borderTopColor : cs.borderBottomColor,
-          size: cs.width,
-          corner: top ? 'top-left' : 'bottom-right',
-          outside: top
-            ? parseFloat(cs.top) < 0 && parseFloat(cs.left) < 0
-            : parseFloat(cs.bottom) < 0 && parseFloat(cs.right) < 0,
-        };
-      });
-    });
-    expect(brackets.map((b) => b.corner)).toEqual(['top-left', 'bottom-right']);
-    for (const b of brackets) {
-      expect(b.color).toBe(b.accent);
-      expect(b.size).toBe('12px');
-      expect(b.outside).toBe(true);
-    }
-  });
-
-  test('a row reached by keyboard gets the nudge, and its cover beside it', async ({
-    page,
-    browserName,
-  }) => {
-    await gotoRel(page, 'work/');
-    const fine = await page.evaluate(() => matchMedia('(hover: hover)').matches);
-    await showcaseReady(page);
-    await page.mouse.move(2, 2);
-    const list = page.locator(`${SHOWCASE} >> nth=0`).locator('[data-showcase-list]');
-    const links = list.locator('.work-row__link');
-    await links.nth(1).scrollIntoViewIfNeeded();
-    await links.nth(1).focus();
-    const link = links.nth(2);
-    if (browserName === 'webkit') {
-      // WebKit's link tabbing depends on a platform setting some builds ignore: a key press then
-      // a scripted focus still counts as keyboard focus (:focus-visible).
-      await page.keyboard.press('Shift');
-      await link.focus();
-    } else {
-      await page.keyboard.press('Tab');
-    }
-    await expect(link).toBeFocused();
-    await expect(link.locator('.work-row__main')).toHaveCSS('translate', '6px');
-    await expect(link.locator('.work-row__arrow')).toHaveCSS('translate', '3px');
-    if (!fine) return;
-    const preview = list.locator('[data-project]').nth(2).locator('.work-row__preview');
-    await expect(preview).toHaveCSS('opacity', '1');
-    // Beside the row: vertically centred on it, clear of its group column, inside the list.
-    await expect
-      .poll(async () => {
-        const [p, r, group, l] = await Promise.all([
-          preview.boundingBox(),
-          link.boundingBox(),
-          link.locator('.work-row__group').boundingBox(),
-          list.boundingBox(),
-        ]);
-        return (
-          Math.abs(p!.y + p!.height / 2 - (r!.y + r!.height / 2)) <= 2 &&
-          p!.x + p!.width <= group!.x &&
-          p!.x >= l!.x - 1
-        );
-      })
-      .toBe(true);
   });
 });
 
@@ -324,15 +214,5 @@ test.describe('work showcase, reduced motion', () => {
           .length,
     );
     expect(running).toBe(0);
-  });
-
-  test('with nothing to pause there is no pause button, only the position', async ({ page }) => {
-    await gotoRel(page, 'work/');
-    await showcaseReady(page);
-    const first = page.locator(`${SHOWCASE} >> nth=0`);
-    await expect(first.locator('[data-showcase-toggle]')).toBeHidden();
-    await expect(first.locator('[data-showcase-pos]')).toBeVisible();
-    await expect(first.locator('[data-showcase-pos]')).toHaveText(/^01 \/ \d\d$/);
-    await expect(first.getByRole('button', { name: /pause/i })).toHaveCount(0);
   });
 });

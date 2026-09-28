@@ -6,14 +6,10 @@
  *
  * The lead moves on by itself every 6 seconds while motion is allowed: the current tick fills as
  * a progress bar (a CSS animation, so hovering or focusing the section pauses it for free), and
- * src/scripts/work-showcase.ts steps on when it ends. In the status readout ("AUTO · 01 / 06")
- * "AUTO ·" is the pause button; it exists only while the lead can move on by itself, so with
- * motion off the readout is plain text ("01 / 06") and the current tick is simply full. With one
- * project shown (a filter can leave one) there is nothing to rotate or pick: no readout, no ticks
- * (Portfolio.dc.html: `status`/`ticks` empty unless n > 1).
+ * src/scripts/work-showcase.ts steps on when it ends. The status readout ("AUTO · 01 / 06") is the
+ * pause button. With motion off nothing moves on its own and the current tick is simply full.
  * Rows mark the project in the lead; on a mouse, hovering a row floats its cover beside the
- * pointer, in accent corner brackets (keyboard focus shows it too, beside the row). Phones show
- * the covers as thumbnails in the rows instead.
+ * pointer. Phones show the covers as thumbnails in the rows instead.
  *
  * The capability filter (WorkFilter) hides rows and ticks through their `data-capabilities`
  * (pure CSS); the script keeps the lead, the count and the empty state in step with it.
@@ -69,17 +65,14 @@ const items = projects.map((p, i) => ({
     </span>
     <span class="showcase__rule" aria-hidden="true"></span>
     {items.length > 1 && (
-      <span class="showcase__status">
-        <button type="button" class="showcase__toggle" data-showcase-toggle aria-pressed="false">
-          <span class="visually-hidden">Pause, </span>
+      <button type="button" class="showcase__status" data-showcase-toggle aria-pressed="false">
+        <span class="visually-hidden">Pause, </span>
+        <span class="showcase__auto">
           <span class="showcase__running">Auto</span>
-          <span class="showcase__paused">Paused</span>
-          <span aria-hidden="true">·</span>
-        </button>
-        <span class="showcase__pos" data-showcase-pos>
-          01 / {pad2(items.length)}
+          <span class="showcase__paused">Paused</span> ·
         </span>
-      </span>
+        <span data-showcase-pos>01 / {pad2(items.length)}</span>
+      </button>
     )}
   </div>
 
@@ -184,19 +177,17 @@ const items = projects.map((p, i) => ({
             <Arrow />
           </span>
         </a>
-        <span class="work-row__preview" aria-hidden="true">
-          <Picture
-            src={p.data.cover}
-            formats={['avif', 'webp']}
-            fallbackFormat="webp"
-            widths={[160, 320, 520]}
-            sizes="(min-width: 640px) 260px, 64px"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            class="work-row__thumb"
-          />
-        </span>
+        <Picture
+          src={p.data.cover}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[160, 320, 520]}
+          sizes="(min-width: 640px) 260px, 64px"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          class="work-row__thumb"
+        />
       </li>
     ))}
   </ol>
@@ -209,14 +200,11 @@ const items = projects.map((p, i) => ({
     margin-block-start: clamp(3rem, 2rem + 3vw, 3.5rem);
   }
 
-  /* CASE STUDIES 06 ──────────────────── AUTO · 01 / 06
-     As tall as the pause button whether or not it shows, so it showing (or the Motion toggle
-     taking it away) moves nothing below. */
+  /* CASE STUDIES 06 ──────────────────── AUTO · 01 / 06 */
   .showcase__head {
     display: flex;
     align-items: center;
     gap: 0.875rem;
-    min-block-size: 2.75rem;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 500;
@@ -241,37 +229,19 @@ const items = projects.map((p, i) => ({
   }
 
   .showcase__status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    color: var(--text-subtle);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* The pause button: only while the lead moves on by itself (the motion gate, below). With
-     motion off there's nothing to pause, so there's no button, only the position. */
-  .showcase__toggle {
-    display: none;
-    align-items: center;
-    gap: 0.5em;
     min-block-size: 2.75rem;
     padding: 0;
     border: 0;
     background: none;
-    color: inherit;
+    color: var(--text-subtle);
     font: inherit;
     letter-spacing: inherit;
     text-transform: inherit;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    :global(:root:not([data-motion='off'])) .showcase__toggle {
-      display: inline-flex;
-    }
+    font-variant-numeric: tabular-nums;
   }
 
   @media (hover: hover) {
-    .showcase__toggle:hover {
+    .showcase__status:hover {
       color: var(--text);
     }
   }
@@ -285,9 +255,15 @@ const items = projects.map((p, i) => ({
     display: inline;
   }
 
-  /* One project shown (the filter can leave one): nothing to rotate through or pick. */
-  .showcase[data-ready]:not([data-auto]) :is(.showcase__status, .lead__ticks) {
+  /* Only while it moves on by itself does it say so, or pause. */
+  :global(:root[data-motion='off']) .showcase__auto {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .showcase__auto {
+      display: none;
+    }
   }
 
   @media (scripting: none) {
@@ -396,12 +372,6 @@ const items = projects.map((p, i) => ({
     justify-content: space-between;
     gap: var(--space-s);
     margin-block-start: 0.5rem;
-  }
-
-  .lead__cta {
-    min-block-size: 3rem;
-    padding-inline: 1.25rem;
-    font-size: 1rem;
   }
 
   .lead__ticks {
@@ -583,11 +553,9 @@ const items = projects.map((p, i) => ({
   }
 
   /* The cover preview: floats beside the pointer (--px/--py, set on the list by the script,
-     which keeps it inside the list's width so it never widens the page) while a row is hovered,
-     or beside a row that has keyboard focus while the pointer is elsewhere. Accent brackets on
-     two corners (Portfolio.dc.html: top-left and bottom-right, 12px, 6px out). Decorative: the
-     row's link names the project. */
-  .work-row__preview {
+     which keeps it inside the list's width so it never widens the page) while a row is hovered.
+     Decorative: the row's link names the project. */
+  .showcase :global(.work-row__thumb) {
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
@@ -598,62 +566,27 @@ const items = projects.map((p, i) => ({
     border-radius: var(--radius-xs);
     background-color: var(--surface-2);
     box-shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+    object-fit: cover;
+    object-position: top center;
     opacity: 0;
     pointer-events: none;
     translate: var(--px, 0) var(--py, 0);
   }
 
-  .work-row__preview :global(picture) {
-    display: contents;
-  }
-
-  .showcase :global(.work-row__thumb) {
-    display: block;
-    inline-size: 100%;
-    block-size: 100%;
-    border-radius: calc(var(--radius-xs) - 1px);
-    object-fit: cover;
-    object-position: top center;
-  }
-
-  .work-row__preview::before,
-  .work-row__preview::after {
-    content: '';
-    position: absolute;
-    inline-size: 12px;
-    block-size: 12px;
-    border: 0 solid var(--accent);
-  }
-
-  .work-row__preview::before {
-    inset-block-start: -6px;
-    inset-inline-start: -6px;
-    border-block-start-width: 1.5px;
-    border-inline-start-width: 1.5px;
-  }
-
-  .work-row__preview::after {
-    inset-block-end: -6px;
-    inset-inline-end: -6px;
-    border-block-end-width: 1.5px;
-    border-inline-end-width: 1.5px;
-  }
-
   @media (hover: hover) and (width >= 40rem) {
-    .work-row:has(.work-row__link:hover) .work-row__preview,
-    .showcase__list:not(:hover) .work-row:has(.work-row__link:focus-visible) .work-row__preview {
+    .work-row:has(.work-row__link:hover) :global(.work-row__thumb) {
       opacity: 1;
     }
   }
 
   @media (hover: none) and (width >= 40rem) {
-    .work-row__preview {
+    .showcase :global(.work-row__thumb) {
       display: none;
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(:root:not([data-motion='off'])) .work-row__preview {
+    :global(:root:not([data-motion='off'])) .showcase :global(.work-row__thumb) {
       transition:
         opacity 160ms var(--ease-standard),
         translate 140ms var(--ease-out);
@@ -662,15 +595,6 @@ const items = projects.map((p, i) => ({
     :global(:root:not([data-motion='off'])) .work-row__main,
     :global(:root:not([data-motion='off'])) .work-row__arrow {
       transition: translate 280ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Keyboard focus gets the hover's nudges. */
-    :global(:root:not([data-motion='off'])) .work-row__link:focus-visible .work-row__main {
-      translate: 6px 0;
-    }
-
-    :global(:root:not([data-motion='off'])) .work-row__link:focus-visible .work-row__arrow {
-      translate: 3px 0;
     }
 
     @media (hover: hover) {
@@ -784,11 +708,8 @@ const items = projects.map((p, i) => ({
       gap: 0.25rem;
     }
 
-    /* The design's 48px CTA is the desktop lead's (its phone card has none); here it's the
-       site's standard 2.75rem button. */
     .lead__cta {
       justify-content: center;
-      min-block-size: 2.75rem;
     }
 
     .lead__ticks {
@@ -843,7 +764,7 @@ const items = projects.map((p, i) => ({
     }
 
     /* The cover as the row's thumbnail. */
-    .work-row__preview {
+    .showcase :global(.work-row__thumb) {
       inset-block-start: 50%;
       inline-size: 4rem;
       border: var(--hairline);
@@ -853,16 +774,7 @@ const items = projects.map((p, i) => ({
       translate: 0 -50%;
     }
 
-    .work-row__preview::before,
-    .work-row__preview::after {
-      display: none;
-    }
-
-    .showcase :global(.work-row__thumb) {
-      border-radius: calc(var(--radius-s) - 1px);
-    }
-
-    .work-row[data-on] .work-row__preview {
+    .work-row[data-on] :global(.work-row__thumb) {
       border-color: var(--accent);
     }
   }

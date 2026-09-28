@@ -39,10 +39,7 @@ effect**, and don't add a new signature per section (see [anti-slop.md](../desig
 - **Depth is tone plus hairline, never elevation.** Surfaces step `--bg` → `--surface` →
   `--surface-2`; edges are `--hairline` (decorative) or `--rule-ui` (≥ 3:1, for UI boundaries).
   No drop shadows, no glass, no glow halos (the card's faint pointer spotlight is the one
-  sanctioned accent light). Three neutral shadows are sanctioned by the Claude Design mockup
-  (`Portfolio.dc.html`, Sept 2026), each on something that floats over the page: the theme
-  switch's knob, the `/work/` row's floating cover preview, and the phone contact sheet. Never
-  on cards, sections or buttons.
+  sanctioned accent light).
 - **One accent.** `--accent` / `--accent-hover` for focus, active state, the caret, reticle, the
   signal square, link-underline hover. `--danger` exists for the 404 code only.
 - Off-vibe: gradients as fills, a second accent, tinted section backgrounds, coloured shadows,
@@ -52,7 +49,7 @@ effect**, and don't add a new signature per section (see [anti-slop.md](../desig
 
 | Role          | Face / token                                  | Notes                                                 |
 | ------------- | --------------------------------------------- | ----------------------------------------------------- |
-| Display (h1)  | Geist, `--step-5`, 600, lh 1.05, −0.02em      | Page titles; the home hero sets its own 42–76px clamp |
+| Display (h1)  | Geist, `--step-5`, 600, lh 1.05, −0.02em      | Names and page titles, short. Never a full sentence.  |
 | Section title | Geist, set by `SectionHeading`                | Paired with a mono index; plain noun labels.          |
 | Lede / intro  | Geist, `--step-1`, `--text-muted`, ≤ 60ch     | One short paragraph under a title.                    |
 | Body          | Geist, `--step-0`, measure `--measure` (66ch) | Case-study prose via `prose.css`.                     |
@@ -63,14 +60,7 @@ Contrast comes from **weight, size steps, and sans-vs-mono**, not from more font
 ## Shape and layout
 
 - Radii: `--radius-xs` (2px) and `--radius-s` (4px). **Nothing else is rounded**: no pills, no
-  12–24px cards. Sanctioned exceptions, from the Claude Design mockup (`Portfolio.dc.html`,
-  Sept 2026):
-  - **The theme switch** is a pill at every width (a round knob in a 30px track): a switch
-    should read as a switch.
-  - **Phones (under 40rem)** use a touch vocabulary: 12–14px corners on the full-width controls
-    and cards (hero actions, the sticky "Get in touch" bar, swipe and reel cards, the `/work/`
-    lead card), 22px top corners on the contact bottom sheet, and pill filter chips (`/work/`
-    and the git log share one shape). From 40rem up the 2–4px rule holds.
+  12–24px cards.
 - Container `--container` (72rem, wider on large displays), gutter `--gutter`, sections
   separated by `--space-section`. Generous space between groups, tight inside them.
 - Home is a vertical stack of numbered sections on hairlines; each section leads with its

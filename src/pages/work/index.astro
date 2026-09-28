@@ -25,7 +25,6 @@ const written = WORDS[featured.length] ?? String(featured.length);
       index="03"
       title="Work"
       intro={`Every project in one place. ${written} are written up as case studies; the rest are in the archive, newest first.`}
-      hideIntroOnPhones
     />
     <WorkFilter class="standalone__body" projects={[...featured, ...archive]} />
     <div class="work__groups" data-filter-list>

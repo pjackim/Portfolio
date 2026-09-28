@@ -5,9 +5,7 @@
  *   and a showcase it leaves empty says so; `?capability=` is kept in the URL and restores the filter on load —
  *   painted filtered before any script runs — while an unknown value is ignored (and dropped from
  *   the URL), and a filter whose script never arrives fails open; a polite live
- *   region announces "Showing N of 15 projects"; the chips are big enough to tap (2.5rem, 2.75rem
- *   under 48rem) and a pressed one is marked by tone and an accent square that keeps its box
- *   either way; the chips work from the keyboard; with motion on
+ *   region announces "Showing N of 15 projects"; the chips work from the keyboard; with motion on
  *   the change is a view transition that leaves nothing behind; each showcase's lead moves to
  *   its first project still shown; the bar appearing shifts nothing; without JS there is no bar
  *   and every row shows.
@@ -134,6 +132,9 @@ test.describe('/work/ filter', () => {
       expect(name).toMatch(new RegExp(`, ${n} projects?$`));
       expect(pressed).toBe('false');
     }
+    await expect(page.locator('[data-filter-shown]')).toHaveText(
+      String(PROJECT_COUNT).padStart(2, '0'),
+    );
   });
 
   test('each chip hides the rows without its capability, and an emptied showcase says so', async ({
@@ -151,6 +152,9 @@ test.describe('/work/ filter', () => {
       await expect(page.locator(`${CHIP}[aria-pressed="true"]`)).toHaveCount(1);
       const want = await expected(page, id);
       expect(await shown(page), `filter "${id || 'all'}"`).toEqual(want);
+      await expect(page.locator('[data-filter-shown]')).toHaveText(
+        String(want.rows.length).padStart(2, '0'),
+      );
       groupsShown.add(want.groups.length);
     }
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
@@ -275,62 +279,6 @@ test.describe('/work/ filter', () => {
     await expect(status).toHaveText(`Showing ${n} of ${PROJECT_COUNT} projects`);
     await chip(page, '').click();
     await expect(status).toHaveText(`Showing ${PROJECT_COUNT} of ${PROJECT_COUNT} projects`);
-  });
-
-  test('chips: tap-sized, and the pressed one is marked by tone and an accent square', async ({
-    page,
-  }) => {
-    await gotoRel(page, 'work/');
-    await filterReady(page);
-    const wide = await page.evaluate(() => matchMedia('(width >= 48rem)').matches);
-    const look = () =>
-      page.locator(CHIP).evaluateAll((els) => {
-        const probe = document.createElement('span');
-        probe.style.backgroundColor = 'var(--surface-2)';
-        probe.style.borderColor = 'var(--accent)';
-        document.body.append(probe);
-        const { backgroundColor: raised, borderColor: accent } = getComputedStyle(probe);
-        probe.remove();
-        return els.map((el) => {
-          const led = el.querySelector<HTMLElement>('.work-filter__led')!;
-          const style = getComputedStyle(el);
-          return {
-            pressed: el.getAttribute('aria-pressed') === 'true',
-            height: el.getBoundingClientRect().height,
-            raised: style.backgroundColor === raised,
-            accentBorder: style.borderTopColor === accent,
-            led: getComputedStyle(led).opacity,
-            ledWidth: led.getBoundingClientRect().width,
-          };
-        });
-      });
-    const check = async () => {
-      const chips = await look();
-      for (const chip of chips) {
-        // 2.5rem, or the 2.75rem touch chip where the chips become a sideways rail.
-        expect(Math.round(chip.height)).toBeGreaterThanOrEqual(wide ? 40 : 44);
-        expect(chip.ledWidth, 'the square keeps its box').toBeCloseTo(6, 0);
-        expect(chip.accentBorder, 'a neutral pressed state, not an accent border').toBe(false);
-        expect(chip.raised).toBe(chip.pressed);
-        expect(chip.led).toBe(chip.pressed ? '1' : '0');
-      }
-      expect(chips.filter((chip) => chip.pressed)).toHaveLength(1);
-    };
-    await check();
-    // No chip changes size when another is pressed (the square's box is always there).
-    const sizes = () =>
-      page
-        .locator(CHIP)
-        .evaluateAll((els) => els.map((el) => [el.clientWidth, el.clientHeight].join('×')));
-    const before = await sizes();
-    await chip(page, 'languages').click();
-    await expect(chip(page, 'languages')).toHaveAttribute('aria-pressed', 'true');
-    await check();
-    expect(await sizes()).toEqual(before);
-    // The key sits before the chips wherever there's room for it.
-    await expect(page.locator(`${BAR} .work-filter__key`)).toBeVisible({
-      visible: await page.evaluate(() => matchMedia('(width >= 40rem)').matches),
-    });
   });
 
   test('works from the keyboard (Tab, Enter, Space)', async ({ page, browserName }) => {

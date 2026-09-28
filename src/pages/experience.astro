@@ -1,9 +1,7 @@
 ---
 /**
  * Experience (Portfolio.dc.html, Claude Design, Sept 2026): the git log on its own page — where
- * the phone layout's ~/experience/ and home card go. Same component as the home page's section;
- * here, on phones, its chips pin under the header and the intro gives way to the log
- * (`isExpMob`: the `$` line, then the chips, then the rows).
+ * the phone layout's ~/experience/ and home card go. Same component as the home page's section.
  */
 import GitLog from '../components/GitLog.astro';
 import PageHeader from '../components/PageHeader.astro';
@@ -19,8 +17,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       index="02"
       title="Experience"
       intro="Roles, projects and qualifications, newest first, with the skills each brought in."
-      hideIntroOnPhones
     />
-    <GitLog class="standalone__body" stickyChips />
+    <GitLog class="standalone__body" />
   </div>
 </BaseLayout>

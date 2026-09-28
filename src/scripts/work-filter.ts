@@ -4,7 +4,7 @@
  * BaseLayout bootstrap — and CSS hides the rows (and emptied groups) it rules out. This wires
  * the chips: single-select `aria-pressed` buttons that set that attribute, keep `?capability=`
  * in the URL (`history.replaceState`; "All" removes it) and announce "Showing N of 15 projects"
- * in the bar's polite live region. (On screen, each showcase's header count says it.)
+ * in the bar's polite live region (and show the count in its readout).
  *
  * While motion is allowed the change runs inside a same-document view transition, with
  * `vt-filter` on <html> for its duration (the class that switches the rows' and headings'
@@ -16,6 +16,7 @@
  *
  * Part of the motion-layer entry, so the chips work as soon as they show.
  */
+import { pad2 } from '../lib/format';
 import { motionAllowed, startTransition } from './motion';
 
 const PARAM = 'capability';
@@ -28,6 +29,7 @@ function wire(bar: HTMLElement, list: HTMLElement): void {
   const ids = new Set(chips.map((chip) => chip.dataset.capability ?? '').filter(Boolean));
   const rows = [...list.querySelectorAll<HTMLElement>('[data-filter-row]')];
   const status = bar.querySelector<HTMLElement>('[data-filter-status]');
+  const readout = bar.querySelector<HTMLElement>('[data-filter-shown]');
 
   const matches = (row: HTMLElement, id: string) =>
     id === '' || (row.dataset.capabilities ?? '').split(' ').includes(id);
@@ -47,6 +49,7 @@ function wire(bar: HTMLElement, list: HTMLElement): void {
     for (const row of rows) {
       if (row.dataset.revealState === 'pending' && matches(row, id)) delete row.dataset.revealState;
     }
+    if (readout) readout.textContent = pad2(count(id));
   };
 
   /** The change itself: a reflow while motion is allowed (and view transitions exist), else at

@@ -1,20 +1,19 @@
 ---
 /**
  * /work/ capability filter (interactions spec §4), the successor to the 2021 site's Isotope grid:
- * a mono `CAPABILITY ›` key, then a chip bar — `ALL 15` and one chip per capability with its
- * project count — above the grouped sections of /work/ (WorkShowcase). Single-select.
- * (Portfolio.dc.html, Claude Design, Sept 2026: one row, the key inline before the chips; a
- * pressed chip takes the neutral raised tone and a small accent square appears in it.)
+ * a chip bar — `ALL 15` and one chip per capability with its project count — above the grouped
+ * sections of /work/ (WorkShowcase). Single-select.
  *
  * The filter state is one attribute, `<html data-capability="<id>">`, and the hiding is pure CSS
  * (below): rows and lead ticks without that capability go; WorkShowcase's script keeps each
- * section's lead, count and empty state in step (each section's header count is the on-screen
- * readout). The bootstrap in BaseLayout sets it before first paint from `?capability=`, so a
- * filtered URL is painted filtered (no layout shift); src/scripts/work-filter.ts sets it on a
- * chip, wrapped in a view transition while motion is allowed — rows glide to their new places
- * (`--vt-name`, `row-<slug>`, from page-style.ts), removed rows fade out, new ones wipe in, group
- * headings glide and cross-fade — and keeps `?capability=` in the URL and announces
- * "Showing N of 15 projects" in a polite live region.
+ * section's lead, count and empty state in step. The bootstrap in
+ * BaseLayout sets it before first paint from `?capability=`, so a filtered URL is painted
+ * filtered (no layout shift); src/scripts/work-filter.ts sets it on a chip, wrapped in a view
+ * transition while motion is allowed — rows glide to their new places (`--vt-name`,
+ * `row-<slug>`, from page-style.ts), removed rows fade out, new ones wipe in, group headings
+ * glide and cross-fade — and keeps `?capability=` in the URL and announces
+ * "Showing N of 15 projects" in a polite live region, which a mono readout at the end of the bar
+ * mirrors on screen (`SHOWING 07 / 15`).
  *
  * Without JS there is no working control, so there is no bar: it collapses under
  * `scripting: none`, and until the script has wired it, it holds its space invisibly (so it
@@ -23,7 +22,6 @@
 import { CAPABILITIES, CAPABILITY_GROUPS, CAPABILITY_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
 import type { Project } from '../lib/projects';
-import '../styles/chips.css';
 
 interface Props {
   projects: readonly Project[];
@@ -47,9 +45,18 @@ const chips = [
 ---
 
 <div class:list={['work-filter', className]} data-work-filter>
-  <span class="work-filter__key mono-label" aria-hidden="true">
-    Capability ›
-  </span>
+  <div class="work-filter__head mono-label" aria-hidden="true">
+    <span class="work-filter__lead">
+      Filter <span class="work-filter__slash">/</span> Capability
+    </span>
+    <span class="work-filter__rule"></span>
+    <span class="work-filter__result">
+      Showing
+      <span class="work-filter__shown">
+        <span data-filter-shown>{pad2(projects.length)}</span> / {pad2(projects.length)}
+      </span>
+    </span>
+  </div>
   <div class="work-filter__chips" role="group" aria-label="Filter by capability">
     {chips.map(({ id, label, name, count }) => (
       <button
@@ -74,37 +81,7 @@ const chips = [
   .work-filter {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2xs);
-  }
-
-  /* Wide enough for the chips to wrap in place: the key and the chips share one row. */
-  @media (width >= 48rem) {
-    .work-filter {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.625rem;
-    }
-
-    /* Level with the first row of chips, however many rows they wrap to. */
-    .work-filter__key {
-      display: flex;
-      flex: none;
-      align-items: center;
-      min-block-size: 2.5rem;
-      margin-inline-end: 0.375rem;
-    }
-
-    .work-filter__chips {
-      flex: 1 1 0;
-      min-inline-size: 0;
-    }
-  }
-
-  /* Phones: the header's Work segment already says where you are; the chips start the page. */
-  @media (width < 40rem) {
-    .work-filter__key {
-      display: none;
-    }
+    gap: var(--space-xs);
   }
 
   /* Until the script has wired it: its space, invisibly (visibility keeps it out of the tab
@@ -114,7 +91,7 @@ const chips = [
   }
 
   /* …and it shows the moment it's wired: nothing in it transitions visibility (the motion-off
-     safety net would otherwise turn the change into a one-frame transition). The chips'
+     safety net would otherwise turn the change into a one-frame transition). The chips' colour
      transitions below name their properties. */
   :global(.work-filter),
   :global(.work-filter *) {
@@ -127,27 +104,53 @@ const chips = [
     }
   }
 
-  .work-filter__key {
+  /* FILTER / CAPABILITY ─────────────── SHOWING 07 / 15
+     The narrowest phones (~320px) can't fit it on one line: the count wraps under the label,
+     at the right edge, and the rule fills the rest of the first line. */
+  .work-filter__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-s);
     white-space: nowrap;
+  }
+
+  .work-filter__result {
+    margin-inline-start: auto;
+  }
+
+  .work-filter__slash {
+    color: var(--line-ui);
+  }
+
+  .work-filter__rule {
+    flex: 1 1 var(--space-l);
+    block-size: 1px;
+    background-color: var(--line);
+  }
+
+  .work-filter__shown {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
   }
 
   .work-filter__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.625rem;
+    gap: var(--space-2xs);
   }
 
-  /* Phones and tablets: one row that scrolls sideways, bled to the screen edges (fading out at
-     them), so the list isn't pushed a screen down by six rows of chips. */
+  /* Phones: one row that scrolls sideways, bled to the screen edges (fading out at them), so the
+     list isn't pushed a screen down by six rows of chips. */
   @media (width < 48rem) {
     .work-filter__chips {
       flex-wrap: nowrap;
-      gap: var(--space-2xs);
       margin-inline: calc(-1 * var(--gutter));
       padding-block: 0.375rem;
       padding-inline: var(--gutter);
       overflow-x: auto;
       overscroll-behavior-x: contain;
+      scrollbar-width: thin;
       mask-image: linear-gradient(
         to right,
         transparent,
@@ -178,9 +181,10 @@ const chips = [
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-block-size: 2.5rem;
-    padding-inline: 0.8125rem;
+    gap: 0.625em;
+    min-block-size: 2rem;
+    padding-block: 0.3125rem;
+    padding-inline: 0.625rem;
     border: var(--hairline);
     border-radius: var(--radius-xs);
     background-color: transparent;
@@ -194,30 +198,12 @@ const chips = [
     text-transform: uppercase;
   }
 
-  /* On the sideways rail: the touch chip's height (styles/chips.css). */
-  @media (width < 48rem) {
-    .work-filter__chip {
-      min-block-size: var(--chip-touch-block);
-    }
-  }
-
-  /* Phones: the whole touch chip, shared with the Experience log's chips. */
-  @media (width < 40rem) {
-    .work-filter__chip {
-      padding-inline: var(--chip-touch-pad);
-      border-radius: var(--chip-touch-radius);
-      font-size: var(--chip-touch-font);
-    }
-  }
-
-  /* Selector LED: a small accent square that appears in place on the pressed chip. Its box is
-     always there, so pressing a chip moves nothing, and a shape (not only a tone) marks it. */
+  /* Selector LED: a hollow square, filled with the accent when this chip is the filter. */
   .work-filter__led {
     flex: none;
-    inline-size: 0.375rem;
-    block-size: 0.375rem;
-    background-color: var(--accent);
-    opacity: 0;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border: 1px solid var(--text-subtle);
   }
 
   .work-filter__count {
@@ -233,13 +219,18 @@ const chips = [
   }
 
   .work-filter__chip[aria-pressed='true'] {
-    border-color: var(--line-ui);
-    background-color: var(--surface-2);
+    border-color: var(--accent);
+    background-color: color-mix(in oklch, var(--accent) 9%, transparent);
     color: var(--text);
   }
 
   .work-filter__chip[aria-pressed='true'] .work-filter__led {
-    opacity: 1;
+    border-color: var(--accent);
+    background-color: var(--accent);
+  }
+
+  .work-filter__chip[aria-pressed='true'] .work-filter__count {
+    color: var(--accent);
   }
 
   @media (forced-colors: active) {
@@ -247,8 +238,7 @@ const chips = [
       border-color: Highlight;
     }
 
-    .work-filter__led {
-      forced-color-adjust: none;
+    .work-filter__chip[aria-pressed='true'] .work-filter__led {
       background-color: Highlight;
     }
   }
@@ -295,7 +285,7 @@ const chips = [
     :global(:root:not([data-motion='off'])) .work-filter__chip,
     :global(:root:not([data-motion='off'])) .work-filter__led,
     :global(:root:not([data-motion='off'])) .work-filter__count {
-      transition-property: color, border-color, background-color, opacity;
+      transition-property: color, border-color, background-color;
       transition-duration: var(--dur-fast);
       transition-timing-function: var(--ease-standard);
     }

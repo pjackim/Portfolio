@@ -105,15 +105,6 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* The header (1c). Phones keep the 3.5rem bar; from 40rem it is 4rem (Portfolio.dc.html
-   `navDesk`), tall enough for the numbered nav's label row above its 2px track. Everything
-   that clears the header (scroll padding, sticky offsets, the hero's view timeline) reads this. */
-@media (width >= 40rem) {
-  :root {
-    --header-h: 4rem;
-  }
-}
-
 /* Large displays (1c). The fluid scale tops out at 1280px, so past it only the margins grew:
    by 2560px the 72rem column filled 45% of the screen at laptop type sizes. Two steps instead:
    from 1760px (1920×1080 and wider) the column widens to 80rem; from 2400px (1440p and
