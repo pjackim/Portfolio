@@ -48,8 +48,13 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
-      - name: End-to-end tests
-        run: npm run test:e2e
+      - name: End-to-end tests (chromium, mobile-chrome)
+        run: npx playwright test --project=chromium --project=mobile-chrome
+      - name: End-to-end tests (webkit)
+        # Run alone, one worker: sharing the runner's CPU with chromium/mobile-chrome workers
+        # starves WebKit's real-time animation code enough to blow past its own completion
+        # windows (reveal/typing/decrypt timing assertions) — not a test bug, a contention one.
+        run: npx playwright test --project=webkit --workers=1
       - name: Lighthouse CI
         if: github.event_name == 'pull_request'
         run: npm run test:lhci
