@@ -55,29 +55,41 @@ document.addEventListener('click', (event) => {
 const IDS = ['about', 'experience', 'work', 'contact'] as const;
 type Id = (typeof IDS)[number];
 
-function findSections(): Record<Id, HTMLElement> | null {
-  const laidOut = (el: Element | null): el is HTMLElement =>
-    el instanceof HTMLElement && el.offsetParent !== null;
-  const desktop = IDS.map((id) => document.getElementById(id));
-  if (desktop.every(laidOut)) {
-    return Object.fromEntries(IDS.map((id, i) => [id, desktop[i] as HTMLElement])) as Record<
-      Id,
-      HTMLElement
-    >;
-  }
-  const mobile = IDS.map((id) => document.getElementById(`${id}-m`));
-  if (mobile.every(laidOut)) {
-    return Object.fromEntries(IDS.map((id, i) => [id, mobile[i] as HTMLElement])) as Record<
-      Id,
-      HTMLElement
-    >;
+/** The four sections actually laid out: the desktop `<section>`s, or else the phone panels. */
+function findSections(): { sections: Record<Id, HTMLElement>; phone: boolean } | null {
+  for (const [suffix, phone] of [
+    ['', false],
+    ['-m', true],
+  ] as const) {
+    const els = IDS.map((id) => document.getElementById(`${id}${suffix}`));
+    if (els.every(isLaidOut)) {
+      const sections = Object.fromEntries(IDS.map((id, i) => [id, els[i]])) as Record<
+        Id,
+        HTMLElement
+      >;
+      return { sections, phone };
+    }
   }
   return null;
 }
 
+/**
+ * Where a section comes to rest after a snap or an in-page jump: the root's top scroll padding
+ * plus the section's own top scroll margin, in px from the viewport's top.
+ */
+function restLine(section: HTMLElement): number {
+  const px = (value: string) => {
+    const n = parseFloat(value);
+    return Number.isFinite(n) ? n : 0;
+  };
+  return (
+    px(getComputedStyle(document.documentElement).scrollPaddingTop) +
+    px(getComputedStyle(section).scrollMarginTop)
+  );
+}
+
 const fills = document.querySelectorAll<HTMLElement>('[data-navfill]');
 const links = document.querySelectorAll<HTMLElement>('[data-nav-id]');
-const defaults = document.querySelectorAll<HTMLElement>('[data-default-active]');
 
 if (fills.length && links.length) {
   const header = document.querySelector<HTMLElement>('.site-header');
@@ -86,18 +98,20 @@ if (fills.length && links.length) {
     (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   let raf = 0;
-  let ran = false;
 
   const update = () => {
     raf = 0;
-    const sections = findSections();
-    if (!sections) return;
-    if (!ran) {
-      ran = true;
-      defaults.forEach((el) => el.removeAttribute('data-default-active'));
-    }
+    const found = findSections();
+    if (!found) return;
+    const { sections, phone } = found;
+    // The design's `navFx` thresholds, both measured against a line at or under the header's
+    // foot: a section becomes the active one once its top is within 1px of that line, and its
+    // fill runs from 0 there to 1 a section-height further on. Desktop sections have a tall top
+    // padding above their heading, so their line sits 40px below the header. A phone panel is
+    // active once it has arrived, so its line is where a snap or a nav tap leaves it: the
+    // header's foot in the design, and never above it.
     const headerH = header?.offsetHeight ?? 0;
-    const nav = headerH + 40;
+    const line = phone ? Math.max(headerH, restLine(sections.about)) : headerH + 40;
     const doc = document.documentElement;
     const atEnd = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
     const smooth = !reduced();
@@ -105,9 +119,9 @@ if (fills.length && links.length) {
     let active: Id | null = null;
     for (const id of IDS) {
       const r = sections[id].getBoundingClientRect();
-      const past = r.top <= nav + 41;
+      const past = r.top <= line + 1;
       fillOf[id] = smooth
-        ? Math.max(0, Math.min(1, (nav + 40 - r.top) / Math.max(1, r.height)))
+        ? Math.max(0, Math.min(1, (line - r.top) / Math.max(1, r.height)))
         : past
           ? 1
           : 0;
