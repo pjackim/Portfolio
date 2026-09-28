@@ -682,6 +682,55 @@ test.describe('entrance reveals, motion on', () => {
     await expect(page.locator('.caps__group').nth(1)).toBeVisible();
   });
 
+  test("capabilities: the panel eases to the new group's height, and rapid picks join up", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoRel(page, 'capabilities/');
+    await page.waitForLoadState('load');
+    await scrollIntoView(page, '.caps', 'center');
+    const panel = page.locator('.caps__panel');
+    await expect(panel).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
+    // The panel's script arrives with the About extras, after load + idle.
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          performance.getEntriesByType('resource').some((r) => /\/about\.[\w-]+\.js$/.test(r.name)),
+        ),
+      )
+      .toBe(true);
+    const counts = await page
+      .locator('.caps__group')
+      .evaluateAll((els) => els.map((el) => el.querySelectorAll('.caps__skill').length));
+    const shortest = counts.indexOf(Math.min(...counts));
+    const tallest = counts.indexOf(Math.max(...counts));
+    expect(shortest).not.toBe(tallest);
+    const morphs = () =>
+      panel.evaluate((el) => el.getAnimations().filter((a) => a.id === 'caps-morph').length);
+    const height = () => panel.evaluate((el) => (el as HTMLElement).offsetHeight);
+
+    await page.locator('.caps__tab').nth(tallest).click();
+    await expect(page.locator('.caps__radio').nth(tallest)).toBeChecked();
+    await expect.poll(morphs).toBe(0);
+    const tall = await height();
+    // Mid-morph the panel is between the two heights, clipped to its box, and a second pick
+    // takes over from there (one morph running, never two).
+    await page.locator('.caps__tab').nth(shortest).click();
+    expect(await morphs()).toBe(1);
+    await expect(panel).toHaveAttribute('data-morph', '');
+    await expect(panel).toHaveCSS('clip-path', 'inset(-4px)');
+    await page.waitForTimeout(120);
+    const mid = await height();
+    await page.locator('.caps__tab').nth(tallest).click();
+    expect(await morphs()).toBe(1);
+    // It settles on the new group's own height, and leaves nothing behind.
+    await expect.poll(morphs, { timeout: 2000 }).toBe(0);
+    await expect(panel).not.toHaveAttribute('data-morph');
+    expect(await height()).toBe(tall);
+    expect(mid).toBeLessThan(tall);
+    expect(await panel.evaluate((el) => el.getAttribute('style'))).toBeNull();
+  });
+
   test('about timeline: every stop ends shown once the reader has scrolled past it', async ({
     page,
   }) => {
@@ -868,6 +917,31 @@ async function recordSweep(page: Page): Promise<void> {
     };
   });
 }
+
+test.describe('capabilities, reduced motion', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('the panel snaps to the new group, with no morph', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoRel(page, 'capabilities/');
+    await page.waitForLoadState('load');
+    const panel = page.locator('.caps__panel');
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          performance.getEntriesByType('resource').some((r) => /\/about\.[\w-]+\.js$/.test(r.name)),
+        ),
+      )
+      .toBe(true);
+    for (const i of [2, 0]) {
+      await page.locator('.caps__tab').nth(i).click();
+      await expect(page.locator('.caps__radio').nth(i)).toBeChecked();
+    }
+    await expect(page.locator('[data-caps]')).toHaveAttribute('data-lock', '');
+    expect(await panel.evaluate((el) => el.getAnimations().length)).toBe(0);
+    await expect(panel).not.toHaveAttribute('data-morph');
+  });
+});
 
 test.describe('theme toggle', () => {
   test('motion on: a scan-sweep transition that cleans up after itself', async ({ page }) => {

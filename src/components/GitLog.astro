@@ -13,19 +13,31 @@
  * stays, and the controls, which would do nothing, are not shown.
  *
  * Phones get the log as a rail of two-line rows: the whole row toggles its skills, which open as
- * chips beside a branch drawn in CSS; the SVG graph is not shown.
+ * chips beside a branch drawn in CSS; the SVG graph is not shown. The chips are touch chips
+ * (styles/chips.css); on /experience/ (`stickyChips`) they pin under the header while the log
+ * scrolls by, the `$` line staying put (Portfolio.dc.html `isExpMob`). A log that only previews
+ * (home's phone panel, whose "log ›" leads to the full page) can drop the command line and chips
+ * altogether (`bar={false}`).
+ *
+ * A chip says what it did in a polite live region ("4 of 9 commits match software"): the
+ * dimming is visual only.
  */
 import { site, LOG_FAMILIES, type LogCommit } from '../data/site';
 import { GRAPH_W, graphMarkup, layoutGraph, logCommand } from '../lib/git-log';
 import MotionLayer from './MotionLayer.astro';
+import '../styles/chips.css';
 
 interface Props {
   class?: string;
   /** Prefix for the skill lists' ids, so a page can render two logs (home: desktop + phone). */
   idPrefix?: string;
+  /** The `$ git log` line and the --grep chips (default on). */
+  bar?: boolean;
+  /** Phones: pin the chips under the header while the log scrolls (the standalone page). */
+  stickyChips?: boolean;
 }
 
-const { class: className, idPrefix = 'gl' } = Astro.props;
+const { class: className, idPrefix = 'gl', bar = true, stickyChips = false } = Astro.props;
 const commits: readonly LogCommit[] = site.experience;
 const DEFAULT_OPEN = commits[0]?.id;
 const layout = layoutGraph(commits, {
@@ -36,28 +48,34 @@ const open = new Map(layout.commits.map((c) => [c.id, c.open]));
 const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 ---
 
-<div class:list={['git-log', className]} data-git-log>
-  <div class="git-log__bar">
-    <p class="git-log__cmd">
-      <span class="git-log__prompt" aria-hidden="true">
-        $
-      </span>
-      <span data-git-cmd>{logCommand(null)}</span>
-    </p>
-    <div class="git-log__chips" role="group" aria-label="Show one skill family">
-      {['', ...LOG_FAMILIES].map((family) => (
-        <button
-          type="button"
-          class="git-log__chip"
-          data-grep={family}
-          aria-pressed={family === '' ? 'true' : 'false'}
-        >
-          <span class:list={['git-log__chip-dot', family && `gl-f-${family}`]} aria-hidden="true" />
-          {family || 'all'}
-        </button>
-      ))}
+<div class:list={['git-log', stickyChips && 'git-log--sticky-chips', className]} data-git-log>
+  {bar && (
+    <div class="git-log__bar">
+      <p class="git-log__cmd">
+        <span class="git-log__prompt" aria-hidden="true">
+          $
+        </span>
+        <span data-git-cmd>{logCommand(null)}</span>
+      </p>
+      <div class="git-log__chips" role="group" aria-label="Show one skill family">
+        {['', ...LOG_FAMILIES].map((family) => (
+          <button
+            type="button"
+            class="git-log__chip"
+            data-grep={family}
+            aria-pressed={family === '' ? 'true' : 'false'}
+          >
+            <span
+              class:list={['git-log__chip-dot', family && `gl-f-${family}`]}
+              aria-hidden="true"
+            />
+            {family || 'all'}
+          </button>
+        ))}
+      </div>
+      <p class="visually-hidden" role="status" data-git-status />
     </div>
-  </div>
+  )}
 
   <div class="git-log__frame" data-reveal>
     <svg
@@ -672,21 +690,45 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
       text-overflow: ellipsis;
     }
 
-    /* One row of chips that scrolls sideways, bled to the screen edges. */
+    /* One row of chips that scrolls sideways, bled to the screen edges (room above and below
+       for a chip's focus ring, which the scroller would otherwise clip). */
     .git-log__chips {
       flex-wrap: nowrap;
       margin-inline: calc(-1 * var(--gutter));
+      padding-block: 0.375rem;
       padding-inline: var(--gutter);
       overflow-x: auto;
       scrollbar-width: none;
     }
 
+    /* The touch chip (styles/chips.css), shared with /work/'s capability chips. */
     .git-log__chip {
       flex: none;
-      min-block-size: 2.75rem;
-      padding-inline: 0.875rem;
-      border-radius: 1.375rem;
-      font-size: 0.78125rem;
+      min-block-size: var(--chip-touch-block);
+      padding-inline: var(--chip-touch-pad);
+      border-radius: var(--chip-touch-radius);
+      font-size: var(--chip-touch-font);
+    }
+
+    /* /experience/: the chips outlive the bar (its box goes, so their sticky range is the whole
+       log) and pin under the header on the page's own ground, ruled off from the rows below. */
+    .git-log--sticky-chips .git-log__bar {
+      display: contents;
+    }
+
+    .git-log--sticky-chips .git-log__chips {
+      position: sticky;
+      inset-block-start: var(--header-h);
+      z-index: 6;
+      margin-block-start: 0.25rem;
+      padding-block: 0.625rem;
+      border-block-end: var(--hairline);
+      background-color: var(--bg);
+    }
+
+    /* Keyboard focus scrolled up to a row must land below the pinned chips, not under them. */
+    :global(:root:has(.git-log--sticky-chips)) {
+      scroll-padding-block-start: calc(var(--header-h) + 5rem);
     }
 
     .git-log__frame {

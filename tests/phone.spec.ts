@@ -14,8 +14,10 @@
  *   and Contact and the footer fill the last screen exactly (at a short screen, Contact
  *   scrolls and the footer follows it).
  * - /experience/: a rail of two-line rows, no graph; tapping anywhere on a row opens its skill
- *   chips.
+ *   chips; the --grep chips pin under the header while the log scrolls by.
  * - /work/: each showcase's lead is a card, and its rows carry 64px cover thumbnails.
+ * - Page tops: /work/, /experience/ and /about/ start on their content (the h1 row, no intro);
+ *   /capabilities/ keeps its intro. The /work/ and /experience/ chips are the same touch chip.
  * - From 40rem the panels, sticky bar and segmented nav are gone and the wordmark nav is back.
  * Runs on every project (desktop Chromium at phone size, Pixel 7, iPhone 15 / WebKit).
  */
@@ -133,8 +135,9 @@ test('work: a lead card, and rows with 64px thumbnails', async ({ page }) => {
   await gotoRel(page, 'work/');
   const showcase = page.locator('[data-showcase]').first();
   await expect(showcase.locator('[data-lead]:visible')).toHaveCount(1);
-  const thumb = showcase.locator('[data-project] .work-row__thumb').first();
+  const thumb = showcase.locator('[data-project] .work-row__preview').first();
   await expect(thumb).toBeVisible();
+  await expect(thumb.locator('.work-row__thumb')).toBeVisible();
   const box = (await thumb.boundingBox())!;
   expect(Math.round(box.width)).toBe(64);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -346,6 +349,64 @@ test.describe('the ending', () => {
     test.skip(!supported, 'this engine build has no overscroll-behavior');
     await expect(page.locator(SHEET)).toHaveCSS('overscroll-behavior-y', 'contain');
   });
+});
+
+test('page tops: the h1 row, then the content; only /capabilities/ keeps its intro', async ({
+  page,
+}) => {
+  for (const [path, intro] of [
+    ['work/', false],
+    ['experience/', false],
+    ['about/', false],
+    ['capabilities/', true],
+  ] as const) {
+    await gotoRel(page, path);
+    await expect(page.locator('h1'), path).toBeVisible();
+    await expect(page.locator('.page-header__intro'), path).toBeVisible({ visible: intro });
+  }
+});
+
+test('/work/ and /experience/ chips are the same touch chip', async ({ page }) => {
+  const chip = async (path: string, selector: string) => {
+    await gotoRel(page, path);
+    const el = page.locator(selector).first();
+    await expect(el).toBeVisible();
+    return el.evaluate((node) => {
+      const cs = getComputedStyle(node);
+      return {
+        height: Math.round(node.getBoundingClientRect().height),
+        radius: cs.borderTopLeftRadius,
+        font: cs.fontSize,
+      };
+    });
+  };
+  const work = await chip('work/', '[data-work-filter] button[data-capability]');
+  const log = await chip('experience/', '[data-git-log] button[data-grep]');
+  expect(work).toEqual(log);
+  expect(work.height).toBeGreaterThanOrEqual(44);
+  // The /work/ page's "Capability ›" key gives way to the chips.
+  await gotoRel(page, 'work/');
+  await expect(page.locator('.work-filter__key')).toBeHidden();
+});
+
+test('experience: the chips pin under the header while the log scrolls by', async ({ page }) => {
+  await gotoRel(page, 'experience/');
+  await expect(page.locator('[data-git-log][data-ready]')).toBeAttached();
+  const chips = page.locator('[data-git-log] .git-log__chips');
+  const cmd = page.locator('[data-git-log] .git-log__cmd');
+  await page.evaluate(() => scrollTo({ top: 700, behavior: 'instant' }));
+  const header = await page.evaluate(() =>
+    Math.round(document.querySelector('header')!.getBoundingClientRect().bottom),
+  );
+  await expect.poll(async () => Math.round((await chips.boundingBox())!.y)).toBe(header);
+  // The command line stays in the flow, scrolled away above.
+  expect((await cmd.boundingBox())!.y).toBeLessThan(0);
+  // A chip still works while pinned.
+  await chips.locator('button[data-grep="software"]').click();
+  await expect(chips.locator('button[data-grep="software"]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
 });
 
 test.describe('from 40rem', () => {

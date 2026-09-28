@@ -3,7 +3,8 @@
  * over 6 seconds (paused on hover, focus, off screen or by the status button), and its
  * `animationend` steps the lead on here. With motion off there is no animation, so nothing moves
  * on by itself. A tick picks a project (focus follows to the same tick in the new panel); rows
- * mark the project in the lead, and float their cover beside the pointer.
+ * mark the project in the lead, and float their cover beside the pointer — or, for a row reached
+ * by keyboard, beside the row, just clear of its group and year.
  *
  * The capability filter (work-filter.ts) hides rows and ticks with CSS; when it changes, the
  * lead moves to the first project still shown, and the count and empty state follow.
@@ -89,13 +90,31 @@ function wire(section: HTMLElement): void {
   }).observe(section);
 
   // The cover preview follows the pointer over the list, kept inside its width.
-  const thumb = list?.querySelector<HTMLElement>('.work-row__thumb');
+  const preview = list?.querySelector<HTMLElement>('.work-row__preview');
+  const place = (x: number, y: number) => {
+    if (!list) return;
+    const max = list.getBoundingClientRect().width - (preview?.offsetWidth ?? 0);
+    list.style.setProperty('--px', `${Math.max(0, Math.min(x, max))}px`);
+    list.style.setProperty('--py', `${y}px`);
+  };
   list?.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'mouse') return;
     const box = list.getBoundingClientRect();
-    const x = Math.min(event.clientX - box.left + 28, box.width - (thumb?.offsetWidth ?? 0));
-    list.style.setProperty('--px', `${Math.max(0, x)}px`);
-    list.style.setProperty('--py', `${event.clientY - box.top - 84}px`);
+    place(event.clientX - box.left + 28, event.clientY - box.top - 84);
+  });
+
+  // A row reached by keyboard shows its cover too (CSS, `:focus-visible`), beside the row: its
+  // right edge just short of the first column after the title, vertically centred on the row.
+  list?.addEventListener('focusin', (event) => {
+    const link = event.target as HTMLElement;
+    if (!preview || !link.matches('.work-row__link:focus-visible')) return;
+    const box = list.getBoundingClientRect();
+    const row = link.getBoundingClientRect();
+    const next = [...link.querySelectorAll<HTMLElement>('.work-row__group, .work-row__year')]
+      .map((el) => el.getBoundingClientRect())
+      .find((r) => r.width > 0);
+    const edge = next ? next.left - box.left - 20 : box.width;
+    place(edge - preview.offsetWidth, row.top - box.top + (row.height - preview.offsetHeight) / 2);
   });
 
   new MutationObserver(sync).observe(root, {

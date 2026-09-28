@@ -12,13 +12,16 @@
  * `:has()` show every group's panel, stacked. The accent bar slides to the chosen group.
  *
  * Motion (all behind the motion gate):
- * - Entrance (global.css reveal engine): the groups slide in from the start edge one after
- *   another, then the panel wipes open from the left.
+ * - Entrance (global.css reveal engine): the groups slide in a short way from the start edge
+ *   one after another, then the panel wipes open from the left (Portfolio.dc.html `reveal('cap')`:
+ *   12px, 360ms, 70ms apart; the wipe 160ms in, over 700ms).
  * - Lock-on (src/scripts/capabilities.ts sets `data-lock` once the entrance lands, or on the
  *   first pick): each time a group's panel appears its accent corners snap in a beat apart, one
  *   scanline sweeps it top to bottom, the skills rise in a row at a time and their chips slide in
  *   after them, and the group label flickers. The script also picks a group after a short hover
  *   (hover intent), as the design does; clicking or keys are never needed for anything else.
+ * - Height morph (src/scripts/capabilities.ts, WAAPI): the panel eases to the new group's
+ *   height instead of jumping; clipped to its own box (plus the corners) while it does.
  */
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
@@ -142,6 +145,13 @@ const groups = CAPABILITY_GROUPS.map((group, g) => ({
     display: flex;
     align-items: center;
     gap: 0.875rem;
+  }
+
+  /* Entrance: a short slide, a beat apart (the reveal engine's `start` preset, retuned). */
+  .caps__tabs {
+    --reveal-shift: 0.75rem;
+    --reveal-dur: 360ms;
+    --reveal-step: 70ms;
   }
 
   .caps__head-rule {
@@ -285,7 +295,14 @@ const groups = CAPABILITY_GROUPS.map((group, g) => ({
     --reveal-y: 0;
     --reveal-clip: inset(0 100% 0 0);
     --reveal-dur: 700ms;
+    --reveal-step: 80ms;
     --i: 2;
+  }
+
+  /* While the height morphs (capabilities.ts): the growing content stays inside the panel, and
+     the corner brackets, which sit on its edge, stay whole. */
+  .caps__panel[data-morph] {
+    clip-path: inset(-4px);
   }
 
   /* Corners on the panel's own edge (the reticle is on each group, so each gets its own
