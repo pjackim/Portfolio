@@ -276,8 +276,15 @@ test.describe('work showcase, motion on', () => {
     const links = list.locator('.work-row__link');
     await links.nth(1).scrollIntoViewIfNeeded();
     await links.nth(1).focus();
-    await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
     const link = links.nth(2);
+    if (browserName === 'webkit') {
+      // WebKit's link tabbing depends on a platform setting some builds ignore: a key press then
+      // a scripted focus still counts as keyboard focus (:focus-visible).
+      await page.keyboard.press('Shift');
+      await link.focus();
+    } else {
+      await page.keyboard.press('Tab');
+    }
     await expect(link).toBeFocused();
     await expect(link.locator('.work-row__main')).toHaveCSS('translate', '6px');
     await expect(link.locator('.work-row__arrow')).toHaveCSS('translate', '3px');
