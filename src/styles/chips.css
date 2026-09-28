@@ -1,0 +1,12 @@
+/*
+ * Touch chips (Portfolio.dc.html, Claude Design, Sept 2026: the phone /work/ and /experience/
+ * chip rails): the one size both chip sets take on phones, so the /work/ capability filter
+ * (WorkFilter.astro) and the Experience log's --grep chips (GitLog.astro) agree. A 2.75rem
+ * target, rounded to a pill. Imported by both components; plain values, like reticle.css.
+ */
+:root {
+  --chip-touch-block: 2.75rem;
+  --chip-touch-radius: 1.375rem;
+  --chip-touch-pad: 0.875rem;
+  --chip-touch-font: 0.78125rem;
+}

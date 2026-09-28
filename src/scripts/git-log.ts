@@ -3,7 +3,10 @@
  * of commits opened by hand and the grepped family. Each change re-applies it to the rows
  * (`data-open`, `data-dim`, `aria-expanded`) and redraws the graph from src/lib/git-log.ts, the
  * same geometry the build rendered. Opening a commit while a family is grepped drops the grep
- * and starts from that commit alone. Fetched by the motion layer as soon as a page has a log.
+ * and starts from that commit alone. A chip announces its result in the log's polite live region
+ * ("4 of 9 commits match software"), since the dimming only shows it. A log rendered without its
+ * bar (no command line, chips or live region) still gets working toggles. Fetched by the motion
+ * layer as soon as a page has a log.
  */
 import {
   commitState,
@@ -18,6 +21,7 @@ import {
 function wire(root: HTMLElement): void {
   const svg = root.querySelector<SVGSVGElement>('[data-git-graph]');
   const cmd = root.querySelector<HTMLElement>('[data-git-cmd]');
+  const status = root.querySelector<HTMLElement>('[data-git-status]');
   const chips = [...root.querySelectorAll<HTMLButtonElement>('button[data-grep]')];
   const items = [...root.querySelectorAll<HTMLElement>('[data-commit]')];
   const commits: GraphCommit[] = items.map((li) => ({
@@ -64,6 +68,22 @@ function wire(root: HTMLElement): void {
     if (cmd) cmd.textContent = logCommand(state.grep);
   };
 
+  let announceTimer = 0;
+  const announce = () => {
+    if (!status) return;
+    const { grep } = state;
+    const hits = grep ? commits.filter((c) => commitState(c, state).hit).length : commits.length;
+    const message = grep
+      ? `${hits} of ${commits.length} commits match ${grep}`
+      : `All ${commits.length} commits`;
+    // Cleared first, so the same message twice in a row is still read.
+    status.textContent = '';
+    clearTimeout(announceTimer);
+    announceTimer = window.setTimeout(() => {
+      status.textContent = message;
+    }, 80);
+  };
+
   root.addEventListener('click', (event) => {
     const target = event.target as Element;
     const chip = target.closest<HTMLButtonElement>('button[data-grep]');
@@ -72,6 +92,7 @@ function wire(root: HTMLElement): void {
       if (grep === state.grep) return;
       state = { open: state.open, grep };
       render();
+      announce();
       return;
     }
     const toggle = target.closest<HTMLButtonElement>('.commit__toggle');

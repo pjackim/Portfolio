@@ -5,7 +5,9 @@
  *
  * Phones get the section heading's mono row instead ("02 / EXPERIENCE ────"): the header's
  * ~/section prompt already says where you are and takes you anywhere else, so the back link
- * goes, and the page starts on its content a screen sooner.
+ * goes, and the page starts on its content a screen sooner. A page whose content speaks for
+ * itself can drop its intro there too (`hideIntroOnPhones`: /work/, where the section headers
+ * say "Case studies" and "Archive", and the chips should start the page).
  */
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
@@ -15,10 +17,12 @@ interface Props {
   index: string;
   title: string;
   intro?: string;
+  /** Hide the intro under 40rem (it stays from 40rem up). */
+  hideIntroOnPhones?: boolean;
   class?: string;
 }
 
-const { index, title, intro, class: className } = Astro.props;
+const { index, title, intro, hideIntroOnPhones = false, class: className } = Astro.props;
 ---
 
 <header class:list={['page-header', className]}>
@@ -34,7 +38,11 @@ const { index, title, intro, class: className } = Astro.props;
     <h1 class="page-header__title">{title}</h1>
     <span class="page-header__rule" aria-hidden="true"></span>
   </div>
-  {intro && <p class="page-header__intro">{intro}</p>}
+  {intro && (
+    <p class:list={['page-header__intro', hideIntroOnPhones && 'page-header__intro--wide-only']}>
+      {intro}
+    </p>
+  )}
 </header>
 
 <style>
@@ -128,6 +136,10 @@ const { index, title, intro, class: className } = Astro.props;
     .page-header__intro {
       margin-block-start: var(--space-xs);
       font-size: var(--step-0);
+    }
+
+    .page-header__intro--wide-only {
+      display: none;
     }
   }
 </style>
