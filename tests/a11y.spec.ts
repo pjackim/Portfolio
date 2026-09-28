@@ -69,6 +69,20 @@ for (const colorScheme of ['dark', 'light'] as const) {
         await twoFrames(page);
         await expect(page.locator('.section-heading__decrypt')).toHaveCount(0, { timeout: 3000 });
         await expect.poll(() => revealsInFlightOnScreen(page), { timeout: 3000 }).toBe(0);
+        // The jump also moves the header nav's active item (the phone bar fades one label out
+        // and the next in): scan the settled bar, not a frame of the fade.
+        await expect
+          .poll(
+            () =>
+              page.evaluate(() =>
+                [...document.querySelectorAll('.site-nav, .phone-nav')].reduce(
+                  (n, nav) => n + nav.getAnimations({ subtree: true }).length,
+                  0,
+                ),
+              ),
+            { timeout: 3000 },
+          )
+          .toBe(0);
         expect(await axeReport(page), 'axe violations at the foot (rule id + targets)').toEqual([]);
       });
     }
