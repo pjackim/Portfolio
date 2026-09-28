@@ -1,18 +1,24 @@
 ---
 /**
- * Sticky site header (Portfolio.dc.html, Claude Design, Sept 2026 — `navDesk`/`navMob`):
- * monogram + wordmark home link, a 4-item nav (About/Experience/Work/Contact, git-log-numbered
- * 01–04) with a fill bar per item that tracks scroll progress through its home-page section
- * (`src/scripts/nav-scroll.ts`), a separate Capabilities link (underlined when current), the
- * Résumé link and the theme switch. About/Experience/Contact point at the home page's anchors so
- * they work from every page; Work and Capabilities are their own pages.
+ * Sticky site header (Portfolio.dc.html, Claude Design, Sept 2026 — `navDesk`/`navMob`). From
+ * 40rem it is three columns on the page ground, with no rule under it:
+ * - the home link: pj's monogram, plus the wordmark from 73.75rem (the design's `navName`);
+ * - centred between, a 4-item nav (About/Experience/Work/Contact, git-log-numbered 01–04) of
+ *   equal columns, each a mono label over a 2px track whose fill tracks scroll progress through
+ *   its home-page section (`src/scripts/nav-scroll.ts`): grey once passed, accent only on the
+ *   section being read, so the accent marks one thing;
+ * - `.site-header__end`: Capabilities (from 57.5rem, underlined when current), the Résumé link
+ *   and the theme switch.
+ * About/Experience/Contact point at the home page's anchors so they work from every page; Work
+ * and Capabilities are their own pages.
  *
  * Phones (under 40rem) get the same 4 items as a segmented bar instead: numbered mono labels
  * whose flex grows for the active one (`mflex`), pj's monogram (no wordmark) and the theme
  * switch. Capabilities and the résumé live in the About panel and the sticky CTA bar instead of
- * the header (Portfolio.dc.html's phone nav has no room for a fifth item). Off the home page,
- * About/Experience go to the home page's anchor; Contact opens the contact sheet directly
- * (there's no standalone contact page); Work goes to /work/.
+ * the header (Portfolio.dc.html's phone nav has no room for a fifth item). Every phone item but
+ * Contact goes to its home-page panel (Work too: the Selected work panel, not /work/, per the
+ * design's `mGo`); off the home page, Contact opens the contact sheet directly (there's no
+ * standalone contact page).
  *
  * The monogram's caret blinks on the first page load of a session only (sessionStorage
  * `caret`); navigations keep the header, so it never re-blinks.
@@ -36,9 +42,9 @@ const experience = withBase('experience/');
 // `aria-current="page"` when the section's own standalone page is current (design's `navFx`:
 // `ids.includes(page) ⇒ act = page`), `"true"` for a case-study page (in the Work section but
 // not the index) — same active visual, correct semantics. On the home page every item's active
-// state instead comes from scroll (nav-scroll.ts): none gets a static `aria-current` there, so
-// the fill starts at the About item (`data-default-active`) until the script runs, matching the
-// design's own pre-scroll default.
+// state instead comes from scroll (nav-scroll.ts): none gets a static `aria-current` there. At the
+// top of the page no section is being read (the design's `navAct` is null until one reaches the
+// header), so every item is idle; the phone bar then still widens About, in idle colours (CSS).
 // `mobileHref` targets the phone panels' own ids (HomeMobilePanels.astro's `-m` suffix — a
 // document can't repeat an id, so the phone panels can't reuse the desktop sections' ids).
 const navItems: {
@@ -70,7 +76,7 @@ const navItems: {
     idx: '03',
     label: 'Work',
     href: work,
-    mobileHref: work,
+    mobileHref: `${home}#work-m`,
     current: onWorkIndex ? 'page' : onWorkCase ? 'true' : undefined,
   },
   {
@@ -90,29 +96,26 @@ const navItems: {
       <Monogram size={18} />
       <span class="brand__name">{site.name}</span>
     </a>
-    <div class="site-header__end">
-      <nav class="site-nav" aria-label="Primary">
-        <ul role="list">
-          {navItems.map(({ id, idx, label, href, current }) => (
-            <li>
-              <a
-                href={href}
-                aria-current={current}
-                data-nav-id={id}
-                data-default-active={id === 'about' && onHome ? '' : undefined}
-              >
-                <span class="site-nav__idx mono-label" aria-hidden="true">
+    <nav class="site-nav" aria-label="Primary">
+      <ul role="list">
+        {navItems.map(({ id, idx, label, href, current }) => (
+          <li>
+            <a href={href} aria-current={current} data-nav-id={id}>
+              <span class="site-nav__row">
+                <span class="site-nav__idx" aria-hidden="true">
                   {idx}
                 </span>
-                {label}
-                <span class="site-nav__bar" aria-hidden="true">
-                  <span class="site-nav__fill" data-navfill={id}></span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+                <span class="site-nav__label">{label}</span>
+              </span>
+              <span class="site-nav__bar" aria-hidden="true">
+                <span class="site-nav__fill" data-navfill={id}></span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__end">
       <a
         class="site-header__caps"
         href={capabilities}
@@ -150,13 +153,7 @@ const navItems: {
             </span>
           </button>
         ) : (
-          <a
-            href={mobileHref}
-            aria-current={current}
-            data-nav-id={id}
-            data-default-active={id === 'about' && onHome ? '' : undefined}
-            class="phone-nav__item"
-          >
+          <a href={mobileHref} aria-current={current} data-nav-id={id} class="phone-nav__item">
             <span class="phone-nav__row">
               <span class="phone-nav__idx" aria-hidden="true">
                 {idx}
@@ -203,29 +200,28 @@ const navItems: {
     inset-block-start: 0;
     z-index: 10;
     block-size: var(--header-h);
-    background-color: var(--surface);
+    background-color: var(--bg);
     view-transition-name: site-header;
   }
 
-  /* Hairline drawn inside the header box, so the row keeps the full (even) --header-h and
-     centred items land on whole pixels. Painted first: the active-nav mark sits on top. */
-  .site-header::before {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    inset-block-end: 0;
-    block-size: 1px;
-    background-color: var(--line);
-  }
-
-  /* Items are 44px targets centred in the 56px row, so focus rings (3px offset) stay inside
-     the header and every centred box lands on whole pixels. */
+  /* Phones: one flex row (the segmented bar, below). Items are 44px targets centred in the
+     row, so focus rings (3px offset) stay inside the header. */
   .site-header__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-s);
     block-size: 100%;
+  }
+
+  /* From 40rem: home link | nav | Capabilities, Résumé, theme switch (Portfolio.dc.html
+     `navDesk`). The side columns size to their content; the nav is centred in what's left. */
+  @media (width >= 40rem) {
+    .site-header__inner {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      column-gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
   }
 
   .brand {
@@ -252,53 +248,89 @@ const navItems: {
     white-space: nowrap;
   }
 
+  /* The wordmark only once the centred nav can spare its width (the design's `navName`: a
+     1180px frame and up); below that the monogram alone is the home link, named by its label. */
+  @media (width < 73.75rem) {
+    .brand__name {
+      display: none;
+    }
+  }
+
   .site-header__end {
     display: flex;
     align-items: center;
-    gap: var(--space-2xs);
+    gap: 0.625rem;
+  }
+
+  /* ── The numbered nav ──
+     Four equal columns, centred and at most 41.25rem wide, each as tall as the header: a mono
+     label over a 2px track on the header's foot. The whole column is the link. */
+  .site-nav {
+    align-self: stretch;
+    justify-self: center;
+    inline-size: 100%;
+    max-inline-size: 41.25rem;
   }
 
   .site-nav ul {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    block-size: 100%;
     padding: 0;
     list-style: none;
   }
 
-  .site-nav a {
-    position: relative;
+  .site-nav li {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-block-size: 2.75rem;
-    padding-inline: 0.625rem;
+    min-inline-size: 0;
+  }
+
+  .site-nav a {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    min-inline-size: 0;
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     font-weight: 500;
-    line-height: 1;
+    line-height: 1.6;
+    letter-spacing: 0.06em;
     text-decoration: none;
+    text-transform: uppercase;
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  /* The column fills the header, so a ring outside it would be clipped by the page's top edge
+     and run under the content below: draw it inside. */
+  .site-nav a:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .site-nav__row {
+    display: flex;
+    gap: 0.5625rem;
+    min-inline-size: 0;
     white-space: nowrap;
-    transition: color var(--dur-fast) var(--ease-standard);
   }
 
-  /* Git-log-style index mark (design's numbered nav): accent when the link is active, subtle
-     otherwise. Dropped on narrower widths, where the label alone has to fit. */
+  /* Git-log-style index mark: accent when the link is active, subtle otherwise. */
   .site-nav__idx {
-    display: none;
+    flex: none;
     color: var(--text-subtle);
-    font-size: 0.75rem;
-    transition: color var(--dur-fast) var(--ease-standard);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--dur-base) var(--ease-standard);
   }
 
-  .site-nav a[aria-current] .site-nav__idx,
-  .site-nav a.is-active .site-nav__idx,
-  .site-nav a[data-default-active] .site-nav__idx {
-    color: var(--accent);
-  }
-
-  @media (width >= 64rem) {
-    .site-nav__idx {
-      display: inline;
-    }
+  /* A label too long for its column (narrow tablets) ends in an ellipsis; the index stays, and
+     the link's accessible name is the whole label either way. */
+  .site-nav__label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   @media (hover: hover) {
@@ -308,23 +340,25 @@ const navItems: {
   }
 
   /* `aria-current` (off the home page) and `.is-active` (nav-scroll.ts, on it) share the same
-     active visual; `data-default-active` (About, before the script runs) matches it too. */
+     active visual. */
   .site-nav a[aria-current],
-  .site-nav a.is-active,
-  .site-nav a[data-default-active] {
+  .site-nav a.is-active {
     color: var(--text);
   }
 
-  /* Fill bar: a segment on the header hairline, in the link's own colour, scaled from 0 (idle)
-     to 1 (current/active) — a static jump with no script, a continuous scroll-linked value with
-     it (nav-scroll.ts sets the inline transform). Grown from the centre on hover/focus instead,
-     in the muted colour, so a hover never looks like the active mark. */
+  .site-nav a[aria-current] .site-nav__idx,
+  .site-nav a.is-active .site-nav__idx {
+    color: var(--accent);
+  }
+
+  /* Track and fill: the fill scales from 0 (not reached) to 1 (read past, or current) — a
+     static jump with no script, a continuous scroll-linked value with it (nav-scroll.ts sets the
+     transform). Sections already read stay filled in grey; only the active one is the accent,
+     so the accent marks one thing in the header. */
   .site-nav__bar {
-    position: absolute;
-    inset-inline: 0.625rem;
-    inset-block-end: calc((2.75rem - var(--header-h)) / 2);
+    position: relative;
     display: block;
-    block-size: 1px;
+    block-size: 2px;
     background-color: var(--line);
     overflow: hidden;
   }
@@ -334,49 +368,30 @@ const navItems: {
     inset: 0;
     transform: scaleX(0);
     transform-origin: left center;
-    background-color: var(--accent);
+    background-color: var(--line-ui);
+    transition: background-color var(--dur-base) var(--ease-standard);
   }
 
-  .site-nav a[aria-current] .site-nav__fill,
-  .site-nav a[data-default-active] .site-nav__fill {
+  .site-nav a[aria-current] .site-nav__fill {
     transform: scaleX(1);
   }
 
-  .site-nav a:not([aria-current]):not(.is-active):not([data-default-active])::before {
-    content: '';
-    position: absolute;
-    inset-inline: 0.625rem;
-    inset-block-end: calc((2.75rem - var(--header-h)) / 2);
-    block-size: 1px;
-    background-color: var(--text-muted);
-    scale: 0 1;
-  }
-
-  .site-nav a:not([aria-current]):focus-visible::before {
-    scale: 1;
-  }
-
-  @media (hover: hover) {
-    .site-nav a:not([aria-current]):hover::before {
-      scale: 1;
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    :global(:root:not([data-motion='off'])) .site-nav a::before {
-      transition: scale var(--dur-base) var(--ease-out);
-    }
+  .site-nav a[aria-current] .site-nav__fill,
+  .site-nav a.is-active .site-nav__fill {
+    background-color: var(--accent);
   }
 
   /* Capabilities: a separate link (design's `navCapsDisp`/`capsDeco`), underlined only when
-     current — it isn't part of the numbered nav or its scroll-spy. */
+     current — it isn't part of the numbered nav or its scroll-spy. From 57.5rem (the design's
+     920px frame), where the nav keeps room for its labels beside it. */
   .site-header__caps {
     display: none;
     align-items: center;
     min-block-size: 2.5rem;
     padding-inline: 0.375rem;
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    white-space: nowrap;
     text-decoration: none;
     text-decoration-color: var(--accent);
     text-underline-offset: 0.35em;
@@ -394,17 +409,16 @@ const navItems: {
     }
   }
 
-  @media (width >= 64rem) {
+  @media (width >= 57.5rem) {
     .site-header__caps {
       display: inline-flex;
     }
   }
 
-  /* Résumé quick link (design's secondary header group, beside the theme switch): shown once
-     there's room past the nav and Capabilities; both are gone below that width (phones get the
-     segmented bar instead — see below — and tablets keep the nav without them). */
+  /* Résumé quick link, beside the theme switch at every width from 40rem (phones get it in the
+     sticky CTA bar and the About panel instead). */
   .site-header__resume {
-    display: none;
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     min-block-size: 2.5rem;
@@ -412,7 +426,7 @@ const navItems: {
     border: var(--rule-ui);
     border-radius: var(--radius-s);
     color: var(--text);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
@@ -429,27 +443,6 @@ const navItems: {
     }
   }
 
-  @media (width >= 64rem) {
-    .site-header__resume {
-      display: inline-flex;
-    }
-  }
-
-  /* Tablets: four links beside the wordmark. */
-  @media (width < 48rem) {
-    .site-header__inner {
-      gap: 0.75rem;
-    }
-
-    .site-nav a {
-      padding-inline: 0.4375rem;
-    }
-
-    .site-nav__bar {
-      inset-inline: 0.4375rem;
-    }
-  }
-
   /* ── Phones: the segmented nav bar ── */
 
   .phone-brand,
@@ -460,14 +453,18 @@ const navItems: {
 
   @media (width < 40rem) {
     .brand,
+    .site-nav,
     .site-header__end {
       display: none;
     }
 
+    /* The bar runs edge to edge rather than in the container: 1rem in on the left, 0.75rem on
+       the right (Portfolio.dc.html `navMob`: `padding: 0 12px 0 16px; gap: 14px`). */
     .site-header__inner {
       inline-size: auto;
-      margin-inline: 0.75rem;
-      gap: 0.75rem;
+      margin-inline: 0;
+      padding-inline: 1rem 0.75rem;
+      gap: 0.875rem;
     }
 
     .phone-brand {
@@ -483,13 +480,26 @@ const navItems: {
       display: flex;
       flex: 1;
       align-items: stretch;
-      gap: 4px;
+      gap: 6px;
       min-inline-size: 0;
     }
 
     .phone-theme {
       display: block;
       flex: none;
+    }
+  }
+
+  /* The narrowest phones (under 360px): the theme switch keeps its size, so the row gives up
+     spacing instead, keeping every nav item a 24px target (WCAG 2.5.8) at 320px. */
+  @media (width < 22.5rem) {
+    .site-header__inner {
+      padding-inline-end: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .phone-nav {
+      gap: 4px;
     }
   }
 
@@ -508,13 +518,6 @@ const navItems: {
     text-align: start;
     text-decoration: none;
     cursor: pointer;
-    transition: flex var(--dur-base) var(--ease-out);
-  }
-
-  .phone-nav__item.is-active,
-  .phone-nav__item[data-default-active] {
-    flex: 3.4;
-    color: var(--text);
   }
 
   .phone-nav__row {
@@ -534,21 +537,11 @@ const navItems: {
     color: var(--text-subtle);
   }
 
-  .phone-nav__item.is-active .phone-nav__idx,
-  .phone-nav__item[data-default-active] .phone-nav__idx {
-    color: var(--accent);
-  }
-
   .phone-nav__label {
     overflow: hidden;
     text-overflow: ellipsis;
     opacity: 0;
     transition: opacity var(--dur-slow) var(--ease-standard);
-  }
-
-  .phone-nav__item.is-active .phone-nav__label,
-  .phone-nav__item[data-default-active] .phone-nav__label {
-    opacity: 1;
   }
 
   .phone-nav__bar {
@@ -567,27 +560,41 @@ const navItems: {
     background-color: var(--line-ui);
   }
 
+  /* The wide item, its label showing: the active one (`.is-active` from nav-scroll.ts on the
+     home page, `aria-current` off it) — or, while none is (the top of the home page, before the
+     script runs, a page outside the four sections), About, still in idle colours. The design's
+     `mflex`/`lo`: `on || (!navAct && i === 0)`, with its colours from `on` alone. */
+  .phone-nav__item.is-active,
+  .phone-nav__item[aria-current],
+  .phone-nav:not(:has(.is-active, [aria-current])) > .phone-nav__item:first-child {
+    flex: 3.4;
+  }
+
+  .phone-nav__item.is-active .phone-nav__label,
+  .phone-nav__item[aria-current] .phone-nav__label,
+  .phone-nav:not(:has(.is-active, [aria-current]))
+    > .phone-nav__item:first-child
+    .phone-nav__label {
+    opacity: 1;
+  }
+
+  .phone-nav__item.is-active,
+  .phone-nav__item[aria-current] {
+    color: var(--text);
+  }
+
+  .phone-nav__item.is-active .phone-nav__idx,
+  .phone-nav__item[aria-current] .phone-nav__idx {
+    color: var(--accent);
+  }
+
   .phone-nav__item.is-active .phone-nav__fill,
-  .phone-nav__item[data-default-active] .phone-nav__fill {
+  .phone-nav__item[aria-current] .phone-nav__fill {
     background-color: var(--accent);
   }
 
   .phone-nav__item[aria-current] .phone-nav__fill {
     transform: scaleX(1);
-    background-color: var(--accent);
-  }
-
-  .phone-nav__item[aria-current] {
-    flex: 3.4;
-    color: var(--text);
-  }
-
-  .phone-nav__item[aria-current] .phone-nav__idx {
-    color: var(--accent);
-  }
-
-  .phone-nav__item[aria-current] .phone-nav__label {
-    opacity: 1;
   }
 
   @media (prefers-reduced-motion: no-preference) {

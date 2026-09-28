@@ -1,9 +1,10 @@
 /**
  * The site header's controls, wherever the viewport puts them (SiteHeader.astro): from 40rem up
- * the wordmark, a 4-item nav (About/Experience/Work/Contact), Capabilities, Résumé and the theme
- * switch sit in the bar; on phones the bar is the same 4 items as a segmented nav, pj's monogram
- * and the theme switch (no wordmark, Capabilities or Résumé there — see the About panel and the
- * sticky CTA bar, HomeMobilePanels.astro).
+ * the home link (monogram, plus the wordmark from 73.75rem), a centred 4-item nav
+ * (About/Experience/Work/Contact), then Capabilities (from 57.5rem), Résumé and the theme switch;
+ * on phones the bar is the same 4 items as a segmented nav, pj's monogram and the theme switch
+ * (no wordmark, Capabilities or Résumé there — see the About panel and the sticky CTA bar,
+ * HomeMobilePanels.astro).
  */
 import type { Locator, Page } from '@playwright/test';
 
