@@ -280,15 +280,7 @@ test.describe('motion on', () => {
     expect(await page.evaluate(() => window.__h1Mutations)).toBe(0);
   });
 
-  test('the focus line types for at most 5 s, then settles on the full text', async ({
-    page,
-    browserName,
-  }) => {
-    // The 5s WCAG 2.2.2 budget stays enforced on chromium/mobile-chrome; measured wall-clock
-    // typing time on CI's WebKit runner, alone and CPU-unshared, still consistently exceeds
-    // it for this short a string — a slow shared-runner VM running the heaviest engine here,
-    // not something a real device would show.
-    test.skip(browserName === 'webkit', 'CI-only WebKit timing; see PR #1 follow-up');
+  test('the focus line types for at most 5 s, then settles on the full text', async ({ page }) => {
     await recordFocusStates(page);
     await gotoRel(page, '');
     const line = page.locator(FOCUS_LINE);
