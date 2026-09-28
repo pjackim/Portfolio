@@ -239,23 +239,22 @@ const stopStyle = (i: number) =>
     }
 
     /* Arrival (about-timeline.ts sets `data-tl="off"` on stops the trace hasn't reached): each
-       line rises out of a slight blur a beat after the one above; leaving is quicker, bottom
-       line first. `data-arming` holds the first hide still, so nothing on screen blinks. */
+       line fades and rises a beat after the one above; leaving is quicker, bottom line first.
+       `data-arming` holds the first hide still, so nothing on screen blinks. No `filter` here:
+       transitioning one on these lines (a blur, or even `opacity()`) hangs or crashes Linux
+       WebKit's compositor (GNOME Web, and the CI WebKit the e2e suite runs on). */
     .timeline[data-live] .timeline__stop > :not(.timeline__mark) {
       transition:
         opacity 520ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms),
-        translate 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms),
-        filter 520ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms);
+        translate 620ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k, 0) * 70ms);
     }
 
     .timeline[data-live] .timeline__stop[data-tl='off'] > :not(.timeline__mark) {
       opacity: 0;
       translate: 0 8px;
-      filter: blur(3px);
       transition:
         opacity 240ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms),
-        translate 280ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms),
-        filter 240ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms);
+        translate 280ms cubic-bezier(0.4, 0, 1, 1) calc((2 - var(--k, 0)) * 30ms);
     }
 
     .timeline[data-arming] .timeline__stop > * {
