@@ -65,6 +65,12 @@ html {
   accent-color: var(--accent);
   scrollbar-color: var(--line-ui) var(--bg); /* never transitioned (WebKit flicker) */
   scrollbar-width: thin;
+  /* The page's height is unsettled for the first render or two (progressive parse of one
+     long document, `<GitLog>`'s SVG, deferred hero instruments): a scrollbar that appears
+     or disappears while that settles shifts every fixed-width row horizontally (Chromium's
+     classic scrollbar takes its own gutter, unlike WebKit's overlay one). Reserving the
+     gutter up front removes that class of layout shift outright. */
+  scrollbar-gutter: stable;
   scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
