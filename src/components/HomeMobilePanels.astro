@@ -271,6 +271,13 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
       min-block-size: calc(100vh - var(--header-h) - var(--footer-h, 8.1875rem));
       min-block-size: calc(100svh - var(--header-h) - var(--footer-h, 8.1875rem));
     }
+
+    /* The page's end is a resting place too. Without it WebKit (iOS Safari) finds the Contact
+       panel's start within proximity of the bottom and pulls every scroll to the end back to it,
+       so the footer (Motion chip, back to top) could never come into view. */
+    :global(html:has(#mobile-home-panels) .site-footer) {
+      scroll-snap-align: end;
+    }
   }
 
   .m-panel {

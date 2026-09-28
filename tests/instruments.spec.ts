@@ -759,12 +759,7 @@ test.describe('footer', () => {
   ] as const) {
     test(`${name}: the copyright and a working Motion chip, on one row (stacked on phones)`, async ({
       page,
-      browserName,
     }) => {
-      // Consistently exceeds even a generous 10s visibility wait on CI's WebKit runner alone
-      // (not a resource-contention artifact — reproduces with WebKit as the only project
-      // running); chromium and mobile-chrome still cover this layout every run.
-      test.skip(browserName === 'webkit', 'CI-only WebKit timing; see PR #1 follow-up');
       await gotoRel(page, path);
       await page.waitForLoadState('load');
       await expectLayout(page);
@@ -836,15 +831,7 @@ test.describe('in-page scrolling (Ruling G9)', () => {
   for (const motion of ['on', 'off'] as const) {
     test(`a same-page anchor click ${motion === 'on' ? 'glides' : 'jumps'} (motion ${motion})`, async ({
       page,
-      browserName,
     }) => {
-      // The `.smooth-scroll` class (added for the click, removed on `scrollend` or a 2s
-      // fallback — src/scripts/smooth-scroll.ts) consistently outlives an 8s wait on CI's
-      // WebKit runner alone; chromium and mobile-chrome still cover the glide every run.
-      test.skip(
-        motion === 'on' && browserName === 'webkit',
-        'CI-only WebKit timing; see PR #1 follow-up',
-      );
       if (motion === 'off') await page.addInitScript(() => localStorage.setItem('motion', 'off'));
       await gotoRel(page, '');
       await page.waitForLoadState('load');

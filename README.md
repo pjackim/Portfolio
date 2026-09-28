@@ -148,8 +148,8 @@ Pages-passthrough workflow (PR A) was merged to `master` first — the revert th
 commit's `deploy.yml` and the Pages source stays "GitHub Actions". Otherwise, revert and then
 switch the repo's Pages source back to "Deploy from a branch: master /".
 
-`gh` in this repo defaults to the upstream `j4ck1m/Portfolio`, not this fork — pass
-`--repo pjackim/Portfolio` on every `gh` command, e.g. `gh run list --repo pjackim/Portfolio`.
+No `upstream` remote or `gh` default repo is configured — pass `--repo pjackim/Portfolio` on
+every `gh` command, e.g. `gh run list --repo pjackim/Portfolio`.
 
 ## Project structure
 
