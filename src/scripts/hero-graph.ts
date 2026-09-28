@@ -23,7 +23,12 @@ import { readTokenColors } from './canvas-colors';
 import { motionAllowed, onMotionChange } from './motion';
 
 const MIN_NODES = 24;
-const MAX_NODES = 70;
+/**
+ * Ceiling for ultrawide heroes, not a density limit: at AREA_PER_NODE a 1440×700 hero wants ~72
+ * hosts, so a lower cap (it was 70) made the graph thin out on anything larger. Neighbour search
+ * is grid-based, so cost stays linear in this.
+ */
+const MAX_NODES = 260;
 /** CSS px² of hero per host. */
 const AREA_PER_NODE = 14_000;
 /** Hosts closer than this (CSS px) are joined. */
