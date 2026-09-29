@@ -1,0 +1,527 @@
+{
+ "id": 16,
+ "views": [
+  {
+   "file": "inplace/16--desktop--1.png",
+   "page": "work--paradox",
+   "viewport": "desktop",
+   "role": "hero",
+   "state": {
+    "project": "paradox",
+    "image": {
+     "kind": "logo-or-wordmark",
+     "depicts": "A dark grey impossible-triangle logo with red streaks and dots and a white outline, with the wordmark \"PARADOX.SH\" beneath it, on a plain white background.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "hero",
+     "context": "Large rounded card with thin border on a pale page; white image fills the card.",
+     "shown_size": "1150 x 718 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 9.9% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens); the browser loaded a 1152 px wide file for a 1150 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame shown; white space surrounds the centred logo on all sides; the card edge meets white so the logo floats in the card.",
+     "readable_here": "\"PARADOX.SH\" wordmark below the triangle is readable; the small red dashes inside the triangle are visible.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "A dark triangular logo with red dashes above the text PARADOX.SH on white."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 3.88,
+     "confidence": 0.9,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.04,
+      "3": 0.04,
+      "4": 0.92
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.73,
+     "confidence": 0.77,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.03,
+      "3": 0.2,
+      "4": 0.77
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.13,
+     "confidence": 0.84,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.01,
+      "3": 0.81,
+      "4": 0.16
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 4,
+     "confidence": 1,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.14,
+     "confidence": 0.8,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.05,
+      "3": 0.76,
+      "4": 0.19
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.2,
+     "p": 0.2,
+     "read": "no"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.19,
+     "p": 0.19,
+     "read": "no"
+    }
+   },
+   "severity": {
+    "choice": "none",
+    "confidence": 0.75,
+    "decision": "accept",
+    "probabilities": {
+     "moderate": 0.05,
+     "none": 0.81,
+     "severe": 0.01,
+     "minor": 0.12
+    }
+   },
+   "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.46,
+    "decision": "reject",
+    "probabilities": {
+     "gentle-ai-touchup": 0.01,
+     "recrop-or-recapture": 0.59,
+     "layout-fix": 0.39,
+     "replace": 0.01
+    }
+   }
+  },
+  {
+   "file": "inplace/16--mobile--1.png",
+   "page": "work--paradox",
+   "viewport": "mobile",
+   "role": "hero",
+   "state": {
+    "project": "paradox",
+    "image": {
+     "kind": "logo-or-wordmark",
+     "depicts": "A dark grey impossible-triangle logo with red streaks and dots and a white outline, with the wordmark \"PARADOX.SH\" beneath it, on a plain white background.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "hero",
+     "context": "Rounded card with thin border on a pale page; white inner area.",
+     "shown_size": "343 x 213 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 9.8% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens; this is a 3x screen, so slightly soft); the browser loaded a 390 px wide file for a 343 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame shown at reduced size; logo centred with wide white margins; nothing cropped.",
+     "readable_here": "\"PARADOX.SH\" is readable but small; red dashes and dots are visible.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "A dark triangle mark with red accents and the name PARADOX.SH on white."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.94,
+     "confidence": 0.92,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.08,
+      "3": 0.9,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.5,
+     "confidence": 0.58,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.09,
+      "3": 0.3,
+      "4": 0.6
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 1.98,
+     "confidence": 0.8,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.11,
+      "2": 0.79,
+      "3": 0.07,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 4,
+     "confidence": 1,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.93,
+     "confidence": 0.82,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.14,
+      "3": 0.79,
+      "4": 0.07
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.42,
+     "p": 0.42,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.45,
+     "p": 0.45,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.65,
+    "decision": "review",
+    "probabilities": {
+     "severe": 0.02,
+     "moderate": 0.74,
+     "none": 0.13,
+     "minor": 0.11
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.39,
+    "decision": "reject",
+    "probabilities": {
+     "recrop-or-recapture": 0.4,
+     "replace": 0.03,
+     "gentle-ai-touchup": 0.03,
+     "layout-fix": 0.54
+    }
+   }
+  },
+  {
+   "file": "inplace/16--mobile--2.png",
+   "page": "work",
+   "viewport": "mobile",
+   "role": "cover-card",
+   "state": {
+    "project": "paradox",
+    "image": {
+     "kind": "logo-or-wordmark",
+     "depicts": "A dark grey impossible-triangle logo with red streaks and dots and a white outline, with the wordmark \"PARADOX.SH\" beneath it, on a plain white background.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "cover-card",
+     "context": "Small rounded thumbnail at left of a list row; title \"Paradox\", meta \"2011 · DESIGN & 3D\", index \"15\" at right.",
+     "shown_size": "64 x 40 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 10% of the image (cut from left and right, object-position 50% 0%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens; this is a 3x screen, so slightly soft); the browser loaded a 64 px wide file for a 64 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Whole frame visible in a small wide thumbnail; the white card contains a small logo with the wordmark too small to read.",
+     "readable_here": "Row text \"Paradox\" and \"2011 · DESIGN & 3D\" readable; thumbnail shows only the triangle logo shape, no fine detail.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 1.21,
+     "confidence": 0,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0.42,
+      "1": 0.12,
+      "2": 0.34,
+      "3": 0.04,
+      "4": 0.08
+     },
+     "decision": "reject"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 2.24,
+     "confidence": 0.2,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0.03,
+      "1": 0.22,
+      "2": 0.31,
+      "3": 0.34,
+      "4": 0.1
+     },
+     "decision": "reject"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.01,
+     "confidence": 0.85,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.07,
+      "2": 0.85,
+      "3": 0.06,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 1.59,
+     "confidence": 0.5,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.49,
+      "2": 0.44,
+      "3": 0.07,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.43,
+     "p": 0.43,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.74,
+     "p": 0.74,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.17,
+    "decision": "reject",
+    "probabilities": {
+     "none": 0.23,
+     "minor": 0.25,
+     "moderate": 0.37,
+     "severe": 0.15
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.33,
+    "decision": "reject",
+    "probabilities": {
+     "layout-fix": 0.5,
+     "recrop-or-recapture": 0.4,
+     "replace": 0.09,
+     "gentle-ai-touchup": 0.01
+    }
+   }
+  }
+ ]
+}

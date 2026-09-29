@@ -1,0 +1,227 @@
+{
+ "id": 26,
+ "state": {
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "file_pixels": "966 x 910 px, small (under 1000px wide)",
+  "file_sharpness": "crisp",
+  "file_exposure": "blown",
+  "file_contrast": "high",
+  "empty_bands": "none",
+  "observation": {
+   "depicts": "Trip planner app search results for \"denver\": a list of five heliports/airports with coordinates and add buttons, an empty My Trip section, and a map button at lower right.",
+   "text_readable": "\"denver\"; \"Kauffman Heliport, Denver, United States\"; \"Channel 7 Heliport\"; \"My Trip\". Coordinates in grey (e.g. 40.15, -104.89) are small but legible.",
+   "composition": "Header at top, search field and result rows filling the upper two thirds, a large empty white area below My Trip, a green map button in the lower right, green footer.",
+   "tone_and_contrast": "White background with dark text, dark green header, buttons and footer; high contrast between text and page; large flat areas of white.",
+   "sharpness_and_artifacts": "A pointing-hand cursor overlays the first add button. Text is crisp. Footer text begins with a missing-glyph box. Search field has a green focus outline.",
+   "scan_first_read": "A search box with \"denver\" and a list of results; a green trip app."
+  }
+ },
+ "model": "jev-1.13.0",
+ "scoreIds": [
+  "resolution_headroom",
+  "text_legibility",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 2.36,
+   "confidence": 0.58,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.07,
+    "2": 0.51,
+    "3": 0.4,
+    "4": 0.02
+   },
+   "decision": "review"
+  },
+  "text_legibility": {
+   "type": "score",
+   "score": 3.03,
+   "confidence": 0.75,
+   "legend": {
+    "0": "None of the text a viewer is meant to read can be read",
+    "1": "Only a few large words are readable; most meaningful text is illegible",
+    "2": "The main text is readable but secondary text is hard to read",
+    "3": "All meaningful text is readable with slight effort",
+    "4": "All text is crisp and effortless to read"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.14,
+    "3": 0.69,
+    "4": 0.17
+   },
+   "decision": "accept"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 3.42,
+   "confidence": 0.65,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.58,
+    "4": 0.42
+   },
+   "decision": "review"
+  },
+  "framing": {
+   "type": "score",
+   "score": 1.24,
+   "confidence": 0.79,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.83,
+    "2": 0.11,
+    "3": 0.06,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 3,
+   "confidence": 0.5,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0.06,
+    "1": 0.01,
+    "2": 0.08,
+    "3": 0.55,
+    "4": 0.3
+   },
+   "decision": "review"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 1.33,
+   "confidence": 0.72,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.67,
+    "2": 0.32,
+    "3": 0.01,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 2.84,
+   "confidence": 0.85,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.17,
+    "3": 0.82,
+    "4": 0.01
+   },
+   "decision": "accept"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.62,
+   "p": 0.62,
+   "read": "uncertain"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.58,
+   "p": 0.58,
+   "read": "uncertain"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.23,
+   "p": 0.23,
+   "read": "no"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "artifacts_or_overlays",
+   "confidence": 0.4,
+   "probabilities": {
+    "unreadable_text": 0,
+    "low_resolution": 0,
+    "none": 0,
+    "poor_framing_or_dead_space": 0.46,
+    "artifacts_or_overlays": 0.48,
+    "busy_background": 0,
+    "low_contrast_or_dark": 0.03,
+    "other": 0.03
+   },
+   "decision": "reject"
+  }
+ },
+ "severity": {
+  "choice": "severe",
+  "confidence": 0.54,
+  "decision": "review",
+  "probabilities": {
+   "minor": 0.06,
+   "severe": 0.66,
+   "moderate": 0.27,
+   "none": 0.01
+  }
+ },
+ "remedy": {
+  "choice": "recrop-or-recapture",
+  "confidence": 0.97,
+  "decision": "accept",
+  "probabilities": {
+   "recrop-or-recapture": 0.99,
+   "gentle-ai-touchup": 0.01,
+   "replace": 0
+  }
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "id": 55,
+  "file": "reference-assets/55--brochure-with-text.CLMpiJPU.webp",
+  "project": "go-green",
+  "kind": "other",
+  "depicts": "Split brochure image: landfill garbage pile with orange sky on the left, forest waterfall and pool with ferns on the right, diagonal divider and a green-bordered text panel across the bottom.",
+  "text_readable": "Readable at native size: \"THIS COULD BE THE WORLD'S REALITY IN OUR LIFETIME\", \"OVER 900,000,000 TREES ARE CUT DOWN EVERY YEAR\", \"IT TAKES EVERYONE\". Body lines are small but legible; the text panel is semi-transparent over the imagery.",
+  "composition": "Diagonal split runs from top centre-right to bottom centre; text panel spans the lower-left and centre, covering part of the landfill and the split line. Ferns sit at bottom right.",
+  "tone_and_contrast": "Left half is dark and brown with an orange sky patch; right half is brighter green and teal. Text panel is grey-translucent with white text against a green border.",
+  "sharpness_and_artifacts": "Landfill side is soft and murky; waterfall side is sharp. Slight compression texture. Text panel background blur shows through. No watermarks or cursors.",
+  "scan_first_read": "A dirty landfill against a clean waterfall, with a paragraph of text below; the contrast of the two halves reads first.",
+  "observer_confirms_blind": true
+}

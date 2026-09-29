@@ -1,0 +1,7 @@
+{
+ "id": 29,
+ "standalone": "minor",
+ "in_place": "moderate",
+ "in_place_worst_file": "inplace/29--desktop--1.png",
+ "evidence": "Game screenshot with cheat menu; menu text small, dark and low contrast, Evironmen truncated. At displayed size the menu labels are tiny and hard to read."
+}

@@ -1,0 +1,13 @@
+{
+  "id": 21,
+  "file": "reference-assets/21--gui-visualizer.Cz-1qiuz.webp",
+  "project": "credential-correlation",
+  "kind": "app-ui-screenshot",
+  "depicts": "Tkinter visualizer comparing 'Green86Boot!' and 'Boot19Green86!' with coloured vertical lines and arrows and captions such as 'This pattern occurs in both the username and password!' over a blurred dark background.",
+  "text_readable": "'Green86Boot!'; 'Boot19Green86!'; 'Submit'; 'This capital letter occurs in both the username and password!'; 'No correlation'. All readable at native size; the last caption at the bottom edge is cut off.",
+  "composition": "Two coloured strings near top centre with long vertical lines descending to captions; content fills the width; blurred backdrop at left and right; bottom caption clipped by the frame.",
+  "tone_and_contrast": "Coloured text (yellow, red, green, blue, pink) on a dark grey backdrop; mid contrast, red and blue captions dimmer; the backdrop's blurred shapes are low contrast.",
+  "sharpness_and_artifacts": "Sharp text and thin lines; the background is a heavy blur with faint coloured blobs; no cursor or watermark; last line truncated at the bottom edge.",
+  "scan_first_read": "A colour-coded diagram linking matching characters between two strings, with many small captions.",
+  "observer_confirms_blind": true
+}

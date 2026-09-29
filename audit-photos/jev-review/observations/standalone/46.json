@@ -1,0 +1,13 @@
+{
+  "id": 46,
+  "file": "reference-assets/46--sculpt-thorax-closeup.CJ-l7JFi.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Close-up of a sculpted ant's head, thorax and legs in blue-and-copper metallic shading against dark grey; legs cross the lower left foreground.",
+  "text_readable": "no text",
+  "composition": "Extreme close-up; thorax fills centre, head cut off at left edge, abdomen cut at bottom right, legs cut at left and right edges. Dark background visible only at top and gaps.",
+  "tone_and_contrast": "Blue and copper reflections on the metal surface; strong local contrast in surface texture, dark grey background separates well.",
+  "sharpness_and_artifacts": "Fine wrinkled surface detail is visible. A thin light horizontal line runs across the top edge. Faint stepped facets on the legs at lower left. No watermark.",
+  "scan_first_read": "A close-up of textured blue metallic ant body; abstract, hard to tell it is an ant at once.",
+  "observer_confirms_blind": true
+}

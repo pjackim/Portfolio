@@ -1,0 +1,13 @@
+{
+  "id": 13,
+  "file": "reference-assets/13--cover.BlJnV90M.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "A close-up front view of a sculpted metallic ant head with open serrated mandibles, large eyes, textured surface and long antennae and legs extending outward, on dark grey.",
+  "text_readable": "no text",
+  "composition": "Head centred in lower two-thirds; antennae and legs cut off at left, right and top edges; upper body partly cropped at the top; dark grey background around.",
+  "tone_and_contrast": "Bronze and steel-blue metallic highlights against flat dark grey; strong contrast on the head; shiny reflections are uneven.",
+  "sharpness_and_artifacts": "Fine surface detail crisp across the head; sculpt viewport look with matcap shading; edges of limbs slightly aliased; no watermark or UI visible.",
+  "scan_first_read": "A detailed metallic ant head with pincers; menacing creature sculpt.",
+  "observer_confirms_blind": true
+}

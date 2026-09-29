@@ -1,0 +1,24 @@
+{
+  "id": 37,
+  "views": [
+    {
+      "file": "inplace/37--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with rounded frame, \"PLAY\" button at the bottom right; caption \"FIG. 02 - Every game is different...\" below.",
+      "visible_vs_full": "Full poster visible; clue bar spans nearly the whole width, matching the standalone file.",
+      "readable_here": "Title, \"DAREDEVIL\" letters, and clue text \"a special law enforcement...\" readable; the last words of the clue are near the button.",
+      "overlays_or_intrusions": "\"PLAY\" button overlaps the right end of the clue bar, ending near \"the MCU\".",
+      "at_a_glance": "Comic-themed crossword game with a long vertical word and a clue, plus a play button."
+    },
+    {
+      "file": "inplace/37--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width; large \"PLAY\" button at the bottom right; caption under the frame.",
+      "visible_vs_full": "Full poster visible at smaller size; same content as the standalone file.",
+      "readable_here": "Title and \"DAREDEVIL\" letters readable; the clue text is cut off after \"counter-terrorism ag\" here by the button.",
+      "overlays_or_intrusions": "Large \"PLAY\" button covers the right part of the clue bar, hiding the end of the clue text.",
+      "at_a_glance": "Crossword game poster, title and grid readable; the clue is partly hidden by the play button."
+    }
+  ],
+  "observer_confirms_blind": true
+}

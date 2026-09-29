@@ -1,0 +1,13 @@
+{
+  "id": 42,
+  "file": "reference-assets/42--specter-wordmark-light.BCVshs7i.webp",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "Black smoky octopus emblem left of centre and the word SPECTER in condensed capitals with smoky edge wisps on the right, on white background.",
+  "text_readable": "\"SPECTER\" readable in condensed capitals; no other text. Smoke wisps at the S and R edges are fuzzy.",
+  "composition": "Wide 16:9 frame; octopus at centre-left, wordmark upper right at smaller size. Large empty white areas at left, right, top and especially bottom.",
+  "tone_and_contrast": "Black on pure white; very high contrast. Smoke edges are soft grey, clean separation from background.",
+  "sharpness_and_artifacts": "Smooth silhouette edges; smoke has fine gradient. No visible noise, banding, watermark or overlays. Wordmark letters crisp at native size.",
+  "scan_first_read": "Black octopus emblem and the word SPECTER on white; brand identity, with wordmark small.",
+  "observer_confirms_blind": true
+}

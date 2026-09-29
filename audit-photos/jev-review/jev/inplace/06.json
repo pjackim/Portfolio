@@ -1,0 +1,701 @@
+{
+ "id": 6,
+ "views": [
+  {
+   "file": "inplace/06--desktop--1.png",
+   "page": "work--aes-256",
+   "viewport": "desktop",
+   "role": "poster",
+   "state": {
+    "project": "aes-256",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Windows desktop screenshot: File Explorer with a \"demo\" folder and Encryption.exe on the left, a terminal showing a pink directory tree in the middle, and PowerShell output on the right.",
+     "file_pixels": "1280 x 720 px, medium (1000-1600px wide)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "poster",
+     "context": "Case-study video frame with caption 'VIDEO – Encrypting a nested test directory, file by file.' below.",
+     "shown_size": "1150 x 647 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens); the browser loaded a 1152 px wide file for a 1150 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame visible including taskbar at the bottom and File Explorer, tree pane, PowerShell; same as the standalone.",
+     "readable_here": "Explorer file names 'demo', 'Encryption.exe' and PowerShell 'Successfully Encrypted.' readable; tree strings small.",
+     "overlays_or_intrusions": "Centered white 'PLAY | YOUTUBE' button covering the middle of the tree pane.",
+     "at_a_glance": "Screen capture of Windows with a file tree and PowerShell text, plus a play button."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.03,
+     "confidence": 0.96,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.95,
+      "3": 0.03,
+      "4": 0.01
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.87,
+     "confidence": 0.89,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.13,
+      "4": 0.87
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.12,
+     "confidence": 0.86,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.84,
+      "4": 0.15
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 1.29,
+     "confidence": 0.67,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0.05,
+      "1": 0.63,
+      "2": 0.31,
+      "3": 0.01,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.57,
+     "confidence": 0.64,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.02,
+      "2": 0.4,
+      "3": 0.58,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.53,
+     "p": 0.53,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.74,
+     "p": 0.74,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "severe",
+    "confidence": 0.7,
+    "decision": "review",
+    "probabilities": {
+     "minor": 0.02,
+     "moderate": 0.17,
+     "none": 0.03,
+     "severe": 0.78
+    }
+   },
+   "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.43,
+    "decision": "reject",
+    "probabilities": {
+     "replace": 0.01,
+     "layout-fix": 0.41,
+     "gentle-ai-touchup": 0,
+     "recrop-or-recapture": 0.58
+    }
+   }
+  },
+  {
+   "file": "inplace/06--desktop--2.png",
+   "page": "home",
+   "viewport": "desktop",
+   "role": "cover-card",
+   "state": {
+    "project": "aes-256",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Windows desktop screenshot: File Explorer with a \"demo\" folder and Encryption.exe on the left, a terminal showing a pink directory tree in the middle, and PowerShell output on the right.",
+     "file_pixels": "1280 x 720 px, medium (1000-1600px wide)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "cover-card",
+     "context": "Wide card at top: image strip above title 'AES-256 Encryptor' and '06 · 2016'.",
+     "shown_size": "1150 x 177 css px (a very wide, short strip)",
+     "fit": "cover",
+     "crop": "cover crop hides 72.6% of the image (cut from top and bottom, object-position 50% 50%)",
+     "shape": "a very wide, short strip slot for landscape source",
+     "resolution": "far fewer than one source pixel per CSS pixel (the image is enlarged and visibly soft); the browser loaded a 480 px wide file for a 1150 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Image cropped to a very wide strip; the left half is mostly dark empty Explorer window; the tree pane and part of the PowerShell text show; the taskbar is cut off.",
+     "readable_here": "Title and year readable; image content is blurred and unreadable.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark strip with a light pink tree in the middle above the title AES-256 Encryptor."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 0.57,
+     "confidence": 0.53,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0.59,
+      "1": 0.27,
+      "2": 0.12,
+      "3": 0.01,
+      "4": 0.01
+     },
+     "decision": "review"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 0.58,
+     "confidence": 0.58,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0.46,
+      "1": 0.5,
+      "2": 0.04,
+      "3": 0,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 0.08,
+     "confidence": 0.93,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.93,
+      "1": 0.07,
+      "2": 0,
+      "3": 0,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.99,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 1.74,
+     "confidence": 0.61,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.35,
+      "2": 0.54,
+      "3": 0.1,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.91,
+     "p": 0.91,
+     "read": "yes"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.94,
+     "p": 0.94,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "severe",
+    "confidence": 0.94,
+    "decision": "accept",
+    "probabilities": {
+     "minor": 0,
+     "moderate": 0.04,
+     "none": 0,
+     "severe": 0.96
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.59,
+    "decision": "review",
+    "probabilities": {
+     "replace": 0.02,
+     "layout-fix": 0.69,
+     "gentle-ai-touchup": 0.01,
+     "recrop-or-recapture": 0.28
+    }
+   }
+  },
+  {
+   "file": "inplace/06--mobile--1.png",
+   "page": "work--aes-256",
+   "viewport": "mobile",
+   "role": "poster",
+   "state": {
+    "project": "aes-256",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Windows desktop screenshot: File Explorer with a \"demo\" folder and Encryption.exe on the left, a terminal showing a pink directory tree in the middle, and PowerShell output on the right.",
+     "file_pixels": "1280 x 720 px, medium (1000-1600px wide)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "poster",
+     "context": "Case-study video frame with large PLAY YOUTUBE button and a caption below.",
+     "shown_size": "343 x 193 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens; this is a 3x screen, so slightly soft); the browser loaded a 390 px wide file for a 343 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame visible including the taskbar; caption 'VIDEO – Encrypting a nested test directory, file by file.' wraps below.",
+     "readable_here": "Explorer names and 'Successfully Encrypted.' partly readable; the button hides part of the tree.",
+     "overlays_or_intrusions": "Large white 'PLAY | YOUTUBE' button across the middle covering the tree pane and part of the PowerShell text.",
+     "at_a_glance": "A play button over a dark Windows desktop capture."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 1.49,
+     "confidence": 0.59,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.55,
+      "2": 0.42,
+      "3": 0.03,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.15,
+     "confidence": 0.62,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.04,
+      "2": 0.07,
+      "3": 0.59,
+      "4": 0.3
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.02,
+     "confidence": 0.81,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.09,
+      "2": 0.79,
+      "3": 0.08,
+      "4": 0.03
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 0.36,
+     "confidence": 0.7,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0.64,
+      "1": 0.36,
+      "2": 0,
+      "3": 0,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 1.25,
+     "confidence": 0.75,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.72,
+      "2": 0.25,
+      "3": 0.01,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.77,
+     "p": 0.77,
+     "read": "yes"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.93,
+     "p": 0.93,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "severe",
+    "confidence": 0.99,
+    "decision": "accept",
+    "probabilities": {
+     "moderate": 0.01,
+     "minor": 0,
+     "none": 0,
+     "severe": 0.99
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.38,
+    "decision": "reject",
+    "probabilities": {
+     "recrop-or-recapture": 0.44,
+     "replace": 0.02,
+     "layout-fix": 0.54,
+     "gentle-ai-touchup": 0
+    }
+   }
+  },
+  {
+   "file": "inplace/06--mobile--2.png",
+   "page": "home",
+   "viewport": "mobile",
+   "role": "cover-card",
+   "state": {
+    "project": "aes-256",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Windows desktop screenshot: File Explorer with a \"demo\" folder and Encryption.exe on the left, a terminal showing a pink directory tree in the middle, and PowerShell output on the right.",
+     "file_pixels": "1280 x 720 px, medium (1000-1600px wide)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "cover-card",
+     "context": "Project card: image, '2016 · SECURITY', 06, title 'AES-256 Encryptor', truncated description.",
+     "shown_size": "343 x 214 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 10.2% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens; this is a 3x screen, so slightly soft); the browser loaded a 358 px wide file for a 343 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Image shows nearly the full width with the left edge trimmed; the taskbar at the bottom is visible.",
+     "readable_here": "Title and description readable; in-image text is blurred; 'Successfully Encrypted.' just about discernible.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark desktop screenshot with a pink file tree and green terminal text."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.03,
+     "confidence": 0.72,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.13,
+      "2": 0.7,
+      "3": 0.13,
+      "4": 0.03
+     },
+     "decision": "review"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 2.74,
+     "confidence": 0.74,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.05,
+      "2": 0.18000000000000002,
+      "3": 0.75,
+      "4": 0.02
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2,
+     "confidence": 0.86,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.07,
+      "2": 0.85,
+      "3": 0.06,
+      "4": 0.01
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.98,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.26,
+     "confidence": 0.58,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.12,
+      "2": 0.53,
+      "3": 0.33,
+      "4": 0.02
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.53,
+     "p": 0.53,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.61,
+     "p": 0.61,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.65,
+    "decision": "review",
+    "probabilities": {
+     "moderate": 0.74,
+     "none": 0.06,
+     "severe": 0.03,
+     "minor": 0.17
+    }
+   },
+   "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.43,
+    "decision": "reject",
+    "probabilities": {
+     "gentle-ai-touchup": 0.02,
+     "recrop-or-recapture": 0.58,
+     "layout-fix": 0.31,
+     "replace": 0.09
+    }
+   }
+  }
+ ]
+}

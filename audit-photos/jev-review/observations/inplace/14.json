@@ -1,0 +1,33 @@
+{
+  "id": 14,
+  "views": [
+    {
+      "file": "inplace/14--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; image fills the card.",
+      "visible_vs_full": "Full frame shown; the diagonal green line splits the left rubbish heap from the right waterfall pool; nothing cropped.",
+      "readable_here": "No text in image; the waterfall, ferns and rubbish items are visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A split image: rubbish heap on the left, a clear forest pool and waterfall on the right, divided by a green line."
+    },
+    {
+      "file": "inplace/14--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page.",
+      "visible_vs_full": "Full frame visible at reduced size; both halves and the green divider intact.",
+      "readable_here": "The waterfall, ferns and pool are visible; rubbish objects on the left are small; no text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Polluted heap versus a clean waterfall pool, split by a green diagonal."
+    },
+    {
+      "file": "inplace/14--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Small rounded thumbnail at left of a list row; title \"Go Green\", meta \"2019 · DESIGN & 3D\", index \"13\" at right.",
+      "visible_vs_full": "Whole frame visible in a small wide thumbnail; the split image reads as brown left and green-blue right.",
+      "readable_here": "Row text \"Go Green\" and \"2019 · DESIGN & 3D\" readable; thumbnail shows only the split rubbish/waterfall shape, no fine detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+  ],
+  "observer_confirms_blind": true
+}

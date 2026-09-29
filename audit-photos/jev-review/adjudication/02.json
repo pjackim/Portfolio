@@ -1,0 +1,7 @@
+{
+ "id": 2,
+ "standalone": "severe",
+ "in_place": "severe",
+ "in_place_worst_file": "inplace/02--mobile--2.png",
+ "evidence": "Crop of settings sliders cut off at top, remainder empty black. Mobile row thumbnail is unreadable dark blob; no identifiable subject."
+}

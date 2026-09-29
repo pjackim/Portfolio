@@ -1,0 +1,13 @@
+{
+  "id": 18,
+  "file": "reference-assets/18--dummy-credentials.C8SyxxmO.webp",
+  "project": "credential-correlation",
+  "kind": "code-screenshot",
+  "depicts": "Rounded dark slate box holding monospace text '(:pjackim.1234@gmail.com : (:pjackim.1234' on a white surround, with a teal '@'.",
+  "text_readable": "'(:pjackim.1234@gmail.com : (:pjackim.1234' fully readable; no other text.",
+  "composition": "Dark box centred with wide white margin on all sides; text sits in the vertical middle, left-aligned; box occupies most of the width, roughly half the height.",
+  "tone_and_contrast": "Light grey text on dark slate, moderate contrast; the '@' is teal; the box stands out against white.",
+  "sharpness_and_artifacts": "Smooth glyph edges, mild compression softness. White baked-in margin around the box; no watermark or cursor.",
+  "scan_first_read": "A username and password pair in monospace text on a dark card.",
+  "observer_confirms_blind": true
+}

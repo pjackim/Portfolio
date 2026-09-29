@@ -1,0 +1,7 @@
+{
+ "id": 24,
+ "standalone": "minor",
+ "in_place": "minor",
+ "in_place_worst_file": "inplace/24--mobile--1.png",
+ "evidence": "World map with route and pin clear; faded ghost tooltip and cursor, low resolution. Video controls bar overlays bottom quarter and hides attribution, but map remains visible."
+}

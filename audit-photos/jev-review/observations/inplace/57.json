@@ -1,0 +1,24 @@
+{
+  "id": 57,
+  "views": [
+    {
+      "file": "inplace/57--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure frame; caption row below shows only 'FIG. 01' at left and 'FULL SIZE' at right, no descriptive text visible.",
+      "visible_vs_full": "Entire image visible; quote box, translucent figure, and bottom-right name badge all inside frame, matching standalone framing.",
+      "readable_here": "Quote text 'Standing on the bare ground...' readable; badge 'Parker Jackim Period 2' is small but legible. Moss detail visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Mossy forest with a quote in a box and a faint green human figure standing on a rock."
+    },
+    {
+      "file": "inplace/57--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width frame; caption row shows 'FIG. 01' and 'FULL SIZE' in large type, no description.",
+      "visible_vs_full": "Whole image visible with all edges, same framing as standalone.",
+      "readable_here": "Quote text is small but readable in the screenshot; the name badge at bottom right is very small, only readable when zoomed.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Green moss forest with a quote box top left and a translucent figure in the middle."
+    }
+  ],
+  "observer_confirms_blind": true
+}

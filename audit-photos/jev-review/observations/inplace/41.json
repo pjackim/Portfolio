@@ -1,0 +1,24 @@
+{
+  "id": 41,
+  "views": [
+    {
+      "file": "inplace/41--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure inside a light grey rounded frame with padding; white image panel centered; caption row below reads 'FIG. 02' and 'FULL SIZE' link.",
+      "visible_vs_full": "Whole logo visible: smoke plume, masked octopus head, tentacles. Shown uncropped with its white background inset inside the grey frame; grey margins on left and right.",
+      "readable_here": "Eye holes, tentacle curls and smoke wisps are visible. Caption labels 'FIG. 02' and 'FULL SIZE' are readable; no text in the image itself.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A black octopus silhouette with smoke rising from its head, on white."
+    },
+    {
+      "file": "inplace/41--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Figure fills the column width in a grey rounded frame with a white inset panel; caption row 'FIG. 02' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole logo visible, uncropped, inset in the frame with a grey border on all sides; same content as the standalone file.",
+      "readable_here": "Silhouette, eye holes and smoke wisps clear; caption labels 'FIG. 02' and 'FULL SIZE' legible. Fine smoke edges shown at close to full detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A large black octopus-with-smoke silhouette on white; image fills most of the screen width."
+    }
+  ],
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": 48,
+  "views": [
+    {
+      "file": "inplace/48--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in a thin border; caption 'FIG. 04 — The ant model, textured in Substance Painter.' and 'FULL SIZE' below.",
+      "visible_vs_full": "Image filling the frame width and cropped horizontally versus standalone file: the antenna at right and the ant's right side are cut, top grass strip trimmed. Most of the ant body in view.",
+      "readable_here": "Ant surface reflections, striped left antenna and mandible teeth visible; no text in the image. Caption sentence readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A glossy dark-red ant model with large mandibles standing on a sunlit grass field."
+    },
+    {
+      "file": "inplace/48--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure in a rounded border; caption 'FIG. 04 — The ant model, textured in Substance Painter.' and 'FULL SIZE' below.",
+      "visible_vs_full": "Image fills the frame with the right side cut: the right legs run off the frame edge; ant body and mandibles visible. Standalone file is wider.",
+      "readable_here": "Mandible teeth, glossy highlights and grass blades are visible; no text in the image. Caption legible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A glossy red-brown ant with big claws on sunlit grass; the ant fills the frame."
+    }
+  ],
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": 47,
+  "views": [
+    {
+      "file": "inplace/47--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Tall figure in a light grey rounded frame with wide padding; dark image panel centred; caption 'FIG. 03' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole top-down ant image visible, uncropped, inset in the grey frame with grey margins around; grey space at left and right.",
+      "readable_here": "No text in the image. Antenna segments, leg spines and abdomen bands are visible. Caption labels readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A metallic ant seen from above, centred on a dark grey panel inside a light frame."
+    },
+    {
+      "file": "inplace/47--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Figure in light grey rounded frame; dark image panel inset with padding; caption 'FIG. 03' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole top-down ant image visible, uncropped; grey border around the dark panel on all sides.",
+      "readable_here": "No text in the image. Head texture, eyes and leg tips visible. Caption legible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A silver ant viewed from above on a dark panel; symmetrical shape."
+    }
+  ],
+  "observer_confirms_blind": true
+}

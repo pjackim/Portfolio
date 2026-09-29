@@ -1,0 +1,13 @@
+{
+  "id": 20,
+  "file": "reference-assets/20--checker-crack-time.DBgSjXVd.webp",
+  "project": "credential-correlation",
+  "kind": "app-ui-screenshot",
+  "depicts": "Mustard-yellow web page 'How Secure Is My Password?' with '(:pjackim.1234' in a white input bar and 'It would take a computer about 53 million years'.",
+  "text_readable": "'How Secure Is My Password?'; '#1 Password Strength Tool. Trusted and used by millions.'; '(:pjackim.1234'; '53 million years'. The small 'It would take a computer about' and 'to crack your password' lines are readable but faint.",
+  "composition": "Heading at top, white input bar in the upper-middle, large '53 million years' centred in the lower half; balanced margins; the last line sits close to the bottom edge.",
+  "tone_and_contrast": "White text on mustard yellow, moderate contrast; the white input bar with black text stands out strongly; small light text on yellow is lower contrast.",
+  "sharpness_and_artifacts": "Clean, crisp text; mild compression softness. No cursor or watermark; a cyan marker at the input's left edge.",
+  "scan_first_read": "A page asking how secure a password is, answering '53 million years'.",
+  "observer_confirms_blind": true
+}

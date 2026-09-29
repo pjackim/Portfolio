@@ -1,0 +1,24 @@
+{
+  "id": 31,
+  "views": [
+    {
+      "file": "inplace/31--desktop--1.png",
+      "viewport": "desktop",
+      "context": "A YouTube video poster with a centered PLAY | YOUTUBE button, caption FIG. 03 below.",
+      "visible_vs_full": "Full frame visible; centre area including the pit and pickaxe handle tip is covered by the button; the bottom text line and vitals ring are at the edges.",
+      "readable_here": "Bottom line 'NEW ITEMS AVAILABLE TO CRAFT. PRESS B TO OPEN SURVIVAL BOOK' readable; in-world labels like 'SinkHole' are too small to read.",
+      "overlays_or_intrusions": "A light button labelled 'PLAY | YOUTUBE' sits at centre, covering the middle of the pit and the tool handle.",
+      "at_a_glance": "A hazy first-person view looking down at a pit while holding an orange pickaxe, with a play button."
+    },
+    {
+      "file": "inplace/31--mobile--1.png",
+      "viewport": "mobile",
+      "context": "The same YouTube poster at phone width with a large PLAY | YOUTUBE button at centre.",
+      "visible_vs_full": "Full frame visible but a smaller scale; the button covers the pit centre and most of the pickaxe handle and hands.",
+      "readable_here": "Bottom notification line is small but readable; in-world labels are not readable; the button text is large.",
+      "overlays_or_intrusions": "Large 'PLAY | YOUTUBE' button covers the centre of the image.",
+      "at_a_glance": "A pale hazy game view with an orange pickaxe at top and a big play button in the middle."
+    }
+  ],
+  "observer_confirms_blind": true
+}

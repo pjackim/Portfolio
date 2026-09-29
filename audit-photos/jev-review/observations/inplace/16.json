@@ -1,0 +1,33 @@
+{
+  "id": 16,
+  "views": [
+    {
+      "file": "inplace/16--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card with thin border on a pale page; white image fills the card.",
+      "visible_vs_full": "Full frame shown; white space surrounds the centred logo on all sides; the card edge meets white so the logo floats in the card.",
+      "readable_here": "\"PARADOX.SH\" wordmark below the triangle is readable; the small red dashes inside the triangle are visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A dark triangular logo with red dashes above the text PARADOX.SH on white."
+    },
+    {
+      "file": "inplace/16--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page; white inner area.",
+      "visible_vs_full": "Full frame shown at reduced size; logo centred with wide white margins; nothing cropped.",
+      "readable_here": "\"PARADOX.SH\" is readable but small; red dashes and dots are visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A dark triangle mark with red accents and the name PARADOX.SH on white."
+    },
+    {
+      "file": "inplace/16--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Small rounded thumbnail at left of a list row; title \"Paradox\", meta \"2011 · DESIGN & 3D\", index \"15\" at right.",
+      "visible_vs_full": "Whole frame visible in a small wide thumbnail; the white card contains a small logo with the wordmark too small to read.",
+      "readable_here": "Row text \"Paradox\" and \"2011 · DESIGN & 3D\" readable; thumbnail shows only the triangle logo shape, no fine detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+  ],
+  "observer_confirms_blind": true
+}

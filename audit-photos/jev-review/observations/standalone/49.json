@@ -1,0 +1,13 @@
+{
+  "id": 49,
+  "file": "reference-assets/49--textured-head-closeup.CWc.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Close-up render of a glossy dark-red textured ant head with black eye, antennae and serrated mandibles over blurred grass and dirt.",
+  "text_readable": "no text",
+  "composition": "Head fills the centre and right of the frame, tilted; body and legs cut off at the top left. Blurred grass background fills the left and bottom edges.",
+  "tone_and_contrast": "Warm mid exposure. Dark glossy subject with specular highlights against lighter olive-yellow grass; subject and background separate clearly by lightness.",
+  "sharpness_and_artifacts": "Fine wrinkled surface detail on the head is visible at native size; background is soft (depth-of-field blur). Some soft edges and mild compression texture in the grass. No overlays or watermarks.",
+  "scan_first_read": "A large shiny ant head in close-up; reads as a detailed creature model.",
+  "observer_confirms_blind": true
+}

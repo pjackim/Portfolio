@@ -1,0 +1,13 @@
+{
+  "id": 17,
+  "file": "reference-assets/17--password-checker-search.DSaeMPi5.webp",
+  "project": "credential-correlation",
+  "kind": "app-ui-screenshot",
+  "depicts": "Dark-theme Google search bar containing 'password checker' with two result links, security.org and passwordmonster.com, in purple.",
+  "text_readable": "'password checker'; 'How Secure Is My Password? | Password Strength Checker'; 'Password Strength Meter'; 'https://www.passwordmonster.com'. All text readable at native size.",
+  "composition": "Search box across the top, two results stacked below, left-aligned, small empty band at right of results; nothing cut off except a tight bottom edge under the last link.",
+  "tone_and_contrast": "Dark grey background with light grey and light purple text; clear separation. Coloured mic and lens icons are the only saturated elements.",
+  "sharpness_and_artifacts": "Clean text rendering, slight compression softness around glyphs; no watermark or cursor visible. No baked-in margin beyond the search bar padding.",
+  "scan_first_read": "A Google search for 'password checker' with two results; reads as a plain search page.",
+  "observer_confirms_blind": true
+}

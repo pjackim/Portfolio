@@ -1,0 +1,24 @@
+{
+  "id": 55,
+  "views": [
+    {
+      "file": "inplace/55--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure in a project page with 'FIG. 01' caption at left and 'FULL SIZE' link at right below.",
+      "visible_vs_full": "Full split image visible without cropping, same 16:9 shape as the standalone: landfill left, waterfall right, green diagonal divider, text panel at bottom.",
+      "readable_here": "Caption readable. Panel text in condensed capitals is small but legible line by line, ending 'IT TAKES EVERYONE'. Some words like 'PLANER' and 'GREAT GRAND' visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Split scene of a garbage heap versus a waterfall pool, with a green-bordered paragraph over the bottom."
+    },
+    {
+      "file": "inplace/55--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure with 'FIG. 01' caption and 'FULL SIZE' link below.",
+      "visible_vs_full": "Frame is slightly taller than 16:9, so the sides are trimmed a little; the text panel's left and right borders remain inside the frame.",
+      "readable_here": "Panel text is small and dense but readable at this dpr3 capture; at 1x phone size likely tiny. Caption clear.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Landfill versus waterfall split with a wall of text at the bottom; contrast between the two halves is the takeaway."
+    }
+  ],
+  "observer_confirms_blind": true
+}

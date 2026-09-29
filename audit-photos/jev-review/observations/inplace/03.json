@@ -1,0 +1,42 @@
+{
+  "id": 3,
+  "views": [
+    {
+      "file": "inplace/03--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Case-study image on light grey surround with a dark-green header and footer inside the image.",
+      "visible_vs_full": "Full image visible in the frame with grey margins at the sides; matches the standalone layout including header, map, footer.",
+      "readable_here": "'T22 2 EAZY' title, 'Labietis' popup, and footer 'Connected to t22 2 Eazy (http://localhost:8000)' legible but small; coordinates in popup very small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Green-header map app with a blue route line across a world map."
+    },
+    {
+      "file": "inplace/03--desktop--2.png",
+      "viewport": "desktop",
+      "context": "A single thin list row: '03', 'Trip Planner', 'SOFTWARE', '2021' and arrow on a pale background.",
+      "visible_vs_full": "No image is visible in this captured element; the row shows text only.",
+      "readable_here": "Row number, title 'Trip Planner', 'SOFTWARE', '2021' readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A text-only row labeled Trip Planner, 2021, software."
+    },
+    {
+      "file": "inplace/03--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Case-study image in a light grey block with margins on all sides.",
+      "visible_vs_full": "Full image visible, letterboxed within the grey block, smaller than the standalone.",
+      "readable_here": "'T22 2 EAZY' readable; 'Labietis' popup readable but small; footer text small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Map with a blue route and a pin, under a green title bar."
+    },
+    {
+      "file": "inplace/03--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Project card top: image with rounded top corners; content cropped beneath.",
+      "visible_vs_full": "Image cropped to a wide strip showing the header, the map's upper half and the Labietis popup; the lower half of the map, floating button and footer are cut off.",
+      "readable_here": "'T22 2 EAZY' and 'Labietis 56.965000, 24.130278' readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "World map with blue route lines under a green T22 2 EAZY header."
+    }
+  ],
+  "observer_confirms_blind": true
+}

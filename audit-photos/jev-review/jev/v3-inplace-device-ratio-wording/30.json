@@ -1,0 +1,353 @@
+{
+ "id": 30,
+ "views": [
+  {
+   "file": "inplace/30--desktop--1.png",
+   "page": "work--the-forest",
+   "viewport": "desktop",
+   "role": "figure",
+   "state": {
+    "project": "the-forest",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Two dark translucent mod menu panels side by side over a blurred dark forest: Spawn Menu with Options on the left, Main Menu with Player options on the right.",
+     "file_pixels": "905 x 554 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "figure",
+     "context": "Wide figure of a menu-panel screenshot, caption FIG. 02 and FULL SIZE link below.",
+     "shown_size": "660 x 404 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown at about 1:1 with its pixels; about one source pixel per screen pixel"
+    },
+    "observation": {
+     "visible_vs_full": "Full image visible at a smaller scale than the standalone; both panels and the dark forest background shown, no visible crop.",
+     "readable_here": "Panel headings and all button and slider labels are readable but small; slider values '100', '13', '8' readable.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Two dark teal-outlined menu panels over a dark forest background, with the right one highlighted."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.99,
+     "confidence": 0.97,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.02,
+      "3": 0.96,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.89,
+     "confidence": 0.91,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.1,
+      "4": 0.9
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.89,
+     "confidence": 0.08,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.1,
+      "1": 0.09,
+      "2": 0.09,
+      "3": 0.28,
+      "4": 0.44
+     },
+     "decision": "reject"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.96,
+     "confidence": 0.97,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.01,
+      "4": 0.98
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.9,
+     "confidence": 0.85,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.14,
+      "3": 0.82,
+      "4": 0.04
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.23,
+     "p": 0.23,
+     "read": "no"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.18,
+     "p": 0.18,
+     "read": "no"
+    }
+   },
+   "severity": {
+    "choice": "none",
+    "confidence": 0.41,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.12,
+     "none": 0.56,
+     "severe": 0,
+     "moderate": 0.32
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.59,
+    "decision": "review",
+    "probabilities": {
+     "recrop-or-recapture": 0.11,
+     "replace": 0.01,
+     "layout-fix": 0.7,
+     "gentle-ai-touchup": 0.18
+    }
+   }
+  },
+  {
+   "file": "inplace/30--mobile--1.png",
+   "page": "work--the-forest",
+   "viewport": "mobile",
+   "role": "figure",
+   "state": {
+    "project": "the-forest",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Two dark translucent mod menu panels side by side over a blurred dark forest: Spawn Menu with Options on the left, Main Menu with Player options on the right.",
+     "file_pixels": "905 x 554 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "figure",
+     "context": "Same screenshot at phone width, caption and FULL SIZE link below.",
+     "shown_size": "343 x 210 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown 2.64x larger than its pixels (upscaled); enlarged more than twice beyond its pixels (visibly soft)"
+    },
+    "observation": {
+     "visible_vs_full": "Full image visible at phone width; both panels and background shown, no visible crop versus the standalone.",
+     "readable_here": "Panel headings and button labels readable; slider arrows and small values are small but visible.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Two dark menu panels with buttons and sliders over a dark background."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.46,
+     "confidence": 0.61,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.54,
+      "3": 0.46,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.94,
+     "confidence": 0.95,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.06,
+      "4": 0.94
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 0.39,
+     "confidence": 0.68,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.72,
+      "1": 0.24,
+      "2": 0.01,
+      "3": 0.01,
+      "4": 0.02
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.98,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.01,
+      "4": 0.99
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.4,
+     "confidence": 0.6,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.04,
+      "2": 0.52,
+      "3": 0.44,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.74,
+     "p": 0.74,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.71,
+     "p": 0.71,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.86,
+    "decision": "accept",
+    "probabilities": {
+     "moderate": 0.89,
+     "minor": 0.06,
+     "none": 0.02,
+     "severe": 0.03
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.68,
+    "decision": "review",
+    "probabilities": {
+     "gentle-ai-touchup": 0.18,
+     "layout-fix": 0.76,
+     "recrop-or-recapture": 0.01,
+     "replace": 0.05
+    }
+   }
+  }
+ ]
+}

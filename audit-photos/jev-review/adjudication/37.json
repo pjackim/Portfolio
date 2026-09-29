@@ -1,0 +1,7 @@
+{
+ "id": 37,
+ "standalone": "minor",
+ "in_place": "moderate",
+ "in_place_worst_file": "inplace/37--mobile--1.png",
+ "evidence": "Blurred comic backdrop but title, grid and clue readable. On mobile the PLAY button covers the right end of the clue text, truncating it."
+}

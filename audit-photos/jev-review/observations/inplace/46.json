@@ -1,0 +1,24 @@
+{
+  "id": 46,
+  "views": [
+    {
+      "file": "inplace/46--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure in a thin border; caption 'FIG. 02' and 'FULL SIZE' below.",
+      "visible_vs_full": "Image shown to the full frame width, edge to edge. Close-up of ant head and thorax, with cropped legs and abdomen; a thin light line runs across the top edge.",
+      "readable_here": "Skin texture and ridges on the thorax visible; no text in the image. Caption labels readable.",
+      "overlays_or_intrusions": "A thin horizontal line runs across the top of the image, inside the picture.",
+      "at_a_glance": "A close view of a blue-silver ant thorax and head with detailed surface texture."
+    },
+    {
+      "file": "inplace/46--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure in a rounded border; caption 'FIG. 02' and 'FULL SIZE' below.",
+      "visible_vs_full": "Image fills the frame edge to edge; same ant head and thorax close-up as standalone file, thin line near the top edge visible.",
+      "readable_here": "Surface ridges, small bumps and the eye are visible; no text in the image. Caption legible.",
+      "overlays_or_intrusions": "A thin horizontal line runs across the top of the picture.",
+      "at_a_glance": "A close-up of a shiny blue-silver ant body with rich surface texture."
+    }
+  ],
+  "observer_confirms_blind": true
+}

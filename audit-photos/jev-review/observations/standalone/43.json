@@ -1,0 +1,13 @@
+{
+  "id": 43,
+  "file": "reference-assets/43--tiling-workspace.DyN4GlR9.webp",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "Linux tiling desktop: two VS Code windows with C++ code at left and centre, terminal with git commit output top right, file manager below, status bar on top.",
+  "text_readable": "Readable: \"class Words\", \"pjackim@atlas\", \"git commit -am \\\"various changes\\\"\", \"/home/pjackim/\". Small code comments and breadcrumb text are tiny at thumbnail scale but legible at native size.",
+  "composition": "Full-screen desktop capture edge to edge; three tiled regions, code panes fill left two thirds, terminal and file manager stacked right. Bottom of terminal pane is largely empty.",
+  "tone_and_contrast": "Muted dark blue-grey theme with pastel text; a blurred wallpaper glows orange through translucent panes. Moderate contrast; code text is lower contrast on the translucent background.",
+  "sharpness_and_artifacts": "Text is rendered clean at native size. Translucency blur makes background patches uneven. Top-bar icons small. No watermark or cursor overlay; a text caret shows in terminal.",
+  "scan_first_read": "A tidy dark tiling desktop with code editors, a terminal and files; reads as a customised Linux setup, details too small.",
+  "observer_confirms_blind": true
+}

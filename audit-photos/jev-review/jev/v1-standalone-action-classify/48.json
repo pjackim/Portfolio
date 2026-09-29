@@ -1,0 +1,197 @@
+{
+ "id": 48,
+ "model": "jev-1.13.0",
+ "state": {
+  "project": "ant-game",
+  "kind": "3d-render",
+  "file_pixels": "1108 x 917 px, medium (1000-1600px wide)",
+  "file_sharpness": "moderate",
+  "file_exposure": "balanced",
+  "file_contrast": "high",
+  "empty_bands": "none",
+  "observation": {
+   "depicts": "Glossy dark red-brown textured ant model with large open mandibles and an orange-striped antenna in the foreground, posed on a sunlit grassy field.",
+   "text_readable": "no text",
+   "composition": "Ant fills the frame diagonally from lower left to right; head with mandibles at right, cut off on the right edge; legs cut at left, right and bottom edges. Grass fills background.",
+   "tone_and_contrast": "Warm sunlit grass with a dark reddish subject; mid-to-high contrast, head separates from grass while dark legs blend in shadows.",
+   "sharpness_and_artifacts": "Subject reads as a rendered model composited on a photo background; grass slightly soft. Specular highlights on the body are smooth. Legs show a thin edge halo in places. No watermark.",
+   "scan_first_read": "A large glossy ant with open mandibles on a sunlit field; dramatic and immediately readable."
+  }
+ },
+ "scoreIds": [
+  "resolution_headroom",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 2.02,
+   "confidence": 0.82,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.1,
+    "2": 0.78,
+    "3": 0.12,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 4,
+   "confidence": 1,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1
+   },
+   "decision": "accept"
+  },
+  "framing": {
+   "type": "score",
+   "score": 0.6,
+   "confidence": 0.65,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0.41,
+    "1": 0.58,
+    "2": 0.01,
+    "3": 0,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 2.6,
+   "confidence": 0.59,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.44,
+    "3": 0.52,
+    "4": 0.04
+   },
+   "decision": "review"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 2.17,
+   "confidence": 0.83,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.02,
+    "2": 0.81,
+    "3": 0.16,
+    "4": 0.01
+   },
+   "decision": "accept"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 3.92,
+   "confidence": 0.93,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.08,
+    "4": 0.92
+   },
+   "decision": "accept"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.76,
+   "p": 0.76,
+   "read": "yes"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.4,
+   "p": 0.4,
+   "read": "uncertain"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.78,
+   "p": 0.78,
+   "read": "yes"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "poor_framing_or_dead_space",
+   "confidence": 0.97,
+   "probabilities": {
+    "low_contrast_or_dark": 0,
+    "busy_background": 0,
+    "poor_framing_or_dead_space": 0.97,
+    "unreadable_text": 0,
+    "other": 0.01,
+    "artifacts_or_overlays": 0.02,
+    "low_resolution": 0,
+    "none": 0
+   },
+   "decision": "accept"
+  }
+ },
+ "classify": {
+  "choice": "recrop-or-recapture",
+  "confidence": 0.91,
+  "decision": "accept",
+  "probabilities": {
+   "fine": 0,
+   "recrop-or-recapture": 0.93,
+   "minor-polish": 0.03,
+   "gentle-ai-touchup": 0.03,
+   "replace": 0.01
+  }
+ }
+}

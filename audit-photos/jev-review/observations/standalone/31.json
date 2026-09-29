@@ -1,0 +1,13 @@
+{
+  "id": 31,
+  "file": "reference-assets/31--yt-lbqOiXaPm08.B-xSEU2l.webp",
+  "project": "the-forest",
+  "kind": "video-poster",
+  "depicts": "First-person view looking straight down over a foggy forest and a large sinkhole, holding an orange bloody axe with both hands; cave and sinkhole distance labels are overlaid.",
+  "text_readable": "\"SinkHole 445m\" in red; \"Cave 651m\", \"Cave 650m\", \"Cave 662m\"; \"NEW ITEMS AVAILABLE TO CRAFT. PRESS B TO OPEN SURVIVAL BOOK\"; \"Successful Injection\". Small labels are tiny.",
+  "composition": "Sinkhole upper left of centre; the axe angles from centre to upper right; arms and dark torso rise from the bottom. Status ring in lower right corner. Frame is filled edge to edge.",
+  "tone_and_contrast": "Washed-out beige haze with low contrast across the landscape; the orange axe and dark torso and red text stand out strongly.",
+  "sharpness_and_artifacts": "Video-frame compression softness across foliage; overlay labels are small and thin. HUD ring, prompts and debug labels are baked in. No player or watermark added.",
+  "scan_first_read": "A hazy top-down view with a bright orange axe in hand; a large hole in the ground.",
+  "observer_confirms_blind": true
+}

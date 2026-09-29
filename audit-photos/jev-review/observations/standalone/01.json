@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "file": "reference-assets/01--cover.D.webp",
+  "project": "credential-correlation",
+  "kind": "app-ui-screenshot",
+  "depicts": "Desktop screenshot of a password-correlation tool: two text fields with annotated colored letters and arrows over a blurred, darkened desktop background with a top status bar.",
+  "text_readable": "Readable: \"Green86Boot!\", \"Boot19Green86!\", \"This pattern occurs in both the username and password!\", \"No correlation\". Small status-bar text at top (\"2 KB/s\", \"Muted\", \"06:55 PM\") is tiny and only partly legible.",
+  "composition": "Annotation diagram centred, occupying most of the frame; two strings at top-centre with vertical lines down to captions. Corners and lower sides hold blurred background; captions touch the bottom edge.",
+  "tone_and_contrast": "Dark teal-grey background with low contrast; yellow, red, blue and green text stands out against it. Red/magenta captions are dimmer than the yellow and green ones.",
+  "sharpness_and_artifacts": "Background is blurred and dimmed. Text edges are clean at native size. Status bar with system icons and clock is baked in at top; a thin light window border runs around the frame. Mild webp softness on thin lines.",
+  "scan_first_read": "A password-analysis diagram with colour-coded letters and arrows; the two passwords are readable, the meaning of the colours takes longer to grasp.",
+  "observer_confirms_blind": true
+}

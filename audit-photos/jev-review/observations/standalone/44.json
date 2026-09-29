@@ -1,0 +1,13 @@
+{
+  "id": 44,
+  "file": "reference-assets/44--launcher-panel.CtzjOQC.webp",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "Tall narrow launcher panel: search bar, circular textured avatar labelled u/pjackim, six coloured folder buttons, app icons, power buttons, and a George Sheehan quote.",
+  "text_readable": "\"Search...\", \"u/pjackim\", \"sudo\", \"Bin Books Coding Documents Downloads Pictures\", \"Success means having the courage, the determination, and the will to become the person you believe you were meant to be. - George Sheehan\".",
+  "composition": "Portrait, tall narrow frame filled edge to edge with stacked rounded panels; a thin top bar is cut at the left edge. Quote panel has empty space above and below the text.",
+  "tone_and_contrast": "Grey-blue translucent background with pastel yellow, teal, green and orange buttons; text on buttons is dark and readable. Moderate overall contrast, colours separate the buttons clearly.",
+  "sharpness_and_artifacts": "Small pixel-scale render; text edges show mild softness at native size. Avatar shows a repeating scale-like texture. Top bar text \"fish /home/pjackim\" is clipped at left. No watermark.",
+  "scan_first_read": "A colourful stack of pastel buttons and a quote; looks like a custom launcher menu, small text unclear.",
+  "observer_confirms_blind": true
+}

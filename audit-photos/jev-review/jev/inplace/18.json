@@ -1,0 +1,353 @@
+{
+ "id": 18,
+ "views": [
+  {
+   "file": "inplace/18--desktop--1.png",
+   "page": "work--credential-correlation",
+   "viewport": "desktop",
+   "role": "figure",
+   "state": {
+    "project": "credential-correlation",
+    "image": {
+     "kind": "code-screenshot",
+     "depicts": "Rounded dark slate box holding monospace text '(:pjackim.1234@gmail.com : (:pjackim.1234' on a white surround, with a teal '@'.",
+     "file_pixels": "756 x 206 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "figure",
+     "context": "Figure with light-grey rounded panel holding a dark code-style box centered; caption \"FIG. 02\" below.",
+     "shown_size": "594 x 162 css px (a wide banner)",
+     "fit": "contain",
+     "crop": "shown whole (nothing cropped)",
+     "shape": "a wide banner slot for a wide banner source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens); the browser loaded a 662 px wide file for a 594 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Dark box is smaller than the panel and centered with grey margin around it; the standalone file shows the box with white margins, and the grey panel is page-drawn.",
+     "readable_here": "Credential line \"(:pjackim.1234@gmail.com : (:pjackim.1234\" readable in monospace; teal \"@\" visible.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "One line of monospace credentials, username and password identical, on a dark strip in a grey panel."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 3.94,
+     "confidence": 0.95,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.05,
+      "4": 0.95
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.98,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.01,
+      "4": 0.98
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.17,
+     "confidence": 0.75,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.01,
+      "2": 0.03,
+      "3": 0.72,
+      "4": 0.23
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.97,
+     "confidence": 0.97,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.02,
+      "4": 0.97
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.09,
+     "confidence": 0.79,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.06,
+      "3": 0.76,
+      "4": 0.17
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.36,
+     "p": 0.36,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.16,
+     "p": 0.16,
+     "read": "no"
+    }
+   },
+   "severity": {
+    "choice": "none",
+    "confidence": 0.49,
+    "decision": "reject",
+    "probabilities": {
+     "moderate": 0.06,
+     "none": 0.62,
+     "minor": 0.06,
+     "severe": 0.26
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.46,
+    "decision": "reject",
+    "probabilities": {
+     "layout-fix": 0.6,
+     "gentle-ai-touchup": 0.01,
+     "replace": 0.08,
+     "recrop-or-recapture": 0.31
+    }
+   }
+  },
+  {
+   "file": "inplace/18--mobile--1.png",
+   "page": "work--credential-correlation",
+   "viewport": "mobile",
+   "role": "figure",
+   "state": {
+    "project": "credential-correlation",
+    "image": {
+     "kind": "code-screenshot",
+     "depicts": "Rounded dark slate box holding monospace text '(:pjackim.1234@gmail.com : (:pjackim.1234' on a white surround, with a teal '@'.",
+     "file_pixels": "756 x 206 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "figure",
+     "context": "Full-width grey rounded panel with dark credential box centered inside; caption in large text below.",
+     "shown_size": "308 x 84 css px (a wide banner)",
+     "fit": "contain",
+     "crop": "shown whole (nothing cropped)",
+     "shape": "a wide banner slot for a wide banner source",
+     "resolution": "comfortably above one source pixel per CSS pixel (crisp on standard screens, close to crisp on high-density screens); the browser loaded a 390 px wide file for a 308 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Dark box occupies the middle of the grey panel with grey margins on all sides; full credential line visible, nothing cut off.",
+     "readable_here": "Full credential text readable in monospace, larger relative to the screen than on desktop.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark strip with a repeated username and password, caption states the password repeats the username."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 3.95,
+     "confidence": 0.95,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.05,
+      "4": 0.95
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.99,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.07,
+     "confidence": 0.68,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.01,
+      "2": 0.09,
+      "3": 0.66,
+      "4": 0.23
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.99,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.23,
+     "confidence": 0.77,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.02,
+      "3": 0.73,
+      "4": 0.25
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.23,
+     "p": 0.23,
+     "read": "no"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.11,
+     "p": 0.11,
+     "read": "no"
+    }
+   },
+   "severity": {
+    "choice": "none",
+    "confidence": 0.77,
+    "decision": "accept",
+    "probabilities": {
+     "moderate": 0.06,
+     "none": 0.83,
+     "severe": 0.06,
+     "minor": 0.05
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.66,
+    "decision": "review",
+    "probabilities": {
+     "layout-fix": 0.74,
+     "recrop-or-recapture": 0.19,
+     "gentle-ai-touchup": 0.03,
+     "replace": 0.04
+    }
+   }
+  }
+ ]
+}

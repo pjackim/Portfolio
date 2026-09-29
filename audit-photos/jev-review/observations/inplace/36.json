@@ -1,0 +1,24 @@
+{
+  "id": 36,
+  "views": [
+    {
+      "file": "inplace/36--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with rounded frame; a \"PLAY\" button sits at the bottom right; caption \"FIG. 01 - Players get a hint word...\" below.",
+      "visible_vs_full": "Full poster visible; slight difference in crop not seen versus the standalone file. Cursor arrow and text caret still visible.",
+      "readable_here": "\"Hero Trivia\" title, \"BEAST\" letters and clue text \"Surfer, servant of Galactus...\" are readable; empty grid cells show no text.",
+      "overlays_or_intrusions": "\"PLAY\" button at the bottom right covers a small part of the blurred background.",
+      "at_a_glance": "Comic-book themed crossword game, title and one clue visible, with a play button."
+    },
+    {
+      "file": "inplace/36--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width; large \"PLAY\" button at the bottom right; caption text under the frame.",
+      "visible_vs_full": "Full poster visible at smaller size; same content as the standalone file.",
+      "readable_here": "Title, \"BEAST\" letters and the clue text are readable; the caret in the grid is small.",
+      "overlays_or_intrusions": "Large \"PLAY\" button at the bottom right covers part of the blurred comic background.",
+      "at_a_glance": "Comic-styled trivia crossword with a clue bar and a play button."
+    }
+  ],
+  "observer_confirms_blind": true
+}

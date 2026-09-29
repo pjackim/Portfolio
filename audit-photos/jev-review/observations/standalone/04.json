@@ -1,0 +1,13 @@
+{
+  "id": 4,
+  "file": "reference-assets/04--cover.C5A2DxfY.webp",
+  "project": "the-forest",
+  "kind": "game-screenshot",
+  "depicts": "First-person view in a sunlit pine forest holding a wooden stick, a shirtless figure with a red skeleton overlay in shadow, and a cheat-menu panel down the left side.",
+  "text_readable": "Readable: \"Spawn Menu\", \"Bone ESP\", \"Draw Distance: 500\", \"NEW ITEMS AVAILABLE TO CRAFT. PRESS B TO OPEN SURVIVAL BOOK\". Some menu tab text is clipped (\"Evironmen\") and a green label near the slider is too small to read.",
+  "composition": "Menu column occupies the left quarter; the figure is centre-left in shadow; stick runs diagonally from bottom-right to upper-centre. Bottom-right holds a circular status gauge; bottom-left carries two message lines.",
+  "tone_and_contrast": "Strong light and shadow: bright foliage and grass against dark shade. The figure is dark on dark, separated mainly by thin red lines. Menu panel is translucent over foliage.",
+  "sharpness_and_artifacts": "Foliage detail is sharp. Debug/cheat menu, red bone-outline overlay, on-screen survival-book messages and a status gauge are baked in. Hand at bottom edge is cut off. No watermark seen. Some noise in shadow areas.",
+  "scan_first_read": "A forest survival game with a mod menu overlay and a red skeleton drawn on a person; the overlay UI competes with the scene.",
+  "observer_confirms_blind": true
+}

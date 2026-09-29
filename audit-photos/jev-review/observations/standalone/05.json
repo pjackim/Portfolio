@@ -1,0 +1,13 @@
+{
+  "id": 5,
+  "file": "reference-assets/05--cover.Xc93p9ti.webp",
+  "project": "hardpoint",
+  "kind": "3d-render",
+  "depicts": "Blocky dark-grey stone-like level geometry with stepped towers and a tiled floor; one rectangular patch of the floor glows yellow with a fine grid. Pale blue sky above.",
+  "text_readable": "no text",
+  "composition": "Yellow grid patch sits slightly below centre, framed by block walls left and right. Large dark blocks fill the left foreground and lower left; sky occupies the top strip. Floor tiles extend to the bottom edge.",
+  "tone_and_contrast": "Mostly dark grey blocks and floor with muted contrast between them; the yellow grid is the only saturated colour. Sky is pale blue with faint clouds.",
+  "sharpness_and_artifacts": "Clean render, no visible noise or blur. Slight compression softness on tile texture. No HUD, text or watermark. Textures are repetitive and uniform across the blocks.",
+  "scan_first_read": "A grey blocky game level with one glowing yellow zone; reads as a prototype map with a capture area.",
+  "observer_confirms_blind": true
+}

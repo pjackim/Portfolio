@@ -1,0 +1,42 @@
+{
+  "id": 5,
+  "views": [
+    {
+      "file": "inplace/05--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Case-study image within a light frame on a white page.",
+      "visible_vs_full": "Full image visible with the same content as the standalone: block walls, a yellow grid patch, sky at the top.",
+      "readable_here": "No text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark block-walled arena with a glowing yellow grid patch."
+    },
+    {
+      "file": "inplace/05--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Card: image strip on top, title 'Hardpoint Game Mode' and '05 · 2021' below.",
+      "visible_vs_full": "Image cropped to a wide strip: the sky and much of the lower floor are cut; the yellow patch is visible near the bottom edge.",
+      "readable_here": "Title and year readable; no text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark block walls with a yellow grid patch above Hardpoint Game Mode."
+    },
+    {
+      "file": "inplace/05--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Case-study image with rounded corners in a white page.",
+      "visible_vs_full": "Full image visible with white margins on all sides, smaller than standalone.",
+      "readable_here": "No text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark stone-block arena with a yellow glowing floor patch."
+    },
+    {
+      "file": "inplace/05--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Project card: image on top, '2021 · SOFTWARE', 05, title and truncated description.",
+      "visible_vs_full": "Image cropped to a squarer strip: left and right sides trimmed, the lower floor area is cut off.",
+      "readable_here": "Title 'Hardpoint Game Mode', description start readable; no text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark blocks and a yellow grid patch above the title Hardpoint Game Mode."
+    }
+  ],
+  "observer_confirms_blind": true
+}

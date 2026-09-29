@@ -1,0 +1,24 @@
+{
+  "id": 52,
+  "views": [
+    {
+      "file": "inplace/52--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in the ant-game case study with caption 'FIG. 08 — The ant model, rigged for animation.' and 'FULL SIZE' link.",
+      "visible_vs_full": "Full Maya viewport shown with its grey background; the ant occupies the middle, with wide grey margins on both sides as in the standalone.",
+      "readable_here": "Caption readable. 'Symmetry: Object X' and 'persp' labels are tiny and not readable here. Purple control curves and red lines faintly visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Grey untextured ant model with purple rig circles on a dark-grey Maya viewport, small in a wide frame."
+    },
+    {
+      "file": "inplace/52--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure with 'FIG. 08 — The ant model, rigged for animation.' caption wrapped on one line and 'FULL SIZE' link on the next.",
+      "visible_vs_full": "Frame is slightly taller than the standalone; the full grey viewport including the axis icon at bottom-left is visible, with margin around the ant.",
+      "readable_here": "Caption large and legible. 'Symmetry: Object X' and 'persp' are too small to read; purple curves are visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Grey ant model with purple rig controls under its feet on a dark-grey screen; ant is roughly half the frame width."
+    }
+  ],
+  "observer_confirms_blind": true
+}

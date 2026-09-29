@@ -1,0 +1,13 @@
+{
+  "id": 47,
+  "file": "reference-assets/47--sculpt-top-view.BNiyOCsm.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Top-down view of a symmetrical grey sculpted ant with antennae raised and legs spread, on a dark grey background.",
+  "text_readable": "no text",
+  "composition": "Portrait frame; ant centred on vertical axis, fills height from antenna tips to abdomen tip. Empty dark space at left and right of the body.",
+  "tone_and_contrast": "Silver-grey metal on dark grey; moderate contrast, thin legs and antennae remain distinct against the background.",
+  "sharpness_and_artifacts": "Thin antennae and leg spines show slight softness at native size. Body surface detail visible. No gizmo, watermark or HUD visible; abdomen tip is close to bottom edge.",
+  "scan_first_read": "A symmetrical grey ant seen from above; clear silhouette of a 3D creature.",
+  "observer_confirms_blind": true
+}

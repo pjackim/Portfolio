@@ -1,0 +1,42 @@
+{
+  "id": 8,
+  "views": [
+    {
+      "file": "inplace/08--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Case-study image within a light frame on a white page.",
+      "visible_vs_full": "Full image visible: HeroTrivia logo, crossword grid, question box and comic background; matches the standalone.",
+      "readable_here": "'HeroTrivia' logo and the clue '_____ Surfer, servant of Galactus who bretrayed him to save Earth' readable; letters in the grid are tiny and dim.",
+      "overlays_or_intrusions": "Semi-transparent dark clue box near the bottom is part of the image.",
+      "at_a_glance": "Blurred comic-book backdrop with a crossword grid and the Hero Trivia logo."
+    },
+    {
+      "file": "inplace/08--desktop--2.png",
+      "viewport": "desktop",
+      "context": "A row with a green forest thumbnail on the left edge, blank space, then 'SOFTWARE' and '2022' with an arrow.",
+      "visible_vs_full": "No Hero Trivia image is visible; the left thumbnail shows a forest with a boxed quote text, cropped at the row's left edge.",
+      "readable_here": "'SOFTWARE', '2022' readable; thumbnail quote text is tiny and unreadable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A row with a green forest thumbnail and software 2022 label."
+    },
+    {
+      "file": "inplace/08--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Case-study image with rounded corners in a white page.",
+      "visible_vs_full": "Full image visible with white margins on all sides, smaller than standalone.",
+      "readable_here": "'HeroTrivia' logo and the clue sentence readable at this size; grid letters small.",
+      "overlays_or_intrusions": "Dark translucent clue box across the bottom is part of the image.",
+      "at_a_glance": "Colorful comic collage background with a logo, a crossword and a clue."
+    },
+    {
+      "file": "inplace/08--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Project list row: small thumbnail with orange border, title 'Hero Trivia', '2022 · SOFTWARE', number 07.",
+      "visible_vs_full": "Thumbnail shows the full image scaled down to a small wide rectangle.",
+      "readable_here": "Title and category readable; text inside the thumbnail not readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small comic-collage thumbnail next to the title Hero Trivia."
+    }
+  ],
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,617 @@
+{
+ "id": 5,
+ "views": [
+  {
+   "file": "inplace/05--desktop--1.png",
+   "page": "work--hardpoint",
+   "viewport": "desktop",
+   "role": "hero",
+   "state": {
+    "project": "hardpoint",
+    "image": {
+     "kind": "3d-render",
+     "depicts": "Blocky dark-grey stone-like level geometry with stepped towers and a tiled floor; one rectangular patch of the floor glows yellow with a fine grid. Pale blue sky above.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "hero",
+     "context": "Case-study image within a light frame on a white page.",
+     "shown_size": "1150 x 718 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 9.9% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown 1.11x larger than its pixels (upscaled); slightly enlarged beyond its pixels"
+    },
+    "observation": {
+     "visible_vs_full": "Full image visible with the same content as the standalone: block walls, a yellow grid patch, sky at the top.",
+     "readable_here": "No text in the image.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark block-walled arena with a glowing yellow grid patch."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.46,
+     "confidence": 0.55,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.03,
+      "3": 0.46,
+      "4": 0.51
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.11,
+     "confidence": 0.26,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.03,
+      "1": 0.06,
+      "2": 0.16,
+      "3": 0.28,
+      "4": 0.47
+     },
+     "decision": "reject"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 4,
+     "confidence": 1,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.25,
+     "confidence": 0.75,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.02,
+      "3": 0.7,
+      "4": 0.28
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.47,
+     "p": 0.47,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.47,
+     "p": 0.47,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "minor",
+    "confidence": 0.22,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.43,
+     "severe": 0.02,
+     "moderate": 0.19,
+     "none": 0.36
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.71,
+    "decision": "review",
+    "probabilities": {
+     "recrop-or-recapture": 0.1,
+     "gentle-ai-touchup": 0.11,
+     "replace": 0,
+     "layout-fix": 0.79
+    }
+   }
+  },
+  {
+   "file": "inplace/05--desktop--2.png",
+   "page": "home",
+   "viewport": "desktop",
+   "role": "cover-card",
+   "state": {
+    "project": "hardpoint",
+    "image": {
+     "kind": "3d-render",
+     "depicts": "Blocky dark-grey stone-like level geometry with stepped towers and a tiled floor; one rectangular patch of the floor glows yellow with a fine grid. Pale blue sky above.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "cover-card",
+     "context": "Card: image strip on top, title 'Hardpoint Game Mode' and '05 · 2021' below.",
+     "shown_size": "563 x 177 css px (a wide banner)",
+     "fit": "cover",
+     "crop": "cover crop hides 44.1% of the image (cut from top and bottom, object-position 50% 50%)",
+     "shape": "a wide banner slot for landscape source",
+     "resolution": "shown 1.17x larger than its pixels (upscaled); slightly enlarged beyond its pixels"
+    },
+    "observation": {
+     "visible_vs_full": "Image cropped to a wide strip: the sky and much of the lower floor are cut; the yellow patch is visible near the bottom edge.",
+     "readable_here": "Title and year readable; no text in the image.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark block walls with a yellow grid patch above Hardpoint Game Mode."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 1.56,
+     "confidence": 0.51,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.47,
+      "2": 0.45,
+      "3": 0.05,
+      "4": 0.01
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.15,
+     "confidence": 0.29,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.04,
+      "1": 0.06,
+      "2": 0.15,
+      "3": 0.21,
+      "4": 0.54
+     },
+     "decision": "reject"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.95,
+     "confidence": 0.96,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.01,
+      "3": 0.01,
+      "4": 0.97
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.93,
+     "confidence": 0.82,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.14,
+      "3": 0.79,
+      "4": 0.07
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.54,
+     "p": 0.54,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.65,
+     "p": 0.65,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.27,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.21,
+     "moderate": 0.46,
+     "none": 0.21,
+     "severe": 0.12
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.36,
+    "decision": "reject",
+    "probabilities": {
+     "recrop-or-recapture": 0.47,
+     "gentle-ai-touchup": 0.01,
+     "layout-fix": 0.51,
+     "replace": 0.01
+    }
+   }
+  },
+  {
+   "file": "inplace/05--mobile--1.png",
+   "page": "work--hardpoint",
+   "viewport": "mobile",
+   "role": "hero",
+   "state": {
+    "project": "hardpoint",
+    "image": {
+     "kind": "3d-render",
+     "depicts": "Blocky dark-grey stone-like level geometry with stepped towers and a tiled floor; one rectangular patch of the floor glows yellow with a fine grid. Pale blue sky above.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "hero",
+     "context": "Case-study image with rounded corners in a white page.",
+     "shown_size": "343 x 213 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 9.8% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown 2.92x larger than its pixels (upscaled); enlarged more than twice beyond its pixels (visibly soft)"
+    },
+    "observation": {
+     "visible_vs_full": "Full image visible with white margins on all sides, smaller than standalone.",
+     "readable_here": "No text in the image.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark stone-block arena with a yellow glowing floor patch."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 2.98,
+     "confidence": 0.72,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.02,
+      "2": 0.13,
+      "3": 0.69,
+      "4": 0.16
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 0.67,
+     "confidence": 0.44,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.66,
+      "1": 0.2,
+      "2": 0.01,
+      "3": 0.05,
+      "4": 0.08
+     },
+     "decision": "reject"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 4,
+     "confidence": 1,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 1
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.15,
+     "confidence": 0.8,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.04,
+      "3": 0.76,
+      "4": 0.2
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.82,
+     "p": 0.82,
+     "read": "yes"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.85,
+     "p": 0.85,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.65,
+    "decision": "review",
+    "probabilities": {
+     "severe": 0.18,
+     "moderate": 0.73,
+     "none": 0.04,
+     "minor": 0.05
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.74,
+    "decision": "review",
+    "probabilities": {
+     "recrop-or-recapture": 0.04,
+     "layout-fix": 0.8,
+     "gentle-ai-touchup": 0.14,
+     "replace": 0.02
+    }
+   }
+  },
+  {
+   "file": "inplace/05--mobile--2.png",
+   "page": "home",
+   "viewport": "mobile",
+   "role": "cover-card",
+   "state": {
+    "project": "hardpoint",
+    "image": {
+     "kind": "3d-render",
+     "depicts": "Blocky dark-grey stone-like level geometry with stepped towers and a tiled floor; one rectangular patch of the floor glows yellow with a fine grid. Pale blue sky above.",
+     "file_pixels": "1920 x 1080 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "cover-card",
+     "context": "Project card: image on top, '2021 · SOFTWARE', 05, title and truncated description.",
+     "shown_size": "343 x 214 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides 10.2% of the image (cut from left and right, object-position 50% 50%)",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown 3.19x larger than its pixels (upscaled); enlarged more than twice beyond its pixels (visibly soft)"
+    },
+    "observation": {
+     "visible_vs_full": "Image cropped to a squarer strip: left and right sides trimmed, the lower floor area is cut off.",
+     "readable_here": "Title 'Hardpoint Game Mode', description start readable; no text in the image.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Dark blocks and a yellow grid patch above the title Hardpoint Game Mode."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 2.43,
+     "confidence": 0.48,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.07,
+      "2": 0.44,
+      "3": 0.46,
+      "4": 0.03
+     },
+     "decision": "reject"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 0.58,
+     "confidence": 0.52,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.74,
+      "1": 0.14,
+      "2": 0.01,
+      "3": 0.04,
+      "4": 0.07
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.97,
+     "confidence": 0.98,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.01,
+      "4": 0.99
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.74,
+     "confidence": 0.73,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.28,
+      "3": 0.6799999999999999,
+      "4": 0.03
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.82,
+     "p": 0.82,
+     "read": "yes"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.87,
+     "p": 0.87,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.72,
+    "decision": "review",
+    "probabilities": {
+     "severe": 0.19,
+     "moderate": 0.78,
+     "minor": 0.02,
+     "none": 0.01
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.56,
+    "decision": "review",
+    "probabilities": {
+     "recrop-or-recapture": 0.2,
+     "gentle-ai-touchup": 0.1,
+     "replace": 0.03,
+     "layout-fix": 0.67
+    }
+   }
+  }
+ ]
+}

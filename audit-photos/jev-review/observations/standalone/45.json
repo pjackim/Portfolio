@@ -1,0 +1,13 @@
+{
+  "id": 45,
+  "file": "reference-assets/45--sculpt-three-quarter.DQs8cXxK.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Grey sculpted ant model seen in three-quarter view on a dark grey background; sculpting software gizmo and axis cone in top right corner.",
+  "text_readable": "no text",
+  "composition": "Ant fills most of the width, centred with head lower right; legs at left and bottom reach near frame edges; one leg extends past the bottom edge. Dark empty space above and right.",
+  "tone_and_contrast": "Metallic silver-grey model on dark grey; moderate contrast, highlights define the form. Subject separates clearly from background.",
+  "sharpness_and_artifacts": "Fine surface detail in head and thorax is visible. A small head-shaped gizmo and red/green/blue axis cone sit at the top right; a red circle cursor at right edge. No blur or banding.",
+  "scan_first_read": "A detailed grey sculpted ant, clearly a 3D model; the fine texture reads.",
+  "observer_confirms_blind": true
+}

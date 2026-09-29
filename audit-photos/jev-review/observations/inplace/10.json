@@ -1,0 +1,33 @@
+{
+  "id": 10,
+  "views": [
+    {
+      "file": "inplace/10--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; image fills the card.",
+      "visible_vs_full": "Full frame shown; the beige background continues to all card edges; mountain, cloud and sun all visible; no cropping versus the standalone file.",
+      "readable_here": "Waterfalls, rainbow and small birds are visible; the birds are tiny. No text.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A rock mountain floating on a cloud with a waterfall and rainbow, in soft beige and white tones."
+    },
+    {
+      "file": "inplace/10--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border, pale page around it.",
+      "visible_vs_full": "Full frame visible, scaled down; mountain, cloud, rainbow and birds all present; nothing cut off.",
+      "readable_here": "Waterfalls and rainbow are visible; the birds are only a few pixels tall. No text.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A floating mountain island on a cloud with a rainbow, on beige."
+    },
+    {
+      "file": "inplace/10--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Small rounded thumbnail at left of a list row; title \"Over the Rainbow\", meta \"2021 · DESIGN & 3D\", index \"09\" at right.",
+      "visible_vs_full": "Whole frame visible in a small wide thumbnail; beige background matches the row; the mountain occupies the upper centre and the cloud the lower.",
+      "readable_here": "Row text \"Over the Rainbow\" and \"2021 · DESIGN & 3D\" readable; thumbnail shows only the mountain-and-cloud shape, no fine detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+  ],
+  "observer_confirms_blind": true
+}

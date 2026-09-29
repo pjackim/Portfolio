@@ -1,0 +1,7 @@
+{
+ "id": 61,
+ "standalone": "minor",
+ "in_place": "moderate",
+ "in_place_worst_file": "inplace/61--mobile--1.png",
+ "evidence": "Low-res game UI frame with pillarbox bars; menu readable at full size. On mobile Play button covers the menu panel."
+}

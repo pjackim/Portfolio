@@ -1,0 +1,13 @@
+{
+  "id": 53,
+  "file": "reference-assets/53--rig-joints.whQx6Ho.webp",
+  "project": "ant-game",
+  "kind": "app-ui-screenshot",
+  "depicts": "Maya viewport screenshot of a grey ant model with red and green joint chains visible through the body and legs, plus purple rig controls, on grey background.",
+  "text_readable": "Readable: \"Symmetry: Object X\" at top centre and \"persp\" at bottom centre. Both are tiny. No other text.",
+  "composition": "Ant sits centrally with wide flat grey margins on all sides; axis gizmo bottom-left. Joint chains run along the legs, spine and antenna.",
+  "tone_and_contrast": "Mid-grey background with light-grey model; bright red and green joint lines and purple rings separate clearly from the grey.",
+  "sharpness_and_artifacts": "Thin joint lines and circles are visible at native size; viewport labels are small. Baked-in Maya viewport text and axis widget. Slight compression softness on line edges. No cursors.",
+  "scan_first_read": "A grey ant with red and green skeleton lines; reads as a 3D rig in software.",
+  "observer_confirms_blind": true
+}

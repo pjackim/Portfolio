@@ -1,0 +1,206 @@
+{
+ "id": 10,
+ "state": {
+  "project": "over-the-rainbow",
+  "kind": "photo",
+  "file_pixels": "1920 x 1080 px, large (1600px or wider)",
+  "file_sharpness": "moderate",
+  "file_exposure": "bright",
+  "file_contrast": "normal",
+  "empty_bands": "left 16% of the width is a near-uniform empty band; right 16% of the width is a near-uniform empty band",
+  "observation": {
+   "depicts": "A composite of a rocky forested mountain with two waterfalls and a rainbow floating on a white cloud against a pale pink-beige sky, with a sun glare top left and small blue birds.",
+   "text_readable": "no text",
+   "composition": "Mountain and cloud centred in the frame; large empty pale sky on all sides; subject fully visible; cloud base fades softly into background at the bottom.",
+   "tone_and_contrast": "Low-contrast pastel haze overall; mountain is the only saturated area; cloud is near-white against beige sky, edges blend softly.",
+   "sharpness_and_artifacts": "Soft haze and glow around the mountain edges; a faint rectangular patch near the upper waterfall; smooth gradients, no visible banding or watermark at this view.",
+   "scan_first_read": "A floating island mountain with waterfall and rainbow on a cloud; dreamy surreal composite."
+  }
+ },
+ "model": "jev-1.13.0",
+ "scoreIds": [
+  "resolution_headroom",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 1.54,
+   "confidence": 0.55,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.5,
+    "2": 0.47,
+    "3": 0.03,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 3.65,
+   "confidence": 0.71,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.34,
+    "4": 0.66
+   },
+   "decision": "review"
+  },
+  "framing": {
+   "type": "score",
+   "score": 1.04,
+   "confidence": 0.91,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0.04,
+    "1": 0.9,
+    "2": 0.05,
+    "3": 0.01,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 1.78,
+   "confidence": 0.75,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.26,
+    "2": 0.7,
+    "3": 0.04,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 2.22,
+   "confidence": 0.8,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.01,
+    "2": 0.77,
+    "3": 0.22,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 3.75,
+   "confidence": 0.79,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.24,
+    "4": 0.76
+   },
+   "decision": "accept"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.64,
+   "p": 0.64,
+   "read": "uncertain"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.4,
+   "p": 0.4,
+   "read": "uncertain"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.38,
+   "p": 0.38,
+   "read": "uncertain"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "poor_framing_or_dead_space",
+   "confidence": 0.97,
+   "probabilities": {
+    "low_contrast_or_dark": 0.01,
+    "busy_background": 0,
+    "poor_framing_or_dead_space": 0.98,
+    "unreadable_text": 0,
+    "other": 0,
+    "artifacts_or_overlays": 0.01,
+    "low_resolution": 0,
+    "none": 0
+   },
+   "decision": "accept"
+  }
+ },
+ "severity": {
+  "choice": "moderate",
+  "confidence": 0.68,
+  "decision": "review",
+  "probabilities": {
+   "moderate": 0.75,
+   "none": 0.04,
+   "severe": 0.11,
+   "minor": 0.1
+  }
+ },
+ "remedy": {
+  "choice": "recrop-or-recapture",
+  "confidence": 0.31,
+  "decision": "reject",
+  "probabilities": {
+   "recrop-or-recapture": 0.54,
+   "replace": 0.01,
+   "gentle-ai-touchup": 0.45
+  }
+ }
+}

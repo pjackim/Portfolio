@@ -1,0 +1,13 @@
+{
+  "id": 40,
+  "file": "reference-assets/40--atlas-wordmark-dark.BlyylcTF.webp",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "White smoky octopus emblem with glowing eyes beside the spaced wordmark ATLAS, on a dark grey textured background.",
+  "text_readable": "\"ATLAS\" is readable at native size; no other text.",
+  "composition": "Emblem and wordmark form a small group at centre-left of the frame. The logo occupies a small fraction of the width; large empty dark area on all sides.",
+  "tone_and_contrast": "White logo on charcoal grey with subtle mottled texture; very high contrast between logo and background, low contrast within the background.",
+  "sharpness_and_artifacts": "Logo edges are crisp; smoke wisps are soft and gradual. Faint smoke fragments trail off the letter A. Background mottling is visible; no watermarks or overlays.",
+  "scan_first_read": "A white octopus emblem with the name ATLAS on dark; brand-like, though the mark is small in the frame.",
+  "observer_confirms_blind": true
+}

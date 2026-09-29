@@ -1,0 +1,24 @@
+{
+  "id": 19,
+  "views": [
+    {
+      "file": "inplace/19--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in grey rounded panel; white checker screenshot inset with margin; caption \"FIG. 03\" below.",
+      "visible_vs_full": "Whole screenshot visible inside panel, white edges of screenshot visible against grey; nothing cropped. Same content as standalone.",
+      "readable_here": "Password field, \"Strong\", \"14 characters containing:\", category labels and \"1 years\" readable; light-grey \"Upper case\" label faint.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Green \"Strong\" bar over the password with \"Time to crack: 1 years\"; caption says the checker grades the password alone."
+    },
+    {
+      "file": "inplace/19--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width grey rounded panel with white screenshot inset; caption large text wrapping to two lines.",
+      "visible_vs_full": "Whole screenshot visible with grey margin; no crop. Content identical to standalone.",
+      "readable_here": "All labels readable, including \"1 years\"; faint \"Upper case\" label light grey and lower contrast.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Big green \"Strong\" banner and \"1 years\" crack time; caption calls it a trap."
+    }
+  ],
+  "observer_confirms_blind": true
+}

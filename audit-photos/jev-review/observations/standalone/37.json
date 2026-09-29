@@ -1,0 +1,13 @@
+{
+  "id": 37,
+  "file": "reference-assets/37--puzzle-variety.poster.C-RfGYxF.webp",
+  "project": "hero-trivia",
+  "kind": "video-poster",
+  "depicts": "Hero Trivia crossword screen: logo at top, a vertical word DAREDEVIL in a yellow-outlined column crossing dark grid rows, and a clue bar below, over a blurred comic collage.",
+  "text_readable": "\"Hero Trivia\", letters D A R E D E V I L in the highlighted column, clue \"a special law enforcement and counter-terrorism agency in the MCU\"; empty grid cells have no text.",
+  "composition": "Logo centred at top; a taller grid fills the middle with the highlighted column at centre-left; clue panel spans nearly the full width along the bottom. Grid rows extend to different lengths.",
+  "tone_and_contrast": "Warm orange, red and blue blurred backdrop; dark translucent cells and panel. Gold letters and light clue text stand out from the dark panels; logo blue half is slightly darker than the yellow half.",
+  "sharpness_and_artifacts": "Background deliberately blurred; foreground text sharp. Slight compression softness in gradients and logo glow. No cursor visible. Clue panel is close to the left and right edges.",
+  "scan_first_read": "A comic-themed crossword game with a long highlighted word; the Hero Trivia logo and grid read first.",
+  "observer_confirms_blind": true
+}

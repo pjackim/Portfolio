@@ -1,0 +1,701 @@
+{
+ "id": 15,
+ "views": [
+  {
+   "file": "inplace/15--desktop--1.png",
+   "page": "work--lost-city",
+   "viewport": "desktop",
+   "role": "hero",
+   "state": {
+    "project": "lost-city",
+    "image": {
+     "kind": "photo",
+     "depicts": "A mossy old-growth forest composite with a semi-transparent figure with a shoulder bag standing on a cobblestone path, a quote text box top left, a utility pole at right and a small \"Parker Jackim Period 2\" label bottom right.",
+     "file_pixels": "2400 x 1500 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "hero",
+     "context": "Large rounded card on a pale page; image fills the card.",
+     "shown_size": "1150 x 718 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown at about 1:1 with its pixels; about one source pixel per screen pixel"
+    },
+    "observation": {
+     "visible_vs_full": "The full image is shown at about 1197 px width in the card, cut slightly at the sides against the standalone 16:10 file; the quote box top left and the \"Parker Jackim / Period 2\" tag bottom right are both present.",
+     "readable_here": "The quote text (\"Standing on the bare ground...\") is legible; the \"Parker Jackim Period 2\" tag at bottom right is small and hard to read.",
+     "overlays_or_intrusions": "The quote box with a translucent panel and white corner brackets sits over the top left of the image; the name tag sits over the path at bottom right.",
+     "at_a_glance": "A mossy forest with a translucent figure on a cobbled path, a quote panel at top left."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.09,
+     "confidence": 0.92,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.92,
+      "3": 0.06,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.34,
+     "confidence": 0.7,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.64,
+      "4": 0.35
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.07,
+     "confidence": 0.55,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.03,
+      "1": 0.05,
+      "2": 0.05,
+      "3": 0.56,
+      "4": 0.31
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 1.96,
+     "confidence": 0.85,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.11,
+      "2": 0.82,
+      "3": 0.07,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3,
+     "confidence": 0.7,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.17,
+      "3": 0.65,
+      "4": 0.18
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.49,
+     "p": 0.49,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.54,
+     "p": 0.54,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.27,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.22,
+     "moderate": 0.45,
+     "severe": 0.24,
+     "none": 0.09
+    }
+   },
+   "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.67,
+    "decision": "review",
+    "probabilities": {
+     "layout-fix": 0.19,
+     "recrop-or-recapture": 0.75,
+     "replace": 0.06,
+     "gentle-ai-touchup": 0
+    }
+   }
+  },
+  {
+   "file": "inplace/15--desktop--2.png",
+   "page": "work",
+   "viewport": "desktop",
+   "role": "carousel-slide",
+   "state": {
+    "project": "lost-city",
+    "image": {
+     "kind": "photo",
+     "depicts": "A mossy old-growth forest composite with a semi-transparent figure with a shoulder bag standing on a cobblestone path, a quote text box top left, a utility pole at right and a small \"Parker Jackim Period 2\" label bottom right.",
+     "file_pixels": "2400 x 1500 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "carousel-slide",
+     "context": "Small rounded card, thumbnail size; a small \"7\" digit at bottom right corner.",
+     "shown_size": "644 x 402 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "source has 1.24x more pixels than needed (downscaled); about one source pixel per screen pixel"
+    },
+    "observation": {
+     "visible_vs_full": "Full image visible at a small size; the quote box and bottom-right tag are in place; a slight crop at the sides compared with standalone.",
+     "readable_here": "Quote lines are only just readable; the \"Parker Jackim Period 2\" tag is not readable; a \"7\" digit is visible at the corner.",
+     "overlays_or_intrusions": "Quote panel over top left; a small \"7\" mark near the bottom right over the name tag.",
+     "at_a_glance": "A green forest scene with a text panel; the quote is hard to read at this size."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 1.76,
+     "confidence": 0.76,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.26,
+      "2": 0.72,
+      "3": 0.02,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.2,
+     "confidence": 0.81,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.78,
+      "4": 0.21
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.98,
+     "confidence": 0.6,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.04,
+      "2": 0.15,
+      "3": 0.58,
+      "4": 0.23
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 1.62,
+     "confidence": 0.59,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0.03,
+      "1": 0.39,
+      "2": 0.53,
+      "3": 0.05,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 1.81,
+     "confidence": 0.77,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.23,
+      "2": 0.73,
+      "3": 0.04,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.51,
+     "p": 0.51,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.85,
+     "p": 0.85,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.39,
+    "decision": "reject",
+    "probabilities": {
+     "moderate": 0.55,
+     "none": 0.02,
+     "severe": 0.37,
+     "minor": 0.06
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.43,
+    "decision": "reject",
+    "probabilities": {
+     "gentle-ai-touchup": 0,
+     "recrop-or-recapture": 0.41,
+     "layout-fix": 0.58,
+     "replace": 0.01
+    }
+   }
+  },
+  {
+   "file": "inplace/15--mobile--1.png",
+   "page": "work--lost-city",
+   "viewport": "mobile",
+   "role": "hero",
+   "state": {
+    "project": "lost-city",
+    "image": {
+     "kind": "photo",
+     "depicts": "A mossy old-growth forest composite with a semi-transparent figure with a shoulder bag standing on a cobblestone path, a quote text box top left, a utility pole at right and a small \"Parker Jackim Period 2\" label bottom right.",
+     "file_pixels": "2400 x 1500 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "hero",
+     "context": "Rounded card with thin border on a pale page.",
+     "shown_size": "343 x 213 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "shown 2.63x larger than its pixels (upscaled); enlarged more than twice beyond its pixels (visibly soft)"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame visible with slight side crop; quote panel top left and the name tag bottom right both inside the frame.",
+     "readable_here": "The quote is legible in bold white text; the \"Parker Jackim Period 2\" tag is small but discernible.",
+     "overlays_or_intrusions": "Quote box with translucent fill and corner brackets over the top left; name tag over the path bottom right.",
+     "at_a_glance": "A mossy forest, a translucent figure in the centre, and a quote panel at top left."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.61,
+     "confidence": 0.66,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.02,
+      "2": 0.35,
+      "3": 0.62,
+      "4": 0.01
+     },
+     "decision": "review"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.5,
+     "confidence": 0.58,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.02,
+      "3": 0.44,
+      "4": 0.53
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 0.48,
+     "confidence": 0.6,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.78,
+      "1": 0.12,
+      "2": 0.01,
+      "3": 0.03,
+      "4": 0.06
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 2.11,
+     "confidence": 0.85,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.03,
+      "2": 0.83,
+      "3": 0.14,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.74,
+     "confidence": 0.67,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.31,
+      "3": 0.61,
+      "4": 0.07
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.85,
+     "p": 0.85,
+     "read": "yes"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.82,
+     "p": 0.82,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.36,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.01,
+     "moderate": 0.52,
+     "severe": 0.46,
+     "none": 0.01
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.48,
+    "decision": "reject",
+    "probabilities": {
+     "recrop-or-recapture": 0.22,
+     "layout-fix": 0.61,
+     "replace": 0.11,
+     "gentle-ai-touchup": 0.06
+    }
+   }
+  },
+  {
+   "file": "inplace/15--mobile--2.png",
+   "page": "work",
+   "viewport": "mobile",
+   "role": "carousel-slide",
+   "state": {
+    "project": "lost-city",
+    "image": {
+     "kind": "photo",
+     "depicts": "A mossy old-growth forest composite with a semi-transparent figure with a shoulder bag standing on a cobblestone path, a quote text box top left, a utility pole at right and a small \"Parker Jackim Period 2\" label bottom right.",
+     "file_pixels": "2400 x 1500 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "carousel-slide",
+     "context": "Card image without border with rounded top corners, cropped tighter; light strip at the bottom.",
+     "shown_size": "343 x 213 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "source has 1.17x more pixels than needed (downscaled); about one source pixel per screen pixel"
+    },
+    "observation": {
+     "visible_vs_full": "Cropped more tightly than the standalone: the left edge, right pole and bottom path are cut; the quote panel is close to the left edge; name tag partly cut at the right and bottom.",
+     "readable_here": "Quote text is legible; the \"Parker Jackim Period 2\" tag is small and only partly readable.",
+     "overlays_or_intrusions": "Quote panel at top left; name tag bottom right over the path.",
+     "at_a_glance": "Forest with a figure on a path and a quote panel at top left."
+    }
+   },
+   "model": "jev-1.13.0",
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.03,
+     "confidence": 0.97,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.98,
+      "3": 0.02,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 2.24,
+     "confidence": 0.7,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.06,
+      "2": 0.64,
+      "3": 0.29,
+      "4": 0.01
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.78,
+     "confidence": 0.67,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.05,
+      "2": 0.2,
+      "3": 0.65,
+      "4": 0.09
+     },
+     "decision": "review"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 1.99,
+     "confidence": 0.88,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.08,
+      "2": 0.85,
+      "3": 0.07,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.62,
+     "confidence": 0.64,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.01,
+      "2": 0.39,
+      "3": 0.57,
+      "4": 0.03
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.57,
+     "p": 0.57,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.8,
+     "p": 0.8,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.55,
+    "decision": "review",
+    "probabilities": {
+     "minor": 0.17,
+     "none": 0.06,
+     "moderate": 0.67,
+     "severe": 0.1
+    }
+   },
+   "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.6,
+    "decision": "review",
+    "probabilities": {
+     "gentle-ai-touchup": 0,
+     "layout-fix": 0.29,
+     "recrop-or-recapture": 0.7,
+     "replace": 0.01
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,266 @@
+[
+ {
+  "id": 6,
+  "choice": "layout-fix",
+  "confidence": 0.77,
+  "probabilities": {
+   "replace": 0.05,
+   "layout-fix": 0.82,
+   "other": 0,
+   "recrop-or-recapture": 0.13,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 2,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "gentle-ai-touchup": 0,
+   "other": 0,
+   "replace": 0
+  }
+ },
+ {
+  "id": 22,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "replace": 0,
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "other": 0,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 3,
+  "choice": "layout-fix",
+  "confidence": 0.99,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 0.01,
+   "layout-fix": 0.99,
+   "replace": 0,
+   "other": 0
+  }
+ },
+ {
+  "id": 54,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.89,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "other": 0,
+   "recrop-or-recapture": 0.92,
+   "replace": 0.08,
+   "layout-fix": 0
+  }
+ },
+ {
+  "id": 58,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.99,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "replace": 0,
+   "other": 0
+  }
+ },
+ {
+  "id": 1,
+  "choice": "replace",
+  "confidence": 0.96,
+  "probabilities": {
+   "recrop-or-recapture": 0.03,
+   "layout-fix": 0,
+   "replace": 0.97,
+   "other": 0,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 21,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.92,
+  "probabilities": {
+   "layout-fix": 0,
+   "replace": 0.06,
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 0.94,
+   "other": 0
+  }
+ },
+ {
+  "id": 4,
+  "choice": "layout-fix",
+  "confidence": 0.44,
+  "probabilities": {
+   "recrop-or-recapture": 0.45,
+   "layout-fix": 0.55,
+   "replace": 0,
+   "other": 0,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 12,
+  "choice": "layout-fix",
+  "confidence": 0.85,
+  "probabilities": {
+   "recrop-or-recapture": 0.12,
+   "replace": 0,
+   "gentle-ai-touchup": 0,
+   "layout-fix": 0.88,
+   "other": 0
+  }
+ },
+ {
+  "id": 30,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.98,
+  "probabilities": {
+   "replace": 0.01,
+   "gentle-ai-touchup": 0,
+   "other": 0,
+   "recrop-or-recapture": 0.98,
+   "layout-fix": 0.01
+  }
+ },
+ {
+  "id": 35,
+  "choice": "other",
+  "confidence": 0.47,
+  "probabilities": {
+   "recrop-or-recapture": 0.35,
+   "other": 0.58,
+   "replace": 0.06,
+   "layout-fix": 0.01,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 45,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "replace": 0,
+   "gentle-ai-touchup": 0,
+   "other": 0
+  }
+ },
+ {
+  "id": 37,
+  "choice": "layout-fix",
+  "confidence": 0.5,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "replace": 0,
+   "recrop-or-recapture": 0,
+   "other": 0.39,
+   "layout-fix": 0.61
+  }
+ },
+ {
+  "id": 17,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 1,
+   "other": 0,
+   "layout-fix": 0,
+   "replace": 0
+  }
+ },
+ {
+  "id": 18,
+  "choice": "other",
+  "confidence": 0.68,
+  "probabilities": {
+   "recrop-or-recapture": 0.17,
+   "replace": 0.08,
+   "other": 0.74,
+   "gentle-ai-touchup": 0,
+   "layout-fix": 0.01
+  }
+ },
+ {
+  "id": 19,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "replace": 0,
+   "other": 0
+  }
+ },
+ {
+  "id": 20,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.98,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "recrop-or-recapture": 0.99,
+   "layout-fix": 0,
+   "replace": 0,
+   "other": 0.01
+  }
+ },
+ {
+  "id": 23,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.47,
+  "probabilities": {
+   "recrop-or-recapture": 0.58,
+   "replace": 0,
+   "other": 0.28,
+   "layout-fix": 0.14,
+   "gentle-ai-touchup": 0
+  }
+ },
+ {
+  "id": 34,
+  "choice": "recrop-or-recapture",
+  "confidence": 0.96,
+  "probabilities": {
+   "recrop-or-recapture": 0.97,
+   "layout-fix": 0,
+   "gentle-ai-touchup": 0,
+   "other": 0,
+   "replace": 0.03
+  }
+ },
+ {
+  "id": 44,
+  "choice": "recrop-or-recapture",
+  "confidence": 1,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "replace": 0,
+   "recrop-or-recapture": 1,
+   "layout-fix": 0,
+   "other": 0
+  }
+ },
+ {
+  "id": 55,
+  "choice": "other",
+  "confidence": 0.84,
+  "probabilities": {
+   "gentle-ai-touchup": 0,
+   "layout-fix": 0.01,
+   "replace": 0.02,
+   "other": 0.87,
+   "recrop-or-recapture": 0.1
+  }
+ }
+]

@@ -1,0 +1,13 @@
+{
+  "id": 19,
+  "file": "reference-assets/19--checker-rated-strong.BclnrruG.webp",
+  "project": "credential-correlation",
+  "kind": "app-ui-screenshot",
+  "depicts": "Web password strength checker showing '(:pjackim.1234' in a white bar over a green 'Strong' banner, '14 characters containing' row, and 'Time to crack your password: 1 years'.",
+  "text_readable": "'(:pjackim.1234'; 'Strong'; '14 characters containing:'; 'Time to crack your password:'; '1 years'. Small labels 'Lower case', 'Numbers', 'Symbols' readable; 'Upper case' is greyed and faint.",
+  "composition": "Full-width crop of the widget: input on top, green band, character row, then large crack-time text centred; white space below the number; slightly tight top and left edges.",
+  "tone_and_contrast": "Bright green band with white text; dark grey text on white; strong separation for the banner, low for the greyed 'Upper case'.",
+  "sharpness_and_artifacts": "Crisp vector-like text with mild compression fringing; no cursor or watermark visible. Trimmed crop edges show a thin green border on left, right and top.",
+  "scan_first_read": "A green 'Strong' rating and '1 years' crack time for a password.",
+  "observer_confirms_blind": true
+}

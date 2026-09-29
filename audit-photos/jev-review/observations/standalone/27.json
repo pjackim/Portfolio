@@ -1,0 +1,13 @@
+{
+  "id": 27,
+  "file": "reference-assets/27--interoperability.poster.DjylJH5q.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner app showing a large Leaflet street map of Fort Collins and the Colorado State University area, with zoom controls and a green list button at lower right.",
+  "text_readable": "\"T22 2 EAZY\"; street names such as \"West Mulberry Street\", \"West Prospect Road\", \"South College Avenue\", \"US 287\". Smaller street names are tiny at native size.",
+  "composition": "Map fills most of the frame between header and footer; the map controls are at the corners. No route or marker is present. Content extends edge to edge with a white band under the header.",
+  "tone_and_contrast": "Pastel map colours (grey, beige, green, pale yellow roads, orange arterials); moderate colour separation; dark green header and footer frame it.",
+  "sharpness_and_artifacts": "Map tiles show fine text and dense line detail, slightly soft. A mouse cursor is at the bottom centre. The bottom-right button covers the map attribution text. Footer begins with a missing-glyph box.",
+  "scan_first_read": "A detailed street map of a city with a green app header; no single focal point.",
+  "observer_confirms_blind": true
+}

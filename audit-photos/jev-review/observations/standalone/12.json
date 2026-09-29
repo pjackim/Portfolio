@@ -1,0 +1,13 @@
+{
+  "id": 12,
+  "file": "reference-assets/12--cover.dyhepgGf.webp",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "A Linux desktop screenshot with a top status bar, left profile and launcher-button panel, a central abstract pixel-block painting, and right icon grid and terminal system info.",
+  "text_readable": "Readable: \"u/pjackim\", \"Success means having the courage, the determination...\", \"- George Sheehan\", \"Sat 22\". Terminal system-info text at right is tiny and only partly readable at full view.",
+  "composition": "Full-screen desktop; wallpaper painting fills centre, side panels in columns left and right; content fills the frame edge to edge with no empty margins.",
+  "tone_and_contrast": "Muted teal, orange, yellow and slate palette; medium contrast; coloured buttons separate clearly from the darker panels; wallpaper is soft-toned.",
+  "sharpness_and_artifacts": "Crisp UI text and icons; monospace terminal text very small; wallpaper shows soft blur at edges; a faint bottom-left glow; no watermark visible.",
+  "scan_first_read": "A colourful custom Linux desktop with widgets and an abstract painting; polished themed dashboard look.",
+  "observer_confirms_blind": true
+}

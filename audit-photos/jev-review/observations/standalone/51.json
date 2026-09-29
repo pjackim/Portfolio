@@ -1,0 +1,13 @@
+{
+  "id": 51,
+  "file": "reference-assets/51--textured-side-forest.CruC59CP.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Side-profile render of a glossy dark-brown ant with long legs and antennae floating against a blurred autumn forest with a sandy slope.",
+  "text_readable": "no text",
+  "composition": "Ant sits in the centre band of the frame, slightly right of centre; blurred tree trunk at left, sandy slope at right. Space above and below the ant is background.",
+  "tone_and_contrast": "Bright green and orange background with softer, lower-contrast tones; dark brown ant separates clearly from the lighter background.",
+  "sharpness_and_artifacts": "Ant is crisp with visible segment ridges; background is intentionally blurred. Faint compression softness in foliage. No overlays or watermarks.",
+  "scan_first_read": "A dark ant seen in profile in a forest; reads as a lifelike insect in nature.",
+  "observer_confirms_blind": true
+}

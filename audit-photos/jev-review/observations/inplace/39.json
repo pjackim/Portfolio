@@ -1,0 +1,24 @@
+{
+  "id": 39,
+  "views": [
+    {
+      "file": "inplace/39--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with rounded frame and a \"FIG. 01\" label; a \"PLAY | YOUTUBE\" button is centered over the image.",
+      "visible_vs_full": "Full 16:9 frame visible; the floating mountain island and cloud sit in the middle, matching the standalone file.",
+      "readable_here": "No text in the image; button text \"PLAY | YOUTUBE\" is readable.",
+      "overlays_or_intrusions": "Centered \"PLAY | YOUTUBE\" button covers the lower slope of the mountain and the waterfall.",
+      "at_a_glance": "Pale pink image of a floating mountain with a waterfall and rainbow, with a play button."
+    },
+    {
+      "file": "inplace/39--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width; \"FIG. 01\" label below; large centered \"PLAY | YOUTUBE\" button over the image.",
+      "visible_vs_full": "Full 16:9 frame visible at smaller size; mountain, cloud and sun glow all present as in the standalone file, with the button in front.",
+      "readable_here": "No text in the image; the button label is large and readable.",
+      "overlays_or_intrusions": "Large \"PLAY | YOUTUBE\" button covers the mountain middle, the waterfall and the rainbow.",
+      "at_a_glance": "A large play button over a pale image; the mountain peak, rainbow and clouds show around it."
+    }
+  ],
+  "observer_confirms_blind": true
+}

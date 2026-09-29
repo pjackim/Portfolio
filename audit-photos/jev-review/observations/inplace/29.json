@@ -1,0 +1,24 @@
+{
+  "id": 29,
+  "views": [
+    {
+      "file": "inplace/29--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Full-width game screenshot in a figure, caption FIG. 01 and a FULL SIZE link at right.",
+      "visible_vs_full": "Whole image visible with the title bar and both bottom text lines; shown scaled down from the standalone with no crop.",
+      "readable_here": "Menu tabs like 'Options', 'Singles', 'Main Menu' and the item labels are readable but small; the bottom notification text is readable; slider values are tiny.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A first-person forest scene with a dark cheat-menu panel on the left and a stick in hand."
+    },
+    {
+      "file": "inplace/29--mobile--1.png",
+      "viewport": "mobile",
+      "context": "The same screenshot at phone width, with caption and FULL SIZE link below.",
+      "visible_vs_full": "Whole image visible, scaled smaller than on desktop; nothing cut off versus the standalone.",
+      "readable_here": "Menu headings are barely readable; button labels and slider values are too small to read; bottom notification text is tiny; the vitals ring is visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A forest first-person game scene with a translucent menu panel on the left."
+    }
+  ],
+  "observer_confirms_blind": true
+}

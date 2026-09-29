@@ -1,0 +1,24 @@
+{
+  "id": 24,
+  "views": [
+    {
+      "file": "inplace/24--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Video element in a figure: poster frame with native player controls (play button, 0:00, mute, fullscreen, menu) along the bottom; caption \"FIG. 01\" below.",
+      "visible_vs_full": "Poster shows the whole frame with a black band at the bottom under the controls; lower map area sits under the controls gradient; same frame as standalone plus a black strip.",
+      "readable_here": "Header \"T22 2 EAZY\", country labels on the map readable; small map labels and \"0:00\" small; attribution text partly hidden by controls.",
+      "overlays_or_intrusions": "Player controls with dark gradient across the bottom edge, play triangle, 0:00, mute, fullscreen, three-dot menu; controls overlap the map attribution and floating green button.",
+      "at_a_glance": "Green header over a world map with a blue route line and a pin; player controls indicate a video."
+    },
+    {
+      "file": "inplace/24--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width video poster with native controls bar and a black band below; caption in large text wrapping to two lines.",
+      "visible_vs_full": "Poster fills width; bottom of the map covered by controls gradient, then black band below, not in the standalone file; top header and map visible.",
+      "readable_here": "Header \"T22 2 EAZY\" and larger map labels readable; small labels soft; \"0:00\" and control icons large.",
+      "overlays_or_intrusions": "Player controls with dark gradient: play button, 0:00, muted speaker, fullscreen, menu; controls overlap the green floating button and attribution.",
+      "at_a_glance": "World map with blue route lines and a pin under a green header; a play button and 0:00 timer show it is a video."
+    }
+  ],
+  "observer_confirms_blind": true
+}

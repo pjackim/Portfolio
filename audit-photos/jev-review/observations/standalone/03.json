@@ -1,0 +1,13 @@
+{
+  "id": 3,
+  "file": "reference-assets/03--cover.Bn2WVtp3.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Web app screenshot: green header \"T22 2 EAZY\", Leaflet world map with blue route line and a Labietis popup, green add button, green footer bar.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"Labietis\", \"56.965000, 24.130278\", \"Connected to t22 2 Eazy (http://localhost:8000).\". Map attribution \"Leaflet | © Open...\" is partly covered by the button and cut off.",
+  "composition": "Portrait frame; map fills the middle with the popup near upper-centre. Blue route lines cross and leave the frame at left and right edges. Add button overlaps the bottom-right corner of the map.",
+  "tone_and_contrast": "Dark green header/footer against pale grey-blue map; blue route line and marker separate clearly from the map. White gaps sit above and below the map.",
+  "sharpness_and_artifacts": "Crisp vector lines and text. Baked-in localhost URL in footer, map zoom controls at top-left, attribution strip clipped by button. Route line is jagged with long straight segments across the map. No noticeable compression artifacts.",
+  "scan_first_read": "A world map with a looping blue route line and a location popup under a green \"T22 2 EAZY\" header: a trip-mapping web app.",
+  "observer_confirms_blind": true
+}

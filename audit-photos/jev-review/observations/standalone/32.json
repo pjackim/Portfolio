@@ -1,0 +1,13 @@
+{
+  "id": 32,
+  "file": "reference-assets/32--capture-zone-corridor.DIIIjFKp.webp",
+  "project": "hardpoint",
+  "kind": "game-screenshot",
+  "depicts": "Low camera view down a corridor between tall dark concrete walls; three small armored fighters, one lying down, in the distance; a yellow grid overlay covers the foreground floor.",
+  "text_readable": "no text",
+  "composition": "Subject fighters are small and sit centre, just above the lower third; the walls take the left and right thirds; the yellow grid fills the lower third. Sky gap at top centre.",
+  "tone_and_contrast": "Large dark grey-black wall areas; bright yellow grid lines on grey floor; small strip of blue sky with cloud at top; small red and blue fighters are colourful.",
+  "sharpness_and_artifacts": "Image is sharp; wall textures show soft concrete panels. Yellow grid is a bright overlay with visible aliasing on thin lines. No HUD or watermark visible.",
+  "scan_first_read": "Dark walls and a bright yellow grid; tiny fighters in the distance are secondary.",
+  "observer_confirms_blind": true
+}

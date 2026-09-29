@@ -1,0 +1,13 @@
+{
+  "id": 25,
+  "file": "reference-assets/25--iterative-design.poster.o.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner web app, dark green header, a Leaflet street map of Fort Collins with a blue route line and location popup, a My Trip list below.",
+  "text_readable": "\"T22 2 EAZY\"; \"Jack Christiansen Memorial Track, Mason Trail, Fort Collins...\"; \"Moby B-wing\", \"The Oval\". Map street labels and coordinate lines are small; the footer glyph at left renders as a missing-character box.",
+  "composition": "Full-page app capture: header on top, map in the upper half, search bar, then trip list cut off at the bottom above a green footer. Content is centred in a column with white side margins.",
+  "tone_and_contrast": "Light page with a dark green header and footer; map is pale with low-contrast beige and grey tones; the blue route line and popup stand out.",
+  "sharpness_and_artifacts": "Mouse cursor arrow visible near the trip title. A vertical scrollbar is at the right edge. Text is sharp; map tiles are slightly soft. A tofu box appears in the footer text.",
+  "scan_first_read": "A green-branded trip planner app with a map and route; brand name \"T22 2 EAZY\" is the clearest element.",
+  "observer_confirms_blind": true
+}

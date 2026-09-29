@@ -1,0 +1,13 @@
+{
+  "id": 24,
+  "file": "reference-assets/24--full-demo.poster.Cag7VY.webp",
+  "project": "trip-planner",
+  "kind": "video-poster",
+  "depicts": "Web map app 'T22 2 EAZY': world map centred on Asia and Africa, blue polyline between European and Middle East points, pin at Yemen, mouse cursor.",
+  "text_readable": "'T22 2 EAZY'; 'Connected to t22 2 Eazy (http://localhost:8000).'; '+' and '-' zoom buttons; map labels such as 'Deutschland', 'India', 'Australia'. Place labels are small; a faded tooltip near the pin is hard to read.",
+  "composition": "Dark green header at top, map fills the middle, action button in the lower right, footer bar at the bottom; the route runs off the left edge; pin is left of centre.",
+  "tone_and_contrast": "Pale beige and light blue map with dark green bars; the blue route line and the pin stand out moderately; map labels are grey and low contrast.",
+  "sharpness_and_artifacts": "Mouse cursor visible near the pin; a semi-transparent tooltip overlaps the map; a missing-glyph box appears before 'Connected'; attribution text is clipped at the lower right.",
+  "scan_first_read": "A world map with a blue route across it, under a green 'T22 2 Eazy' header.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": 33,
+  "views": [
+    {
+      "file": "inplace/33--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in the case study with rounded frame, caption \"FIG. 02 - Holding the point awards points...\" and a \"FULL SIZE\" link below.",
+      "visible_vs_full": "Whole 16:9 frame appears visible, edge to edge, matching the standalone file; no letterboxing seen.",
+      "readable_here": "Caption text is readable; in the image, the figures, blood splats and blue grid floor read; fine armor detail is small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Knights fighting in a dark stone arena with a glowing blue capture zone and fallen bodies."
+    },
+    {
+      "file": "inplace/33--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width, frame full width, large caption \"FIG. 02\" and \"FULL SIZE\" link beneath.",
+      "visible_vs_full": "Full frame visible at reduced size; nothing cropped compared with the standalone file.",
+      "readable_here": "Caption readable. Characters and blood splats readable; weapon and armor details are small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small battle scene, dark arena, blue zone in the middle and bodies in the foreground."
+    }
+  ],
+  "observer_confirms_blind": true
+}

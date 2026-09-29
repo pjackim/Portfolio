@@ -1,0 +1,206 @@
+{
+ "id": 7,
+ "state": {
+  "project": "credential-correlation",
+  "kind": "photo",
+  "file_pixels": "1242 x 1242 px, medium (1000-1600px wide)",
+  "file_sharpness": "very-soft",
+  "file_exposure": "balanced",
+  "file_contrast": "high",
+  "empty_bands": "none",
+  "observation": {
+   "depicts": "Square selfie of a smiling young man in a dark cap and dark collared shirt, in front of orange sandstone canyon walls and a bright sky gap.",
+   "text_readable": "no text",
+   "composition": "Face centred-left, filling about the middle half of the frame; cap top close to upper third. Shoulders and shirt cut by the bottom edge. Canyon rock fills left and right; bright sky gap above.",
+   "tone_and_contrast": "Face is softly lit, slightly darker than the orange rock; warm wall at left, sunlit rock at right. Sky gap is near white. Cap and shirt are dark.",
+   "sharpness_and_artifacts": "Slight softness in fine skin and rock detail typical of a phone selfie. Bright sky area is clipped to white. No watermark or overlay visible. No visible banding.",
+   "scan_first_read": "A friendly close-up of a smiling person in a cap against orange canyon rock: an outdoor portrait."
+  }
+ },
+ "model": "jev-1.13.0",
+ "scoreIds": [
+  "resolution_headroom",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 1.14,
+   "confidence": 0.88,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.86,
+    "2": 0.14,
+    "3": 0,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 3.56,
+   "confidence": 0.64,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.44,
+    "4": 0.56
+   },
+   "decision": "review"
+  },
+  "framing": {
+   "type": "score",
+   "score": 1.6,
+   "confidence": 0.47,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0.01,
+    "1": 0.52,
+    "2": 0.35,
+    "3": 0.11,
+    "4": 0.01
+   },
+   "decision": "reject"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 3.21,
+   "confidence": 0.78,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.03,
+    "3": 0.73,
+    "4": 0.24
+   },
+   "decision": "accept"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 2.65,
+   "confidence": 0.55,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.44,
+    "3": 0.46,
+    "4": 0.1
+   },
+   "decision": "review"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 3.35,
+   "confidence": 0.68,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.01,
+    "3": 0.62,
+    "4": 0.37
+   },
+   "decision": "review"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.57,
+   "p": 0.57,
+   "read": "uncertain"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.81,
+   "p": 0.81,
+   "read": "yes"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.28,
+   "p": 0.28,
+   "read": "uncertain"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "low_resolution",
+   "confidence": 0.75,
+   "probabilities": {
+    "unreadable_text": 0,
+    "low_resolution": 0.79,
+    "artifacts_or_overlays": 0,
+    "poor_framing_or_dead_space": 0.2,
+    "none": 0.01,
+    "busy_background": 0,
+    "low_contrast_or_dark": 0,
+    "other": 0
+   },
+   "decision": "accept"
+  }
+ },
+ "severity": {
+  "choice": "moderate",
+  "confidence": 0.16,
+  "decision": "reject",
+  "probabilities": {
+   "none": 0.33,
+   "minor": 0.21,
+   "moderate": 0.37,
+   "severe": 0.09
+  }
+ },
+ "remedy": {
+  "choice": "gentle-ai-touchup",
+  "confidence": 0.39,
+  "decision": "reject",
+  "probabilities": {
+   "gentle-ai-touchup": 0.59,
+   "recrop-or-recapture": 0.4,
+   "replace": 0.01
+  }
+ }
+}

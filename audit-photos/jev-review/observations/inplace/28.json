@@ -1,0 +1,24 @@
+{
+  "id": 28,
+  "views": [
+    {
+      "file": "inplace/28--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Video poster in a figure with a PLAY button near the lower right, caption FIG. 06 below.",
+      "visible_vs_full": "Frame is cropped at the bottom compared with the standalone: 'wwbrews.json' row is visible but the lower part below it is cut. Whole map and route lines show.",
+      "readable_here": "'wwbrews.json' and 'Find Place' are readable; the distance badge is partly covered; map labels are small.",
+      "overlays_or_intrusions": "A PLAY button overlaps the distance badge/trip-summary area at the right of the 'wwbrews.json' row.",
+      "at_a_glance": "A world map covered by many blue crossing route lines, with a file name and a PLAY button."
+    },
+    {
+      "file": "inplace/28--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same video poster with a large PLAY button overlapping the search bar, caption below.",
+      "visible_vs_full": "Full frame width shown, with the top of the map to the trip row; the button covers the search bar's right part and the distance badge.",
+      "readable_here": "'Find Place' and 'wwbrews.json' readable; the distance badge number is hidden behind PLAY; map country labels are not legible.",
+      "overlays_or_intrusions": "Large PLAY button over the right end of the search bar and the trip distance badge.",
+      "at_a_glance": "A world map tangled with blue route lines; a large PLAY button sits near the bottom."
+    }
+  ],
+  "observer_confirms_blind": true
+}

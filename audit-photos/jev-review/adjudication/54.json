@@ -1,0 +1,7 @@
+{
+ "id": 54,
+ "standalone": "moderate",
+ "in_place": "moderate",
+ "in_place_worst_file": "inplace/54--mobile--1.png",
+ "evidence": "Very dark frame; ant silhouette barely visible, tiny debug text and Activate Windows watermark. Large Play button covers scene in mobile."
+}

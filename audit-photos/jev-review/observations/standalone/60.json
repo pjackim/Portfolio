@@ -1,0 +1,13 @@
+{
+  "id": 60,
+  "file": "reference-assets/60--paradox-logo.BE37VDrI.webp",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "An impossible-triangle logo in dark grey with rounded pill shapes and red accents, above the wordmark PARADOX.SH, on a white background.",
+  "text_readable": "Readable: \"PARADOX.SH\" (PARADOX in dark letters, .SH in red). No other text.",
+  "composition": "Triangle is centred and occupies most of the square; wordmark sits below it; white margins surround the artwork, wider at left and right; small circles at upper right and lower right.",
+  "tone_and_contrast": "Dark grey and black shapes with bright red accents on pure white; white outline lines inside the triangle. High light-dark separation.",
+  "sharpness_and_artifacts": "Edges are clean and vector-like; pill shapes have a soft shadow. No noise, watermarks, or overlays visible. White square background is baked in.",
+  "scan_first_read": "A black-and-red triangle logo labelled PARADOX.SH.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": 27,
+  "views": [
+    {
+      "file": "inplace/27--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Video poster in a figure with a PLAY button at lower right, caption FIG. 04 below.",
+      "visible_vs_full": "Full frame shown; the bottom footer text and the corner of the green list button are visible, lower-right map corner and attribution partly covered by the button.",
+      "readable_here": "Street names and the green header title readable at this size; small streets and the footer URL are small; attribution text is covered.",
+      "overlays_or_intrusions": "A light rectangular 'PLAY' button overlaps the lower-right map area, the green list button and the map attribution.",
+      "at_a_glance": "A detailed street map of a campus area under a green header; a PLAY button marks it as video."
+    },
+    {
+      "file": "inplace/27--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same video poster with a large PLAY button at lower right, caption below at phone width.",
+      "visible_vs_full": "Full frame shown, scaled down to phone width; the green list button is hidden behind PLAY and the footer bar sits below the map.",
+      "readable_here": "Main road names and header title are readable; smaller street names are very small; footer URL text is small.",
+      "overlays_or_intrusions": "Large PLAY button covers the lower-right map area, the green list button and attribution.",
+      "at_a_glance": "A dense street map with a large PLAY button; map detail reads as texture."
+    }
+  ],
+  "observer_confirms_blind": true
+}

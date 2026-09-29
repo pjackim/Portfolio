@@ -1,0 +1,13 @@
+{
+  "id": 22,
+  "file": "reference-assets/22--gameplay-toggles.zlqJwMNs.webp",
+  "project": "mordhau",
+  "kind": "game-screenshot",
+  "depicts": "Cropped game menu: a 'Gameplay' header with six empty checkboxes (AFK, Crouch Cooldown, Dodge Cooldown, Enable Dodge, FOV, Move) in gold on black, over a faded patch-notes page.",
+  "text_readable": "'Gameplay'; 'AFK'; 'Crouch Cooldown'; 'Dodge Cooldown'; 'Enable Dodge'; 'FOV'; 'Move'. Behind: 'Patch 24 Hotfix 3' is legible but dim; the patch-note bullet text on the right is cut off and unreadable.",
+  "composition": "Checkbox list hugs the left edge, stacked vertically and cut off at the bottom; faded patch-notes text fills the right side and is cropped at the right edge.",
+  "tone_and_contrast": "Gold text and outlines on near-black; strong contrast for the list; background patch text is grey and dim, competing weakly.",
+  "sharpness_and_artifacts": "Soft, slightly blurry glyph edges and visible compression around text; the checkboxes show no ticks; no cursor or watermark. Tight crop with no margins; bottom item clipped.",
+  "scan_first_read": "A game menu list of gameplay options with checkboxes.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,7 @@
+{
+ "id": 44,
+ "standalone": "none",
+ "in_place": "minor",
+ "in_place_worst_file": "inplace/44--desktop--1.png",
+ "evidence": "Clear launcher UI, legible labels and quote at full size. On desktop it is a narrow panel in a wide grey frame, so text is small; mobile fine."
+}

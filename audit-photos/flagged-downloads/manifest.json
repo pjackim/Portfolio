@@ -13,7 +13,68 @@
     "evidence": "evidence/06--home-desktop--6.png",
     "page": "https://pjackim.github.io/Portfolio/work/aes-256/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.CvfAleX3_ZC42PY.webp",
-    "sha256": "113d74996d4c41dc1166612c2173fb5eae1aeafb162326201fb7b2358892bc2e"
+    "sha256": "113d74996d4c41dc1166612c2173fb5eae1aeafb162326201fb7b2358892bc2e",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 44.1,
+      "standalone_0_100": 49.6,
+      "in_place_0_100": 38.5,
+      "rank_of_61_worst_first": 3,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.54,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "unreadable_text",
+        "confidence": 0.72
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "layout-fix",
+        "confidence": 0.77
+      },
+      "weakest_dimension": {
+        "dim": "artifact_cleanliness",
+        "level": 0.78,
+        "confidence": 0.81
+      },
+      "worst_in_place_view": {
+        "file": "inplace/06--desktop--2.png",
+        "page": "home",
+        "viewport": "desktop",
+        "composite": 26.3,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.94,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 6,
+          "holds": 6
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 0,
+          "unc": 2,
+          "no": 0,
+          "weak": [
+            "“The AES cover becomes an anonymous dark strip on the homepage.” (uncertain, p=0.66)",
+            "“The AES case-study poster has very small code.” (uncertain, p=0.61)"
+          ]
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 2,
@@ -29,7 +90,71 @@
     "evidence": "evidence/02--desktop--mordhau.png",
     "page": "https://pjackim.github.io/Portfolio/work/mordhau/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.DoidqmIl_Z19YA75.webp",
-    "sha256": "cc4411e2993454fe8e55d0b7e947a163a674fd4a0627edcc7fa9ebd0c888c57a"
+    "sha256": "cc4411e2993454fe8e55d0b7e947a163a674fd4a0627edcc7fa9ebd0c888c57a",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 50.5,
+      "standalone_0_100": 46.1,
+      "in_place_0_100": 54.8,
+      "rank_of_61_worst_first": 4,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 1,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.99
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 0.03,
+        "confidence": 0.98
+      },
+      "worst_in_place_view": {
+        "file": "inplace/02--desktop--2.png",
+        "page": "work",
+        "viewport": "desktop",
+        "composite": 47,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.96,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 7,
+          "holds": 7
+        },
+        "semantic": {
+          "n": 3,
+          "yes": 2,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“Mordhau cover has incomplete framing.” (uncertain, p=0.67)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "severe",
+        "in_place": "severe",
+        "evidence": "Crop of settings sliders cut off at top, remainder empty black. Mobile row thumbnail is unreadable dark blob; no identifiable subject."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 22,
@@ -45,7 +170,67 @@
     "evidence": "evidence/22--desktop--22.png",
     "page": "https://pjackim.github.io/Portfolio/work/mordhau/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/gameplay-toggles.zlqJwMNs_Znuzlx.webp",
-    "sha256": "5bfe1926cddec7aede74ec3299b30cbe69c93ec1fcb91898b24f17494b391a5f"
+    "sha256": "5bfe1926cddec7aede74ec3299b30cbe69c93ec1fcb91898b24f17494b391a5f",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 61.1,
+      "standalone_0_100": 48.3,
+      "in_place_0_100": 73.9,
+      "rank_of_61_worst_first": 17,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.95,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.55
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.96,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 0.78,
+        "confidence": 0.81
+      },
+      "worst_in_place_view": {
+        "file": "inplace/22--mobile--1.png",
+        "page": "work--mordhau",
+        "viewport": "mobile",
+        "composite": 72.9,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.78,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 4,
+          "yes": 3,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“The Mordhau gameplay-toggles capture ends tightly at the controls.” (uncertain, p=0.37)"
+          ]
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 3,
@@ -61,7 +246,68 @@
     "evidence": "evidence/03--desktop--trip-planner.png",
     "page": "https://pjackim.github.io/Portfolio/work/trip-planner/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.Bn2WVtp3_Z2cTzX.webp",
-    "sha256": "226f79f4a7f4f4617399eef4cad796d046019c0186656cb83fd5b54cffa93f3b"
+    "sha256": "226f79f4a7f4f4617399eef4cad796d046019c0186656cb83fd5b54cffa93f3b",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 68.2,
+      "standalone_0_100": 68.4,
+      "in_place_0_100": 67.9,
+      "rank_of_61_worst_first": 32,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.47,
+        "decision": "reject"
+      },
+      "main_problem": {
+        "label": "artifacts_or_overlays",
+        "confidence": 0.88
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 1,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "layout-fix",
+      "first_pass_recommendation_read_as": {
+        "label": "layout-fix",
+        "confidence": 0.99
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.37,
+        "confidence": 0.68
+      },
+      "worst_in_place_view": {
+        "file": "inplace/03--desktop--2.png",
+        "page": "work",
+        "viewport": "desktop",
+        "composite": 60.8,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.99,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 9,
+          "holds": 9
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 0,
+          "unc": 1,
+          "no": 1,
+          "weak": [
+            "“The mobile homepage cuts off the Trip Planner app header/footer.” (uncertain, p=0.48)",
+            "“The Trip Planner cover at about 131x140 on the desktop homepage is too small to read.” (no, p=0.1)"
+          ]
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 54,
@@ -77,7 +323,71 @@
     "evidence": "evidence/54--desktop--54.png",
     "page": "https://pjackim.github.io/Portfolio/work/ant-game/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/yt-MBJ0LGR1R4o.DJme7N3O_Z24Or9v.webp",
-    "sha256": "ff0e4ee89491d25c4b7a6f24553357bbac8bfe9aa96bab876966946bc85a22b5"
+    "sha256": "ff0e4ee89491d25c4b7a6f24553357bbac8bfe9aa96bab876966946bc85a22b5",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 39.9,
+      "standalone_0_100": 27.7,
+      "in_place_0_100": 52,
+      "rank_of_61_worst_first": 1,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 1,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.48
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.9,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.89
+      },
+      "weakest_dimension": {
+        "dim": "contrast_exposure",
+        "level": 0.05,
+        "confidence": 0.96
+      },
+      "worst_in_place_view": {
+        "file": "inplace/54--mobile--1.png",
+        "page": "work--ant-game",
+        "viewport": "mobile",
+        "composite": 48,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.98,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 6,
+          "yes": 5,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“The scene is hard to identify on desktop and mobile.” (uncertain, p=0.73)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "moderate",
+        "in_place": "moderate",
+        "evidence": "Very dark frame; ant silhouette barely visible, tiny debug text and Activate Windows watermark. Large Play button covers scene in mobile."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 58,
@@ -93,7 +403,71 @@
     "evidence": "evidence/58--desktop--58.png",
     "page": "https://pjackim.github.io/Portfolio/work/paradox/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/zexilemodz-banner.BnJCZVTT_NXN51.webp",
-    "sha256": "507ab1652b032999dbce549dd224e6335fa480d92a82c414865753edb3d52f94"
+    "sha256": "507ab1652b032999dbce549dd224e6335fa480d92a82c414865753edb3d52f94",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 43.3,
+      "standalone_0_100": 28.9,
+      "in_place_0_100": 57.7,
+      "rank_of_61_worst_first": 2,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.98,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.85
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.87,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 0.13,
+        "confidence": 0.89
+      },
+      "worst_in_place_view": {
+        "file": "inplace/58--mobile--1.png",
+        "page": "work--paradox",
+        "viewport": "mobile",
+        "composite": 56.3,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.67,
+          "decision": "review"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 4,
+          "holds": 4
+        },
+        "semantic": {
+          "n": 5,
+          "yes": 4,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“On phones the actual Paradox banner becomes a tiny dark strip.” (uncertain, p=0.71)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "severe",
+        "in_place": "severe",
+        "evidence": "Banner is a thin strip in a mostly empty grey letterbox; logo and text tiny and very dark, illegible in the frame."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 1,
@@ -109,7 +483,69 @@
     "evidence": "evidence/01--home-desktop--1.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.D_BX09YC_Z1Wo6jN.webp",
-    "sha256": "cd9e852b6605b5fc97e34d83c8bfa848737ef1c90d31e3b53888a76a22a00711"
+    "sha256": "cd9e852b6605b5fc97e34d83c8bfa848737ef1c90d31e3b53888a76a22a00711",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 58.9,
+      "standalone_0_100": 64,
+      "in_place_0_100": 53.8,
+      "rank_of_61_worst_first": 13,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.66,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.56
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.82,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "replace",
+        "confidence": 0.96
+      },
+      "weakest_dimension": {
+        "dim": "artifact_cleanliness",
+        "level": 1.68,
+        "confidence": 0.66
+      },
+      "worst_in_place_view": {
+        "file": "inplace/01--mobile--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "mobile",
+        "composite": 49.5,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.96,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 4,
+          "yes": 1,
+          "unc": 3,
+          "no": 0,
+          "weak": [
+            "“The Credential Correlation cover source is a full desktop/video frame.” (uncertain, p=0.74)",
+            "“The cover has small colored labels over a translucent, busy background.” (uncertain, p=0.28)",
+            "“The cover reads poorly as a thumbnail.” (uncertain, p=0.67)"
+          ]
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 21,
@@ -125,7 +561,72 @@
     "evidence": "evidence/21--desktop--lightbox--21.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/gui-visualizer.Cz-1qiuz_Z11jNKu.webp",
-    "sha256": "5c224356eb58da5b8fc961110d387a2e4c572bb5ed036a2cb33327172dfca4e0"
+    "sha256": "5c224356eb58da5b8fc961110d387a2e4c572bb5ed036a2cb33327172dfca4e0",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 66.9,
+      "standalone_0_100": 65.2,
+      "in_place_0_100": 68.5,
+      "rank_of_61_worst_first": 29,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.54,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.52
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 1,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.92
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.18,
+        "confidence": 0.85
+      },
+      "worst_in_place_view": {
+        "file": "inplace/21--mobile--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "mobile",
+        "composite": 67.2,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.84,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 2,
+          "holds": 2
+        },
+        "semantic": {
+          "n": 3,
+          "yes": 1,
+          "unc": 2,
+          "no": 0,
+          "weak": [
+            "“The visualizer image retains small red, green and blue labels over a translucent desktop background.” (uncertain, p=0.36)",
+            "“Even the expanded (lightbox) visualizer image has weak contrast.” (uncertain, p=0.36)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "moderate",
+        "in_place": "moderate",
+        "evidence": "Dark dim visualizer; red/magenta annotations low-contrast; last caption cut off at bottom ('occurs in both'). On mobile monospace text is small and soft."
+      },
+      "agreement": "partly (Jev rates it less serious)"
+    }
   },
   {
     "id": 4,
@@ -141,7 +642,65 @@
     "evidence": "evidence/04--home-desktop--4.png",
     "page": "https://pjackim.github.io/Portfolio/work/the-forest/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.C5A2DxfY_Z1nUqsJ.webp",
-    "sha256": "e0353ece6dcb6857b3e3448ae3fd88a6b93f0cb04c0b053774dee686799500ba"
+    "sha256": "e0353ece6dcb6857b3e3448ae3fd88a6b93f0cb04c0b053774dee686799500ba",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 56.5,
+      "standalone_0_100": 56.1,
+      "in_place_0_100": 56.9,
+      "rank_of_61_worst_first": 8,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "artifacts_or_overlays",
+        "confidence": 1
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "layout-fix",
+      "first_pass_recommendation_read_as": {
+        "label": "layout-fix",
+        "confidence": 0.44
+      },
+      "weakest_dimension": {
+        "dim": "artifact_cleanliness",
+        "level": 0.34,
+        "confidence": 0.72
+      },
+      "worst_in_place_view": {
+        "file": "inplace/04--desktop--2.png",
+        "page": "home",
+        "viewport": "desktop",
+        "composite": 51.1,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.76,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 5,
+          "holds": 5
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 2,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 12,
@@ -157,7 +716,69 @@
     "evidence": "evidence/12--desktop--12.png",
     "page": "https://pjackim.github.io/Portfolio/work/arch-linux/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/cover.dyhepgGf_1azn46.webp",
-    "sha256": "9da3ff701bf7d0643b164cb84db292a4bb0ee039b1396ad80f02ee9507a06dc1"
+    "sha256": "9da3ff701bf7d0643b164cb84db292a4bb0ee039b1396ad80f02ee9507a06dc1",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 67.2,
+      "standalone_0_100": 80.4,
+      "in_place_0_100": 54,
+      "rank_of_61_worst_first": 30,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.57,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "unreadable_text",
+        "confidence": 0.88
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.84,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "recrop-or-recapture",
+      "first_pass_recommendation_read_as": {
+        "label": "layout-fix",
+        "confidence": 0.85
+      },
+      "weakest_dimension": {
+        "dim": "text_legibility",
+        "level": 2.04,
+        "confidence": 0.97
+      },
+      "worst_in_place_view": {
+        "file": "inplace/12--desktop--1.png",
+        "page": "work--arch-linux",
+        "viewport": "desktop",
+        "composite": 51.4,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.69,
+          "decision": "review"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 6,
+          "holds": 6
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 2,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "moderate",
+        "evidence": "Full desktop wallpaper: central painting clear, side widgets/text tiny but legible. In place, cover-crop cuts left panel (avatar, name, quote clipped) and right edge; mobile crop worst."
+      },
+      "agreement": "partly (Jev rates it less serious)"
+    }
   },
   {
     "id": 30,
@@ -173,7 +794,72 @@
     "evidence": "evidence/30--mobile--30.png",
     "page": "https://pjackim.github.io/Portfolio/work/the-forest/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/menu-panels.BZNx7UjB_1b4Xa6.webp",
-    "sha256": "9c58ddda99e7ebf1e7acbb157183b5b709a56d2a838d87835bcf9b4ed872cc13"
+    "sha256": "9c58ddda99e7ebf1e7acbb157183b5b709a56d2a838d87835bcf9b4ed872cc13",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 72.3,
+      "standalone_0_100": 68.4,
+      "in_place_0_100": 76.1,
+      "rank_of_61_worst_first": 41,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.64,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.99
+      },
+      "fix_kind_standalone": {
+        "label": "gentle-ai-touchup",
+        "confidence": 0.25,
+        "decision": "reject"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.98
+      },
+      "weakest_dimension": {
+        "dim": "contrast_exposure",
+        "level": 1.87,
+        "confidence": 0.87
+      },
+      "worst_in_place_view": {
+        "file": "inplace/30--mobile--1.png",
+        "page": "work--the-forest",
+        "viewport": "mobile",
+        "composite": 73.6,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.17,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 0,
+          "unc": 1,
+          "no": 1,
+          "weak": [
+            "“The Forest menu panels are composited over detailed, dark foliage.” (no, p=0.17)",
+            "“Small text in the Forest menu panels has weak separation from the scene, particularly at 390px and 320px.” (uncertain, p=0.28)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "minor",
+        "evidence": "Game menu panels over dark forest: labels legible, cyan accents clear, but overall dim low contrast. In place small text on desktop still readable."
+      },
+      "agreement": "partly (Jev rates it less serious)"
+    }
   },
   {
     "id": 35,
@@ -189,7 +875,72 @@
     "evidence": "evidence/35--mobile--35.png",
     "page": "https://pjackim.github.io/Portfolio/work/aes-256/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/aes-source-code.BTJvNGRc_KuHHd.webp",
-    "sha256": "a434b824bed206d88a7b461594cc1f034c147332e90514e59273ae2a4cbdab5a"
+    "sha256": "a434b824bed206d88a7b461594cc1f034c147332e90514e59273ae2a4cbdab5a",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 73.3,
+      "standalone_0_100": 66.4,
+      "in_place_0_100": 80.1,
+      "rank_of_61_worst_first": 45,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.43,
+        "decision": "reject"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.75
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "other",
+        "confidence": 0.47
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.05,
+        "confidence": 0.92
+      },
+      "worst_in_place_view": {
+        "file": "inplace/35--mobile--1.png",
+        "page": "work--aes-256",
+        "viewport": "mobile",
+        "composite": 79.9,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.27,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 2,
+          "holds": 2
+        },
+        "semantic": {
+          "n": 5,
+          "yes": 3,
+          "unc": 2,
+          "no": 0,
+          "weak": [
+            "“The AES code capture ends at an incomplete function near the lower/right edge.” (uncertain, p=0.65)",
+            "“Meaningful code in the AES capture becomes tiny on phones.” (uncertain, p=0.68)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "moderate",
+        "evidence": "Tall code screenshot mostly hex table, ends mid-function signature. In place on desktop it is shrunk with tiny unreadable code in narrow box; mobile better."
+      },
+      "agreement": "partly (Jev rates it less serious)"
+    }
   },
   {
     "id": 45,
@@ -205,7 +956,67 @@
     "evidence": "evidence/45--desktop--45.png",
     "page": "https://pjackim.github.io/Portfolio/work/ant-game/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/sculpt-three-quarter.DQs8cXxK_Z1ny6Qt.webp",
-    "sha256": "c6623d1c096e344bcfc74981723b47eddf8fb07bf43b6d149eb80f0241b7ac37"
+    "sha256": "c6623d1c096e344bcfc74981723b47eddf8fb07bf43b6d149eb80f0241b7ac37",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 65.3,
+      "standalone_0_100": 57.8,
+      "in_place_0_100": 72.7,
+      "rank_of_61_worst_first": 27,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.53,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "artifacts_or_overlays",
+        "confidence": 0.94
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 1,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.04,
+        "confidence": 0.94
+      },
+      "worst_in_place_view": {
+        "file": "inplace/45--mobile--1.png",
+        "page": "work--ant-game",
+        "viewport": "mobile",
+        "composite": 71.6,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.4,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 2,
+          "holds": 2
+        },
+        "semantic": {
+          "n": 3,
+          "yes": 2,
+          "unc": 0,
+          "no": 1,
+          "weak": [
+            "“The original file has the same framing as seen on the page.” (no, p=0.14)"
+          ]
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "agree"
+    }
   },
   {
     "id": 37,
@@ -221,7 +1032,71 @@
     "evidence": "evidence/37--mobile--37.png",
     "page": "https://pjackim.github.io/Portfolio/work/hero-trivia/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/puzzle-variety.poster.C-RfGYxF_202kA.webp",
-    "sha256": "0ee803f97ac94c0ca89bf26c5456beea52fb3b3022b11639149dd18502b94301"
+    "sha256": "0ee803f97ac94c0ca89bf26c5456beea52fb3b3022b11639149dd18502b94301",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 75.3,
+      "standalone_0_100": 75,
+      "in_place_0_100": 75.6,
+      "rank_of_61_worst_first": 49,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.15,
+        "decision": "reject"
+      },
+      "main_problem": {
+        "label": "busy_background",
+        "confidence": 0.16
+      },
+      "fix_kind_standalone": {
+        "label": "gentle-ai-touchup",
+        "confidence": 0.29,
+        "decision": "reject"
+      },
+      "fix_kind_in_place": "layout-fix",
+      "first_pass_recommendation_read_as": {
+        "label": "layout-fix",
+        "confidence": 0.5
+      },
+      "weakest_dimension": {
+        "dim": "resolution_headroom",
+        "level": 2.12,
+        "confidence": 0.74
+      },
+      "worst_in_place_view": {
+        "file": "inplace/37--mobile--1.png",
+        "page": "work--hero-trivia",
+        "viewport": "mobile",
+        "composite": 73.8,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.35,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 1,
+          "yes": 0,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“On 390px and 320px layouts the Play button covers the right end of the clue at the bottom of the puzzle poster.” (uncertain, p=0.45)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "moderate",
+        "evidence": "Blurred comic backdrop but title, grid and clue readable. On mobile the PLAY button covers the right end of the clue text, truncating it."
+      },
+      "agreement": "partly (Jev rates it less serious)"
+    }
   },
   {
     "id": 17,
@@ -237,7 +1112,71 @@
     "evidence": "evidence/17--tablet--17.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/password-checker-search.DSaeMPi5_ddPpi.webp",
-    "sha256": "f693bfd6a5d8ea0a23f0fdbe05431e7238a8cea6022036209a163fc3d699d506"
+    "sha256": "f693bfd6a5d8ea0a23f0fdbe05431e7238a8cea6022036209a163fc3d699d506",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Clean",
+      "overall_0_100": 72.8,
+      "standalone_0_100": 66,
+      "in_place_0_100": 79.6,
+      "rank_of_61_worst_first": 43,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.16,
+        "decision": "reject"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.85
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.59,
+        "decision": "review"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "resolution_headroom",
+        "level": 1.85,
+        "confidence": 0.65
+      },
+      "worst_in_place_view": {
+        "file": "inplace/17--mobile--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "mobile",
+        "composite": 77.4,
+        "severity": {
+          "label": "none",
+          "confidence": 0.15,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 1,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“Small result URLs in the password-checker-search screenshot are soft at reduced phone sizes.” (uncertain, p=0.55)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "minor",
+        "evidence": "Small, plain Google search-result crop; text legible, subject clear, little visual interest. Displayed fine in place with caption."
+      },
+      "agreement": "disagree (Jev sees no problem)"
+    }
   },
   {
     "id": 18,
@@ -253,7 +1192,65 @@
     "evidence": "evidence/18--tablet--18.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/dummy-credentials.C8SyxxmO_Rcoaz.webp",
-    "sha256": "b9abbb82368146a244b97a609d476c65df4f2393fc43d050fcbaf52a96843161"
+    "sha256": "b9abbb82368146a244b97a609d476c65df4f2393fc43d050fcbaf52a96843161",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 80.4,
+      "standalone_0_100": 69.9,
+      "in_place_0_100": 90.9,
+      "rank_of_61_worst_first": 58,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.85,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.98
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.62,
+        "decision": "review"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "other",
+        "confidence": 0.68
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.14,
+        "confidence": 0.69
+      },
+      "worst_in_place_view": {
+        "file": "inplace/18--desktop--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "desktop",
+        "composite": 90.8,
+        "severity": {
+          "label": "none",
+          "confidence": 0.49,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 4,
+          "holds": 4
+        },
+        "semantic": {
+          "n": 1,
+          "yes": 1,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "partly (Jev rates it more serious)"
+    }
   },
   {
     "id": 19,
@@ -269,7 +1266,69 @@
     "evidence": "evidence/19--tablet--19.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/checker-rated-strong.BclnrruG_ZVz8ix.webp",
-    "sha256": "87c96e3d7352937971863b11f9e0f40d4d10c166caabd2d6e01ae37d9ff2b804"
+    "sha256": "87c96e3d7352937971863b11f9e0f40d4d10c166caabd2d6e01ae37d9ff2b804",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 74.9,
+      "standalone_0_100": 65.6,
+      "in_place_0_100": 84.1,
+      "rank_of_61_worst_first": 48,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.59,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "other",
+        "confidence": 0.17
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.64,
+        "decision": "review"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "resolution_headroom",
+        "level": 1.79,
+        "confidence": 0.71
+      },
+      "worst_in_place_view": {
+        "file": "inplace/19--desktop--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "desktop",
+        "composite": 83.4,
+        "severity": {
+          "label": "none",
+          "confidence": 0.27,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 2,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "minor",
+        "evidence": "Checker screenshot readable: password, Strong, 1 years. Faint grey Upper case label and small labels; low-res but fine. Placement matches."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 20,
@@ -285,7 +1344,71 @@
     "evidence": "evidence/20--mobile--20.png",
     "page": "https://pjackim.github.io/Portfolio/work/credential-correlation/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/checker-crack-time.DBgSjXVd_ZBHnkh.webp",
-    "sha256": "1944dad57d0bee83406c3a45086c6d5894dad3efe7f82c0c0dea7af741203de8"
+    "sha256": "1944dad57d0bee83406c3a45086c6d5894dad3efe7f82c0c0dea7af741203de8",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Clean",
+      "overall_0_100": 74.3,
+      "standalone_0_100": 67.7,
+      "in_place_0_100": 80.8,
+      "rank_of_61_worst_first": 46,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.32,
+        "decision": "reject"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.52
+      },
+      "fix_kind_standalone": {
+        "label": "gentle-ai-touchup",
+        "confidence": 0.29,
+        "decision": "reject"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.98
+      },
+      "weakest_dimension": {
+        "dim": "resolution_headroom",
+        "level": 1.88,
+        "confidence": 0.69
+      },
+      "worst_in_place_view": {
+        "file": "inplace/20--mobile--1.png",
+        "page": "work--credential-correlation",
+        "viewport": "mobile",
+        "composite": 79.7,
+        "severity": {
+          "label": "none",
+          "confidence": 0.24,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 1,
+          "unc": 1,
+          "no": 0,
+          "weak": [
+            "“Small explanatory copy in the checker-crack-time screenshot is hard to read on phones.” (uncertain, p=0.66)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "none",
+        "in_place": "none",
+        "evidence": "Clear high-contrast checker page: headline, password field and 53 million years all readable. Small subtext only trivial. Placement sharp."
+      },
+      "agreement": "disagree (Jev sees no problem)"
+    }
   },
   {
     "id": 23,
@@ -301,7 +1424,73 @@
     "evidence": "evidence/23--mobile--23.png",
     "page": "https://pjackim.github.io/Portfolio/work/trip-planner/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/trip-manager.BKBMRMP-_Z1p4gdw.webp",
-    "sha256": "35b4ce3bcf0aba61ec3f6185a8e1e28fc02cce771b45e523a2ce133076e6f7bb"
+    "sha256": "35b4ce3bcf0aba61ec3f6185a8e1e28fc02cce771b45e523a2ce133076e6f7bb",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 72,
+      "standalone_0_100": 66.1,
+      "in_place_0_100": 77.9,
+      "rank_of_61_worst_first": 39,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.62,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.38
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.47
+      },
+      "weakest_dimension": {
+        "dim": "framing",
+        "level": 1.48,
+        "confidence": 0.59
+      },
+      "worst_in_place_view": {
+        "file": "inplace/23--desktop--1.png",
+        "page": "work--trip-planner",
+        "viewport": "desktop",
+        "composite": 77.8,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.28,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 3,
+          "yes": 0,
+          "unc": 2,
+          "no": 1,
+          "weak": [
+            "“The trip-manager modal contains a long list of very small text.” (uncertain, p=0.59)",
+            "“The trip-manager text is difficult to read at about 308 px on mobile.” (no, p=0.07)",
+            "“The full-size trip-manager source is better than the mobile rendering.” (uncertain, p=0.47)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "minor",
+        "evidence": "Trip Manager modal readable, subject clear; background dimmed/cropped and last list item clipped, small badge text. Mobile shrinks list text slightly."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 34,
@@ -317,7 +1506,65 @@
     "evidence": "evidence/34--desktop--34.png",
     "page": "https://pjackim.github.io/Portfolio/work/hardpoint/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/yt-EdJRI_kEXt8.DdU0DRNZ_Z7JNBS.webp",
-    "sha256": "62d9af30ac4bfa8d526507258a5cf9ec0b470a9230824d26b721fc52ee0381cc"
+    "sha256": "62d9af30ac4bfa8d526507258a5cf9ec0b470a9230824d26b721fc52ee0381cc",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Issue",
+      "overall_0_100": 55,
+      "standalone_0_100": 49.9,
+      "in_place_0_100": 60,
+      "rank_of_61_worst_first": 6,
+      "standalone_severity": {
+        "label": "severe",
+        "confidence": 0.93,
+        "decision": "accept"
+      },
+      "main_problem": {
+        "label": "artifacts_or_overlays",
+        "confidence": 0.99
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.99,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": "layout-fix",
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.96
+      },
+      "weakest_dimension": {
+        "dim": "artifact_cleanliness",
+        "level": 0.28,
+        "confidence": 0.77
+      },
+      "worst_in_place_view": {
+        "file": "inplace/34--mobile--1.png",
+        "page": "work--hardpoint",
+        "viewport": "mobile",
+        "composite": 56.7,
+        "severity": {
+          "label": "severe",
+          "confidence": 0.98,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 3,
+          "holds": 3
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 2,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": null,
+      "agreement": "partly (Jev rates it more serious)"
+    }
   },
   {
     "id": 44,
@@ -333,7 +1580,69 @@
     "evidence": "evidence/44--mobile--44.png",
     "page": "https://pjackim.github.io/Portfolio/work/arch-linux/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/launcher-panel.CtzjOQC__1Iy2zI.webp",
-    "sha256": "2f244a293f130bd0db44b0871d87eb6f4a4c75841deaedde1c240cb1feac9c44"
+    "sha256": "2f244a293f130bd0db44b0871d87eb6f4a4c75841deaedde1c240cb1feac9c44",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 69.9,
+      "standalone_0_100": 54.8,
+      "in_place_0_100": 85,
+      "rank_of_61_worst_first": 36,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.69,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "poor_framing_or_dead_space",
+        "confidence": 0.49
+      },
+      "fix_kind_standalone": {
+        "label": "recrop-or-recapture",
+        "confidence": 0.94,
+        "decision": "accept"
+      },
+      "fix_kind_in_place": null,
+      "first_pass_recommendation_read_as": {
+        "label": "recrop-or-recapture",
+        "confidence": 1
+      },
+      "weakest_dimension": {
+        "dim": "resolution_headroom",
+        "level": 1.1,
+        "confidence": 0.91
+      },
+      "worst_in_place_view": {
+        "file": "inplace/44--desktop--1.png",
+        "page": "work--arch-linux",
+        "viewport": "desktop",
+        "composite": 84.9,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.46,
+          "decision": "reject"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 4,
+          "holds": 4
+        },
+        "semantic": {
+          "n": 1,
+          "yes": 1,
+          "unc": 0,
+          "no": 0,
+          "weak": []
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "none",
+        "in_place": "minor",
+        "evidence": "Clear launcher UI, legible labels and quote at full size. On desktop it is a narrow panel in a wide grey frame, so text is small; mobile fine."
+      },
+      "agreement": "agree"
+    }
   },
   {
     "id": 55,
@@ -349,6 +1658,71 @@
     "evidence": "evidence/55--mobile--55.png",
     "page": "https://pjackim.github.io/Portfolio/work/go-green/",
     "downloadUrl": "https://pjackim.github.io/Portfolio/_astro/brochure-with-text.CLMpiJPU_Z1Tc5xN.webp",
-    "sha256": "1150ebd6e66593b830eff7d5450f89e45e19897b326fc97953d2a73f9b162216"
+    "sha256": "1150ebd6e66593b830eff7d5450f89e45e19897b326fc97953d2a73f9b162216",
+    "second_pass": {
+      "engine": "jev-1.13.0 (TypeSafe System One), 2026-09-29",
+      "tier": "Watch",
+      "overall_0_100": 72.2,
+      "standalone_0_100": 73.7,
+      "in_place_0_100": 70.7,
+      "rank_of_61_worst_first": 40,
+      "standalone_severity": {
+        "label": "moderate",
+        "confidence": 0.71,
+        "decision": "review"
+      },
+      "main_problem": {
+        "label": "low_contrast_or_dark",
+        "confidence": 0.62
+      },
+      "fix_kind_standalone": {
+        "label": "gentle-ai-touchup",
+        "confidence": 0.74,
+        "decision": "review"
+      },
+      "fix_kind_in_place": "layout-fix",
+      "first_pass_recommendation_read_as": {
+        "label": "other",
+        "confidence": 0.84
+      },
+      "weakest_dimension": {
+        "dim": "artifact_cleanliness",
+        "level": 2.17,
+        "confidence": 0.83
+      },
+      "worst_in_place_view": {
+        "file": "inplace/55--mobile--1.png",
+        "page": "work--go-green",
+        "viewport": "mobile",
+        "composite": 66.6,
+        "severity": {
+          "label": "moderate",
+          "confidence": 0.83,
+          "decision": "accept"
+        }
+      },
+      "fact_check": {
+        "numeric": {
+          "n": 5,
+          "holds": 5
+        },
+        "semantic": {
+          "n": 2,
+          "yes": 0,
+          "unc": 0,
+          "no": 2,
+          "weak": [
+            "“The Go Green brochure paragraph is packed into a small corner.” (no, p=0.1)",
+            "“The Go Green brochure paragraph is illegible at 343 px and 276 px displayed widths.” (no, p=0.1)"
+          ]
+        }
+      },
+      "blind_pixel_grade": {
+        "standalone": "minor",
+        "in_place": "minor",
+        "evidence": "Strong before/after image; text box is legible but large, covers lower third, with typos. Mobile text smaller but still readable."
+      },
+      "agreement": "agree"
+    }
   }
 ]

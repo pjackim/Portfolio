@@ -1,0 +1,13 @@
+{
+  "id": 48,
+  "file": "reference-assets/48--textured-front-view.DSPa5V.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Glossy dark red-brown textured ant model with large open mandibles and an orange-striped antenna in the foreground, posed on a sunlit grassy field.",
+  "text_readable": "no text",
+  "composition": "Ant fills the frame diagonally from lower left to right; head with mandibles at right, cut off on the right edge; legs cut at left, right and bottom edges. Grass fills background.",
+  "tone_and_contrast": "Warm sunlit grass with a dark reddish subject; mid-to-high contrast, head separates from grass while dark legs blend in shadows.",
+  "sharpness_and_artifacts": "Subject reads as a rendered model composited on a photo background; grass slightly soft. Specular highlights on the body are smooth. Legs show a thin edge halo in places. No watermark.",
+  "scan_first_read": "A large glossy ant with open mandibles on a sunlit field; dramatic and immediately readable.",
+  "observer_confirms_blind": true
+}

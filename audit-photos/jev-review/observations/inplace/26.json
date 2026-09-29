@@ -1,0 +1,24 @@
+{
+  "id": 26,
+  "views": [
+    {
+      "file": "inplace/26--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Video player with paused frame in a figure, caption FIG. 03 below.",
+      "visible_vs_full": "Full frame width shown; lower area with the blank trip list and green map button is overlaid by controls; black bar at bottom replaces the green footer.",
+      "readable_here": "Search text 'denver' and five heliport/airport names in bold are readable; coordinates under each are small; the blank lower area has nothing to read.",
+      "overlays_or_intrusions": "Native control bar and gradient over the lower white area; the green map button sits just above the controls.",
+      "at_a_glance": "A search box with five Denver results and add buttons, plus an empty 'My Trip' panel."
+    },
+    {
+      "file": "inplace/26--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same video player and caption at phone width.",
+      "visible_vs_full": "Full frame width shown; lower part is behind gradient and controls; the green map button at bottom right is partly covered by the menu dots and gradient.",
+      "readable_here": "Names of the five results and 'My Trip' readable; coordinates are small; the map button is dimmed and overlapped by the menu icon.",
+      "overlays_or_intrusions": "Large control bar (play, 0:00, mute, fullscreen, menu), progress bar and dark gradient over the lower third, overlapping the map button.",
+      "at_a_glance": "A search results list for Denver with add buttons; lower third darkened by player controls."
+    }
+  ],
+  "observer_confirms_blind": true
+}

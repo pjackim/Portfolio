@@ -1,0 +1,13 @@
+{
+  "id": 54,
+  "file": "reference-assets/54--yt-MBJ0LGR1R4o.DJme7N3O.webp",
+  "project": "ant-game",
+  "kind": "video-poster",
+  "depicts": "Very dark in-game frame: silhouetted ant on a dim ground in front of grass and pale mushrooms, with debug text at top left and a Windows watermark at bottom right.",
+  "text_readable": "Readable: \"Server: port=7777\", \"Client: address=localhost port=7777\", \"Stop (X)\", \"[1]: AntPlayer\", \"Activate Windows\", \"Development Build\". Bottom-right Windows text is faint and small.",
+  "composition": "Ant is a small dark shape at bottom centre; mushrooms at upper right; lower third is empty dark ground. Debug text sits in the top-left corner.",
+  "tone_and_contrast": "Very dark overall, low contrast. Ant silhouette nearly merges with the dark ground; pale mushrooms are the brightest area.",
+  "sharpness_and_artifacts": "Baked-in debug/network overlay and button at top left, \"Activate Windows\" watermark and \"Development Build\" label at bottom right. Faint banding and dark-area noise; dark detail is hard to see.",
+  "scan_first_read": "Mostly darkness with pale mushrooms; the ant silhouette and debug text are secondary.",
+  "observer_confirms_blind": true
+}

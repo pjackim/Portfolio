@@ -2,25 +2,33 @@
 
 | Page | 1440 | 1920 | 768 | 390 | 320 |
 |---|---|---|---|---|---|
-| home | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| capabilities/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| about/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| experience/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/credential-correlation/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/mordhau/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/trip-planner/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/the-forest/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/hardpoint/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/aes-256/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/hero-trivia/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/nodes/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/over-the-rainbow/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/spectre/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/arch-linux/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/ant-game/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/go-green/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/lost-city/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
-| work/paradox/ | Reviewed | Reviewed | Reviewed | Reviewed | Reviewed |
+| home | Reviewed · Jev: 5 in-place views, worst 26/100 (severe) | Reviewed · Jev: 7 images measured, not re-viewed | Reviewed · Jev: 7 images measured, not re-viewed | Reviewed · Jev: 4 in-place views, worst 61/100 (moderate) | Reviewed · Jev: 7 images measured, not re-viewed |
+| work/ | Reviewed · Jev: 6 in-place views, worst 29/100 (severe) | Reviewed · Jev: 15 images measured, not re-viewed | Reviewed · Jev: 15 images measured, not re-viewed | Reviewed · Jev: 11 in-place views, worst 50/100 (severity too uncertain) | Reviewed · Jev: 15 images measured, not re-viewed |
+| capabilities/ | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured |
+| about/ | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured |
+| experience/ | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured | Reviewed · Jev: no visible photo measured |
+| work/credential-correlation/ | Reviewed · Jev: 6 in-place views, worst 64/100 (severe) | Reviewed · Jev: 6 images measured, not re-viewed | Reviewed · Jev: 6 images measured, not re-viewed | Reviewed · Jev: 6 in-place views, worst 50/100 (severe) | Reviewed · Jev: 6 images measured, not re-viewed |
+| work/mordhau/ | Reviewed · Jev: 2 in-place views, worst 75/100 (severe) | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 in-place views, worst 72/100 (severe) | Reviewed · Jev: 2 images measured, not re-viewed |
+| work/trip-planner/ | Reviewed · Jev: 7 in-place views, worst 59/100 (severity too uncertain) | Reviewed · Jev: 7 images measured, not re-viewed | Reviewed · Jev: 7 images measured, not re-viewed | Reviewed · Jev: 7 in-place views, worst 62/100 (severity too uncertain) | Reviewed · Jev: 7 images measured, not re-viewed |
+| work/the-forest/ | Reviewed · Jev: 4 in-place views, worst 66/100 (severity too uncertain) | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 in-place views, worst 51/100 (severe) | Reviewed · Jev: 4 images measured, not re-viewed |
+| work/hardpoint/ | Reviewed · Jev: 4 in-place views, worst 70/100 (severe) | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 in-place views, worst 57/100 (severe) | Reviewed · Jev: 4 images measured, not re-viewed |
+| work/aes-256/ | Reviewed · Jev: 2 in-place views, worst 69/100 (severe) | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 in-place views, worst 46/100 (severe) | Reviewed · Jev: 2 images measured, not re-viewed |
+| work/hero-trivia/ | Reviewed · Jev: 3 in-place views, worst 59/100 (moderate) | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 in-place views, worst 62/100 (moderate) | Reviewed · Jev: 3 images measured, not re-viewed |
+| work/nodes/ | Reviewed · Jev: 2 in-place views, worst 79/100 (severity too uncertain) | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 in-place views, worst 74/100 (moderate) | Reviewed · Jev: 2 images measured, not re-viewed |
+| work/over-the-rainbow/ | Reviewed · Jev: 2 in-place views, worst 79/100 (severity too uncertain) | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 in-place views, worst 61/100 (severe) | Reviewed · Jev: 2 images measured, not re-viewed |
+| work/spectre/ | Reviewed · Jev: 4 in-place views, worst 77/100 (severity too uncertain) | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 images measured, not re-viewed | Reviewed · Jev: 4 in-place views, worst 73/100 (moderate) | Reviewed · Jev: 4 images measured, not re-viewed |
+| work/arch-linux/ | Reviewed · Jev: 3 in-place views, worst 51/100 (moderate) | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 in-place views, worst 61/100 (severity too uncertain) | Reviewed · Jev: 3 images measured, not re-viewed |
+| work/ant-game/ | Reviewed · Jev: 11 in-place views, worst 64/100 (severe) | Reviewed · Jev: 11 images measured, not re-viewed | Reviewed · Jev: 11 images measured, not re-viewed | Reviewed · Jev: 11 in-place views, worst 48/100 (severe) | Reviewed · Jev: 11 images measured, not re-viewed |
+| work/go-green/ | Reviewed · Jev: 3 in-place views, worst 83/100 (severity too uncertain) | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 images measured, not re-viewed | Reviewed · Jev: 3 in-place views, worst 67/100 (moderate) | Reviewed · Jev: 3 images measured, not re-viewed |
+| work/lost-city/ | Reviewed · Jev: 2 in-place views, worst 69/100 (severity too uncertain) | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 images measured, not re-viewed | Reviewed · Jev: 2 in-place views, worst 69/100 (severity too uncertain) | Reviewed · Jev: 2 images measured, not re-viewed |
+| work/paradox/ | Reviewed · Jev: 5 in-place views, worst 62/100 (severe) | Reviewed · Jev: 5 images measured, not re-viewed | Reviewed · Jev: 5 images measured, not re-viewed | Reviewed · Jev: 5 in-place views, worst 46/100 (severe) | Reviewed · Jev: 5 images measured, not re-viewed |
 
 52 successful lightbox opens recorded in details.json.
+
+## Second pass (Jev) coverage, added 2026-09-29
+
+- Every cell above keeps the first pass's "Reviewed" and adds what the second pass did at that page and size.
+- **In-place views** (desktop 1440 and mobile 390 only): 146 element screenshots of the 61 assets where they sit on the live site (up to two placements per asset per viewport: the primary one and the most-cropped one), each described blind by a vision agent and scored by Jev (five in-place scores plus severity and fix-kind classifiers). "worst NN/100" is the lowest in-place composite among those views on that page; 50 is "acceptable" on the rubric.
+- **Measured, not re-viewed**: 1920, 768 and 320 wide were re-measured from `inventory.json` (rendered size, fit, crop loss, file actually loaded) for all 61 assets, but no new pixels were viewed at those sizes. That is a coverage gap versus the first pass's "Reviewed".
+- "no visible photo measured": the inventory recorded no visible image from the 61 assets on that page at that size (the portrait on About, Experience and Capabilities was hidden, 0x0, in the recorded pass).
+- Details: [jev-review/REPORT.md](jev-review/REPORT.md).

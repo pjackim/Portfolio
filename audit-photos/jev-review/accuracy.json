@@ -1,0 +1,70 @@
+{
+ "claims": {
+  "numeric": {
+   "n": 86,
+   "holds": 86
+  },
+  "process": {
+   "n": 26,
+   "holds": 26
+  },
+  "semantic": {
+   "n": 65,
+   "mean_p": 0.6850769230769232,
+   "yes": 34,
+   "uncertain": 23,
+   "no": 8
+  },
+  "value": 0.811046153846154
+ },
+ "weights": {
+  "claims": 30,
+  "overlap22": 20,
+  "precision": 15,
+  "recall": 15,
+  "ranking": 20
+ },
+ "jev": {
+  "overlap22": {
+   "n": 8,
+   "of": 22,
+   "value": 0.36363636363636365
+  },
+  "precision": {
+   "value": 0.7045454545454546
+  },
+  "recall": {
+   "n": 11,
+   "of": 24,
+   "value": 0.4583333333333333
+  },
+  "ranking": {
+   "rho": 0.21518619750579576,
+   "value": 0.21518619750579576
+  },
+  "issueCount": 24,
+  "total": 53.351017656409624
+ },
+ "consensus": {
+  "overlap22": {
+   "n": 11,
+   "of": 22,
+   "value": 0.5
+  },
+  "precision": {
+   "value": 0.5909090909090909
+  },
+  "recall": {
+   "n": 11,
+   "of": 17,
+   "value": 0.6470588235294118
+  },
+  "ranking": {
+   "rho": 0.34194074017298004,
+   "value": 0.34194074017298004
+  },
+  "issueCount": 17,
+  "total": 59.739718135421754
+ },
+ "adjudicated": 36
+}
