@@ -37,7 +37,6 @@ declare global {
     __capability?: (string | null)[];
     __vts?: ViewTransition[];
     __loadYs?: number[];
-    __scrollYs?: number[];
   }
 }
 
@@ -802,20 +801,40 @@ test.describe('in-page scrolling (Ruling G9)', () => {
       if (motion === 'off') await page.addInitScript(() => localStorage.setItem('motion', 'off'));
       await gotoRel(page, '');
       await page.waitForLoadState('load');
-      await page.evaluate(() => {
-        window.__scrollYs = [];
-        addEventListener('scroll', () => window.__scrollYs!.push(Math.round(scrollY)));
+      const link = page.locator('.site-nav a', { hasText: 'About' });
+      await expect(link).toBeVisible();
+      // Glide or jump is decided when the click is handled, not by how many frames the browser
+      // then paints, so it is read at that moment. Counting the scroll events on the way made
+      // the test a frame-rate gauge: CI's software-rastered WebKit paints 0-4 frames of a glide
+      // under load, and a glide that lands in one frame is indistinguishable from a jump. A jump
+      // has landed by the time click() returns; a glide has not moved yet, with smooth scrolling
+      // switched on for it.
+      const click = await link.evaluate((a) => {
+        const html = document.documentElement;
+        const before = scrollY;
+        (a as HTMLElement).click();
+        return {
+          before,
+          after: scrollY,
+          smoothClass: html.classList.contains('smooth-scroll'),
+          behavior: getComputedStyle(html).scrollBehavior,
+        };
       });
-      await page.locator('.site-nav a', { hasText: 'About' }).click();
       await expect(page).toHaveURL(/#about$/);
       await expect(page.locator('#about')).toBeInViewport();
       await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/, { timeout: 8000 });
-      const ys = (await page.evaluate(() => window.__scrollYs)) ?? [];
-      const target = ys.at(-1) ?? 0;
-      expect(target).toBeGreaterThan(0);
-      const between = ys.filter((y) => y > 0 && y < target).length;
-      if (motion === 'on') expect(between, `positions on the way: ${ys}`).toBeGreaterThan(1);
-      else expect(between, `positions on the way: ${ys}`).toBe(0);
+      expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
+      if (motion === 'on') {
+        expect(click.smoothClass).toBe(true);
+        expect(click.behavior).toBe('smooth');
+        expect(click.after, 'nothing has scrolled yet when the click returns').toBe(click.before);
+      } else {
+        expect(click.smoothClass).toBe(false);
+        expect(click.behavior).toBe('auto');
+        expect(click.after, 'the page has already landed when the click returns').toBeGreaterThan(
+          click.before,
+        );
+      }
     });
   }
 });
