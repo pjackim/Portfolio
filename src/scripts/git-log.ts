@@ -35,6 +35,8 @@ function wire(root: HTMLElement): void {
   );
   let picked: string | null = null;
   let preview: string | null = null;
+  /** The pick the note last described: the live region is rewritten only when it changes. */
+  let noted: string | null = null;
 
   const summary = (family: string) => {
     if (!note) return;
@@ -44,9 +46,11 @@ function wire(root: HTMLElement): void {
     const name = document.createElement('b');
     name.textContent = family;
     const parts = [
-      hits.length === 1
-        ? `1 milestone, ${title(hits[0])}`
-        : `${hits.length} milestones, ${title(hits.at(-1))} → ${title(hits[0])}`,
+      hits.length === 0
+        ? 'not merged into a milestone yet'
+        : hits.length === 1
+          ? `1 milestone, ${title(hits[0])}`
+          : `${hits.length} milestones, ${title(hits.at(-1))} → ${title(hits[0])}`,
     ];
     if (learning) parts.push(`${learning} still learning`);
     note.replaceChildren(name, ` · ${parts.join(' · ')}`);
@@ -65,18 +69,21 @@ function wire(root: HTMLElement): void {
     }
     for (const li of commits) {
       const on = open.has(li.dataset.commit ?? '');
+      // `fresh`: opened by this render, so only its skills play the entrance.
+      flag(li, 'fresh', on && li.dataset.open === undefined);
       flag(li, 'open', on);
       li.querySelector('.commit__toggle')?.setAttribute('aria-expanded', String(on));
     }
     if (cmd) cmd.textContent = logCommand(picked);
-    if (picked) summary(picked);
-    else if (note) note.textContent = idle;
+    if (picked !== noted) {
+      noted = picked;
+      if (picked) summary(picked);
+      else if (note) note.textContent = idle;
+    }
   };
 
   root.addEventListener('click', (event) => {
     const target = event.target as Element;
-    // Rows open with a short entrance only once someone has opened one (not on load).
-    root.dataset.animate = '';
     const chip = target.closest<HTMLButtonElement>('button[data-grep]');
     if (chip) {
       picked = chip.dataset.grep || null;

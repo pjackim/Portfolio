@@ -149,18 +149,30 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
     families.filter((f) => skills.some((s) => s.family === f)).join(' ');
 
   const spans = new Map<string, { k: number; top: number; newest: number; bottom: number }>();
+  for (const s of tips) {
+    if (!families.includes(s.family)) {
+      throw new Error(
+        `git-log: a skill still being learned is in "${s.family}", which has no lane`,
+      );
+    }
+  }
   families.forEach((f, idx) => {
     const at = commits.flatMap((_, i) => (uses(f, i) ? [i] : []));
-    if (!at.length) return;
     const t = tips.flatMap((s, j) => (s.family === f ? [tipRow(j)] : []));
-    const newest = Math.min(...at);
+    if (!at.length && !t.length) {
+      throw new Error(`git-log: no skill is in "${f}", so its lane and chip would be empty`);
+    }
+    // A family with only unmerged work forks from HEAD itself.
+    const newest = at.length ? Math.min(...at) : Infinity;
     spans.set(f, {
       k: idx + 1,
       top: t.length ? Math.min(...t) : newest,
       newest,
-      bottom: Math.max(...at) + 1,
+      bottom: at.length ? Math.max(...at) + 1 : 0,
     });
   });
+  /** A lane's stroke just below row `i`: dashed while only unmerged work is left above it. */
+  const stroke = (sp: { newest: number }, i: number): Stroke => (i < sp.newest ? 'dash' : 'solid');
 
   const tipRows = tips.map((skill, j) => {
     const r = tipRow(j);
@@ -190,9 +202,10 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
     ];
     for (const [f, sp] of spans) {
       if (i < sp.top || i > sp.bottom) continue;
+      const st = stroke(sp, i);
       if (uses(f, i)) {
         // Above the newest merge, only unmerged work is left: dashed.
-        const up = i === sp.newest && sp.top < sp.newest ? 'dash' : 'solid';
+        const up = i === sp.newest ? 'dash' : 'solid';
         segs.push({
           k: sp.k,
           family: f,
@@ -200,8 +213,8 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
           below: 'solid',
           above: i > sp.top ? up : undefined,
         });
-      } else if (i === sp.bottom) segs.push({ k: sp.k, family: f, join: 'fork', above: 'solid' });
-      else segs.push({ k: sp.k, family: f, above: 'solid', below: 'solid' });
+      } else if (i === sp.bottom) segs.push({ k: sp.k, family: f, join: 'fork', above: st });
+      else segs.push({ k: sp.k, family: f, above: st, below: st });
     }
     const skills = mergedSkills(c).map((skill) => {
       const ss: Seg[] = [{ k: 0, family: 'main', above: 'solid', below: 'solid' }];
@@ -210,8 +223,8 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
         ss.push({
           k: sp.k,
           family: f,
-          above: 'solid',
-          below: 'solid',
+          above: stroke(sp, i),
+          below: stroke(sp, i),
           node: f === skill.family ? 'dot' : undefined,
         });
       }

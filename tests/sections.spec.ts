@@ -92,6 +92,26 @@ test.describe('experience log', () => {
     expect(off).toEqual([]);
   });
 
+  test("the graph's geometry matches the CSS: column width and node line", async ({ page }) => {
+    await gotoRel(page, 'experience/');
+    await logReady(page);
+    // GitLog.astro's --gl-w and --y are literals mirroring src/lib/git-log.ts (graphWidth,
+    // NODE_Y): each graph column must be exactly its SVG's width, and each milestone's title must
+    // sit on the node line of its row's main-line node.
+    const drift = await page.locator(`${COMMIT} > .commit__row`).evaluateAll((rows) =>
+      rows.flatMap((r) => {
+        const svg = r.querySelector<SVGSVGElement>('.gl-svg')!;
+        const gutter = svg.parentElement!.getBoundingClientRect();
+        const node = svg.querySelector('circle.gl-f-main:not(.gl-halo)')!.getBoundingClientRect();
+        const title = r.querySelector('.commit__title')!.getBoundingClientRect();
+        const width = Math.abs(gutter.width - Number(svg.getAttribute('width')));
+        const line = Math.abs(node.top + node.height / 2 - (title.top + title.height / 2));
+        return width > 0.5 || line > 2 ? [{ width, line }] : [];
+      }),
+    );
+    expect(drift).toEqual([]);
+  });
+
   test('--grep opens a family, dims the rest, and says so', async ({ page }) => {
     await gotoRel(page, 'experience/');
     await logReady(page);
@@ -134,7 +154,11 @@ test.describe('experience log', () => {
       .first()
       .getAttribute('data-commit');
     const toggle = page.locator(`${LOG} li[data-commit="${id}"] button.commit__toggle`);
+    // The note (a live region) describes the pick; a toggle must not rewrite, and so re-announce, it.
+    const note = page.locator(`${LOG} [data-git-note] b`).first();
+    await note.evaluate((el) => el.setAttribute('data-seen', ''));
     await toggle.click();
+    await expect(note).toHaveAttribute('data-seen', '');
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(chip).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator(`${LOG} [data-git-cmd]`)).toHaveText(
