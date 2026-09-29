@@ -203,8 +203,8 @@ check:media` — media lint (also part of `lint`)
 - **Data files** — `src/data/site.ts` (name, role, bio, timeline, and the Experience git log's
   commits and skills — every line sourced with a comment back to the legacy file/line, the
   résumé or the author) and `src/data/taxonomy.ts` (`CAPABILITIES`, `GROUPS`, and the capability
-  groups on `/capabilities/`). The git log's geometry is `src/lib/git-log.ts`, shared by the
-  build and `src/scripts/git-log.ts`.
+  groups on `/capabilities/`). The git log's graph is `src/lib/git-log.ts`, drawn at build time
+  as one SVG slice per row; `src/scripts/git-log.ts` only toggles open/picked state.
 - **Redirects** — `src/pages/html/Work/[legacy].html.ts` emits static meta-refresh stubs at the
   exact legacy URLs (`html/Work/<name>.html`) for every project's `legacyPaths`, plus
   `REMOVED_LEGACY` entries (e.g. `alvin` → `work/`). GitHub Pages can't send HTTP redirects, so
