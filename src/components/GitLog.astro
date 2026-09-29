@@ -205,7 +205,10 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 
   /* Geometry shared with src/lib/git-log.ts: graphWidth(4) and NODE_Y (literal here:
      `define:vars` would write a style attribute, which the CSP forbids). */
+  /* The log stops short of a wide container, so a toggle stays in reach of its title and the
+     chips line up with the rows' end. */
   .git-log {
+    max-inline-size: 56rem;
     --gl-w: 80px;
     --gl-when: 4.75rem;
     --gl-gap: 0.875rem;
@@ -360,11 +363,6 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  /* Rows stop short of a wide container, so a toggle stays in reach of its title. */
-  .git-log__list {
-    max-inline-size: 56rem;
   }
 
   /* Every row: date, its slice of the graph, text, and an end column. Rows touch (no margins),
@@ -662,7 +660,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     border-block-start: 0;
     border-block-end: var(--gl-tree);
     border-inline-start: var(--gl-tree);
-    border-end-start-radius: 5px;
+    border-end-start-radius: var(--radius-s);
   }
 
   .skill__learning {
