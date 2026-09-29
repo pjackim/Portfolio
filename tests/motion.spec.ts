@@ -143,8 +143,35 @@ async function graphIs(page: Page, state: 'running' | 'static'): Promise<void> {
   await expect(page.locator(GRAPH)).toHaveAttribute('data-state', state, { timeout: 10_000 });
 }
 
+/**
+ * The hero has finished laying out: fonts in, and the canvas's box and backing store unchanged
+ * across a gap longer than the graph's resize debounce (150 ms). Until then a static frame can
+ * still redraw once — the hero reflows as its fonts arrive and the graph's ResizeObserver
+ * redraws the frame to the new box — which is a resize, not an animation loop.
+ */
+async function heroSettled(page: Page): Promise<void> {
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  let last = '';
+  await expect
+    .poll(
+      async () => {
+        const now = await page
+          .locator(GRAPH)
+          .evaluate(
+            (c: HTMLCanvasElement) => `${c.clientWidth}x${c.clientHeight}:${c.width}x${c.height}`,
+          );
+        const same = now === last;
+        last = now;
+        return same;
+      },
+      { intervals: [250], timeout: 5000 },
+    )
+    .toBe(true);
+}
+
 /** Asserts no animation frame is requested and no pixel changes over `ms`. */
 async function expectFrozen(page: Page, ms = 900): Promise<void> {
+  await heroSettled(page);
   const calls = await rafCalls(page);
   const before = await graphSignature(page);
   await page.waitForTimeout(ms);
@@ -372,16 +399,31 @@ test.describe('motion on', () => {
       .locator('[data-digit]')
       .evaluateAll((els) => els.map((el) => Number((el as HTMLElement).dataset.digit)));
     // Caught as the turn begins: every drum (those still waiting their stagger too) shows its own
-    // digit, one turn up — the same glyph it rests on.
-    await expect(list).toHaveAttribute('data-roll', 'rolling', { timeout: 10_000 });
-    await list.evaluate((el) => {
-      for (const reel of el.querySelectorAll('[data-reel]')) {
-        for (const animation of reel.getAnimations()) {
-          animation.pause();
-          animation.currentTime = 0;
-        }
-      }
-    });
+    // digit, one turn up — the same glyph it rests on. Caught from inside the page, the frame
+    // the roll starts (the runner's own polling can trail it by hundreds of ms, by which time
+    // drums have turned or finished), and held at the start of each drum's own active phase.
+    // Not at time 0: seeking a drum already turning back into its delay fires `animationend`
+    // (CSS Animations 2, active → before), and the last drum's `animationend` ends the roll.
+    await list.evaluate(
+      (el) =>
+        new Promise<void>((started) => {
+          const check = () => {
+            if (el.getAttribute('data-roll') !== 'rolling') {
+              requestAnimationFrame(check);
+              return;
+            }
+            for (const reel of el.querySelectorAll('[data-reel]')) {
+              for (const animation of reel.getAnimations()) {
+                animation.pause();
+                animation.currentTime = animation.effect?.getTiming().delay ?? 0;
+              }
+            }
+            started();
+          };
+          check();
+        }),
+    );
+    await expect(list).toHaveAttribute('data-roll', 'rolling');
     expect((await steps()).map(Math.round)).toEqual(digits);
     // Mid-turn: somewhere between the two, never below its own digit.
     await list.evaluate((el) => {

@@ -11,7 +11,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { interactionsLoaded, revealsInFlightOnScreen, twoFrames } from './helpers/motion.ts';
-import { gotoRel, NOT_FOUND_PAGE, routeName, ROUTES } from './helpers/routes.ts';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
+import { gotoRel, NOT_FOUND_PAGE, routeName, ROUTES, VIDEO_ROUTES } from './helpers/routes.ts';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 const PAGES = [...ROUTES, NOT_FOUND_PAGE];
@@ -31,7 +32,14 @@ for (const colorScheme of ['dark', 'light'] as const) {
     test.use({ colorScheme, reducedMotion: 'reduce' });
 
     for (const path of PAGES) {
-      test(`${routeName(path)} has no axe violations (${colorScheme})`, async ({ page }) => {
+      test(`${routeName(path)} has no axe violations (${colorScheme})`, async ({
+        page,
+        browserName,
+      }) => {
+        test.skip(
+          isWindowsWebKit(browserName) && VIDEO_ROUTES.includes(path),
+          WINDOWS_WEBKIT.media,
+        );
         await gotoRel(page, path);
         await page.waitForLoadState('load');
         expect(await axeReport(page), 'axe violations (rule id + targets)').toEqual([]);

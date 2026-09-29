@@ -4,8 +4,8 @@
  * paths are relative to the base URL (`''`, `work/`, `work/<slug>/`) — no leading slash, so
  * `page.goto()` resolves them under `/Portfolio/`.
  */
-import { globSync } from 'node:fs';
-import { sep } from 'node:path';
+import { globSync, readFileSync } from 'node:fs';
+import { join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Page, Response } from '@playwright/test';
 
@@ -51,6 +51,15 @@ export const LEGACY_PAGES: readonly string[] = globPosix('html/Work/*.html')
 
 /** Every built page: `''` (home), `work/`, `work/<slug>/`. */
 export const ROUTES: readonly string[] = discoverRoutes();
+
+/** The pages with a `<video>` (screen-recording loops), as built; see helpers/platform.ts. */
+export const VIDEO_ROUTES: readonly string[] = ROUTES.filter((route) => {
+  try {
+    return readFileSync(join(DIST, route, 'index.html'), 'utf8').includes('<video');
+  } catch {
+    return false;
+  }
+});
 
 function discoverRoutes(): string[] {
   const routes = globPosix('**/index.html')

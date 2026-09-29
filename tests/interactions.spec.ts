@@ -21,6 +21,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { framesSettled, interactionsLoaded, twoFrames } from './helpers/motion.ts';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 test.use({ viewport: { width: 1280, height: 800 } });
@@ -135,8 +136,9 @@ test.describe('card reticle', () => {
     await gotoRel(page, '');
     await scrollIntoView(page, '#work', 'start');
     if (!(await finePointer(page))) {
-      // Touch screens: the brackets rest on the frame at 55%, nothing else.
-      expect(await brackets(page)).toEqual([0.55, 0.55]);
+      // Touch screens: the brackets rest on the frame at 55%, nothing else. (Polled: the
+      // brackets ease to their rest value, and a software-rastered WebKit is still easing.)
+      await expect.poll(() => brackets(page)).toEqual([0.55, 0.55]);
       expect(await pseudoOpacity(page, CARD, '::before'), 'no spotlight').toBe(0);
       return;
     }
@@ -153,6 +155,7 @@ test.describe('card reticle', () => {
     page,
     browserName,
   }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.links);
     await gotoRel(page, '');
     const hud = page.locator(`${CARD} .card__hud`).first();
     await expect(hud).toHaveAttribute('aria-hidden', 'true');
@@ -977,6 +980,7 @@ test.describe('axe, motion on', () => {
   test.use({ reducedMotion: 'no-preference' });
 
   test('home has no violations with the reticle locked on', async ({ page, browserName }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.links);
     await gotoRel(page, '');
     await expect(page.locator('[data-focus-line]')).toHaveAttribute('data-state', 'done', {
       timeout: 10_000,

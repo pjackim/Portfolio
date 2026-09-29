@@ -27,7 +27,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type Route } from '@playwright/test';
 import { themeToggle } from './helpers/header.ts';
 import { twoFrames } from './helpers/motion.ts';
-import { gotoRel, ROUTES } from './helpers/routes.ts';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
+import { gotoRel, ROUTES, VIDEO_ROUTES } from './helpers/routes.ts';
 
 declare global {
   interface Window {
@@ -412,7 +413,9 @@ test.describe('case study at 1440', () => {
 
   test('the motion layer is fetched only after load (the LCP image never shares the line)', async ({
     page,
+    browserName,
   }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
     await gotoRel(page, 'work/trip-planner/');
     await page.waitForLoadState('load');
     const timing = () =>
@@ -466,7 +469,12 @@ test.describe('figure lightbox', () => {
 
       test('opens on a click on the image; Esc closes it; focus returns to the link', async ({
         page,
+        browserName,
       }, testInfo) => {
+        test.skip(
+          reducedMotion === 'no-preference' && isWindowsWebKit(browserName),
+          WINDOWS_WEBKIT.dialog,
+        );
         await ready(page);
         const figure = page.locator(FIGURE).first();
         const link = figure.locator('a[data-lightbox-trigger]');
@@ -509,7 +517,11 @@ test.describe('figure lightbox', () => {
   test.describe('motion on', () => {
     test.use({ reducedMotion: 'no-preference' });
 
-    test('Esc during the opening morph still closes with a morph', async ({ page }) => {
+    test('Esc during the opening morph still closes with a morph', async ({
+      page,
+      browserName,
+    }) => {
+      test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.dialog);
       await page.addInitScript(() => {
         const start = Document.prototype.startViewTransition;
         if (typeof start !== 'function') return;
@@ -557,7 +569,11 @@ test.describe('figure lightbox', () => {
     });
   });
 
-  test('opens from the Full size link with Enter; the close button closes it', async ({ page }) => {
+  test('opens from the Full size link with Enter; the close button closes it', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.dialog);
     await ready(page);
     const link = page.locator(`${FIGURE} a[data-lightbox-trigger]`).first();
     await link.focus();
@@ -572,7 +588,8 @@ test.describe('figure lightbox', () => {
     await expect(link).toBeFocused();
   });
 
-  test('a click on the backdrop closes it', async ({ page }) => {
+  test('a click on the backdrop closes it', async ({ page, browserName }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.dialog);
     await ready(page);
     await page.locator(`${FIGURE} img`).first().click();
     const dialog = page.getByRole('dialog');
@@ -707,7 +724,9 @@ test.describe('footer', () => {
   ] as const) {
     test(`${name}: the copyright and a working Motion chip, on one row (stacked on phones)`, async ({
       page,
+      browserName,
     }) => {
+      test.skip(isWindowsWebKit(browserName) && VIDEO_ROUTES.includes(path), WINDOWS_WEBKIT.media);
       await gotoRel(page, path);
       await page.waitForLoadState('load');
       await expectLayout(page);

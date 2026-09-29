@@ -8,7 +8,8 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 import { themeToggle } from './helpers/header.ts';
-import { gotoRel, prodTag, routeName, ROUTES } from './helpers/routes.ts';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
+import { gotoRel, prodTag, routeName, ROUTES, VIDEO_ROUTES } from './helpers/routes.ts';
 
 declare global {
   interface Window {
@@ -66,7 +67,8 @@ async function watchErrors(
 }
 
 for (const route of ROUTES) {
-  test(`${routeName(route)} loads cleanly${prodTag(route)}`, async ({ page }) => {
+  test(`${routeName(route)} loads cleanly${prodTag(route)}`, async ({ page, browserName }) => {
+    test.skip(isWindowsWebKit(browserName) && VIDEO_ROUTES.includes(route), WINDOWS_WEBKIT.media);
     const problems = await watchErrors(page);
     const response = await gotoRel(page, route);
     expect(response?.status()).toBe(200);
@@ -113,6 +115,7 @@ test.describe('home', () => {
   test.use({ colorScheme: 'light' });
 
   test('first Tab focuses a visible skip link with a focus ring', async ({ page, browserName }) => {
+    test.skip(isWindowsWebKit(browserName), WINDOWS_WEBKIT.links);
     await gotoRel(page, '');
     // Safari moves between links with Option+Tab (plain Tab only visits form controls
     // unless the user opts in), so that is the first keystroke there.

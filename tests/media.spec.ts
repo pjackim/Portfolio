@@ -9,6 +9,7 @@
  * and mobile WebKit.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 test.beforeEach(({}, testInfo) => {
@@ -25,6 +26,8 @@ const center = (element: Locator) =>
 const toTop = (page: Page) => page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
 
 test.describe('trip-planner loops', () => {
+  test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
+
   test('are muted, inline and postered, with a pause button', async ({ page }) => {
     await gotoRel(page, 'work/trip-planner/');
     const loops = page.locator(LOOPS);
