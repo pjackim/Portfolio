@@ -67,6 +67,31 @@ test.describe('experience log', () => {
       return r.left + parseFloat(getComputedStyle(el).paddingInlineStart);
     });
     expect(text).toBeGreaterThan(title.x + 8);
+    // Staggered like the graph: a skill on a lane further from main starts further in, and the
+    // tick into each skill is its family's colour, the same as its dot in the graph.
+    const skills = await commit.locator('[data-skill]').evaluateAll((els) =>
+      els.map((el) => {
+        const name = el.querySelector<HTMLElement>('.skill__name')!;
+        const tick = getComputedStyle(name, '::after');
+        const last = el === el.parentElement?.lastElementChild;
+        return {
+          lane: Number(el.getAttribute('data-lane')),
+          x:
+            name.getBoundingClientRect().left +
+            parseFloat(getComputedStyle(name).paddingInlineStart),
+          tick: last ? tick.borderBottomColor : tick.borderTopColor,
+          dot: getComputedStyle(el.querySelector('.gl-node--fill')!).fill,
+        };
+      }),
+    );
+    expect(new Set(skills.map((s) => s.lane)).size).toBeGreaterThan(1);
+    for (const a of skills) {
+      for (const b of skills) {
+        if (a.lane < b.lane) expect(b.x - a.x).toBeGreaterThanOrEqual(4);
+        if (a.lane === b.lane) expect(Math.abs(a.x - b.x)).toBeLessThan(1);
+      }
+      expect(a.tick).toBe(a.dot);
+    }
     await expect.poll(() => logHeight(page)).toBeGreaterThan(before);
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');

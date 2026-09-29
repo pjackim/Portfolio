@@ -120,6 +120,8 @@ export interface LogRow {
   svg: string;
   /** Families the row's skills belong to, space-separated (picks match against it). */
   fams: string;
+  /** The lane the row's own node sits on: 0 (main) for a milestone, its family's for a skill. */
+  lane: number;
 }
 
 export interface LogLayout {
@@ -173,6 +175,7 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
   });
   /** A lane's stroke just below row `i`: dashed while only unmerged work is left above it. */
   const stroke = (sp: { newest: number }, i: number): Stroke => (i < sp.newest ? 'dash' : 'solid');
+  const laneOf = (skill: GraphSkill) => spans.get(skill.family)?.k ?? 0;
 
   const tipRows = tips.map((skill, j) => {
     const r = tipRow(j);
@@ -187,7 +190,7 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
         node: f === skill.family ? 'ring' : undefined,
       });
     }
-    return { svg: slice(segs, NODE_Y.skill, width), fams: skill.family };
+    return { svg: slice(segs, NODE_Y.skill, width), fams: skill.family, lane: laneOf(skill) };
   });
 
   const rows = commits.map((c, i) => {
@@ -228,10 +231,10 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
           node: f === skill.family ? 'dot' : undefined,
         });
       }
-      return { svg: slice(ss, NODE_Y.skill, width), fams: skill.family };
+      return { svg: slice(ss, NODE_Y.skill, width), fams: skill.family, lane: laneOf(skill) };
     });
     return {
-      row: { svg: slice(segs, NODE_Y.commit, width), fams: famsOf(mergedSkills(c)) },
+      row: { svg: slice(segs, NODE_Y.commit, width), fams: famsOf(mergedSkills(c)), lane: 0 },
       skills,
     };
   });
@@ -243,7 +246,7 @@ export function layoutLog(commits: readonly GraphCommit[], families: readonly st
   return {
     tips: tipRows,
     commits: rows,
-    init: { svg: slice(initSegs, NODE_Y.skill, width), fams: '' },
+    init: { svg: slice(initSegs, NODE_Y.skill, width), fams: '', lane: 0 },
     width,
   };
 }

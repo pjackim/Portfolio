@@ -76,6 +76,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
           data-family={s.family}
           data-learning
           data-fams={layout.tips[j]?.fams}
+          data-lane={layout.tips[j]?.lane}
         >
           <span class="git-log__when" />
           <span class="git-log__gutter" aria-hidden="true" set:html={layout.tips[j]?.svg} />
@@ -141,6 +142,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
                     data-skill
                     data-family={s.family}
                     data-fams={g?.skills[j]?.fams}
+                    data-lane={g?.skills[j]?.lane}
                   >
                     <span class="git-log__when" />
                     <span class="git-log__gutter" aria-hidden="true" set:html={g?.skills[j]?.svg} />
@@ -212,10 +214,14 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     --gl-w: 80px;
     --gl-when: 4.75rem;
     --gl-gap: 0.875rem;
-    /* The nested skills' indent, and where their tree line runs inside it. */
+    /* The nested skills' indent (plus a step per lane between the skill's and main, so a list
+       staggers like the graph beside it), where their tree's spine runs inside it, and the box
+       the corner into the last skill is drawn in (the curve plus the 1px above it). */
     --gl-indent: 1.625rem;
+    --gl-lane-step: 0.5rem;
     --gl-tree-x: 0.4375rem;
     --gl-tree: 1px solid var(--line-ui);
+    --gl-corner: calc(var(--radius-s) + 1px);
     /* Where a row's highlight band starts: just short of the text column. */
     --gl-band-x: calc(var(--gl-when) + var(--gl-w) + 2 * var(--gl-gap) - 0.5rem);
   }
@@ -611,6 +617,25 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 
   /* ── Skills: nested under their milestone, on a hairline tree ── */
 
+  /* A skill's indent grows with its lane (data-lane, src/lib/git-log.ts: 1 is the lane next to
+     main), one rule per family lane like the colours above. */
+  .skill {
+    --gl-lane: 1;
+    --gl-in: calc(var(--gl-indent) + (var(--gl-lane) - 1) * var(--gl-lane-step));
+  }
+
+  .skill[data-lane='2'] {
+    --gl-lane: 2;
+  }
+
+  .skill[data-lane='3'] {
+    --gl-lane: 3;
+  }
+
+  .skill[data-lane='4'] {
+    --gl-lane: 4;
+  }
+
   .skill__name {
     position: relative;
     display: flex;
@@ -621,14 +646,16 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     gap: 0 0.5rem;
     min-inline-size: 0;
     padding-block: calc(var(--y) - 10.5px) 0.3125rem;
-    padding-inline-start: var(--gl-indent);
+    padding-inline-start: var(--gl-in);
     color: var(--text-muted);
     font-size: 0.9375rem;
     line-height: 21px;
   }
 
-  /* The tree: a spine from under the milestone's title, a tick into each skill, and a rounded
-     corner into the last. The tips above HEAD belong to no milestone: indented, no tree. */
+  /* The tree: a spine from under the milestone's title (main, so neutral), a tick into each
+     skill in its family's colour, and into the last a rounded corner that curves off the spine
+     in that colour, like a lane's join in the graph. The tips above HEAD belong to no
+     milestone: indented, no tree. */
   .commit__line {
     position: relative;
   }
@@ -654,20 +681,23 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 
   .commit__skills .skill__name::after {
     inset-block-start: calc(var(--y) - 0.5px);
-    inline-size: calc(var(--gl-indent) - var(--gl-tree-x) - 0.375rem);
-    border-block-start: var(--gl-tree);
+    inline-size: calc(var(--gl-in) - var(--gl-tree-x) - 0.375rem);
+    border-block-start: 1px solid var(--gl-c);
   }
 
+  /* The last skill: the spine runs 1px into the corner box (no seam), which takes over from
+     there in the family's colour. */
   .commit__skills .skill:last-child .skill__name::before {
-    display: none;
+    inset-block-end: auto;
+    block-size: calc(var(--y) + 1.5px - var(--gl-corner));
   }
 
   .commit__skills .skill:last-child .skill__name::after {
-    inset-block-start: 0;
-    block-size: calc(var(--y) + 0.5px);
+    inset-block-start: calc(var(--y) + 0.5px - var(--gl-corner));
+    block-size: var(--gl-corner);
     border-block-start: 0;
-    border-block-end: var(--gl-tree);
-    border-inline-start: var(--gl-tree);
+    border-block-end: 1px solid var(--gl-c);
+    border-inline-start: 1px solid var(--gl-c);
     border-end-start-radius: var(--radius-s);
   }
 
@@ -754,6 +784,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     .git-log {
       --gl-gap: 0.625rem;
       --gl-indent: 1.375rem;
+      --gl-lane-step: 0.375rem;
       --gl-tree-x: 0.3125rem;
       --gl-band-x: calc(var(--gl-w) + var(--gl-gap) - 0.375rem);
     }
