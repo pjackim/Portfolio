@@ -1,22 +1,19 @@
 ---
 /**
- * Experience as a git log (Portfolio.dc.html, Claude Design, Sept 2026): `site.experience`, newest
- * first, one commit per role or milestone on the main line. A commit opens to show the skills it
- * merged in, on a branch that joins main at the commit; skills still being learned sit on an open,
- * dashed branch that rises past HEAD without merging. Filter chips `--grep` one skill family:
- * its commits open and everything else dims.
+ * Experience as a git log (design/git-log-rework, Sept 2026; successor to Portfolio.dc.html's
+ * log): `site.experience`, newest first, one commit per role or milestone on the main line. Each
+ * skill family is a long-lived branch beside main that merges into every milestone that used it;
+ * the skills still being learned are unmerged commits on their branch, above HEAD. Open a
+ * milestone and its skills appear under it, nested, as its branches' commits. Chips `--grep` a
+ * family: its milestones open, its lane lights, the rest dims.
  *
- * The graph is geometry from src/lib/git-log.ts, rendered here for the default state (the
- * current role open) and redrawn by src/scripts/git-log.ts, which wires the toggles and chips
- * (fetched by the motion layer as soon as a page has a log). Rows have fixed heights on wider
- * screens, matching ROW_H, so the graph lines up without measuring. Without JS the default state
- * stays, and the controls, which would do nothing, are not shown.
- *
- * Phones get the log as a rail of two-line rows: the whole row toggles its skills, which open as
- * chips beside a branch drawn in CSS; the SVG graph is not shown.
+ * The graph is drawn here, one SVG slice per row (src/lib/git-log.ts): the lanes don't depend on
+ * what's open, so src/scripts/git-log.ts only toggles state. Slices fill their rows, so rows wrap
+ * freely at any width, phones included. Without JS the default state stays (HEAD open) and the
+ * controls, which would do nothing, are not shown.
  */
 import { site, LOG_FAMILIES, type LogCommit } from '../data/site';
-import { GRAPH_W, graphMarkup, layoutGraph, logCommand } from '../lib/git-log';
+import { layoutLog, logCommand, mergedSkills, tipSkills } from '../lib/git-log';
 import MotionLayer from './MotionLayer.astro';
 
 interface Props {
@@ -27,12 +24,8 @@ interface Props {
 
 const { class: className, idPrefix = 'gl' } = Astro.props;
 const commits: readonly LogCommit[] = site.experience;
-const DEFAULT_OPEN = commits[0]?.id;
-const layout = layoutGraph(commits, {
-  open: new Set(DEFAULT_OPEN ? [DEFAULT_OPEN] : []),
-  grep: null,
-});
-const open = new Map(layout.commits.map((c) => [c.id, c.open]));
+const layout = layoutLog(commits, LOG_FAMILIES);
+const tips = tipSkills(commits);
 const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 ---
 
@@ -48,126 +41,125 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
       {['', ...LOG_FAMILIES].map((family) => (
         <button
           type="button"
-          class="git-log__chip"
+          class:list={['git-log__chip', family && `gl-f-${family}`]}
           data-grep={family}
           aria-pressed={family === '' ? 'true' : 'false'}
         >
-          <span class:list={['git-log__chip-dot', family && `gl-f-${family}`]} aria-hidden="true" />
+          {family && <span class="git-log__chip-dot" aria-hidden="true" />}
           {family || 'all'}
         </button>
       ))}
     </div>
   </div>
+  <p class="git-log__note" data-git-note aria-live="polite">
+    Each lane is a skill family, merged into the milestones that used it. Open a milestone to see
+    its skills.
+  </p>
+  <p class="git-log__legend" aria-hidden="true">
+    <span>
+      <span class="git-log__key git-log__key--fill"></span>skill
+    </span>
+    <span>
+      <span class="git-log__key"></span>
+      <span class="git-log__key git-log__key--dash"></span>
+      learning, not merged yet
+    </span>
+  </p>
 
   <div class="git-log__frame" data-reveal>
-    <svg
-      class="git-log__graph"
-      aria-hidden="true"
-      width={GRAPH_W}
-      height={layout.height}
-      data-git-graph
-      set:html={graphMarkup(layout)}
-    />
     <ol class="git-log__list" role="list">
-      {commits.map((c, i) => (
+      {tips.map((s, j) => (
         <li
-          class:list={['commit', `gl-f-${c.family}`]}
-          data-commit={c.id}
-          data-family={c.family}
-          data-open={open.get(c.id) || undefined}
+          class={`git-log__row skill skill--tip gl-f-${s.family}`}
+          data-skill
+          data-tip
+          data-family={s.family}
+          data-learning
+          data-fams={layout.tips[j]?.fams}
         >
-          <span class="commit__lane" aria-hidden="true" />
-          <div class="commit__row">
-            <p class="commit__when">
-              {c.when}
-              {i === 0 && (
-                <span class="commit__head commit__head--short" aria-hidden="true">
-                  HEAD
-                </span>
-              )}
-            </p>
-            <p class="commit__body">
-              {i === 0 && <span class="commit__head">HEAD → main</span>}
-              <span class="commit__title">{c.title}</span>
-              <span class="commit__org">
-                <span class="commit__sep" aria-hidden="true">
-                  {' · '}
-                </span>
-                <span class="visually-hidden">, </span>
-                {c.org}
-              </span>
-              {c.skills.length > 0 && (
-                <span class="commit__dots" aria-hidden="true">
-                  {c.skills.map((s) => (
-                    <span
-                      class:list={['commit__dot', `gl-f-${s.family}`]}
-                      data-learning={s.learning || undefined}
-                    />
-                  ))}
-                </span>
-              )}
-            </p>
-            <p class="commit__meta">{c.meta}</p>
-            {c.skills.length > 0 ? (
-              <button
-                type="button"
-                class="commit__toggle"
-                aria-expanded={open.get(c.id) ? 'true' : 'false'}
-                aria-controls={`${idPrefix}-${c.id}-skills`}
-              >
-                <span class="commit__toggle-more" aria-hidden="true">
-                  +{c.skills.length}
-                </span>
-                <span class="commit__toggle-less" aria-hidden="true">
-                  −
-                </span>
-                <span class="visually-hidden">
-                  {plural(c.skills.length)} from {c.title}
-                </span>
-              </button>
-            ) : (
-              <span class="commit__toggle commit__toggle--none" aria-hidden="true">
-                ·
-              </span>
-            )}
-          </div>
-          {c.skills.length > 0 && (
-            <ul class="commit__skills" id={`${idPrefix}-${c.id}-skills`} role="list">
-              {c.skills.map((s) => (
-                <li
-                  class:list={['skill', `gl-f-${s.family}`]}
-                  data-skill
-                  data-family={s.family}
-                  data-learning={s.learning || undefined}
-                >
-                  <span class="skill__name">
-                    <span class="skill__dot" aria-hidden="true" />
-                    {s.name}
-                    {s.learning && <span class="skill__learning">learning</span>}
-                  </span>
-                  <span class="skill__family">{s.family}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <span class="git-log__when" />
+          <span class="git-log__gutter" aria-hidden="true" set:html={layout.tips[j]?.svg} />
+          <span class="skill__name">
+            {s.name}
+            <span class="skill__learning">learning</span>
+          </span>
+          <span class="skill__family">{s.family}</span>
         </li>
       ))}
-      <li class="git-log__init" aria-hidden="true">
-        init
+      {commits.map((c, i) => {
+        const g = layout.commits[i];
+        const skills = mergedSkills(c);
+        return (
+          <li
+            class:list={['commit', i === 0 && 'commit--head']}
+            data-commit={c.id}
+            data-title={c.title}
+            data-fams={g?.row.fams}
+            data-open={(i === 0 && skills.length > 0) || undefined}
+          >
+            <div class="git-log__row commit__row">
+              <span class="git-log__when">{c.when}</span>
+              <span class="git-log__gutter" aria-hidden="true" set:html={g?.row.svg} />
+              <p class="commit__line">
+                {c.when && <span class="commit__when">{c.when}</span>}
+                {i === 0 && <span class="commit__badge">HEAD → main</span>}
+                <span class="commit__title">{c.title}</span>
+                <span class="commit__org">
+                  <span class="commit__sep" aria-hidden="true">
+                    {' · '}
+                  </span>
+                  <span class="visually-hidden">, </span>
+                  {c.org}
+                </span>
+                {c.meta && <span class="commit__meta">{c.meta}</span>}
+              </p>
+              {skills.length > 0 && (
+                <button
+                  type="button"
+                  class="commit__toggle"
+                  aria-expanded={i === 0 ? 'true' : 'false'}
+                  aria-controls={`${idPrefix}-${c.id}-skills`}
+                >
+                  <span class="commit__count" aria-hidden="true">
+                    {skills.length}
+                    <span class="commit__count-word">
+                      {skills.length === 1 ? ' skill' : ' skills'}
+                    </span>
+                  </span>
+                  <span class="commit__chev" aria-hidden="true" />
+                  <span class="visually-hidden">
+                    {plural(skills.length)} from {c.title}
+                  </span>
+                </button>
+              )}
+            </div>
+            {skills.length > 0 && (
+              <ul class="commit__skills" id={`${idPrefix}-${c.id}-skills`} role="list">
+                {skills.map((s, j) => (
+                  <li
+                    class={`git-log__row skill gl-f-${s.family}`}
+                    data-skill
+                    data-family={s.family}
+                    data-fams={g?.skills[j]?.fams}
+                  >
+                    <span class="git-log__when" />
+                    <span class="git-log__gutter" aria-hidden="true" set:html={g?.skills[j]?.svg} />
+                    <span class="skill__name">{s.name}</span>
+                    <span class="skill__family">{s.family}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+      <li class="git-log__row git-log__init" aria-hidden="true">
+        <span class="git-log__when"></span>
+        <span class="git-log__gutter" set:html={layout.init.svg} />
+        <span class="git-log__init-label">init</span>
       </li>
     </ol>
   </div>
-
-  <p class="git-log__legend" aria-hidden="true">
-    <span>
-      <span class="git-log__key git-log__key--merged"></span>merged skill
-    </span>
-    <span>
-      <span class="git-log__key git-log__key--open"></span>
-      <span class="git-log__key git-log__key--dash"></span>
-      still open · actively learning
-    </span>
-  </p>
 </div>
 <MotionLayer />
 
@@ -190,27 +182,45 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     --gl-c: var(--family-design);
   }
 
-  .git-log :global(.gl-f-edu) {
-    --gl-c: var(--family-edu);
+  /* The picked (or previewed) family's colour, for the highlight bands. */
+  .git-log[data-pick='security'] {
+    --gl-pick: var(--family-security);
+  }
+
+  .git-log[data-pick='software'] {
+    --gl-pick: var(--family-software);
+  }
+
+  .git-log[data-pick='teaching'] {
+    --gl-pick: var(--family-teaching);
+  }
+
+  .git-log[data-pick='design'] {
+    --gl-pick: var(--family-design);
   }
 
   .git-log :global(.gl-f-main) {
     --gl-c: var(--family-main);
   }
 
-  /* Geometry shared with src/lib/git-log.ts: GRAPH_TOP, GRAPH_W and ROW_H (literal here:
+  /* Geometry shared with src/lib/git-log.ts: graphWidth(4) and NODE_Y (literal here:
      `define:vars` would write a style attribute, which the CSP forbids). */
+  /* The log stops short of a wide container, so a toggle stays in reach of its title and the
+     chips line up with the rows' end. */
   .git-log {
-    --gl-top: 20px;
-    --gl-w: 62px;
-    --gl-commit: 52px;
-    --gl-skill: 32px;
-    --gl-init: 36px;
-    --gl-cols: 4.75rem var(--gl-w) minmax(0, 1fr) auto;
+    max-inline-size: 56rem;
+    --gl-w: 80px;
+    --gl-when: 4.75rem;
     --gl-gap: 0.875rem;
+    /* The nested skills' indent, and where their tree line runs inside it. */
+    --gl-indent: 1.625rem;
+    --gl-tree-x: 0.4375rem;
+    --gl-tree: 1px solid var(--line-ui);
+    /* Where a row's highlight band starts: just short of the text column. */
+    --gl-band-x: calc(var(--gl-when) + var(--gl-w) + 2 * var(--gl-gap) - 0.5rem);
   }
 
-  /* ── Command line and grep chips ── */
+  /* ── Command line, chips, note ── */
 
   .git-log__bar {
     display: flex;
@@ -260,323 +270,41 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     inline-size: 7px;
     block-size: 7px;
     border-radius: 50%;
-    background-color: var(--gl-c, var(--text));
+    background-color: var(--gl-c);
   }
 
   @media (hover: hover) {
     .git-log__chip:hover {
       border-color: var(--line-ui);
+      color: var(--text);
     }
   }
 
   .git-log__chip[aria-pressed='true'] {
-    border-color: var(--line-ui);
+    border-color: var(--gl-c, var(--line-ui));
     background-color: var(--surface-2);
     color: var(--text);
   }
 
-  /* The controls need the script; without it the default view stays, with nothing to press. */
-  @media (scripting: none) {
-    .git-log__chips,
-    .commit__toggle {
-      visibility: hidden;
-    }
-  }
-
-  /* ── The log ── */
-
-  .git-log__frame {
-    position: relative;
+  .git-log__note {
+    max-inline-size: var(--measure);
     margin-block-start: var(--space-xs);
-    padding-block-start: var(--gl-top);
-
-    /* Entrance (reveal.ts): the log wipes down from the top. */
-    --reveal-x: 0;
-    --reveal-y: 0;
-    --reveal-clip: inset(0 0 100% 0);
-    --reveal-dur: 900ms;
-  }
-
-  .git-log__graph {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: calc(4.75rem + var(--gl-gap));
-    overflow: visible;
-    pointer-events: none;
-  }
-
-  .git-log__graph :global(.gl-path) {
-    fill: none;
-    stroke: var(--gl-c);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-  }
-
-  .git-log__graph :global(.gl-path--open) {
-    stroke-dasharray: 2 5;
-  }
-
-  .git-log__graph :global(.gl-path--knockout) {
-    stroke: var(--bg);
-    stroke-width: 6;
-    stroke-linecap: butt;
-  }
-
-  .git-log__graph :global(.gl-node) {
-    stroke: var(--gl-c);
-    stroke-width: 1.6;
-  }
-
-  .git-log__graph :global(.gl-node--ring) {
-    fill: var(--bg);
-  }
-
-  .git-log__graph :global(.gl-node--dot) {
-    fill: var(--gl-c);
-  }
-
-  .git-log__graph :global(.gl-node--halo) {
-    fill: none;
-    opacity: 0.3;
-  }
-
-  .git-log__graph :global(.is-dim) {
-    opacity: 0.35;
-  }
-
-  .git-log__list {
-    padding: 0;
-    list-style: none;
-  }
-
-  .commit__row,
-  .skill,
-  .git-log__init {
-    display: grid;
-    grid-template-columns: var(--gl-cols);
-    column-gap: var(--gl-gap);
-    align-items: center;
-  }
-
-  .commit__row {
-    block-size: var(--gl-commit);
-  }
-
-  .commit[data-dim] {
-    opacity: 0.35;
-  }
-
-  .commit__when {
-    grid-column: 1;
-    color: var(--text-subtle);
-    font-family: var(--font-mono);
-    font-size: 0.78125rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-align: end;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .commit:first-child .commit__when {
-    color: var(--text);
-  }
-
-  .commit__lane {
-    display: none;
-  }
-
-  .commit__body {
-    grid-column: 3;
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    min-inline-size: 0;
-    white-space: nowrap;
-  }
-
-  .commit__head {
-    flex: none;
-    padding: 0.125rem 0.5rem;
-    border-radius: var(--radius-xs);
-    background-color: var(--text);
-    color: var(--bg);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  .commit__head--short {
-    display: none;
-  }
-
-  /* The title is never cut; a tight row shortens the organisation instead. */
-  .commit__title {
-    flex: none;
-    font-size: 1.0625rem;
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  .commit__org {
-    min-inline-size: 0;
-    overflow: hidden;
-    color: var(--text-muted);
-    font-size: 1.0625rem;
-    line-height: 1.35;
-    text-overflow: ellipsis;
-  }
-
-  .commit__dots {
-    display: flex;
-    flex: none;
-    gap: 4px;
-  }
-
-  .commit[data-open] .commit__dots {
-    display: none;
-  }
-
-  .commit__dot,
-  .skill__dot {
-    inline-size: 7px;
-    block-size: 7px;
-    border: 1.5px solid var(--gl-c);
-    border-radius: 50%;
-    background-color: var(--gl-c);
-  }
-
-  .commit__dot[data-learning],
-  .skill[data-learning] .skill__dot {
-    background-color: transparent;
-  }
-
-  .commit__meta {
-    color: var(--text-subtle);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .commit__row > .commit__meta {
-    grid-column: 4;
-    grid-row: 1;
-    margin-inline-end: calc(2.75rem + var(--gl-gap));
-  }
-
-  .commit__toggle {
-    grid-column: 4;
-    grid-row: 1;
-    justify-self: end;
-    min-inline-size: 2.75rem;
-    block-size: 2rem;
-    padding-inline: 0.5625rem;
-    border: var(--rule-ui);
-    border-radius: var(--radius-xs);
-    background-color: transparent;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-
-  @media (hover: hover) {
-    .commit__toggle:hover {
-      background-color: var(--surface-2);
-    }
-  }
-
-  .commit__toggle--none {
-    display: none;
-  }
-
-  .commit[data-open] .commit__toggle-more,
-  .commit:not([data-open]) .commit__toggle-less {
-    display: none;
-  }
-
-  /* ── Skill rows: shown while their commit is open ── */
-
-  .commit__skills {
-    padding: 0;
-    list-style: none;
-  }
-
-  .commit:not([data-open]) .commit__skills {
-    display: none;
-  }
-
-  .skill {
-    block-size: var(--gl-skill);
-  }
-
-  .skill[data-dim] {
-    opacity: 0.35;
-  }
-
-  .skill__name {
-    grid-column: 3;
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    min-inline-size: 0;
-    overflow: hidden;
     color: var(--text-muted);
     font-size: 0.9375rem;
-    white-space: nowrap;
   }
 
-  .skill__dot {
-    display: none;
-  }
-
-  .skill__learning {
-    flex: none;
-    padding: 0.0625rem 0.4375rem;
-    border: 1px dashed var(--gl-c);
-    border-radius: var(--radius-xs);
-    color: var(--gl-c);
-    font-family: var(--font-mono);
-    font-size: 0.71875rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    line-height: 1.4;
-  }
-
-  .skill__family {
-    grid-column: 4;
-    justify-self: end;
-    padding-inline-end: calc(2.75rem + var(--gl-gap));
-    color: var(--gl-c);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-  }
-
-  .git-log__init {
-    block-size: var(--gl-init);
-    color: var(--text-subtle);
+  .git-log__note :global(b) {
+    color: var(--text);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
+    font-weight: 500;
   }
-
-  .git-log__init::before {
-    content: '';
-    grid-column: 1 / 3;
-  }
-
-  /* ── Legend ── */
 
   .git-log__legend {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xs) 1.375rem;
-    margin-block-start: var(--space-xs);
+    gap: var(--space-3xs) 1.25rem;
+    margin-block-start: var(--space-3xs);
     color: var(--text-subtle);
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -591,76 +319,445 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
   }
 
   .git-log__key {
-    inline-size: 7px;
-    block-size: 7px;
+    box-sizing: border-box;
+    inline-size: 8px;
+    block-size: 8px;
     border: 1.5px solid var(--text-muted);
     border-radius: 50%;
   }
 
-  .git-log__key--merged {
+  .git-log__key--fill {
     background-color: var(--text-muted);
   }
 
   .git-log__key--dash {
-    inline-size: 14px;
+    inline-size: 16px;
     block-size: 0;
     border: 0;
     border-block-start: 1.5px dashed var(--text-muted);
     border-radius: 0;
   }
 
-  /* Tablets: no meta column, and a long title may shorten too. */
-  @media (width < 60rem) {
-    .commit__meta {
-      display: none;
-    }
-
-    .commit__title {
-      flex: 0 1 auto;
-      min-inline-size: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  /* The controls need the script; without it the default view stays, with nothing to press. */
+  @media (scripting: none) {
+    .git-log__chips,
+    .commit__toggle {
+      visibility: hidden;
     }
   }
 
-  /* ── Motion (the gate, global.css): a commit's skills slide in as it opens ── */
+  /* ── The log ── */
+
+  .git-log__frame {
+    margin-block-start: var(--space-s);
+
+    /* Entrance (reveal.ts): the log wipes down from the top. */
+    --reveal-x: 0;
+    --reveal-y: 0;
+    --reveal-clip: inset(0 0 100% 0);
+    --reveal-dur: 900ms;
+  }
+
+  .git-log__list,
+  .commit__skills {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Every row: date, its slice of the graph, text, and an end column. Rows touch (no margins),
+     so each slice meets the next. `--y` is the row's node line (NODE_Y). */
+  .git-log__row {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: var(--gl-when) var(--gl-w) minmax(0, 1fr) auto;
+    column-gap: var(--gl-gap);
+    align-items: start;
+  }
+
+  .commit__row {
+    --y: 24px;
+
+    min-block-size: 48px;
+  }
+
+  .skill,
+  .git-log__init {
+    --y: 18px;
+
+    min-block-size: 36px;
+  }
+
+  .git-log__gutter {
+    position: relative;
+    align-self: stretch;
+  }
+
+  .git-log__gutter :global(.gl-svg) {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    block-size: 100%;
+    overflow: visible;
+  }
+
+  .git-log__gutter :global(.gl-line) {
+    fill: none;
+    stroke: var(--gl-c);
+    stroke-width: 1.6;
+  }
+
+  .git-log__gutter :global(.gl-line--dash) {
+    stroke-dasharray: 2 4;
+  }
+
+  .git-log__gutter :global(.gl-gap) {
+    stroke: var(--bg);
+    stroke-width: 5;
+  }
+
+  .git-log__gutter :global(.gl-node) {
+    fill: var(--bg);
+    stroke: var(--gl-c);
+    stroke-width: 1.6;
+  }
+
+  .git-log__gutter :global(.gl-node--fill) {
+    fill: var(--gl-c);
+  }
+
+  .git-log__gutter :global(.gl-halo) {
+    fill: none;
+    stroke: var(--gl-c);
+    stroke-width: 1.2;
+    opacity: 0.35;
+  }
+
+  .git-log__gutter :global(.gl-line[data-hit]) {
+    stroke-width: 2.4;
+  }
+
+  .git-log__gutter :global([data-dim]) {
+    opacity: 0.16;
+  }
+
+  .git-log__when {
+    padding-block-start: calc(var(--y) - 7.5px);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.78125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 15px;
+    text-align: end;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .commit--head .git-log__when {
+    color: var(--text);
+  }
+
+  /* A pick's rows: a faint band in its colour, like a selected commit. */
+  .git-log__row::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset-block: 0;
+    inset-inline: var(--gl-band-x) 0;
+    border-radius: var(--radius-xs);
+  }
+
+  .commit[data-hit] > .commit__row::before,
+  .skill[data-hit]::before {
+    background-color: color-mix(in oklab, var(--gl-pick) 9%, transparent);
+  }
+
+  /* A dimmed milestone's toggle still works, so only its label dims: its focus ring stays full. */
+  .commit[data-dim] > .commit__row > :not(.git-log__gutter, .commit__toggle),
+  .commit[data-dim] > .commit__row > .commit__toggle > *,
+  .skill[data-dim] > :not(.git-log__gutter) {
+    opacity: 0.35;
+  }
+
+  /* ── Milestones ── */
+
+  /* Stretched to the row's height (so the tree line below it meets the first skill), its
+     content kept on the node line. */
+  .commit__line {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: stretch;
+    align-content: flex-start;
+    align-items: baseline;
+    gap: 0 0.625rem;
+    min-inline-size: 0;
+    padding-block: calc(var(--y) - 11.5px) 0.75rem;
+  }
+
+  .commit__when {
+    display: none;
+  }
+
+  .commit__badge {
+    align-self: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-xs);
+    background-color: var(--text);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .commit__title,
+  .commit__org {
+    font-size: 1.0625rem;
+    line-height: 23px;
+  }
+
+  .commit__title {
+    font-weight: 500;
+  }
+
+  .commit__org {
+    color: var(--text-muted);
+  }
+
+  .commit__meta,
+  .commit__when {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .commit__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    block-size: 1.75rem;
+    margin-block-start: calc(var(--y) - 14px);
+    padding-inline: 0.625rem;
+    border: var(--rule-ui);
+    border-radius: var(--radius-xs);
+    background-color: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* The whole row is the toggle's target. */
+  .commit__toggle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xs);
+  }
+
+  .commit__toggle:focus-visible {
+    outline: none;
+  }
+
+  .commit__toggle:focus-visible::after {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .commit__chev {
+    inline-size: 6px;
+    block-size: 6px;
+    margin-block-start: -3px;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    rotate: 45deg;
+  }
+
+  .commit__toggle[aria-expanded='true'] {
+    border-color: var(--line-ui);
+    color: var(--text);
+  }
+
+  .commit__toggle[aria-expanded='true'] .commit__chev {
+    margin-block: 3px 0;
+    rotate: -135deg;
+  }
+
+  @media (hover: hover) {
+    .commit__row:has(.commit__toggle:hover)::before {
+      background-color: var(--surface-2);
+    }
+
+    .commit__row:has(.commit__toggle:hover) .commit__toggle {
+      border-color: var(--line-ui);
+      color: var(--text);
+    }
+
+    .commit[data-hit] > .commit__row:has(.commit__toggle:hover)::before {
+      background-color: color-mix(in oklab, var(--gl-pick) 14%, transparent);
+    }
+  }
+
+  .commit:not([data-open]) > .commit__skills {
+    display: none;
+  }
+
+  /* ── Skills: nested under their milestone, on a hairline tree ── */
+
+  .skill__name {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: stretch;
+    align-content: flex-start;
+    align-items: center;
+    gap: 0 0.5rem;
+    min-inline-size: 0;
+    padding-block: calc(var(--y) - 10.5px) 0.3125rem;
+    padding-inline-start: var(--gl-indent);
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    line-height: 21px;
+  }
+
+  /* The tree: a spine from under the milestone's title, a tick into each skill, and a rounded
+     corner into the last. The tips above HEAD belong to no milestone: indented, no tree. */
+  .commit__line {
+    position: relative;
+  }
+
+  .commit[data-open] > .commit__row > .commit__line::after,
+  .commit__skills .skill__name::before,
+  .commit__skills .skill__name::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--gl-tree-x);
+  }
+
+  .commit[data-open] > .commit__row > .commit__line::after {
+    inset-block-end: 0;
+    block-size: calc(0.75rem - 4px);
+    border-inline-start: var(--gl-tree);
+  }
+
+  .commit__skills .skill__name::before {
+    inset-block: 0;
+    border-inline-start: var(--gl-tree);
+  }
+
+  .commit__skills .skill__name::after {
+    inset-block-start: calc(var(--y) - 0.5px);
+    inline-size: calc(var(--gl-indent) - var(--gl-tree-x) - 0.375rem);
+    border-block-start: var(--gl-tree);
+  }
+
+  .commit__skills .skill:last-child .skill__name::before {
+    display: none;
+  }
+
+  .commit__skills .skill:last-child .skill__name::after {
+    inset-block-start: 0;
+    block-size: calc(var(--y) + 0.5px);
+    border-block-start: 0;
+    border-block-end: var(--gl-tree);
+    border-inline-start: var(--gl-tree);
+    border-end-start-radius: var(--radius-s);
+  }
+
+  .skill__learning {
+    padding: 0 0.4375rem;
+    border: 1px dashed var(--gl-c);
+    border-radius: var(--radius-xs);
+    color: var(--gl-c);
+    font-family: var(--font-mono);
+    font-size: 0.71875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .skill__family {
+    margin-block-start: calc(var(--y) - 8px);
+    color: var(--gl-c);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 16px;
+  }
+
+  .git-log__init-label {
+    padding-block-start: calc(var(--y) - 10.5px);
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 21px;
+  }
+
+  /* ── Motion (the gate, global.css) ── */
   @media (prefers-reduced-motion: no-preference) {
     @keyframes gl-skill-in {
       from {
         opacity: 0;
-        translate: -6px 0;
+        translate: 0 -4px;
       }
     }
 
-    :global(:root:not([data-motion='off'])) .git-log[data-ready] .commit[data-open] .skill {
-      animation: gl-skill-in 280ms var(--ease-out) backwards;
+    /* Only a milestone just opened (`data-fresh`, git-log.ts): never one open on load. */
+    :global(:root:not([data-motion='off'])) .commit[data-fresh] > .commit__skills > .skill {
+      animation: gl-skill-in 240ms var(--ease-out) backwards;
     }
 
-    :global(:root:not([data-motion='off'])) .git-log[data-ready] .skill:nth-child(2) {
+    :global(:root:not([data-motion='off']))
+      .commit[data-fresh]
+      > .commit__skills
+      > .skill:nth-child(2) {
       animation-delay: 40ms;
     }
 
-    :global(:root:not([data-motion='off'])) .git-log[data-ready] .skill:nth-child(3) {
+    :global(:root:not([data-motion='off']))
+      .commit[data-fresh]
+      > .commit__skills
+      > .skill:nth-child(n + 3) {
       animation-delay: 80ms;
     }
 
-    :global(:root:not([data-motion='off'])) .git-log[data-ready] .skill:nth-child(n + 4) {
-      animation-delay: 120ms;
+    :global(:root:not([data-motion='off'])) .git-log__row > :not(.git-log__gutter),
+    :global(:root:not([data-motion='off'])) .git-log__gutter :global(.gl-svg > *) {
+      transition: opacity var(--dur-base) var(--ease-standard);
     }
 
-    :global(:root:not([data-motion='off'])) .commit,
-    :global(:root:not([data-motion='off'])) .skill {
-      transition: opacity 200ms var(--ease-standard);
+    :global(:root:not([data-motion='off'])) .git-log__row::before {
+      transition: background-color var(--dur-base) var(--ease-standard);
     }
 
-    :global(:root:not([data-motion='off'])) .git-log__chip {
+    :global(:root:not([data-motion='off'])) .commit__chev {
+      transition: rotate var(--dur-fast) var(--ease-out);
+    }
+
+    :global(:root:not([data-motion='off'])) .git-log__chip,
+    :global(:root:not([data-motion='off'])) .commit__toggle {
       transition-property: color, border-color, background-color;
       transition-duration: var(--dur-fast);
     }
   }
 
-  /* ── Phones: a rail of two-line rows ── */
+  /* ── Phones: the date moves into the row, the graph stays ── */
   @media (width < 40rem) {
+    .git-log {
+      --gl-gap: 0.625rem;
+      --gl-indent: 1.375rem;
+      --gl-tree-x: 0.3125rem;
+      --gl-band-x: calc(var(--gl-w) + var(--gl-gap) - 0.375rem);
+    }
+
     .git-log__bar {
       display: grid;
       gap: var(--space-xs);
@@ -668,15 +765,14 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
 
     .git-log__cmd {
       overflow: hidden;
-      font-size: 0.78125rem;
       text-overflow: ellipsis;
     }
 
     /* One row of chips that scrolls sideways, bled to the screen edges. */
     .git-log__chips {
       flex-wrap: nowrap;
-      margin-inline: calc(-1 * var(--gutter));
-      padding-inline: var(--gutter);
+      margin: -0.375rem calc(-1 * var(--gutter));
+      padding: 0.375rem var(--gutter);
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -684,210 +780,21 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
     .git-log__chip {
       flex: none;
       min-block-size: 2.75rem;
-      padding-inline: 0.875rem;
-      border-radius: 1.375rem;
-      font-size: 0.78125rem;
     }
 
-    .git-log__frame {
-      margin-block-start: 0.625rem;
-      padding-block-start: 0;
+    .git-log__row {
+      grid-template-columns: var(--gl-w) minmax(0, 1fr) auto;
     }
 
-    .git-log__graph,
-    .git-log__init,
-    .commit__dots,
+    .git-log__when,
     .commit__meta,
-    .commit__sep,
-    .commit__body .commit__head,
+    .commit__count-word,
     .skill__family {
       display: none;
     }
 
-    .commit {
-      position: relative;
-      padding-inline-start: 2.25rem;
-    }
-
-    /* The rail, and the commit's node on it. */
-    .commit::before {
-      content: '';
-      position: absolute;
-      inset-block: 0;
-      inset-inline-start: 10px;
-      inline-size: 1.5px;
-      background-color: var(--text);
-      opacity: 0.45;
-    }
-
-    .commit::after {
-      content: '';
-      position: absolute;
-      inset-block-start: 22px;
-      inset-inline-start: 5px;
-      inline-size: 12px;
-      block-size: 12px;
-      box-sizing: border-box;
-      border: 1.5px solid var(--text);
-      border-radius: 50%;
-      background-color: var(--bg);
-    }
-
-    .commit:first-child::after {
-      background-color: var(--text);
-    }
-
-    /* An open commit's branch: a rounded corner off the node, then down beside its chips. */
-    .commit[data-open] .commit__lane::before,
-    .commit[data-open] .commit__lane::after {
-      content: '';
-      position: absolute;
-    }
-
-    .commit[data-open] .commit__lane::before {
-      inset-block-start: 27px;
-      inset-inline-start: 11px;
-      inline-size: 14px;
-      block-size: 14px;
-      border-block-start: 1.5px solid var(--gl-c);
-      border-inline-end: 1.5px solid var(--gl-c);
-      border-start-end-radius: 8px;
-    }
-
-    .commit[data-open] .commit__lane::after {
-      inset-block: 40px 18px;
-      inset-inline-start: 24.25px;
-      inline-size: 1.5px;
-      background-color: var(--gl-c);
-    }
-
-    .commit__row {
-      position: relative;
-      grid-template-columns: minmax(0, 1fr) auto;
-      grid-template-areas:
-        'when toggle'
-        'body toggle';
-      column-gap: var(--space-s);
-      row-gap: 0.1875rem;
-      block-size: auto;
-      min-block-size: 4rem;
-      padding-block: var(--space-xs);
-      border-block-start: var(--hairline);
-    }
-
     .commit__when {
-      grid-area: when;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.71875rem;
-      letter-spacing: 0.08em;
-      text-align: start;
-    }
-
-    .commit__head--short {
       display: inline;
-      padding: 0.0625rem 0.375rem;
-      border-radius: 3px;
-      background-color: var(--text);
-      color: var(--bg);
-      font-size: 0.65625rem;
-      font-weight: 600;
-    }
-
-    .commit__lane {
-      display: block;
-    }
-
-    .commit__body {
-      grid-area: body;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.1875rem;
-      white-space: normal;
-    }
-
-    .commit__title {
-      font-size: 1.0625rem;
-      line-height: 1.3;
-      text-wrap: pretty;
-      overflow: visible;
-    }
-
-    .commit__org {
-      font-size: 0.875rem;
-      overflow: visible;
-    }
-
-    .commit__toggle,
-    .commit__toggle--none {
-      grid-area: toggle;
-      display: grid;
-      place-items: center;
-      align-self: center;
-      block-size: 2.25rem;
-      border-radius: 6px;
-    }
-
-    .commit__toggle--none {
-      min-inline-size: 2.75rem;
-      border: var(--rule-ui);
-      color: var(--text-subtle);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-    }
-
-    /* The whole row is the toggle's target. */
-    .commit__toggle::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-    }
-
-    .commit__skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.375rem;
-      padding: 0 0 1.125rem 1.125rem;
-    }
-
-    .skill {
-      display: block;
-      block-size: auto;
-    }
-
-    .skill__name {
-      display: inline-flex;
-      gap: 0.375rem;
-      padding: 0.3125rem 0.625rem;
-      border: 1px solid var(--gl-c);
-      border-radius: 0.875rem;
-      color: var(--text);
-      font-size: 0.84375rem;
-    }
-
-    .skill[data-learning] .skill__name {
-      border-style: dashed;
-    }
-
-    .skill__dot {
-      display: block;
-      inline-size: 6px;
-      block-size: 6px;
-    }
-
-    /* The dashed chip says it; the word stays for screen readers. */
-    .skill__learning {
-      position: absolute;
-      inline-size: 1px;
-      block-size: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
-
-    .git-log__legend {
-      margin-block-start: var(--space-s);
     }
   }
 </style>

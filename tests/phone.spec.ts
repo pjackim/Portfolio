@@ -6,11 +6,11 @@
  *   is no standalone contact page). Capabilities and the résumé live in the About panel and the
  *   sticky CTA bar instead of the header.
  * - Home: the hero's full-height chapter opener, then the same four sections as scroll-snap
- *   panels (About's horizontal timeline strip, Experience's shared git-log rail, Selected work's
+ *   panels (About's horizontal timeline strip, Experience's shared git log, Selected work's
  *   reel cards, Contact's rows) — a sticky "Get in touch" bar opens the contact sheet, a modal
  *   with every channel that Escape closes.
- * - /experience/: a rail of two-line rows, no graph; tapping anywhere on a row opens its skill
- *   chips.
+ * - /experience/: the git log keeps its graph, the date moves into each row, and tapping
+ *   anywhere on a milestone opens its skills under it.
  * - /work/: each showcase's lead is a card, and its rows carry 64px cover thumbnails.
  * - From 40rem the panels, sticky bar and segmented nav are gone and the wordmark nav is back.
  * Runs on every project (desktop Chromium at phone size, Pixel 7, iPhone 15 / WebKit).
@@ -75,12 +75,13 @@ test('off the home page, the current section is marked and Contact opens the she
   await expect(page.locator(SHEET)).toBeHidden();
 });
 
-test('experience: a rail of rows, and a tap anywhere on a row opens its chips', async ({
+test('experience: the graph stays, and a tap anywhere on a milestone opens its skills', async ({
   page,
 }) => {
   await gotoRel(page, 'experience/');
   await expect(page.locator('[data-git-log][data-ready]')).toBeAttached();
-  await expect(page.locator('[data-git-graph]')).toBeHidden();
+  await expect(page.locator('[data-git-log] .gl-svg').first()).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const commit = page.locator('li[data-commit]:has(button.commit__toggle)').nth(1);
   const chip = commit.locator('[data-skill]').first();
   await expect(chip).toBeHidden();
