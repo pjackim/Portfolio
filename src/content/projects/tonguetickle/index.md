@@ -10,6 +10,13 @@
 # Verification run 2026-09-29 (Windows 11, Python 3.14.2, scratch export of HEAD 260eec2, source
 #   untouched): 207 tests collected, 207 passed; offline SAPI voice rendered a valid WAV via POST
 #   /api/tts with no keys.
+# Claim-level sources: 'kept config, cost-tracking, hotkey and offline-voice code, ported Qt-free' ←
+#   PLAN/00-foundations.md (carry over Config and CostTracker) plus the module docstrings of hotkey.py
+#   and local_tts.py ('ported/migrated from an earlier PyQt prototype', Qt removed); retry statuses
+#   429/500/502/503/504, 3 attempts ← providers/_http.py (RETRY_STATUSES, DEFAULT_ATTEMPTS); silent
+#   lead (300 ms, Grok WAV) and synchronous silent primer ← providers/grok.py (_pad_wav_lead),
+#   player.py (_primer_wav) and tests/test_player.py; no repo source confirms the clipping is fully
+#   resolved, so the copy says 'address', not 'stop'.
 # Author statements: Parker's prompts (Claude Code prompt history, project TongueTickle) on
 #   2026-07-02 (auto-express request, hotkey bug reports, real Grok test) and 2026-09-27 (provider
 #   order, locally hosted Qwen3-TTS).
@@ -50,7 +57,7 @@ highlights:
   - 'Speaks any highlighted text from a global hotkey; a free offline Windows voice works with no API key.'
   - 'Ranked provider registry (Qwen3-TTS, Grok, OpenAI, offline voice); by default the highest-priority configured one speaks. A new provider is one module.'
   - 'Treats the self-hosted Qwen3-TTS server as configured only while its /health answers (1 s timeout, cached 10 s), so a down server falls through fast.'
-  - 'Added a silent WAV lead and a synchronous silent primer clip to stop clipped first words on hotkey playback.'
+  - 'Added a silent WAV lead and a synchronous silent primer clip to address clipped first words on hotkey playback.'
   - 'Grok auto-express: an LLM adds speech tags per user-made preset, previewed before Speak, and a sanitizer strips any tag the model invents.'
 media:
   - kind: video
@@ -82,7 +89,7 @@ legacyPaths: []
 
 Long articles, docs and code comments tire the eyes, and listening is easier. The usual fix is copying text into some web TTS tool and switching apps. I wanted one gesture: highlight text anywhere, press a hotkey, hear it spoken in a voice I chose.
 
-This is the second iteration of that idea. An earlier PyQt6 desktop prototype worked mechanically but used the wrong UI framework, so I kept its config and cost-tracking backend and rebuilt the rest as a web UI plus a hotkey daemon.
+This is the second iteration of that idea. An earlier PyQt6 desktop prototype worked mechanically but used the wrong UI framework, so I kept its config, cost-tracking, hotkey and offline-voice code (ported Qt-free) and rebuilt the UI as a web app with a headless hotkey daemon.
 
 ## Approach
 
@@ -94,7 +101,7 @@ Every TTS backend sits behind one provider interface and a priority registry, so
 
 - **Hotkey capture.** A global hotkey (Ctrl+Shift+S by default) releases held Shift and Alt, sends a clean Ctrl+C, and reads the clipboard through `pyperclip`. `pynput` is imported lazily so the server and tests run headless.
 - **Provider registry.** Qwen3-TTS through a self-hosted vLLM-Omni server (priority 1), Grok Voice (2), OpenAI Voice (3), and an offline voice (100). Qwen needs no API key (one is optional), so it counts as configured only while its `/health` endpoint answers, which lets the registry fall through to the next provider when the GPU server is down.
-- **Shared HTTP plumbing.** One `post_with_retry` for all three network providers: up to 3 attempts on 429, 5xx and network errors, with exponential backoff or the `Retry-After` header.
+- **Shared HTTP plumbing.** One `post_with_retry` for all three network providers: up to 3 attempts on 429, 500, 502, 503, 504 and network errors, with exponential backoff or the `Retry-After` header.
 - **Offline voice.** Windows SAPI5 through PowerShell `System.Speech`, with the text passed via a temp file rather than interpolated into a script. It is Windows-only.
 - **Playback workarounds.** xAI returns WAV files with streaming placeholder chunk sizes that `winsound` refuses to play, so I rewrite the RIFF and data sizes. For clipped first words on sleeping audio devices, I prepend 300 ms of silence and play a short silent clip synchronously first.
 - **Web UI.** A vanilla HTML, CSS and JS single page with Listen, Voices and Settings views: a voice library with filters, one-click Use to set the active voice, and per-provider settings cards generated from each provider's declared settings schema.
