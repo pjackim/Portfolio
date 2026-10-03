@@ -1,0 +1,60 @@
+---
+/**
+ * The brand mark (docs/identity/brand.md): a paper-fold "P" in near-white with an orange "J" in
+ * its counter, on a graphite tile. The paper is close to white, so on the light theme it needs a
+ * dark ground to read at all; the tile is the dark theme's `--bg` in both themes, the same
+ * ground the favicon, touch icon and OG card use. Decorative: the surrounding link carries the
+ * accessible name.
+ *
+ * The image is `logo-mark.webp`, the master (`logo.png`) cropped to its shape; `npm run og`
+ * rebuilds it, and astro:assets serves it at the sizes below. The tile's side is `--logo-size`
+ * (set by the caller's stylesheet, default 2rem); the mark fills 72% of it. `eager` for the
+ * header's, which is on screen at first paint; the footer's loads lazily.
+ */
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/logo-mark.webp';
+
+interface Props {
+  class?: string;
+  eager?: boolean;
+}
+
+const { class: className, eager = false } = Astro.props;
+---
+
+<span class:list={['logo', className]}>
+  <Image
+    src={mark}
+    format="webp"
+    widths={[20, 40, 60]}
+    sizes="20px"
+    alt=""
+    class="logo__mark"
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+</span>
+
+<style>
+  .logo {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--logo-size, 2rem);
+    block-size: var(--logo-size, 2rem);
+    border-radius: var(--radius-s);
+    background-color: var(--bg-d);
+    /* On the dark theme the tile is the page's own ground (the footer's `--bg`): a hairline keeps
+       it a tile, so the mark sits on the grid edge instead of looking inset. */
+    outline: 1px solid light-dark(transparent, var(--line));
+    outline-offset: -1px;
+    /* The tile is what makes the white paper visible: keep it in high-contrast mode and print. */
+    forced-color-adjust: none;
+    print-color-adjust: exact;
+  }
+
+  .logo :global(.logo__mark) {
+    inline-size: auto;
+    block-size: 72%;
+  }
+</style>
