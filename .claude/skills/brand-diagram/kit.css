@@ -38,8 +38,8 @@ body {
 /* The only atmospheric background: a masked 64px hairline grid. */
 .canvas {
   position: relative;
-  width: 1200px;
-  height: 720px;
+  width: var(--w, 1200px);
+  height: var(--h, 720px);
   padding: 44px 56px 0;
   overflow: hidden;
   background: var(--bg);
@@ -298,4 +298,246 @@ svg .t-mono-signal {
 }
 .foot .mono {
   color: var(--text-subtle);
+}
+
+/* ---- Splash parts (README banners, covers): display type, reticle, trace, tiles, CTA. ---- */
+.display {
+  font-size: 104px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+.lede {
+  text-wrap: balance;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+/* Typed prompt: "FOCUS ›" key, text, then the 3/8 accent block caret. */
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.prompt .k {
+  color: var(--text-subtle);
+}
+.prompt .caret {
+  width: 11px;
+  height: 22px;
+  background: var(--accent);
+}
+/* Lock-on reticle: four accent L-corners around a target (an image, a node). Never a full box. */
+.reticle {
+  --len: 22px;
+  --t: 2px;
+  position: relative;
+  padding: 14px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) top left / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top left / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / var(--t) var(--len) no-repeat;
+}
+.reticle img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+/* Mono key / value readout pairs. */
+.readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.readout dt {
+  color: var(--text-subtle);
+}
+.readout dd {
+  margin: 0;
+  color: var(--text);
+}
+
+/* ---- Trace: a horizontal timeline. Neutral line; the last (current) node and segment are signal. ---- */
+.trace {
+  display: flex;
+  position: relative;
+  margin-top: 8px;
+}
+.trace::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 1px;
+  background: var(--line-ui);
+}
+.trace .pt {
+  position: relative;
+  flex: 1 1 0;
+  padding-right: 20px;
+}
+.trace .pt::before {
+  content: '';
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin-bottom: 22px;
+  background: var(--bg);
+  border: 1px solid var(--line-ui);
+}
+.trace .pt.is-now::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.trace .pt.is-now::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 6px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+}
+.trace .pt.is-now .mono {
+  color: var(--accent);
+}
+.trace h3 {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.trace p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---- Tiles: image-first project tiles in a bento grid (.bento sets the grid areas inline). ---- */
+.bento {
+  display: grid;
+  gap: 20px;
+}
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.tile.is-signal {
+  border-left: 3px solid var(--accent);
+}
+.tile img {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
+.tile .cap {
+  padding: 14px 18px 16px;
+  background: var(--surface-2);
+}
+.tile .cap h3 {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.tile.is-signal .cap .mono {
+  color: var(--accent);
+}
+
+/* ---- CTA: one big call to action, the signal block. ---- */
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.cta .go {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 34px;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.cta .go .arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* ---- Layout utilities. ---- */
+.split {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+.split > .grow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+.stack.g-s {
+  gap: 14px;
+}
+.stack.g-m {
+  gap: 22px;
+}
+.stack.g-l {
+  gap: 34px;
+}
+.mark {
+  display: block;
+  align-self: flex-start;
+  height: 56px;
+  width: auto;
+}
+.bento.b5 {
+  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: var(--bh, 540px);
+}
+.bento.b5 .tile:first-child {
+  grid-row: span 2;
+}
+.display-m {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
 }

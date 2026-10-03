@@ -28,12 +28,15 @@ folder reproduces it. If `$ARGUMENTS` is empty, ask for the description and stop
 
 ## Pick the layout
 
-| The content is...                          | Use                                                 |
-| ------------------------------------------ | --------------------------------------------------- |
-| A sequence (pipeline, request path)        | `.flow` with 3-5 `.step`s                           |
-| A ranked or ordered list, a fallback chain | `.rows`, first `.row.is-signal`, last `.is-quiet`   |
-| Parts of a thing, a feature set            | `.cards` (`style="--cols:3"` is a layout var, ok)   |
-| Relationships, layers, trust boundaries    | Inline `<svg class="diagram">` with the SVG classes |
+| The content is...                          | Use                                                                      |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| A sequence (pipeline, request path)        | `.flow` with 3-5 `.step`s                                                |
+| A ranked or ordered list, a fallback chain | `.rows`, first `.row.is-signal`, last `.is-quiet`                        |
+| Parts of a thing, a feature set            | `.cards` (`style="--cols:3"` is a layout var, ok)                        |
+| Relationships, layers, trust boundaries    | Inline `<svg class="diagram">` with the SVG classes                      |
+| A timeline                                 | `.trace` with `.pt` points, the last `.is-now`                           |
+| Project or image tiles                     | `.bento.b5` of `.tile`s (image + `.cap`)                                 |
+| A banner or splash (name, photo, CTA)      | `.split`, `.display`, `.lede`, `.prompt`, `.reticle`, `.readout`, `.cta` |
 
 Combine at most two (the reference is `.flow` over `.rows`). Section headings are
 `<span class="mono sec"><span class="ix">01</span> / Label</span>`. Add a `.foot` strip: a
@@ -44,8 +47,10 @@ plain note on the left, the project name on the right.
 1. **Source the facts** for the description. Name the sources; they go in the project's
    `# Sources:` header later.
 2. **Write the fragment** to `.cache/diagrams/<slug>.html`: only `<main class="canvas">…</main>`
-   (copy the shape from `example.html`). The canvas is fixed at 1200x720 CSS px; content that
-   overflows makes the render fail, so cut copy rather than shrinking type.
+   (copy the shape from `example.html`). The canvas defaults to 1200x720 CSS px; pass
+   `--size 1200x320` for banners. Content that overflows (or a broken image) makes the render
+   fail, so cut copy rather than shrinking type. `{{ROOT}}` in the fragment is the repo root, for
+   embedding repo images (`<img src="{{ROOT}}/src/assets/…">`).
 3. **Render:**
 
    ```bash
@@ -66,7 +71,9 @@ plain note on the left, the project name on the right.
    describes what the diagram shows (not "diagram"), a one-line caption, `wide: true`, and a
    `# media:` source line citing what the diagram was authored from. Run `npm run check:media`.
 
-6. **No project named:** stop after step 4 and report the PNG path.
+6. **No project named** (a README banner, a doc, a social image): render to the destination
+   with `--out <path>.webp` (WebP is encoded from the 2x PNG), keep the fragment next to it,
+   and report the path. README banners: `.github/readme/src/*.html` → `.github/readme/*.webp`.
 
 ## Common mistakes
 
