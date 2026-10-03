@@ -27,7 +27,7 @@ In priority order (when they pull against each other, the higher one wins):
      never costs accessibility (WCAG 2.2 AA, reduced motion) or performance (the Lighthouse
      budgets below).
 3. **Easy to recognise and contact**
-   - A consistent identity: profile photo, monogram, and name.
+   - A consistent identity: profile photo, logo, and name.
    - Every contact channel Parker publishes (email, GitHub, LinkedIn, résumé, …) is one
      zero-friction step away from any page. Contact details live in `src/data/site.ts`.
 
