@@ -1,13 +1,13 @@
 /**
  * Renders the default Open Graph card, public/og-default.png (1200×630), used by the home page,
- * /work/ and the 404 (spec-design-content §6). Re-run after changing the monogram or copy:
+ * /work/ and the 404 (spec-design-content §6). Re-run after changing the logo or copy:
  *
  *   npm run og
  *
  * The card is an SVG authored below: graphite ground, a 64px hairline grid fading out from the
- * upper right (as the home hero), the monogram, the name in Geist 600 ending in an accent
- * cursor block, and a Geist Mono readout line. Chromium rasterizes it (see lib.ts for why not
- * librsvg); sharp encodes the PNG.
+ * upper right (as the home hero), the logo mark (straight on the graphite: its white paper
+ * needs a dark ground), the name in Geist 600 ending in an accent cursor block, and a Geist Mono
+ * readout line. Chromium rasterizes it (see lib.ts for why not librsvg); sharp encodes the PNG.
  */
 
 import { resolve } from 'node:path';
@@ -15,10 +15,9 @@ import sharp from 'sharp';
 import { site } from '../../src/data/site.ts';
 import {
   COLOR,
-  MONOGRAM,
   PUBLIC_DIR,
   embeddedFontFaces,
-  monogramElements,
+  logoAtHeight,
   rasterizeWithChromium,
 } from './lib.ts';
 
@@ -41,8 +40,9 @@ const READOUT_BASELINE = H - PAD;
 const NAME_BASELINE = READOUT_BASELINE - 86;
 /** Shown top right; the path keeps its capital P (the site lives at /Portfolio/). */
 const URL_TEXT = 'pjackim.github.io/Portfolio';
-/** Integer scale, so the monogram's 2-unit stems land on whole pixels. */
-const MONOGRAM_SCALE = 3;
+/** The logo mark's height; pre-sized to this so the 1:1 Chromium render stays crisp. */
+const MARK_HEIGHT = 112;
+const mark = await logoAtHeight(MARK_HEIGHT);
 
 /** The readout as <tspan>s: uppercase words, dim middle dots between them. */
 const readout = READOUT.map((part) => `<tspan>${part.toUpperCase()}</tspan>`).join(
@@ -69,8 +69,8 @@ text{font-kerning:normal;text-rendering:geometricPrecision}
 </defs>
 <rect width="${W}" height="${H}" fill="${COLOR.bg}"/>
 <rect width="${W}" height="${H}" fill="url(#grid)" mask="url(#grid-fade)"/>
-<g transform="translate(${PAD} ${PAD}) scale(${MONOGRAM_SCALE})">${monogramElements({ ink: COLOR.text, accent: COLOR.accent })}</g>
-<text class="url" x="${W - PAD}" y="${PAD + (MONOGRAM.height * MONOGRAM_SCALE) / 2 + 8}" text-anchor="end">${URL_TEXT}</text>
+<image x="${PAD}" y="${PAD}" height="${MARK_HEIGHT}" href="data:image/png;base64,${mark.toString('base64')}"/>
+<text class="url" x="${W - PAD}" y="${PAD + MARK_HEIGHT / 2 + 8}" text-anchor="end">${URL_TEXT}</text>
 <text id="name" class="name" x="${PAD - NAME_INSET}" y="${NAME_BASELINE}">${site.name}</text>
 <rect id="cursor" data-gap="${CURSOR_GAP}" x="0" y="${NAME_BASELINE - CAP}" width="${Math.round(NAME_SIZE * 0.11)}" height="${CAP}" fill="${COLOR.accent}"/>
 <text class="readout" x="${PAD}" y="${READOUT_BASELINE}">${readout}</text>
