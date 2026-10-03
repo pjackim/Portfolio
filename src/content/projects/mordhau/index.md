@@ -1,5 +1,6 @@
 ---
-# Sources: html/Work/mordhauhack.html:77-79, :90-96, :129, :168, :186-218, :224-228, :234-238; public/files/Resume_General.pdf (Memory Hacking)
+# Sources: html/Work/mordhauhack.html:77-79, :90-96, :120-124, :129, :141, :151, :168, :186-238, :249; public/files/Resume_General.pdf (Memory Hacking)
+# Media: all from the legacy site at git a085340 (the commit before the legacy removal, 907a195) — Images/fovhack/screenshot-overview.jpg (cover; also the project's legacy home-page thumbnail), screenshot-cosmetic.jpg, fov_demo.gif (15 s, 1280x655, orphaned in the legacy HTML, encoded as a loop; that it shows the field of view widening is read from its frames, 0 s vs 15 s, and its file and folder names, not stated in any legacy text), and the page's two YouTube embeds S1XTb5wbYFc and elRSqVSCXu8 (titles from YouTube oEmbed, checked 2026-10-03). Not used: screenshot-gameplay.jpg (514x917, the gameplay menu already in the cover), fov_preview.png (1669x854 still of the same scene as the loop).
 title: Mordhau — Runtime Memory Patching
 summary: A C++ DLL injected into Mordhau's Unreal Engine 4 client that patches memory at runtime to change field-of-view, turn-rate, movement and cooldown limits.
 year: 2021
@@ -11,22 +12,34 @@ capabilities: [offensive-security]
 stack: [C++, DLL injection, Memory patching, Reverse engineering, Unreal Engine 4]
 highlights:
   - Patched a live Unreal Engine 4 game's memory at runtime through an injected DLL.
+  - Shipped as two packages, Cosmetic and Gameplay; the Cosmetic package was the most popular.
   - Exposed in-game controls for field of view, turn-rate caps, crouch and dodge cooldowns, warm-up movement, and idle-kick prevention.
   - Built user authorization plus access-key distribution and management around the tool.
   - Handled the tool's UX and end-user tech support, working from client feedback.
 cover: ./cover.webp
-coverAlt: In-game menu sliders set to FOV Value 130, TurncapX 315 and TurncapY 290.
+coverAlt: The tool's in-game menu over Mordhau's loadout screen, with a Cosmetics panel of armour IDs, a Gameplay panel of checkboxes and FOV 130, TurncapX 315 and TurncapY 290 sliders, and a usage and hotkeys panel.
 media:
+  - kind: video
+    src: ./fov-widening.mp4
+    alt: A first-person view of a sword facing an axe-wielding dummy in a bare test map, with the field of view widening so the dummy appears smaller.
+    caption: Field-of-view demo recording. Field of view was the gameplay option that proved very popular with users.
+    wide: true
   - kind: image
-    src: ./gameplay-toggles.webp
-    alt: 'In-game menu section headed Gameplay with six checkboxes: AFK, Crouch Cooldown, Dodge Cooldown, Enable Dodge, FOV and Move.'
-    caption: Gameplay options — idle-kick prevention, instant crouch and dodge, dodge for the current class, a wider field of view, and movement while emoting.
+    src: ./cosmetic-menu.webp
+    alt: 'The Cosmetics panel beside a gold-armoured knight, with ID fields for helm 43, neck 0, shoulder 6, chest 5, arm 33, glove 12, waist 0, legs 19 and foot 2.'
+    caption: The Cosmetic package. Pick an armour ID per slot to wear gear that was only sold before the game launched (Kickstarter content).
+  - kind: youtube
+    id: 'S1XTb5wbYFc'
+    title: 'Mordhau Hack: Cosmetic Menu'
+  - kind: youtube
+    id: 'elRSqVSCXu8'
+    title: 'Mordhau Hack: Gameplay Menu'
 legacyPaths: [html/Work/mordhauhack.html]
 ---
 
 ## Problem
 
-Mordhau's stock client leaves out options players wanted — above all a wider field of view, which proved very popular with users.
+Mordhau's stock client leaves out options players wanted — including a wider field of view, which proved very popular with users.
 
 ## Approach
 
@@ -35,7 +48,8 @@ I reverse-engineered the running Unreal Engine 4 client, then wrote a C++ DLL th
 ## What I built
 
 - **Memory patching through DLL injection.** The core of the tool, running inside the live client.
-- **Adjustable parameters.** Field of view; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; and protection from being kicked for inactivity.
+- **Gameplay package.** Ten toggles: field of view; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; faster sprint; automatic parry; and protection from being kicked for inactivity.
+- **Cosmetic package.** An in-game panel for setting the armour ID of each slot, which let users wear Kickstarter-only cosmetics. It was the more popular of the two.
 - **Access control.** User authorization, plus distribution and management of access keys.
 - **Support.** The tool's UX, and tech support for its users.
 

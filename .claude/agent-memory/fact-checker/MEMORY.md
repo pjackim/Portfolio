@@ -1,0 +1,1 @@
+- [Legacy source map](reference_legacy_map.md) — mordhau legacy lines/images at a085340, plus Bash-hook quirks
