@@ -37,10 +37,11 @@ here that is not built from the shared parts: it is a supplied illustration, use
 - **Master:** `src/assets/brand/logo.png`, a transparent 1254×1254 PNG. `npm run og` crops it to
   its shape (`logo-mark.webp`, which the header and footer serve) and renders the favicon, touch
   icons and OG card from it. Never redraw or recolour it.
-- **Ground:** always graphite (the dark theme's `--bg`), in both themes. The paper is close to
-  white and vanishes on a light ground, so `Logo.astro` draws the mark on a fixed tile (4px
-  radius, `--radius-s`) and the icons do the same. The OG card's own ground is already graphite.
-- **Size:** a 2.25rem tile in the header, 2rem in the footer, the mark filling 72% of it. The
+- **Ground:** transparent on the site: `Logo.astro` draws the mark bare, so it takes the page's
+  ground in both themes. The favicon and touch icons stay on graphite (the dark theme's `--bg`),
+  because they land on tab bars and home screens with no page behind them. The OG card's own
+  ground is already graphite.
+- **Size:** a 2.25rem box in the header, 2rem in the footer, the mark filling its height. The
   home link carries the accessible name; the mark itself is decorative.
 - **Still.** The mark doesn't animate. The blinking accent block belongs to the typed prompt,
   not the header.
