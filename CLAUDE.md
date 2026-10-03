@@ -236,10 +236,10 @@ check:media` — media lint (also part of `lint`)
 - **Never paste legacy HTML.** Astro 7's Rust compiler rejects invalid/unclosed nesting (the
   legacy `credential_correlation.html` has broken nesting) — port legacy **text** only, into
   clean Astro/Markdown markup.
-- **The logo goes on graphite.** `Logo.astro` draws the mark (`src/assets/brand/logo-mark.webp`,
-  cropped from the master `logo.png` by `npm run og`) on a fixed `--bg-d` tile in both themes,
-  because its paper is near-white. Never place the mark bare on a theme ground, and re-run
-  `npm run og` after changing the master.
+- **The logo is bare.** `Logo.astro` draws the mark (`src/assets/brand/logo-mark.webp`,
+  cropped from the master `logo.png` by `npm run og`) on a transparent ground, no tile. The
+  favicon and touch icons are transparent too; only the OG card keeps a graphite ground.
+  Re-run `npm run og` after changing the master.
 - **Media only via the pipeline.** Never hand-encode or commit a raw image/video export — run
   `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy batch).
   Filenames are kebab-case; only WebP images and MP4+WebM+poster videos are allowed under

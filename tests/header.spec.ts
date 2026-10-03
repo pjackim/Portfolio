@@ -43,10 +43,10 @@ const navItem = (page: Page, id: string) => page.locator(`.site-nav a[data-nav-i
 const phoneItem = (page: Page, id: string) => page.locator(`.phone-nav__item[data-nav-id="${id}"]`);
 
 /**
- * The logo on show has loaded (not a broken image) and is decorative, sits on the graphite tile
+ * The logo on show has loaded (not a broken image) and is decorative, sits on no tile
  * in both colour schemes (its white paper vanishes on a light ground), and fits inside it.
  */
-async function expectLogoOnGraphite(page: Page, where: string): Promise<void> {
+async function expectLogoTransparent(page: Page, where: string): Promise<void> {
   const logo = headerLogo(page);
   await expect(logo, where).toBeVisible();
   const mark = logo.locator('img');
@@ -58,15 +58,14 @@ async function expectLogoOnGraphite(page: Page, where: string): Promise<void> {
     .toBe(true);
   for (const colorScheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme });
-    const graphite = await tokenColor(page, '--bg-d');
     expect(
       await logo.evaluate((el) => getComputedStyle(el).backgroundColor),
-      `${where}, ${colorScheme}`,
-    ).toBe(graphite);
+      `${where}, ${colorScheme}: no tile behind the mark`,
+    ).toBe('rgba(0, 0, 0, 0)');
   }
   const [tile, drawn] = [await box(logo), await box(mark)];
-  expect(drawn.width, where).toBeLessThan(tile.width);
-  expect(drawn.height, where).toBeLessThan(tile.height);
+  expect(drawn.width, where).toBeLessThanOrEqual(tile.width + 0.5);
+  expect(drawn.height, where).toBeLessThanOrEqual(tile.height + 0.5);
   expect(drawn.x, where).toBeGreaterThanOrEqual(tile.x);
   expect(drawn.y + drawn.height, where).toBeLessThanOrEqual(tile.y + tile.height + 0.5);
 }
@@ -161,10 +160,12 @@ test.describe('header from 40rem', () => {
     await expect(page.locator('.phone-brand')).toBeHidden();
   });
 
-  test('header logo: the mark on its graphite tile, beside the wordmark', async ({ page }) => {
+  test('header logo: the bare mark on a transparent ground, beside the wordmark', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await gotoRel(page, '');
-    await expectLogoOnGraphite(page, 'desktop');
+    await expectLogoTransparent(page, 'desktop');
     await expect(page.locator('.brand')).toHaveAccessibleName(/home/i);
   });
 
@@ -287,9 +288,9 @@ test.describe('header from 40rem', () => {
 test.describe('phone header', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
-  test('phone logo: the mark on its graphite tile, linking home', async ({ page }) => {
+  test('phone logo: the bare mark on a transparent ground, linking home', async ({ page }) => {
     await gotoRel(page, 'work/');
-    await expectLogoOnGraphite(page, 'phone');
+    await expectLogoTransparent(page, 'phone');
     await expect(page.locator('.phone-brand')).toHaveAccessibleName(/home/i);
   });
 

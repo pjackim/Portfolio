@@ -1,14 +1,12 @@
 ---
 /**
  * The brand mark (docs/identity/brand.md): a paper-fold "P" in near-white with an orange "J" in
- * its counter, on a graphite tile. The paper is close to white, so on the light theme it needs a
- * dark ground to read at all; the tile is the dark theme's `--bg` in both themes, the same
- * ground the favicon, touch icon and OG card use. Decorative: the surrounding link carries the
- * accessible name.
+ * its counter, drawn bare on a transparent background so it sits on whatever ground the page has.
+ * Decorative: the surrounding link carries the accessible name.
  *
  * The image is `logo-mark.webp`, the master (`logo.png`) cropped to its shape; `npm run og`
- * rebuilds it, and astro:assets serves it at the sizes below. The tile's side is `--logo-size`
- * (set by the caller's stylesheet, default 2rem); the mark fills 72% of it. `eager` for the
+ * rebuilds it, and astro:assets serves it at the sizes below. The box's side is `--logo-size`
+ * (set by the caller's stylesheet, default 2rem); the mark fills its height. `eager` for the
  * header's, which is on screen at first paint; the footer's loads lazily.
  */
 import { Image } from 'astro:assets';
@@ -42,19 +40,10 @@ const { class: className, eager = false } = Astro.props;
     place-items: center;
     inline-size: var(--logo-size, 2rem);
     block-size: var(--logo-size, 2rem);
-    border-radius: var(--radius-s);
-    background-color: var(--bg-d);
-    /* On the dark theme the tile is the page's own ground (the footer's `--bg`): a hairline keeps
-       it a tile, so the mark sits on the grid edge instead of looking inset. */
-    outline: 1px solid light-dark(transparent, var(--line));
-    outline-offset: -1px;
-    /* The tile is what makes the white paper visible: keep it in high-contrast mode and print. */
-    forced-color-adjust: none;
-    print-color-adjust: exact;
   }
 
   .logo :global(.logo__mark) {
     inline-size: auto;
-    block-size: 72%;
+    block-size: 100%;
   }
 </style>
