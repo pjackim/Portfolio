@@ -21,11 +21,29 @@ interface Props {
 }
 
 const { projects, class: className } = Astro.props;
+
+/** Mirrors the bento rules below, so each card's `sizes` matches the width its cell really gets:
+    from the 4th card on, rows of three; a single card left over fills the row, two halve it. */
+function spanOf(i: number): 'full' | 'half' | undefined {
+  const n = projects.length;
+  const pos = i + 1;
+  if (pos < 4) return undefined;
+  if (pos === n && pos % 3 === 1) return 'full';
+  if ((pos === n - 1 && pos % 3 === 1) || (pos === n && pos % 3 === 2)) return 'half';
+  return undefined;
+}
 ---
 
 <ol class:list={['project-grid', className]} role="list" data-spotlight>
   {projects.map((project, i) => (
-    <ProjectCard project={project} index={i} lead={i === 0} eager={i === 0} reveal={i >= 3} />
+    <ProjectCard
+      project={project}
+      index={i}
+      lead={i === 0}
+      span={spanOf(i)}
+      eager={i === 0}
+      reveal={i >= 3}
+    />
   ))}
 </ol>
 <MotionLayer />
@@ -51,8 +69,10 @@ const { projects, class: className } = Astro.props;
     --i: 1;
   }
 
-  /* Tablets: the lead full width, the rest in pairs; an odd one out takes the whole row. */
-  @media (width >= 40rem) {
+  /* Tablets: the lead full width, the rest in pairs; an odd one out takes the whole row. Bounded
+     above: these selectors outrank the bento's plain `.card` span, so left open they would
+     leak into it and stretch the last card across a whole row. */
+  @media (40rem <= width < 60rem) {
     .project-grid > :global(.card:not(:first-child)) {
       grid-column: span 6;
     }

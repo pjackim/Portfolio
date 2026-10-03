@@ -16,6 +16,7 @@ highlights:
   - Wrote tests, and used GitHub along the way.
 cover: ./cover.webp
 coverAlt: 'Demo run: File Explorer showing Encryption.exe, a directory tree of encrypted file names, and PowerShell reporting “Successfully Encrypted”.'
+coverPosition: 'center top'
 media:
   - kind: youtube
     id: 'DhG7bB0exLA'
