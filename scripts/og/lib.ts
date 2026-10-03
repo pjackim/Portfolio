@@ -77,15 +77,16 @@ export async function logoAtHeight(height: number): Promise<Buffer> {
 }
 
 /**
- * The mark centred on a graphite `size`×`size` tile with corner radius `radius`, the mark
- * `markHeight` px tall. The mark's white paper needs a dark ground: it disappears on a light tab
- * bar or home screen.
+ * The mark centred on a transparent `size`×`size` canvas, `markHeight` px tall: the site icons.
+ * The mark's white paper vanishes on a light tab bar, but the orange J and the fold shadows
+ * still read, and the icon takes whatever ground the browser or home screen gives it.
  */
-export async function logoTile(size: number, markHeight: number, radius: number): Promise<Buffer> {
+export async function logoIcon(size: number, markHeight: number): Promise<Buffer> {
   const mark = await logoAtHeight(markHeight);
   const { width, height } = await sharp(mark).metadata();
-  const ground = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="${COLOR.bg}"/></svg>`;
-  return sharp(Buffer.from(ground))
+  return sharp({
+    create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  })
     .composite([
       {
         input: mark,

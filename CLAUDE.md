@@ -237,8 +237,8 @@ check:media` — media lint (also part of `lint`)
   legacy `credential_correlation.html` has broken nesting) — port legacy **text** only, into
   clean Astro/Markdown markup.
 - **The logo is bare.** `Logo.astro` draws the mark (`src/assets/brand/logo-mark.webp`,
-  cropped from the master `logo.png` by `npm run og`) on a transparent ground, no tile. Only the
-  favicon, touch icons and OG card keep a graphite ground, since they have no page behind them.
+  cropped from the master `logo.png` by `npm run og`) on a transparent ground, no tile. The
+  favicon and touch icons are transparent too; only the OG card keeps a graphite ground.
   Re-run `npm run og` after changing the master.
 - **Media only via the pipeline.** Never hand-encode or commit a raw image/video export — run
   `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy batch).

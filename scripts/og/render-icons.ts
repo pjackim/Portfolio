@@ -1,17 +1,16 @@
 /**
  * Writes the site icons into public/ (spec-design-content §6), all from the master logo
- * (src/assets/brand/logo.png): the mark on a graphite tile, because its white paper vanishes on
- * the light tab bars and home screens these icons land on.
+ * (src/assets/brand/logo.png): the mark on a transparent ground.
  *
- *  - favicon.ico — 32×32, one PNG inside an ICO container, 4px corner radius.
- *  - icon-192.png — 192×192, the same tile at the favicon's proportions.
- *  - apple-touch-icon.png — 180×180, square (iOS rounds the corners itself).
+ *  - favicon.ico — 32×32, one PNG inside an ICO container.
+ *  - icon-192.png — 192×192, the same artwork.
+ *  - apple-touch-icon.png — 180×180 (iOS composites it on black and rounds the corners itself).
  *
  *   npm run og
  */
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { PUBLIC_DIR, logoTile } from './lib.ts';
+import { PUBLIC_DIR, logoIcon } from './lib.ts';
 
 /** An ICO file holding a single PNG image (supported since Windows Vista and by all browsers). */
 function icoFromPng(png: Buffer, size: number): Buffer {
@@ -31,9 +30,9 @@ function icoFromPng(png: Buffer, size: number): Buffer {
 }
 
 const outputs: [name: string, data: Buffer][] = [
-  ['favicon.ico', icoFromPng(await logoTile(32, 24, 4), 32)],
-  ['icon-192.png', await logoTile(192, 144, 24)],
-  ['apple-touch-icon.png', await logoTile(180, 135, 0)],
+  ['favicon.ico', icoFromPng(await logoIcon(32, 30), 32)],
+  ['icon-192.png', await logoIcon(192, 176)],
+  ['apple-touch-icon.png', await logoIcon(180, 164)],
 ];
 
 for (const [name, data] of outputs) {
