@@ -160,7 +160,9 @@ test.describe('header from 40rem', () => {
     await expect(page.locator('.phone-brand')).toBeHidden();
   });
 
-  test('header logo: the bare mark on a transparent ground, beside the wordmark', async ({ page }) => {
+  test('header logo: the bare mark on a transparent ground, beside the wordmark', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await gotoRel(page, '');
     await expectLogoTransparent(page, 'desktop');
