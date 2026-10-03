@@ -43,6 +43,9 @@ effect**, and don't add a new signature per section (see [anti-slop.md](../desig
   sanctioned accent light).
 - **One accent.** `--accent` / `--accent-hover` for focus, active state, the caret, reticle, the
   signal square, link-underline hover. `--danger` exists for the 404 code only.
+- **The logo tile** is the one surface that doesn't follow the theme: the brand mark's paper is
+  near-white, so it always sits on the dark theme's `--bg` (`Logo.astro`, the icons, the OG
+  card). See [brand.md](brand.md#logo).
 - Off-vibe: gradients as fills, a second accent, tinted section backgrounds, coloured shadows,
   pure black/white.
 

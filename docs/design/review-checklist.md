@@ -29,7 +29,7 @@ issue a careful visitor would notice · **P3** polish.
 | G5  | Essentials never hover-only or click-only; touch and keyboard get the same essentials.                               | Chrome: `(hover: none)` width, Tab through                             | M/J |
 | G6  | Whole-card links: one real link, stretched, visible hover + focus, no duplicate link.                                | [cards.md](./cards.md); DOM                                            | M   |
 | G7  | New interactive surfaces reach the hero's bar: alive and rewarding, not a static template.                           | Chrome, motion on                                                      | J   |
-| G8  | Parker's face, name, and monogram read as one identity, and his face appears early.                                  | Screenshots of header, hero/about, contact                             | J   |
+| G8  | Parker's face, name, and logo read as one identity, and his face appears early.                                      | Screenshots of header, hero/about, contact                             | J   |
 | G9  | Every contact channel in `site.ts` is one obvious step away on every page (icon/label, `mailto:`/`tel:`, no forms).  | Chrome on home, `/work/`, a case study, 404                            | M/J |
 
 ## S. Style fidelity ([site-style.md](../identity/site-style.md))

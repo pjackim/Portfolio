@@ -119,7 +119,7 @@ const LENSES = [
   {
     key: 'identity',
     prompt:
-      'Lens: IDENTITY & CONTACT (checks G8, G9, S6). Is Parker recognisable (photo, name, monogram as one identity, face appearing early)? Is every contact channel in src/data/site.ts one obvious, zero-friction step away on every captured page (mailto:/tel:, label, no forms)? Is the visible copy in the site voice (plain first person, terse mono keys, destination-named actions, no hype, no new em-dashes) and fact-only (every claim sourced by a comment in site.ts or project frontmatter)?',
+      'Lens: IDENTITY & CONTACT (checks G8, G9, S6). Is Parker recognisable (photo, name, logo as one identity, face appearing early)? Is every contact channel in src/data/site.ts one obvious, zero-friction step away on every captured page (mailto:/tel:, label, no forms)? Is the visible copy in the site voice (plain first person, terse mono keys, destination-named actions, no hype, no new em-dashes) and fact-only (every claim sourced by a comment in site.ts or project frontmatter)?',
   },
   {
     key: 'style',
