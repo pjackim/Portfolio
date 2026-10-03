@@ -40,7 +40,7 @@ request; don't read these out verbatim.
    Recommend the one the request's wording and the latest audit point at.
 3. **Mode.** "Keep the current look and sharpen it, or rethink this section's structure?"
    Recommend **preserve** unless the user said "redo", "rethink", or "from scratch". A change to
-   the identity itself (accent, fonts, monogram, the reticle) is a brand decision: confirm it
+   the identity itself (accent, fonts, logo, the reticle) is a brand decision: confirm it
    explicitly.
 4. **Content and media.** "Does <project/section> have <the media or fact the idea needs>?"
    Only ask after checking `src/content/`. Recommend using what exists; missing items are
