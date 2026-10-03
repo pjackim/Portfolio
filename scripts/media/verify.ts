@@ -64,7 +64,8 @@ interface Pixels {
 }
 
 async function rgb(input: Buffer, size?: { width: number; height: number }): Promise<Pixels> {
-  let img = sharp(input).removeAlpha();
+  // Flattened on mid grey: what is under a transparent pixel is not part of the picture.
+  let img = sharp(input).flatten({ background: '#808080' });
   if (size) img = img.resize({ ...size, fit: 'fill', kernel: 'lanczos3' });
   const { data, info } = await img.raw().toBuffer({ resolveWithObject: true });
   return { data, width: info.width, height: info.height };

@@ -167,14 +167,16 @@
     "project": "hero-trivia",
     "name": "gameplay",
     "kind": "video",
-    "mode": "loop"
+    "mode": "loop",
+    "crf": 24
   },
   {
     "src": "Images/hero_trivia/hero_trivia_variety.gif",
     "project": "hero-trivia",
     "name": "puzzle-variety",
     "kind": "video",
-    "mode": "loop"
+    "mode": "loop",
+    "crf": 24
   },
 
   {
