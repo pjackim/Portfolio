@@ -65,6 +65,8 @@ interface VideoEntry {
   name: string;
   mode: VideoMode;
   speed?: number;
+  /** x264 CRF when the default would blow a guard rail (dithered GIF sources). */
+  crf?: number;
 }
 interface YouTubeEntry {
   kind: 'youtube';
@@ -112,6 +114,7 @@ function parseManifest(raw: unknown): Entry[] {
         mode,
       };
       if (typeof e.speed === 'number') entry.speed = e.speed;
+      if (typeof e.crf === 'number') entry.crf = e.crf;
       return entry;
     }
     return fail(`${where}: kind must be image|video (or a youtube entry)`);
@@ -227,7 +230,12 @@ async function encodeEntry(e: Entry, outDir: string): Promise<Outcome> {
       const input = join(LEGACY_DIR, e.src);
       const outBase = join(outDir, e.name);
       const log = (m: string) => console.log(m);
-      const result = await encodeVideo(input, outBase, { mode: e.mode, speed: e.speed, log });
+      const result = await encodeVideo(input, outBase, {
+        mode: e.mode,
+        speed: e.speed,
+        crf: e.crf,
+        log,
+      });
       return { kind: 'video', result };
     }
   }
