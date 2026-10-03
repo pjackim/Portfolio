@@ -266,7 +266,13 @@ async function processEntry(e: Entry, force: boolean): Promise<EntryRecord> {
 async function samePixels(a: string, b: string): Promise<boolean> {
   if (!existsSync(b)) return false;
   const [x, y] = await Promise.all(
-    [a, b].map((path) => sharp(path).ensureAlpha().raw().toBuffer({ resolveWithObject: true })),
+    // From buffers: sharp holds a file it opened by path, which blocks the copy on Windows.
+    [a, b].map(async (path) =>
+      sharp(await readFile(path))
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true }),
+    ),
   );
   if (!x || !y || x.info.width !== y.info.width || x.info.height !== y.info.height) return false;
   return x.data.equals(y.data);
