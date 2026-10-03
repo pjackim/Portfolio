@@ -541,3 +541,25 @@ svg .t-mono-signal {
   letter-spacing: -0.02em;
   line-height: 1.08;
 }
+.cta .go.sm,
+.go.sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.go.sm .arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
