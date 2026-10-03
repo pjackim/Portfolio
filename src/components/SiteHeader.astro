@@ -1,25 +1,22 @@
 ---
 /**
  * Sticky site header (Portfolio.dc.html, Claude Design, Sept 2026 — `navDesk`/`navMob`):
- * monogram + wordmark home link, a 4-item nav (About/Experience/Work/Contact, git-log-numbered
+ * logo + wordmark home link, a 4-item nav (About/Experience/Work/Contact, git-log-numbered
  * 01–04) with a fill bar per item that tracks scroll progress through its home-page section
  * (`src/scripts/nav-scroll.ts`), a separate Capabilities link (underlined when current), the
  * Résumé link and the theme switch. About/Experience/Contact point at the home page's anchors so
  * they work from every page; Work and Capabilities are their own pages.
  *
  * Phones (under 40rem) get the same 4 items as a segmented bar instead: numbered mono labels
- * whose flex grows for the active one (`mflex`), pj's monogram (no wordmark) and the theme
+ * whose flex grows for the active one (`mflex`), the logo (no wordmark) and the theme
  * switch. Capabilities and the résumé live in the About panel and the sticky CTA bar instead of
  * the header (Portfolio.dc.html's phone nav has no room for a fifth item). Off the home page,
  * About/Experience go to the home page's anchor; Contact opens the contact sheet directly
  * (there's no standalone contact page); Work goes to /work/.
- *
- * The monogram's caret blinks on the first page load of a session only (sessionStorage
- * `caret`); navigations keep the header, so it never re-blinks.
  */
 import { site } from '../data/site';
 import { withBase } from '../lib/url';
-import Monogram from './Monogram.astro';
+import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const home = withBase('');
@@ -87,7 +84,7 @@ const navItems: {
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="brand" href={home} aria-label={`${site.name} — home`}>
-      <Monogram size={18} />
+      <Logo eager />
       <span class="brand__name">{site.name}</span>
     </a>
     <div class="site-header__end">
@@ -127,7 +124,7 @@ const navItems: {
     </div>
 
     <a class="phone-brand" href={home} aria-label={`${site.name} — home`}>
-      <Monogram size={17} />
+      <Logo eager />
     </a>
     <nav class="phone-nav" aria-label="Primary">
       {navItems.map(({ id, idx, label, mobileHref, current }) =>
@@ -178,25 +175,6 @@ const navItems: {
 
 <script src="../scripts/nav-scroll.ts"></script>
 
-<script>
-  // First page of the session only. Whether it actually blinks is the CSS motion gate's call;
-  // the class goes once the 5 s blink window has passed, so switching motion on later never
-  // starts it. Import-free on purpose: it stays a tiny inline script, not another request.
-  try {
-    // Both monograms: the wordmark's (wide screens) and the phone bar's.
-    const monograms = document.querySelectorAll('.site-header .monogram');
-    if (monograms.length && !sessionStorage.getItem('caret')) {
-      sessionStorage.setItem('caret', '1');
-      for (const m of monograms) m.classList.add('is-blinking');
-      setTimeout(() => {
-        for (const m of monograms) m.classList.remove('is-blinking');
-      }, 5200);
-    }
-  } catch {
-    // Storage blocked: no blink rather than a blink on every page.
-  }
-</script>
-
 <style>
   .site-header {
     position: sticky;
@@ -229,6 +207,7 @@ const navItems: {
   }
 
   .brand {
+    --logo-size: 2.25rem;
     display: flex;
     align-items: center;
     gap: 0.625rem;
@@ -471,6 +450,7 @@ const navItems: {
     }
 
     .phone-brand {
+      --logo-size: 2.25rem;
       display: flex;
       flex: none;
       align-items: center;
