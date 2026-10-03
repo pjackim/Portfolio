@@ -12,7 +12,8 @@
  *          - note when the new master is lossy (expected only after --lossy)
  *  videos  - same frame count and frame rate, never smaller
  *          - H.264 High / VP9 profile 0, yuv420p, tagged BT.709 limited range
- *          - PSNR against the old encode (the new one scaled to the old size) ≥ 28 dB
+ *          - mean PSNR of five sampled frames against the old encode (the new one scaled to
+ *            the old size) ≥ 28 dB
  *  posters - same size as their .mp4
  */
 import { execFile as execFileCallback } from 'node:child_process';
@@ -151,6 +152,23 @@ async function probe(path: string): Promise<Stream> {
   return stream;
 }
 
+/** The frames at `indices`, scaled to `size`, as RGB pixels. */
+async function frames(
+  path: string,
+  indices: readonly number[],
+  size: { width: number; height: number },
+): Promise<Pixels[]> {
+  const select = indices.map((n) => `eq(n,${n})`).join('+');
+  // prettier-ignore
+  const { stdout } = await execFile('ffmpeg', [
+    '-v', 'error', '-i', path, '-vf',
+    `select='${select}',scale=${size.width}:${size.height}:flags=bicubic`,
+    '-fps_mode', 'passthrough', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-',
+  ], { encoding: 'buffer', maxBuffer: 2048 * MB });
+  const bytes = size.width * size.height * 3;
+  return indices.map((_, i) => ({ data: stdout.subarray(i * bytes, (i + 1) * bytes), ...size }));
+}
+
 async function verifyVideo(name: string, before: Buffer, path: string): Promise<void> {
   const tmp = join(CACHE_DIR, 'tmp');
   await mkdir(tmp, { recursive: true });
@@ -175,13 +193,15 @@ async function verifyVideo(name: string, before: Buffer, path: string): Promise<
       fail(`colour tags ${now.color_space}/${now.color_range}, expected bt709/tv`);
     }
 
-    // prettier-ignore
-    const { stderr } = await execFile('ffmpeg', [
-      '-hide_banner', '-nostats', '-i', path, '-i', oldPath, '-lavfi',
-      `[0:v]scale=${old.width}:${old.height}:flags=bicubic[new];[new][1:v]psnr`, '-f', 'null', '-',
-    ], { maxBuffer: 16 * MB });
-    const average = Number(/average:([\d.]+|inf)/.exec(stderr)?.[1] ?? NaN);
-    if (!(average >= VIDEO_PSNR) && !stderr.includes('average:inf')) {
+    // Sampled by frame index and compared here: ffmpeg's two-input psnr filter pairs frames
+    // by timestamp, which mis-pairs a .webm (millisecond time base) with anything else.
+    const count = Math.min(Number(old.nb_read_frames), Number(now.nb_read_frames));
+    const indices = [0.1, 0.3, 0.5, 0.7, 0.9].map((at) => Math.floor(count * at));
+    const size = { width: old.width, height: old.height };
+    const [a, b] = await Promise.all([frames(oldPath, indices, size), frames(path, indices, size)]);
+    const scores = a.map((frame, i) => psnr(frame, b[i] ?? frame));
+    const average = scores.reduce((sum, n) => sum + Math.min(n, 99), 0) / scores.length;
+    if (!(average >= VIDEO_PSNR)) {
       fail(`only ${db(average)} against the old encode (need ${VIDEO_PSNR})`);
     }
     lines.push(

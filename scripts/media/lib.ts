@@ -55,8 +55,12 @@ export const BUDGETS = {
 export const VIDEO = {
   /** libx264 CRF. */
   crf: 20,
-  /** libvpx-vp9 CRF = the x264 CRF + this (calibrated so the .webm matches the .mp4). */
-  webmCrfOffset: 10,
+  /**
+   * libvpx-vp9 CRF = the x264 CRF + this. Calibrated on a 1080p BodyCam loop against its
+   * source: x264 CRF 20 scores SSIM 0.9932, VP9 CRF 26 scores 0.9932 (CRF 30 only 0.9920).
+   * The .webm is the first <source>, so it must not be the weaker file.
+   */
+  webmCrfOffset: 6,
   /** Allowed `--crf` range. */
   crfRange: [14, 28],
   maxFps: 30,
