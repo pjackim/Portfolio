@@ -5,6 +5,7 @@
 # media: cover.webp ← ../LichessApp/.screenshots/desktop.png (author's own screenshot, repo);
 #   puzzle-tracking.webp ← .screenshots/puzzle-tracking.png; scroll.webp ← .screenshots/scroll.png;
 #   ease-of-use.webp ← .screenshots/ease-of-use.png (all author's own screenshots, fetched 2026-09-27)
+#   Each is a lossless `npm run media` encode of that PNG, uncropped (re-encoded 2026-10-03).
 title: LichessApp
 summary: A minimal desktop wrapper around Lichess puzzles, built with Nativefier and injected CSS/JS that strip the page to a compact, always-on-top puzzle widget.
 year: 2023
