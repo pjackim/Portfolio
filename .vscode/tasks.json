@@ -334,7 +334,7 @@
     },
     {
       "label": "Content: regenerate OG image + icons",
-      "detail": "Render public/og-default.png, favicon and touch icon from src/lib/monogram.ts",
+      "detail": "Render public/og-default.png, favicon and touch icons from src/assets/brand/logo.png",
       "type": "shell",
       "command": "bun run og",
       "problemMatcher": []
