@@ -1,0 +1,301 @@
+/*
+ * brand-diagram kit: the dark "operator console" look, reverse-engineered from
+ * src/content/projects/tonguetickle/flow-and-provider-registry.webp and the tokens in
+ * src/styles/tokens.css (dark values, hard-coded because a rendered image has no theme).
+ * Canvas is 1200x720 CSS px, rendered at 2x (2400x1440). Change a value here and every
+ * diagram inherits it; never restyle inside one diagram.
+ */
+:root {
+  --bg: #0c0d10;
+  --surface: #131518;
+  --surface-2: #1c1e22;
+  --line: #2b2e32;
+  --line-ui: #686c72;
+  --text: #eff0f2;
+  --text-muted: #aeb1b6;
+  --text-subtle: #8e9398;
+  --accent: #f2893d;
+  --font-sans: 'Geist Variable', 'Geist', Arial, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The only atmospheric background: a masked 64px hairline grid. */
+.canvas {
+  position: relative;
+  width: 1200px;
+  height: 720px;
+  padding: 44px 56px 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 85%);
+  pointer-events: none;
+}
+.canvas > * {
+  position: relative;
+}
+
+/* Mono telemetry label: uppercase, 0.06em tracking, 500, muted. Accent index before the slash. */
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.mono .ix {
+  color: var(--accent);
+}
+
+/* Section heading: "01 / LABEL". */
+.sec {
+  display: block;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 16px;
+}
+.sec + .sec,
+.gap-section {
+  margin-top: 26px;
+}
+
+/* ---- Flow: N step cards joined by accent arrows. Use 3 to 5 steps. ---- */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 36px;
+  margin-bottom: 26px;
+}
+.step {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 158px;
+  padding: 16px 22px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+}
+.step .mono {
+  color: var(--accent);
+  font-size: 13px;
+}
+.step h3 {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.step p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.36;
+  color: var(--text-muted);
+}
+/* Arrow in the gap to the next step. */
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+}
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 4px);
+  left: calc(100% + 28px);
+  border-left: 8px solid var(--accent);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+/* ---- Ranked rows: label / number, name, description, mono tag. First row is the signal. ---- */
+.rows {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 172px 230px 1fr 90px;
+  align-items: center;
+  column-gap: 0;
+  height: 74px;
+  padding: 0 24px;
+  border-top: 1px solid var(--line);
+}
+.row:first-child {
+  border-top: 0;
+}
+.row.is-signal {
+  background: var(--surface-2);
+}
+.row.is-signal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.row .key {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.row .key .mono {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+.row .key b {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.row.is-quiet .key b {
+  color: var(--text-subtle);
+}
+.row .name {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.row .desc {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.row .tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-subtle);
+  text-align: right;
+}
+
+/* ---- Cards: a plain grid of facts, for "parts of X" diagrams. ---- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.card {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+}
+.card.is-signal {
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+}
+.card .mono {
+  color: var(--accent);
+}
+.card h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.card p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---- Inline SVG helpers: use these classes so SVG diagrams stay on-token. ---- */
+svg.diagram {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+svg .node {
+  fill: var(--surface);
+  stroke: var(--line-ui);
+  stroke-width: 1;
+}
+svg .node-signal {
+  fill: var(--surface-2);
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+svg .edge {
+  fill: none;
+  stroke: var(--line-ui);
+  stroke-width: 1;
+}
+svg .edge-signal {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+svg .t-title {
+  fill: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+svg .t-body {
+  fill: var(--text-muted);
+  font-size: 14px;
+}
+svg .t-mono {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+svg .t-mono-signal {
+  fill: var(--accent);
+}
+
+/* Footer strip pinned to the bottom of the canvas: a plain note left, the project right. */
+.foot {
+  position: absolute !important;
+  left: 56px;
+  right: 56px;
+  bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+.foot .mono {
+  color: var(--text-subtle);
+}
