@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://pjackim.github.io/Portfolio/"><img src=".github/readme/hero.webp" alt="Parker Jackim. Cyber security researcher at the Johns Hopkins University Applied Physics Laboratory, Columbia, MD. Focus: reverse engineering." width="100%"></a>
+<a href="https://pjackim.github.io/Portfolio/"><img src=".github/readme/hero.webp" alt="Parker Jackim. Cyber security researcher at the Johns Hopkins University Applied Physics Laboratory, Columbia, MD. Focus: reverse engineering, machine learning and embedded systems. Open the portfolio." width="100%"></a>
 
 <a href="https://pjackim.github.io/Portfolio/work/"><img src=".github/readme/work.webp" alt="Selected work: Credential Correlation Visualizer, Mordhau runtime memory patching, The Forest Mono injection, Trip Planner and the Hardpoint game mode." width="100%"></a>
 

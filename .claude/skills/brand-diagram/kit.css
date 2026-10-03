@@ -563,3 +563,23 @@ svg .t-mono-signal {
   align-items: center;
   justify-content: space-between;
 }
+.split.fill {
+  align-items: stretch;
+}
+.stack.between {
+  justify-content: space-between;
+}
+.prompt.sm {
+  font-size: 15px;
+  gap: 12px;
+}
+.prompt.sm .caret {
+  width: 9px;
+  height: 18px;
+}
+.reticle.tall img {
+  object-position: center 28%;
+}
+.go.sm {
+  align-self: flex-start;
+}
