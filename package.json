@@ -17,6 +17,8 @@
     "check:media": "node scripts/media/check.ts",
     "media": "node scripts/media/build.ts",
     "media:migrate": "node scripts/media/migrate.ts",
+    "media:verify": "node scripts/media/verify.ts",
+    "check:dist": "node scripts/check-dist.ts",
     "new": "node scripts/new-project.ts",
     "og": "node scripts/og/render-mark.ts && node scripts/og/render-default.ts && node scripts/og/render-icons.ts",
     "test:e2e": "playwright test",

@@ -1,48 +1,46 @@
 /**
- * One-shot, idempotent migration of the legacy site's media (frozen at commit d8782d1)
+ * One-shot, idempotent migration of the legacy site's media (frozen at commit a085340)
  * into src/content/projects/<slug>/ as WebP / MP4 / WebM.
  *
  *   npm run media:migrate [-- --only <slug>] [-- --force]
  *
- * 1. `git archive d8782d1 Images | tar -x -C .cache/legacy` (skipped once extracted)
+ * 1. `git archive a085340 Images | tar -x -C .cache/legacy` (skipped once extracted)
  * 2. encode every entry of legacy-manifest.json into .cache/out/<slug>/ (skipped when the
  *    cached output was produced from the identical manifest entry, unless --force)
  * 3. copy the outputs into src/content/projects/<slug>/
  * 4. write .cache/media-yaml/<slug>.yml — a frontmatter fragment (cover + media) for index.md
  * 5. print a size table and enforce the per-file / per-project / total caps
+ *
+ * Images are lossless unless an entry says `"lossy": true`; videos get one quality-first
+ * encode per codec (see lib.ts). Nothing is ever squeezed to fit a cap: over is an error.
  */
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
+import sharp from 'sharp';
 import {
   BUDGETS,
-  BudgetError,
   CACHE_DIR,
   CONTENT_DIR,
   PROJECTS_DIR,
   ROOT,
-  PROJECT_FIT_LADDER,
-  type Codec,
   type Crop,
   type EncodeImageResult,
   type EncodeVideoResult,
   type MediaItem,
   type VideoMode,
-  describeStep,
   encodeImage,
   encodeVideo,
-  encodeVideoStep,
-  extractPoster,
   fetchYouTubePoster,
   fileSize,
   formatBytes,
   mediaYaml,
-  nextStep,
 } from './lib.ts';
 
-const LEGACY_COMMIT = 'd8782d1';
+/** The last commit that still carries the legacy site's `Images/` tree. */
+const LEGACY_COMMIT = 'a085340';
 const LEGACY_DIR = join(CACHE_DIR, 'legacy');
 const OUT_DIR = join(CACHE_DIR, 'out');
 const YAML_DIR = join(CACHE_DIR, 'media-yaml');
@@ -56,7 +54,7 @@ interface ImageEntry {
   src: string;
   project: string;
   name: string;
-  lossless?: boolean;
+  lossy?: boolean;
   cover?: true;
   crop?: Crop;
 }
@@ -95,7 +93,7 @@ function parseManifest(raw: unknown): Entry[] {
     if (typeof e.name !== 'string' || !KEBAB.test(e.name)) fail(`${where}: bad name`);
     if (e.kind === 'image') {
       const entry: ImageEntry = { kind: 'image', src: e.src, project: e.project, name: e.name };
-      if (e.lossless === true) entry.lossless = true;
+      if (e.lossy === true) entry.lossy = true;
       if (e.cover === true) entry.cover = true;
       if (e.crop !== undefined) entry.crop = parseCrop(e.crop, where);
       if (entry.cover && entry.name !== 'cover') {
@@ -171,6 +169,11 @@ async function extractLegacy(): Promise<void> {
     console.log(`• legacy Images already extracted (.cache/legacy, ${LEGACY_COMMIT})`);
     return;
   }
+  if (
+    spawnSync('git', ['cat-file', '-e', `${LEGACY_COMMIT}^{commit}`], { cwd: ROOT }).status !== 0
+  ) {
+    fail(`legacy commit ${LEGACY_COMMIT} is not in this clone`);
+  }
   console.log(`• git archive ${LEGACY_COMMIT} Images | tar -x -C .cache/legacy`);
   await mkdir(LEGACY_DIR, { recursive: true });
   await new Promise<void>((resolveDone, reject) => {
@@ -197,14 +200,7 @@ async function extractLegacy(): Promise<void> {
 
 type Outcome =
   | { kind: 'image'; result: EncodeImageResult }
-  | {
-      kind: 'video';
-      result: EncodeVideoResult;
-      /** The loop missed its budget after full escalation and was re-encoded click-to-play. */
-      switchedFromLoop: boolean;
-      /** Squeezed past its own budget ladder so the project folder fits BUDGETS.project. */
-      projectFit: boolean;
-    }
+  | { kind: 'video'; result: EncodeVideoResult }
   | { kind: 'youtube'; result: { bytes: number; width: number; height: number; source: string } };
 
 interface EntryRecord {
@@ -216,7 +212,7 @@ async function encodeEntry(e: Entry, outDir: string): Promise<Outcome> {
   switch (e.kind) {
     case 'image': {
       const result = await encodeImage(join(LEGACY_DIR, e.src), join(outDir, `${e.name}.webp`), {
-        lossless: e.lossless ?? false,
+        lossy: e.lossy ?? false,
         crop: e.crop,
       });
       return { kind: 'image', result };
@@ -231,15 +227,8 @@ async function encodeEntry(e: Entry, outDir: string): Promise<Outcome> {
       const input = join(LEGACY_DIR, e.src);
       const outBase = join(outDir, e.name);
       const log = (m: string) => console.log(m);
-      try {
-        const result = await encodeVideo(input, outBase, { mode: e.mode, speed: e.speed, log });
-        return { kind: 'video', result, switchedFromLoop: false, projectFit: false };
-      } catch (error) {
-        if (!(error instanceof BudgetError) || e.mode !== 'loop') throw error;
-        console.log(`    ⚠ ${error.message} — switching ${e.name} to click-to-play`);
-        const result = await encodeVideo(input, outBase, { mode: 'click', speed: e.speed, log });
-        return { kind: 'video', result, switchedFromLoop: true, projectFit: false };
-      }
+      const result = await encodeVideo(input, outBase, { mode: e.mode, speed: e.speed, log });
+      return { kind: 'video', result };
     }
   }
 }
@@ -271,82 +260,27 @@ async function processEntry(e: Entry, force: boolean): Promise<EntryRecord> {
   return record;
 }
 
-async function outputBytes(records: readonly EntryRecord[]): Promise<number> {
-  let total = 0;
-  for (const { entry } of records) {
-    for (const file of outputFiles(entry)) {
-      total += await fileSize(join(OUT_DIR, entry.project, file));
-    }
-  }
-  return total;
-}
-
-/**
- * Enforce BUDGETS.project for one project: while the folder is too big, take the largest
- * click-to-play .mp4/.webm and re-encode it one step further along PROJECT_FIT_LADDER
- * (the spec ladder plus a final MAXW 720 step). Loops are never touched — they already sit
- * inside their tighter budgets and play automatically, so their quality matters most.
- */
-async function fitProject(project: string, records: readonly EntryRecord[]): Promise<void> {
-  let total = await outputBytes(records);
-  if (total <= BUDGETS.project) return;
-  console.log(
-    `  ⚠ ${project}: ${formatBytes(total)} > ${formatBytes(BUDGETS.project)} — ` +
-      'squeezing click-to-play videos to fit the project budget',
-  );
-  while (total > BUDGETS.project) {
-    let pick: { record: EntryRecord; codec: Codec; step: number; bytes: number } | undefined;
-    for (const record of records) {
-      const { outcome } = record;
-      if (outcome.kind !== 'video' || outcome.result.mode !== 'click') continue;
-      for (const codec of ['mp4', 'webm'] as const) {
-        const c = outcome.result[codec];
-        const step = nextStep(PROJECT_FIT_LADDER, codec, c.step, c, outcome.result.sourceWidth);
-        if (step !== undefined && (!pick || c.bytes > pick.bytes)) {
-          pick = { record, codec, step, bytes: c.bytes };
-        }
-      }
-    }
-    if (!pick) {
-      console.log(`  ✖ ${project}: every click-to-play video is fully squeezed`);
-      return;
-    }
-    const { record, codec, step } = pick;
-    const { entry, outcome } = record;
-    if (entry.kind !== 'video' || outcome.kind !== 'video') return;
-    const input = join(LEGACY_DIR, entry.src);
-    const outBase = join(OUT_DIR, project, entry.name);
-    const video = outcome.result;
-    const previous = video[codec];
-    const next = await encodeVideoStep(
-      input,
-      `${outBase}.${codec}`,
-      codec,
-      PROJECT_FIT_LADDER,
-      step,
-      video,
-      previous.budget,
-    );
-    console.log(`${describeStep(codec, next)}  [${entry.name}, project fit]`);
-    video[codec] = next;
-    if (codec === 'mp4' && next.width !== previous.width) {
-      video.poster = await extractPoster(input, `${outBase}.poster.webp`, video, next.maxWidth);
-    }
-    outcome.projectFit = true;
-    await saveRecord(record);
-    total = await outputBytes(records);
-  }
-  console.log(`  ✔ ${project}: ${formatBytes(total)} after squeezing`);
-}
-
 /* ─────────────────────────── outputs ─────────────────────────── */
+
+/** True when both WebP files exist and decode to the same pixels. */
+async function samePixels(a: string, b: string): Promise<boolean> {
+  if (!existsSync(b)) return false;
+  const [x, y] = await Promise.all(
+    [a, b].map((path) => sharp(path).ensureAlpha().raw().toBuffer({ resolveWithObject: true })),
+  );
+  if (!x || !y || x.info.width !== y.info.width || x.info.height !== y.info.height) return false;
+  return x.data.equals(y.data);
+}
 
 async function publish(records: readonly EntryRecord[]): Promise<void> {
   for (const { entry } of records) {
     const dest = join(PROJECTS_DIR, entry.project);
     await mkdir(dest, { recursive: true });
     for (const file of outputFiles(entry)) {
-      await copyFile(join(OUT_DIR, entry.project, file), join(dest, file));
+      const from = join(OUT_DIR, entry.project, file);
+      // A master that already holds these exact pixels stays as it is: no churn in git.
+      if (file.endsWith('.webp') && (await samePixels(from, join(dest, file)))) continue;
+      await copyFile(from, join(dest, file));
     }
   }
 }
@@ -370,8 +304,6 @@ async function writeYaml(project: string, records: readonly EntryRecord[]): Prom
       const extras = [
         click ? 'click-to-play' : 'loop',
         entry.speed ? `${entry.speed}× speed` : '',
-        outcome.switchedFromLoop ? 'switched from loop: over budget' : '',
-        outcome.projectFit ? 'squeezed to fit the project budget' : '',
       ].filter(Boolean);
       items.push({
         kind: 'video',
@@ -404,19 +336,14 @@ function detail(project: string, file: string, records: readonly EntryRecord[]):
     }
     if (outcome.kind === 'youtube') {
       const r = outcome.result;
-      return `${r.width}×${r.height} q90 (${r.source}${file === 'cover.webp' ? ', cover copy' : ''})`;
+      return `${r.width}×${r.height} lossless (${r.source}${file === 'cover.webp' ? ', cover copy' : ''})`;
     }
     const r = outcome.result;
-    if (file.endsWith('.poster.webp')) return `${r.poster.width}×${r.poster.height} q90 poster`;
+    if (file.endsWith('.poster.webp')) return `${r.poster.width}×${r.poster.height} poster`;
     const c = file.endsWith('.mp4') ? r.mp4 : r.webm;
-    const notes = [
-      outcome.switchedFromLoop ? 'switched from loop' : '',
-      outcome.projectFit ? 'project fit' : '',
-    ].filter(Boolean);
     return (
       `${c.width}×${c.height} ${r.fps}fps ${r.duration.toFixed(1)}s` +
-      `${r.speed !== 1 ? ` (${r.speed}×)` : ''} ${r.mode} crf ${c.crf}` +
-      ` (budget ${formatBytes(c.budget)})${notes.length ? ` ← ${notes.join(', ')}` : ''}`
+      `${r.speed !== 1 ? ` (${r.speed}×)` : ''} ${r.mode} crf ${c.crf}`
     );
   }
   return '';
@@ -443,7 +370,7 @@ async function sizeTable(
     for (const file of files) {
       const bytes = await fileSize(join(dir, file));
       subtotal += bytes;
-      const over = bytes > BUDGETS.file ? '  ✖ > 8 MB' : '';
+      const over = bytes > BUDGETS.file ? `  ✖ > ${formatBytes(BUDGETS.file)}` : '';
       if (over) errors++;
       const rel = `${project}/${file}`;
       console.log(
@@ -493,7 +420,6 @@ async function main(): Promise<void> {
     for (const e of entries.filter((x) => x.project === project)) {
       own.push(await processEntry(e, values.force));
     }
-    await fitProject(project, own);
     records.push(...own);
   }
 
@@ -505,12 +431,6 @@ async function main(): Promise<void> {
       records.filter((r) => r.entry.project === project),
     );
     console.log(`• wrote ${path.slice(ROOT.length + 1)}`);
-  }
-
-  for (const { entry, outcome } of records) {
-    if (outcome.kind !== 'video') continue;
-    if (outcome.switchedFromLoop) console.log(`⚠ loop → click: ${describe(entry)}`);
-    if (outcome.projectFit) console.log(`⚠ squeezed for the project budget: ${describe(entry)}`);
   }
 
   const errors = await sizeTable(projects, records);
