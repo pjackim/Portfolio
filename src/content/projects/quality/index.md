@@ -14,7 +14,6 @@ cover: ./cover.webp
 coverAlt: 'Placeholder cover reading “Cover pending”.'
 featured: false
 order: 100
-showOnHome: false
 draft: true
 highlights:
   - One command, one short pass or fail.

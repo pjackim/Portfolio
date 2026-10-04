@@ -196,8 +196,8 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
 - **Content collection** — `src/content.config.ts` defines the single `projects` collection: a
   `glob` loader over `src/content/projects/*/index.md` (folder name = id = slug = URL), Zod 4
   schema (imported from `astro/zod`, not `zod` directly). Query it only through
-  `src/lib/projects.ts` (`getProjects`, `featured`, `archive`, `homeArchive`, `byGroup`,
-  `prevNext`), which excludes drafts outside `astro dev` and throws at build time on duplicate
+  `src/lib/projects.ts` (`getProjects`, `getFeatured`, `getOrdered`, `getByGroup`,
+  `getPrevNext`), which excludes drafts outside `astro dev` and throws at build time on duplicate
   `order` among featured projects, duplicate `legacyPaths`, or a featured count outside 3–8.
 - **Layouts/components** — `src/layouts/BaseLayout.astro` is the document shell (head/SEO,
   theme bootstrap, adaptive-image bootstrap, fonts, skip link, header/footer, inline CSP

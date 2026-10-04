@@ -374,10 +374,13 @@ const items = projects.map((p, i) => ({
     margin-block-start: 0.5rem;
   }
 
+  /* One tick per project, so a long list wraps onto a second row instead of overflowing. */
   .lead__ticks {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 0 6px;
+    max-inline-size: 100%;
   }
 
   .tick {
@@ -713,11 +716,12 @@ const items = projects.map((p, i) => ({
     }
 
     .lead__ticks {
-      gap: 4px;
+      gap: 0 4px;
+      justify-content: center;
     }
 
     .tick {
-      flex: 1;
+      flex: 0 0 1.5rem;
       inline-size: auto;
     }
 

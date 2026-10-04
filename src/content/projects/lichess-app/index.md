@@ -17,7 +17,6 @@ cover: ./cover.webp
 coverAlt: A compact Lichess puzzle widget with a custom yellow-and-teal board theme, docked at the edge of an Arch Linux desktop next to a system panel showing the clock and app shortcuts.
 featured: false
 order: 100
-showOnHome: false
 draft: true
 highlights:
   - Packaged the Lichess puzzle page as a standalone desktop app with Nativefier (Electron under the hood), no browser chrome.

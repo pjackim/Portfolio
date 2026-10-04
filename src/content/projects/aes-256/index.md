@@ -6,8 +6,8 @@ tldr: 'I wrote this at 15, one of my first big projects on my own. It is a comma
 year: 2016
 period: c. 2016
 group: security
-featured: true
-order: 7
+featured: false
+order: 100
 capabilities: [offensive-security]
 stack: [C++, CLI, Testing, GitHub]
 highlights:

@@ -12,7 +12,7 @@
 4. Secondary links inside a card sit **above** the stretched link (`z-index`) with dead space
    around them to prevent mis-taps.
 5. Cards suit **browsing heterogeneous work**. They're weaker than lists for **comparing**
-   similar items, so the archive and index views can stay lists.
+   similar items, so the `/work/` index can stay a list.
 
 ## Evidence
 
@@ -72,8 +72,8 @@ large clickable area" for mobile, touch, and tremor users. Pitfalls:
 - Hover-only extras (the reticle, a hover-played loop) are fine as delight, but nothing
   essential may be hover-only. Touch and keyboard users must see the same essentials at rest
   or on focus.
-- `ArchiveList`/`ArchiveRow` and the `/work/` index are comparison/browse-by-list views, so a
-  list is the right form there per NN/g.
+- The `/work/` index is a comparison/browse-by-list view, so a list is the right form there per
+  NN/g.
 
 [nng-cards]: https://www.nngroup.com/articles/cards-component/
 [kitty]: https://kittygiraudel.com/2022/04/02/accessible-cards/

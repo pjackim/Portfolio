@@ -137,15 +137,13 @@ test.describe('/work/ filter', () => {
     );
   });
 
-  test('each chip hides the rows without its capability, and an emptied showcase says so', async ({
-    page,
-  }) => {
+  test('each chip hides the rows without its capability', async ({ page }) => {
     await gotoRel(page, 'work/');
     await filterReady(page);
     const ids = await page
       .locator(CHIP)
       .evaluateAll((els) => els.map((el) => el.getAttribute('data-capability') ?? ''));
-    const groupsShown = new Set<number>();
+    const rowsShown = new Set<number>();
     for (const id of [...ids.slice(1), '']) {
       await chip(page, id).click();
       await expect(chip(page, id)).toHaveAttribute('aria-pressed', 'true');
@@ -155,11 +153,11 @@ test.describe('/work/ filter', () => {
       await expect(page.locator('[data-filter-shown]')).toHaveText(
         String(want.rows.length).padStart(2, '0'),
       );
-      groupsShown.add(want.groups.length);
+      rowsShown.add(want.rows.length);
     }
     expect((await shown(page)).rows).toHaveLength(PROJECT_COUNT);
-    // Not vacuous: some filter does empty a showcase.
-    expect(Math.min(...groupsShown)).toBeLessThan(Math.max(...groupsShown));
+    // Not vacuous: some filter does hide rows.
+    expect(Math.min(...rowsShown)).toBeLessThan(Math.max(...rowsShown));
   });
 
   test('the URL keeps the filter, and a reload restores it before any script runs', async ({

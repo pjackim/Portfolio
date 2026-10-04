@@ -6,8 +6,8 @@ tldr: "Mordhau's competitive community hired me to build a new game mode for the
 role: Freelance developer
 year: 2021
 group: software
-featured: true
-order: 6
+featured: false
+order: 100
 capabilities: [engines-systems, engineering-practice]
 stack: [Unreal Engine 4, Server & client replication, Test-driven development, Iterative design]
 highlights:

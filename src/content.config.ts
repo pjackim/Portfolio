@@ -41,8 +41,6 @@ const projects = defineCollection({
         featured: z.boolean().default(false),
         /** Sort key among featured projects (unique). */
         order: z.number().int().default(100),
-        /** Archive projects only: list on the home page. */
-        showOnHome: z.boolean().default(false),
         draft: z.boolean().default(false),
         capabilities: z.array(z.enum(CAPABILITIES)).min(1).max(4),
         stack: z.array(z.string()).min(1).max(8),

@@ -37,8 +37,8 @@ ceiling and on equal sizes being the main mistake), with the cell-count rule fro
 ## Applying it here
 
 - **Where:** only the featured showcase (`src/components/ProjectGrid.astro`). Per NN/g
-  ([cards.md](./cards.md)), varied layouts are worse for comparison, so `/work/` and the
-  archive stay lists.
+  ([cards.md](./cards.md)), varied layouts are worse for comparison, so the `/work/` index stays
+  a list.
 - **Today:** `ProjectGrid` is one column, then two equal columns from `(width >= 50rem)`
   (cards subgrid their rows, the odd last card goes horizontal, and entrances slide in from
   each column's side). Moving it to a varied-size layout is the natural next step toward

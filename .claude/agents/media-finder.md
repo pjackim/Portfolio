@@ -25,7 +25,7 @@ before/after screenshots.
 --ignore-lock` in the background (with `draft: true` projects, use `npm run dev -- --port
 <port>` instead, since drafts are only built in dev).
 2. With the Claude in Chrome tools (`mcp__claude-in-chrome__*`), open every place the project
-   appears: its card on `work/`, the home page if it is featured or `showOnHome`, and its
+   appears: its card on `work/`, the home page if it is featured, and its
    project `work/<slug>/`. Check light and dark (`localStorage.scheme`), 390 px and 1280 px
    wide, and look closely at the cover at card size and project size.
 3. If the Chrome tools are not available, use

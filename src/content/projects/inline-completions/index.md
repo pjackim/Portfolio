@@ -11,9 +11,8 @@ capabilities: [engineering-practice]
 stack: [TypeScript, VS Code Extension API, esbuild, MCP, LLM provider APIs]
 cover: ./cover.webp
 coverAlt: 'Placeholder cover image reading "Cover pending".'
-featured: true
-order: 8
-showOnHome: false
+featured: false
+order: 100
 draft: true
 highlights:
   - Works with 17+ AI services. Use your own account and switch any time.

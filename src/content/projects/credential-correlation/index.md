@@ -6,7 +6,7 @@ tldr: 'I built a tool that scores how much a password gives away about its usern
 year: 2023
 group: security
 featured: true
-order: 2
+order: 3
 capabilities: [data-ml, offensive-security]
 stack: [Python, tkinter, Hadoop MapReduce, Apache Spark, Machine learning]
 highlights:

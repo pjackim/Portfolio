@@ -7,7 +7,6 @@ role: Insect modeling, texturing & rigging
 year: 2019
 period: Fall 2019
 group: design
-showOnHome: true
 capabilities: [design-3d, engines-systems]
 stack: [ZBrush, Substance Painter, Maya, Unity]
 cover: ./cover.webp

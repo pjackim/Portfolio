@@ -7,7 +7,6 @@ role: Designer
 year: 2011
 period: c. 2011
 group: design
-showOnHome: true
 capabilities: [design-3d]
 stack: [Photoshop, Illustrator, Premiere, Cinema 4D]
 cover: ./cover.webp

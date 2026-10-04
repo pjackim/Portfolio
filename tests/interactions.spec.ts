@@ -506,8 +506,16 @@ test.describe('entrance reveals, motion on', () => {
         });
         await gotoRel(page, path);
         await page.waitForLoadState('load');
-        // Classified: whatever is below the fold now waits.
-        await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        // Classified: whatever is below the fold now waits. A short page can leave nothing below
+        // it (#work at 1200 tall, the contact block already on screen), so then only settle.
+        const hasBelowFold = await page
+          .locator('[data-reveal]')
+          .evaluateAll((els) => els.some((el) => el.getBoundingClientRect().top >= innerHeight));
+        if (hasBelowFold) {
+          await expect(page.locator('[data-reveal-state="pending"]').first()).toBeAttached();
+        } else {
+          await twoFrames(page);
+        }
         const onScreen = await page.locator('[data-reveal]').evaluateAll((els) =>
           els
             .filter((el) => {

@@ -48,7 +48,6 @@ coverAlt: 'TODO describe the cover image' # ≥ 8 chars
 # coverPosition: 'center top' # CSS object-position for the cover crop
 featured: false # featured projects need ≥ 2 highlights
 order: 100 # sort key among featured projects (unique)
-showOnHome: false # archive projects only: list on the home page
 draft: true # hidden from production builds until set to false
 highlights: [] # ≤ 5 strings, ≤ 160 chars each
 media: []

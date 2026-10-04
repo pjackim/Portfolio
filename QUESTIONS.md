@@ -12,8 +12,8 @@ entry says what was done in the meantime.
    them with a `per the author` citation.
 2. **Publishing a duplication tool.** The entry is now `draft: false` as asked. It is a tool that
    duplicates items in a live game, which breaks the game's terms of service and may matter to
-   employers or the studio. It is not featured and not on the home page (`showOnHome: false`). Is
-   that visibility what you want, or should it stay off `/work/` too?
+   employers or the studio. It is now featured (slot 4 on the home page). Is
+   that visibility what you want, or should it be un-featured, or stay off `/work/` too?
 3. **The in-game clip.** The recording you supplied (`arc-exploit-proof.mp4`) is used as the cover
    and a silent loop. The caption describes only the overlay (routine-start toast, Disconnected /
    Reconnected, Net Drop / Online). I cannot tell from the video whether a dupe actually
@@ -27,8 +27,8 @@ entry says what was done in the meantime.
 
 ## TongueTickle
 
-6. **Home page.** Enabled with `showOnHome: true` (archive row on the home page). Set it back to
-   `false` if you want it on `/work/` only.
+6. **Home page.** Now featured (slot 5 on the home page). Set `featured: false` if you want it on
+   `/work/` only.
 7. **"TongueTickler" wordmark.** The web UI's wordmark reads "TongueTickler" while everything
    else says TongueTickle. The entry notes this. Should the app be fixed instead?
 8. **Live provider pass.** The Qwen3-TTS, Grok and OpenAI paths are covered only by mocks. A
