@@ -2,7 +2,7 @@
  * The motion layer's one entry per page (interactions spec §1–§4), loaded by MotionLayer.astro
  * (Astro emits it once per page however many components render that; MotionToggle — so every
  * page, through the footer — ProjectGrid and SectionHeading do). Straight away it wires every
- * Motion toggle chip, smooth in-page anchor scrolling and, on /work/, the capability filter (its
+ * Motion toggle chip, Lenis smooth scrolling and, on /work/, the capability filter (its
  * chips should answer as soon as they show). One request for all of it: split into chunks, the
  * extra early requests cost more than the bytes. Once the page has loaded and painted, when
  * idle, it fetches the code for whatever else the page has: the hero instrument, the card

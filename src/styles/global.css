@@ -273,13 +273,6 @@ a {
  * end of this file shortens those, and stops anything that slips through, under either. */
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Smooth scrolling only for a same-page #hash link click (Ruling G9): the class is on <html>
-     for that one scroll (src/scripts/smooth-scroll.ts). Never on the root for good, which would
-     also make the fragment jump of a page loaded at `…#about` a long glide instead of landing. */
-  :root.smooth-scroll:not([data-motion='off']) {
-    scroll-behavior: smooth;
-  }
-
   /* Cross-document transitions can't be gated by a selector: with the toggle off, the
      bootstrap's pageswap/pagereveal guard skips them, and the rule below flattens any that
      start anyway. */
@@ -517,4 +510,19 @@ a {
 :root[data-motion='off']::view-transition-old(*),
 :root[data-motion='off']::view-transition-new(*) {
   animation: none !important;
+}
+
+/* Lenis smooth scrolling (src/scripts/smooth-scroll.ts): it adds `lenis` to <html> only while
+   it runs, so these never apply to touch, reduced motion or the Motion toggle off. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+html.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
