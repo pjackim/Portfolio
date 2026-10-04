@@ -7,7 +7,7 @@
  * the frame carries `id="case-hero"` and the cover's `view-transition-name`.
  */
 import { Picture } from 'astro:assets';
-import { candidateWidths, imageFacts } from '../../lib/images';
+import { adaptive, candidateWidths, imageFacts, scalableSizes } from '../../lib/images';
 import { youtubePoster } from '../../lib/media';
 import { pageStyle } from '../../lib/page-style';
 
@@ -20,7 +20,7 @@ interface Props {
   start?: number | undefined;
   /** `sizes` for the poster, matching the frame's rendered width. */
   sizes: string;
-  /** Above the fold (hero): load the poster eagerly at high priority. */
+  /** Above the fold (hero): the poster is the page's priority image (eager, high priority). */
   priority?: boolean;
   /** Frame id (the case-study hero's `case-hero`). */
   frameId?: string | undefined;
@@ -61,13 +61,11 @@ const watchUrl = `https://www.youtube.com/watch?v=${videoId}${start ? `&t=${star
       src={poster}
       formats={['avif', 'webp']}
       fallbackFormat="webp"
-      widths={candidateWidths(facts.width, 2400)}
-      sizes={sizes}
+      widths={candidateWidths(facts.width, 3200)}
+      sizes={scalableSizes(sizes)}
       alt=""
-      loading={priority ? 'eager' : 'lazy'}
-      decoding="async"
-      fetchpriority={priority ? 'high' : undefined}
       class="yt__poster"
+      {...adaptive(priority ? 'priority' : 'auto')}
     />
     <span class="yt__play" aria-hidden="true">
       <svg class="yt__icon" viewBox="0 0 16 16" width="16" height="16">

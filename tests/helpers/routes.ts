@@ -52,10 +52,21 @@ export const LEGACY_PAGES: readonly string[] = globPosix('html/Work/*.html')
 /** Every built page: `''` (home), `work/`, `work/<slug>/`. */
 export const ROUTES: readonly string[] = discoverRoutes();
 
+/**
+ * The HTML of the built page at base-relative `route`, as the preview server sends it, read from
+ * `dist/`. Specs that need the server's markup (before any script has run) use this, not
+ * `request.get()`: Node's socket to the preview server (it listens on `[::1]` only) times out
+ * whenever the single-threaded server stalls for a quarter of a second, which failed tests before
+ * their first assertion. Not for `BASE_URL` runs against a live site (`@prod` specs).
+ */
+export function builtHtml(route: string): string {
+  return readFileSync(join(DIST, route, 'index.html'), 'utf8');
+}
+
 /** The pages with a `<video>` (screen-recording loops), as built; see helpers/platform.ts. */
 export const VIDEO_ROUTES: readonly string[] = ROUTES.filter((route) => {
   try {
-    return readFileSync(join(DIST, route, 'index.html'), 'utf8').includes('<video');
+    return builtHtml(route).includes('<video');
   } catch {
     return false;
   }

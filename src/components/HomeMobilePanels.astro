@@ -18,6 +18,7 @@ import GitLog from '../components/GitLog.astro';
 import { site } from '../data/site';
 import { CAPABILITY_GROUPS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
+import { adaptive, scalableSizes } from '../lib/images';
 import { withBase } from '../lib/url';
 import Arrow from './Arrow.astro';
 
@@ -107,12 +108,11 @@ const githubHandle = new URL(site.github).pathname.replace(/^\/|\/$/g, '');
                 src={p.data.cover}
                 formats={['avif', 'webp']}
                 fallbackFormat="webp"
-                widths={[360, 540, 720]}
-                sizes="(width < 40rem) 92vw, 360px"
+                widths={[480, 800, 1200]}
+                sizes={scalableSizes('(width < 40rem) 92vw, 360px')}
                 alt=""
                 class="m-reel__cover"
-                loading={i === 0 ? 'eager' : 'lazy'}
-                decoding="async"
+                {...adaptive()}
               />
               <span class="m-reel__body">
                 <span class="m-reel__meta">

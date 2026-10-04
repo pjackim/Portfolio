@@ -15,6 +15,11 @@ import { defineConfig, devices } from '@playwright/test';
  * `E2E_PORT` moves the preview server off 4321 so parallel worktrees (`.config/wt.toml`)
  * don't reuse each other's server via `reuseExistingServer`.
  *
+ * Every context starts with `localStorage.net = 'fast'` (src/lib/net-bootstrap.ts), so the
+ * adaptive image loader never switches to its light-first mode because of the machine's network
+ * or a slow CI runner, and no spec depends on either. Specs for the slow and Save-Data paths set
+ * their own mode (tests/helpers/net.ts).
+ *
  * WebKit runs at a device scale factor of 1. Linux WebKit has no GPU on CI and paints in
  * software, so the iPhone 15's 3× multiplies every frame's paint and composite by 9, and many
  * specs override its viewport to desktop widths (a 3840×2400 surface at 1280×800). With the
@@ -36,6 +41,12 @@ export default defineConfig({
   use: {
     baseURL,
     trace: 'on-first-retry',
+    storageState: {
+      cookies: [],
+      origins: [
+        { origin: new URL(baseURL).origin, localStorage: [{ name: 'net', value: 'fast' }] },
+      ],
+    },
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

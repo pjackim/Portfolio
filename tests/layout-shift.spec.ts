@@ -9,8 +9,14 @@
  * Pages: trip-planner and mordhau (small covers shown whole on a plate) and nodes (a
  * transparent cover on the light plate), at 1440×900 and 412×900. Chromium only: WebKit reports
  * no layout-shift entries.
+ *
+ * Each case runs twice: as it loads by default, and on a slow connection (`localStorage.net =
+ * 'slow'`, src/lib/net-bootstrap.ts), where every image arrives light first and is then swapped
+ * for its full-quality file. That swap must move nothing either, whether it happens on screen
+ * or while the page is read through.
  */
 import { expect, test } from '@playwright/test';
+import { forceNet } from './helpers/net.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 declare global {
@@ -23,16 +29,21 @@ const PAGES = ['work/trip-planner/', 'work/mordhau/', 'work/nodes/'];
 /** How long each image is held back: long after the first paint. */
 const IMAGE_DELAY_MS = 600;
 
-for (const viewport of [
-  { width: 1440, height: 900 },
-  { width: 412, height: 900 },
-]) {
-  test.describe(`cold load at ${viewport.width}×${viewport.height}`, () => {
+const CASES = (['fast', 'slow'] as const).flatMap((net) =>
+  [
+    { width: 1440, height: 900 },
+    { width: 412, height: 900 },
+  ].map((viewport) => ({ net, viewport })),
+);
+
+for (const { net, viewport } of CASES) {
+  test.describe(`cold load at ${viewport.width}×${viewport.height}${net === 'slow' ? ', slow connection' : ''}`, () => {
     test.use({ viewport });
 
     for (const path of PAGES) {
       test(`${path} doesn't shift as its images arrive`, async ({ page, browserName }) => {
         test.skip(browserName !== 'chromium', 'layout-shift entries are Chromium-only');
+        if (net === 'slow') await forceNet(page, 'slow');
         const cdp = await page.context().newCDPSession(page);
         await cdp.send('Network.enable');
         await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
@@ -59,6 +70,8 @@ for (const viewport of [
 
         await gotoRel(page, path);
         await page.waitForLoadState('load');
+        // The slow variant must really be slow: otherwise it silently repeats the fast one.
+        if (net === 'slow') await expect(page.locator('html')).toHaveAttribute('data-net', 'slow');
         // Read the page through (a script scroll isn't user input: any shift still counts),
         // so the lazy figures load while they are on screen.
         const height = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -78,6 +91,25 @@ for (const viewport of [
             { timeout: 10_000 },
           )
           .toBe(true);
+        if (net === 'slow') {
+          // And every light image on screen has been swapped for its full one (each upgrade
+          // waits for the one before it, so allow for the queue).
+          await expect
+            .poll(
+              () =>
+                page.evaluate(
+                  () =>
+                    document.documentElement.dataset.netBusy === undefined &&
+                    [...document.querySelectorAll<HTMLImageElement>('img[data-net-state]')]
+                      .filter((img) => img.getClientRects().length > 0)
+                      .every((img) => img.dataset.netState === 'full'),
+                ),
+              { timeout: 30_000 },
+            )
+            .toBe(true);
+          // ... and the poll above isn't vacuous: at least one image went light, then full.
+          expect(await page.locator('img[data-net-state="full"]').count()).toBeGreaterThan(0);
+        }
         await page.waitForTimeout(200);
 
         const shifts = (await page.evaluate(() => window.__layoutShifts)) ?? [];

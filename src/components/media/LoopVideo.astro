@@ -4,10 +4,18 @@
  * `controls` and `preload="none"`, so it works without JS and costs nothing until played.
  * `autoplay` loops are enhanced by `src/scripts/video.ts`: a visible Pause / Play toggle
  * replaces the controls and the loop plays only while on screen (never under reduced motion
- * or Save-Data). Click-to-play videos keep the native controls and don't loop.
- * Width/height (and the aspect ratio) come from the poster, so nothing shifts on load.
+ * or Save-Data; on a slow connection only once the page's images are upgraded). Click-to-play
+ * videos keep the native controls and don't loop.
+ * The poster is a lazy, adaptive `<picture>` (AVIF / WebP, srcset) laid under the `<video>`, so
+ * it gets the same quality-first delivery as every other image, and the lite path on a slow
+ * connection. The `<video>` keeps a `poster` attribute that is one transparent pixel: with none,
+ * Chromium paints a video that has no frame yet as an opaque dark box and WebKit as a light
+ * veil, over the picture, with or without JS and with or without `controls`; with a transparent
+ * one the picture shows through until the first frame (measured in both engines).
+ * Width/height (and the aspect ratio) come from the poster file, so nothing shifts on load.
  */
-import { getImage } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import { adaptive, candidateWidths, imageFacts, scalableSizes } from '../../lib/images';
 import { videoSources } from '../../lib/media';
 import { pageStyle } from '../../lib/page-style';
 
@@ -18,28 +26,36 @@ interface Props {
   /** Accessible name of the video. */
   alt: string;
   autoplay: boolean;
+  /** `sizes` for the poster picture, matching the column the figure sits in. */
+  sizes: string;
 }
 
-const { projectId, src, alt, autoplay } = Astro.props;
+/** A 1×1 transparent GIF: the video's own poster, so it is see-through (`img-src` allows data:). */
+const NO_POSTER = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+
+const { projectId, src, alt, autoplay, sizes } = Astro.props;
 const { mp4, webm, poster } = videoSources(projectId, src);
-const posterImage = await getImage({
-  src: poster,
-  format: 'webp',
-  width: Math.min(1280, poster.width),
-  layout: 'none',
-});
-const width = Number(posterImage.attributes.width ?? poster.width);
-const height = Number(posterImage.attributes.height ?? poster.height);
+const { width, height } = await imageFacts(poster);
 const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` });
 ---
 
 <div class="loop-video" data-video data-autoplay={autoplay || undefined}>
+  <Picture
+    src={poster}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={candidateWidths(width, 1826)}
+    sizes={scalableSizes(sizes)}
+    alt=""
+    class="loop-video__poster"
+    {...adaptive()}
+  />
   <video
     muted
     loop={autoplay}
     playsinline
     preload="none"
-    poster={posterImage.src}
+    poster={NO_POSTER}
     controls
     aria-label={alt}
     width={width}
@@ -54,14 +70,35 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
 <script src="../../scripts/video.ts"></script>
 
 <style>
+  /* The poster picture and the video share one cell: the video (later in the source, so on top)
+     has no background and a transparent poster, so the picture shows through until it has a
+     frame. The figure frame centres its child, so the width is set here, never left to the
+     content: an unloaded poster and a video with no metadata size to nothing. */
   .loop-video {
     position: relative;
+    display: grid;
+    inline-size: 100%;
+    background-color: var(--surface-2);
+  }
+
+  .loop-video :global(picture) {
+    display: contents;
+  }
+
+  .loop-video :global(.loop-video__poster),
+  video {
+    grid-area: 1 / 1;
+  }
+
+  .loop-video :global(.loop-video__poster) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
   }
 
   video {
     inline-size: 100%;
     block-size: auto;
-    background-color: var(--surface-2);
   }
 
   /* A focused click-to-play video (native controls): the figure frame's overflow clips the

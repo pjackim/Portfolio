@@ -2,13 +2,15 @@
 /**
  * Case-study hero (spec-design-content §2, §4): the cover at container width in a 16:10
  * frame — `id="case-hero"` (the `<link rel="expect">` target) and `view-transition-name:
- * cover-<slug>`, so the home card's cover morphs into it. Loaded eagerly at high priority.
+ * cover-<slug>`, so the home card's cover morphs into it. The cover is the page's priority image
+ * (`adaptive('priority')`, src/lib/images.ts): the head script makes it eager at high priority
+ * as soon as it is parsed, at full quality unless the connection is detected as slow.
  * Frame modes as the home card (`frameMode`): crop, whole on a plate, or on a light plate for
  * transparent art. When the cover is a YouTube poster (Ruling R21) the hero is that video's
  * facade instead, in a 16:9 frame, with the entry's caption if it has one.
  */
 import { Picture } from 'astro:assets';
-import { candidateWidths, frameMode, imageFacts } from '../lib/images';
+import { adaptive, candidateWidths, frameMode, imageFacts, scalableSizes } from '../lib/images';
 import type { YouTubeItem } from '../lib/media';
 import { pageStyle } from '../lib/page-style';
 import type { Project } from '../lib/projects';
@@ -71,12 +73,10 @@ const style = video
       src={data.cover}
       formats={['avif', 'webp']}
       fallbackFormat="webp"
-      widths={candidateWidths(facts.width, 2400)}
-      sizes={SIZES}
+      widths={candidateWidths(facts.width, 3200)}
+      sizes={scalableSizes(SIZES)}
       alt={data.coverAlt}
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
+      {...adaptive('priority')}
     />
   </div>
 )}

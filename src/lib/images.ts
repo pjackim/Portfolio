@@ -16,6 +16,8 @@ export interface ImageFacts {
   transparent: boolean;
   /** SHA-1 of the file bytes: two imports with the same digest are the same picture. */
   digest: string;
+  /** Size of the source file in bytes. */
+  bytes: number;
 }
 
 const cache = new Map<string, Promise<ImageFacts>>();
@@ -28,13 +30,13 @@ async function inspect(path: string): Promise<ImageFacts> {
   ]);
   if (!width || !height) throw new Error(`images: cannot read dimensions of ${path}`);
   const digest = createHash('sha1').update(bytes).digest('hex');
-  return { width, height, transparent: !isOpaque, digest };
+  return { width, height, transparent: !isOpaque, digest, bytes: bytes.length };
 }
 
 /**
- * Width, height, transparency and digest of an imported local image. Reads the file through
- * Astro's private `fsPath` rather than the metadata fields, so the original file is not marked
- * as used outside the image pipeline (and copied into `dist/` unoptimized).
+ * Width, height, transparency, digest and byte size of an imported local image. Reads the file
+ * through Astro's private `fsPath` rather than the metadata fields, so the original file is not
+ * marked as used outside the image pipeline (and copied into `dist/` unoptimized).
  */
 export function imageFacts(image: ImageMetadata): Promise<ImageFacts> {
   const path = (image as ImageMetadata & { fsPath?: string }).fsPath;
@@ -64,6 +66,12 @@ export function frameMode(facts: ImageFacts, panelBelow: number): FrameMode {
 }
 
 /**
+ * The default `srcset` steps. 3200 is the widest slot (the 1584px container at 2×, 3168px), so a
+ * master up to that width is delivered at its own size to the displays that can show it.
+ */
+export const DEFAULT_STEPS = [480, 800, 1200, 1600, 2000, 2400, 3200] as const;
+
+/**
  * `srcset` widths for an image: the `steps` below the cap, then the cap itself — the source
  * width, or `max` for larger sources. Astro never upscales, so small sources stop at their
  * own width and still get their full-resolution file.
@@ -71,8 +79,43 @@ export function frameMode(facts: ImageFacts, panelBelow: number): FrameMode {
 export function candidateWidths(
   sourceWidth: number,
   max: number,
-  steps: readonly number[] = [480, 800, 1200, 1600, 2000, 2400],
+  steps: readonly number[] = DEFAULT_STEPS,
 ): number[] {
   const top = Math.min(sourceWidth, max);
   return [...steps.filter((w) => w < top), top];
+}
+
+/**
+ * Attributes of an image the adaptive loader manages (src/lib/net-bootstrap.ts,
+ * src/scripts/net.ts): full quality by default, a lighter candidate first only on a slow
+ * connection.
+ * - `auto`: any adaptive image: light first in slow mode, then upgraded;
+ * - `priority`: the LCP image: the head script makes it eager as soon as it is parsed (after
+ *   scaling its `sizes` in slow mode), so it starts loading at once;
+ * - `lite`: light in slow and save modes and never upgraded (the /work/ hover thumbnails).
+ * Every one ships `loading="lazy"`: no engine fetches a lazy image before the head script has
+ * run, so it can still pick the candidate; without JS lazy loading is off by spec and the image
+ * loads eagerly at full quality.
+ */
+export function adaptive(kind: 'auto' | 'priority' | 'lite' = 'auto') {
+  return {
+    'data-net-img': kind === 'auto' ? '' : kind,
+    loading: 'lazy' as const,
+    decoding: 'async' as const,
+    fetchpriority: kind === 'priority' ? ('high' as const) : undefined,
+  };
+}
+
+/**
+ * Throws unless every entry of a `sizes` list ends in a plain px / rem / vw length: all the
+ * loader can scale (net-bootstrap.ts), so it checks the lists at build time instead of failing
+ * on a phone.
+ */
+export function scalableSizes(sizes: string): string {
+  for (const entry of sizes.split(',')) {
+    if (!/(?:^|\s)[\d.]+(?:px|rem|vw)\s*$/.test(entry)) {
+      throw new Error(`images: sizes entry "${entry.trim()}" is not a plain px/rem/vw length`);
+    }
+  }
+  return sizes;
 }
