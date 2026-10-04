@@ -145,9 +145,15 @@ const begin = () => {
   };
   addEventListener('scrollend', go, { once: true });
   // Poll: some browsers (WebKit) delay or skip scrollend on fragment navigation; once the page
-  // is actually at the target, there is no reason to wait longer.
+  // is actually at the target, there is no reason to wait longer. Nor once it has moved and come
+  // to rest a little off it (the layout above shifted after the jump and the browser never
+  // corrected): no jump is still to come.
+  let lastY = scrollY;
+  let still = 0;
   const poll = setInterval(() => {
-    if (landedOn(target!)) {
+    still = scrollY === lastY ? still + 1 : 0;
+    lastY = scrollY;
+    if (landedOn(target!) || (scrollY > 2 && still >= 3)) {
       clearInterval(poll);
       go();
     }
