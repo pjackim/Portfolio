@@ -1,8 +1,9 @@
 ---
 # Sources: ../quality — README.md, PLAN/STATUS.md, pyproject.toml; git log 2026-06-19 →
-# 2026-06-21 (58 commits, all m0rt).
-title: 'Quality — AI-Agent-First Code Quality CLI'
-summary: 'A zero-config CLI wrapping the qlty engine into one deterministic JSON report and gate, so an AI coding agent and CI enforce the identical quality loop.'
+# 2026-06-21 (58 commits, all m0rt). Wraps qlty (README.md); tests are opt-in (README.md); CI and
+# live agent run unverified (PLAN/STATUS.md phases 6 and 7).
+title: 'Quality: One Pass/Fail Check for AI Coding Agents'
+summary: 'AI coding agents get walls of messy tool output. My command-line tool boils style and security checks down to one pass or fail.'
 year: 2026
 period: 'June 2026'
 group: software
@@ -15,33 +16,26 @@ order: 100
 showOnHome: false
 draft: true
 highlights:
-  - Wraps qlty (lint, format, security, complexity, duplication) into one deterministic, byte-stable JSON report an agent can trust.
-  - One `passed` boolean and disciplined exit codes run the identical gate locally and in CI.
-  - Tiered verbosity (summary → compact → detailed → full) keeps a clean run near-free and full detail one flag away.
-  - Ships an installable agent skill and an MCP server exposing check/fix/test/report/explain as typed tools.
-  - Verified in Docker against real qlty, svelte-check, and Fallow — 66/66 offline smoke, 104/104 full matrix.
+  - One command, one short pass or fail.
+  - Built so an agent and a build server run the same check.
+  - 'Early alpha: the core check works, some parts are untested.'
 media: []
 links: {}
 legacyPaths: []
 ---
 
-## Problem
+## Before: walls of output
 
-AI coding agents need a fast, structured, trustworthy answer to "is this code good yet?" — but raw linter output is verbose, inconsistent across tools, and expensive to re-parse on every iteration, and whatever an agent runs locally rarely matches what CI actually enforces.
+An agent edits code and asks "is it good yet?" It gets pages of output from many separate tools and has to dig for the answer.
 
-## Approach
+## After: one verdict
 
-`quality` is a thin, zero-config Python CLI wrapped around qlty, a local, Rust-fast quality engine: `quality init` autodetects the repo's stack and writes opinionated `.qlty/` config once; `quality check` then drives qlty's bundled tools (Semgrep, Bandit, and more) plus two custom peer engines of my own, and normalizes everything through SARIF into one deterministic, category-tagged JSON report with a single `passed` gate. Output is tiered by verbosity so a clean run costs almost nothing, and the same command gates merges in CI.
+- **One short report** that ends in pass or fail. A clean run prints a single line starting with **PASSED**.
+- **Same check everywhere.** The agent runs it, fixes what it flags, and reruns. A build server, the machine that vets every change, runs the same command.
+- **Built for AI tools.** Coding assistants can call it directly as an add-on.
 
-## What I built
+It sits on qlty, a free code-scanning engine. I wrote the wrapper and some extra checks.
 
-- **Unified, deterministic report.** SARIF normalization across qlty's bundled tools plus qlty's own smells/metrics, into one category- and layer-tagged, byte-stable JSON schema.
-- **Two custom peer engines beyond qlty itself.** A Svelte engine (svelte-check plus best-effort eslint-svelte via SARIF) and a Fallow structural-analysis integration (dead-code, duplication) — qlty doesn't ship either.
-- **An AI-asset validator.** A pure-Python peer engine that lints `SKILL.md`/agent-definition frontmatter for the conventions markdownlint can't check.
-- **Tests and coverage folded into the same gate.** `quality test` / `--tests` parses JUnit and Cobertura, with both total and diff (changed-lines-only) coverage thresholds.
-- **Agent ergonomics.** An `AGENT.md` loop recipe, an installable agent skill, and an MCP server (`quality-mcp`) exposing the same operations as typed tool calls.
-- **CI and installer pipeline.** A one-line idempotent installer (qlty, uv, optional bun, plus the CLI), GitLab CI integration (a diff-scoped gate on merge requests, a full gate on the default branch), and a Docker-based live end-to-end suite that clones real repos and asserts the full feature surface against real qlty, svelte-check, and Fallow.
+## Early alpha
 
-## Outcome & lessons
-
-Built over a three-day sprint (June 19–21, 2026), 58 commits. The project tracks "runtime-verified" against real tools separately from "contract-coded only" rather than claiming everything works: the core CLI, gate, tiered verbosity, tests/coverage, the agent skill, MCP server, and both custom peer engines are runtime-verified in a Docker harness (66/66 offline smoke, 104/104 full matrix). One gap it flags on itself: a qlty plugin-crash exit code is currently handled by an assumption that hasn't been confirmed against real qlty behavior — a crash that happens to return the same code as "findings exist" would slip past the current guard.
+Built in three days (June 2026). The core check works against the real scanners, but a scanner crash may not be caught. It has not run on a real build server or with a live AI agent, and it is not published for install yet.
