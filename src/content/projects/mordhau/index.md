@@ -1,6 +1,6 @@
 ---
 # Sources: html/Work/mordhauhack.html:77-79, :90-96, :120-124, :129, :141, :151, :168, :186-238, :249; public/files/Resume_General.pdf (Memory Hacking)
-# Media: all from the legacy site at git a085340 (the commit before the legacy removal, 907a195) — Images/fovhack/screenshot-overview.jpg (cover; also the project's legacy home-page thumbnail), screenshot-cosmetic.jpg, fov_demo.gif (15 s, 1280x655, orphaned in the legacy HTML, encoded as a loop; that it shows the field of view widening is read from its frames, 0 s vs 15 s, and its file and folder names, not stated in any legacy text), and the page's two YouTube embeds S1XTb5wbYFc and elRSqVSCXu8 (titles from YouTube oEmbed, checked 2026-10-03). Not used: screenshot-gameplay.jpg (514x917, the gameplay menu already in the cover), fov_preview.png (1669x854 still of the same scene as the loop).
+# Media: all from the legacy site at git a085340 (the commit before the legacy removal, 907a195) — Images/fovhack/screenshot-overview.jpg (cover; also the project's legacy home-page thumbnail), screenshot-cosmetic.jpg, fov_demo.gif (15 s, 1280x655, orphaned in the legacy HTML, encoded as a loop; that it shows the field of view widening is read from its frames, 0 s vs 15 s, and its file and folder names, not stated in any legacy text), and the page's two YouTube embeds S1XTb5wbYFc and elRSqVSCXu8 (titles from YouTube oEmbed, checked 2026-10-03; their captions reuse words from those titles). Not used: screenshot-gameplay.jpg (514x917, the gameplay menu already in the cover), fov_preview.png (1669x854 still of the same scene as the loop).
 title: Mordhau — Runtime Memory Patching
 summary: A C++ DLL injected into Mordhau's Unreal Engine 4 client that patches memory at runtime to change field-of-view, turn-rate, movement and cooldown limits.
 year: 2021
@@ -29,13 +29,15 @@ media:
     src: ./cosmetic-menu.webp
     pair: cosmetic-package
     alt: 'The Cosmetics panel beside a gold-armoured knight, with ID fields for helm 43, neck 0, shoulder 6, chest 5, arm 33, glove 12, waist 0, legs 19 and foot 2.'
-    caption: The Cosmetic package. Pick an armour ID per slot to wear gear that was only sold before the game launched (Kickstarter content).
-  - kind: youtube
-    id: 'S1XTb5wbYFc'
-    title: 'Mordhau Hack: Cosmetic Menu'
+    caption: Pick an armour ID per slot to wear gear that was only sold before the game launched (Kickstarter content).
   - kind: youtube
     id: 'elRSqVSCXu8'
     title: 'Mordhau Hack: Gameplay Menu'
+    caption: Gameplay menu.
+  - kind: youtube
+    id: 'S1XTb5wbYFc'
+    title: 'Mordhau Hack: Cosmetic Menu'
+    caption: Cosmetic menu.
 legacyPaths: [html/Work/mordhauhack.html]
 ---
 
@@ -49,15 +51,13 @@ I reverse-engineered the running Unreal Engine 4 client, then wrote a C++ DLL th
 
 ## What I built
 
-### Memory patching through DLL injection
-
-The core of the tool, running inside the live client.
+**Memory patching through DLL injection.** The core of the tool, running inside the live client.
 
 <div data-pair="gameplay-package">
 
 ### Gameplay package
 
-Ten toggles: field of view; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; faster sprint; automatic parry; and protection from being kicked for inactivity.
+Ten toggles: **field of view**; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; faster sprint; automatic parry; and protection from being kicked for inactivity.
 
 </div>
 
