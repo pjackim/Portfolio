@@ -260,8 +260,9 @@ typescript` would pick up 7.x. Dependabot is configured to ignore major bumps of
 - **The legacy site is fully recoverable** at commit `d8782d1` (`git show d8782d1:<path>`, or
   `git archive d8782d1 <path> | tar -x -C .cache/legacy`) if you need to check original copy,
   images, or markup.
-- **Never push from here.** Every change lands as a commit for the human to push/PR. GitHub
-  access otherwise goes through `gh` — see [GitHub: use the `gh` CLI](#github-use-the-gh-cli).
+- **Pushing is allowed.** Commit in small, scoped commits and push to the branch you were
+  given, then open a PR for it. GitHub access otherwise goes through `gh` — see
+  [GitHub: use the `gh` CLI](#github-use-the-gh-cli).
 - **Verify web changes live before calling them done.** Use the Chrome browser tools (or
   `npm run preview` + a manual check) to load the actual page and confirm the change renders
   as expected — a passing build/type-check is not sufficient proof for UI work.
@@ -289,7 +290,7 @@ switch`, which changes global state other sessions and terminals rely on.
 - **Read freely, write with care.** Read-only commands (`list`, `view`, `status`, `api` GETs)
   need no confirmation. Anything visible to others — creating/commenting on/closing issues or
   PRs, re-running or cancelling workflows, editing repo settings — needs the human's go-ahead
-  first, and pushing stays off-limits (see above).
+  first. Pushing your own branch is fine (see above).
 
 ## Code discovery: `codebase-memory-mcp`
 
