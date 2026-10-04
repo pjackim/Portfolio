@@ -9,6 +9,13 @@ import { CAPABILITIES, GROUPS } from './data/taxonomy';
 
 const KEBAB_MP4 = /^\.\/[a-z0-9]+(-[a-z0-9]+)*\.mp4$/;
 const YOUTUBE_ID = /^[\w-]{11}$/;
+/** A paired paragraph's key: the body's `<div data-pair="…">` and the media's `pair`. */
+const PAIR_KEY = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const pair = z
+  .string()
+  .regex(PAIR_KEY)
+  .optional()
+  .describe('Shown beside the body paragraph marked `<div data-pair="key">`, not under Figures.');
 const LEGACY_PATH = /^html\/Work\/[a-z_]+\.html$/;
 
 const projects = defineCollection({
@@ -51,6 +58,7 @@ const projects = defineCollection({
                 alt: z.string().min(8),
                 caption: z.string().optional(),
                 wide: z.boolean().default(false),
+                pair,
               }),
               z.object({
                 kind: z.literal('video'),
@@ -60,6 +68,7 @@ const projects = defineCollection({
                 caption: z.string().optional(),
                 /** false → click-to-play with controls, preload none. */
                 autoplay: z.boolean().default(true),
+                pair,
               }),
               z.object({
                 kind: z.literal('youtube'),
@@ -68,6 +77,7 @@ const projects = defineCollection({
                 title: z.string().min(4),
                 caption: z.string().optional(),
                 start: z.number().int().min(0).optional(),
+                pair,
               }),
             ]),
           )
