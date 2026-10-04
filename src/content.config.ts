@@ -66,7 +66,7 @@ const projects = defineCollection({
                 src: z.string().regex(KEBAB_MP4),
                 alt: z.string().min(8),
                 caption: z.string().optional(),
-                /** false → click-to-play with controls, preload none. */
+                /** false → click-to-play (the Play chip, no loop), preload none. */
                 autoplay: z.boolean().default(true),
                 pair,
               }),

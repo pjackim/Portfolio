@@ -12,8 +12,8 @@
  *   else a WebP of it at source width; with JS that link, and a click on the image, open it in
  *   the project's lightbox instead (Lightbox.astro, src/scripts/lightbox.ts), which marks
  *   such figures `data-zoomable`.
- * - video → LoopVideo (autoplay loops open a playing copy in the lightbox on click); youtube →
- *   YouTubeFacade.
+ * - video → LoopVideo (a click on any video opens a playing copy in the lightbox); youtube →
+ *   YouTubeFacade (its own player: never in the lightbox).
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
  * grid; this component only marks the figure `figure--wide`). An `inline` figure sits beside its
  * paragraph (MediaPair) at the normal column's size, `wide` or not.

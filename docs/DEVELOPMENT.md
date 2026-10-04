@@ -94,29 +94,29 @@ Schema source of truth: `src/content.config.ts`. All content must come from fact
 the repo (legacy site at commit `a085340`, the résumé PDF) or Parker himself — never invent accomplishments,
 metrics, employers, dates, or links.
 
-| Field                             | Type                                                                   | Notes                                                                                  |
-| --------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `title`                           | string, 2–60                                                           |                                                                                        |
-| `summary`                         | string, 20–180                                                         | Card text and meta description                                                         |
-| `role`                            | string, ≤80, optional                                                  | Omit when the repo doesn't state it                                                    |
-| `year`                            | int, 2010–2100                                                         |                                                                                        |
-| `period`                          | string, ≤40, optional                                                  | Display string shown instead of `year`, e.g. `"Fall 2021"`, `"c. 2016"`                |
-| `group`                           | `security` \| `software` \| `design`                                   | Which `/work/` section                                                                 |
-| `featured`                        | boolean, default `false`                                               | Shown on the home page                                                                 |
-| `order`                           | int, default `100`                                                     | Sort key among featured projects; must be unique                                       |
-| `showOnHome`                      | boolean, default `false`                                               | Archive projects only — also list on the home page                                     |
-| `draft`                           | boolean, default `false`                                               | Hidden outside `astro dev` until `false`                                               |
-| `capabilities`                    | 1–4 of the enum in `src/data/taxonomy.ts`                              |                                                                                        |
-| `stack`                           | 1–8 strings                                                            |                                                                                        |
-| `highlights`                      | ≤5 strings, ≤160 each                                                  | Featured projects need ≥2                                                              |
-| `cover`                           | image path                                                             | `image()` — resolved by Astro's asset pipeline                                         |
-| `coverAlt`                        | string, ≥8                                                             |                                                                                        |
-| `coverPosition`                   | string, optional                                                       | CSS `object-position` for the cover crop                                               |
-| `media[].kind: image`             | `src`, `alt` (≥8), `caption?`, `wide` (default `false`)                |                                                                                        |
-| `media[].kind: video`             | `src: ./name.mp4`, `alt` (≥8), `caption?`, `autoplay` (default `true`) | Needs sibling `.webm` + `.poster.webp`; `autoplay:false` → click-to-play with controls |
-| `media[].kind: youtube`           | `id` (11 chars), `title` (≥4), `caption?`, `start?`                    | Needs sibling `yt-<id>.webp` poster                                                    |
-| `links.repo` / `.demo` / `.video` | URL, all optional                                                      |                                                                                        |
-| `legacyPaths`                     | array of `html/Work/<name>.html`                                       | Drives the redirect stubs for that project                                             |
+| Field                             | Type                                                                   | Notes                                                                             |
+| --------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `title`                           | string, 2–60                                                           |                                                                                   |
+| `summary`                         | string, 20–180                                                         | Card text and meta description                                                    |
+| `role`                            | string, ≤80, optional                                                  | Omit when the repo doesn't state it                                               |
+| `year`                            | int, 2010–2100                                                         |                                                                                   |
+| `period`                          | string, ≤40, optional                                                  | Display string shown instead of `year`, e.g. `"Fall 2021"`, `"c. 2016"`           |
+| `group`                           | `security` \| `software` \| `design`                                   | Which `/work/` section                                                            |
+| `featured`                        | boolean, default `false`                                               | Shown on the home page                                                            |
+| `order`                           | int, default `100`                                                     | Sort key among featured projects; must be unique                                  |
+| `showOnHome`                      | boolean, default `false`                                               | Archive projects only — also list on the home page                                |
+| `draft`                           | boolean, default `false`                                               | Hidden outside `astro dev` until `false`                                          |
+| `capabilities`                    | 1–4 of the enum in `src/data/taxonomy.ts`                              |                                                                                   |
+| `stack`                           | 1–8 strings                                                            |                                                                                   |
+| `highlights`                      | ≤5 strings, ≤160 each                                                  | Featured projects need ≥2                                                         |
+| `cover`                           | image path                                                             | `image()` — resolved by Astro's asset pipeline                                    |
+| `coverAlt`                        | string, ≥8                                                             |                                                                                   |
+| `coverPosition`                   | string, optional                                                       | CSS `object-position` for the cover crop                                          |
+| `media[].kind: image`             | `src`, `alt` (≥8), `caption?`, `wide` (default `false`)                |                                                                                   |
+| `media[].kind: video`             | `src: ./name.mp4`, `alt` (≥8), `caption?`, `autoplay` (default `true`) | Needs sibling `.webm` + `.poster.webp`; `autoplay:false` → click-to-play, no loop |
+| `media[].kind: youtube`           | `id` (11 chars), `title` (≥4), `caption?`, `start?`                    | Needs sibling `yt-<id>.webp` poster                                               |
+| `links.repo` / `.demo` / `.video` | URL, all optional                                                      |                                                                                   |
+| `legacyPaths`                     | array of `html/Work/<name>.html`                                       | Drives the redirect stubs for that project                                        |
 
 ## Media rules
 

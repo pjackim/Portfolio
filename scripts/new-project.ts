@@ -60,7 +60,7 @@ media: []
 #   - kind: video # needs ./demo.webm + ./demo.poster.webp siblings
 #     src: ./demo.mp4
 #     alt: 'What the clip shows'
-#     autoplay: true # false → click-to-play with controls
+#     autoplay: true # false → click-to-play, no loop
 #   - kind: youtube # needs ./yt-<id>.webp (npm run media -- --youtube <id> --project ${slug})
 #     id: 'XXXXXXXXXXX'
 #     title: 'Video title'

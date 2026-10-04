@@ -4,10 +4,13 @@
  * site's Motion toggle off, which pauses a playing loop live and, back on, resumes only a loop
  * the reader hadn't paused), and
  * the YouTube facade on the-forest (nothing requested from YouTube or ytimg until the click,
- * then a titled, focused player). Keyboard focus shows on footage: the loop chip fills with the
- * accent, and a click-to-play video draws its ring inside the frame. The poster is a picture
- * under the video, whose own `poster` is a transparent pixel; it shows with or without JS.
- * On a slow connection a loop waits until the page's images are upgraded before it starts.
+ * then a titled, focused player). Click-to-play videos get the same Play / Pause chip (and no
+ * loop); a click on any video but a YouTube player opens it large in the lightbox, the chip
+ * being its own button. Keyboard focus shows on footage: the chip fills with the accent, and
+ * with no script a click-to-play video (native controls then) draws its ring inside the frame.
+ * The poster is a picture under the video, whose own `poster` is a transparent pixel; it shows
+ * with or without JS. On a slow connection a loop waits until the page's images are upgraded
+ * before it starts.
  * Runs on desktop Chromium and mobile WebKit.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
@@ -21,6 +24,7 @@ test.beforeEach(({}, testInfo) => {
 });
 
 const LOOPS = '[data-video][data-autoplay]';
+const CLICK_TO_PLAY = '[data-video]:not([data-autoplay])';
 /** Long enough for the IntersectionObserver and a play() to have happened, if they would. */
 const SETTLE_MS = 750;
 
@@ -28,6 +32,16 @@ const isPaused = (video: Locator) => video.evaluate((v: HTMLVideoElement) => v.p
 const center = (element: Locator) =>
   element.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
 const toTop = (page: Page) => page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+/** The accent as the page resolves it, read off a probe styled through the CSSOM. */
+const accent = (page: Page) =>
+  page.evaluate(() => {
+    const probe = document.createElement('i');
+    probe.style.color = 'var(--accent)';
+    document.body.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  });
 
 test.describe('trip-planner loops', () => {
   test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
@@ -326,17 +340,6 @@ test.describe('trip-planner video focus, from the keyboard', () => {
     test.skip(testInfo.project.name !== 'chromium', 'keyboard focus: desktop Chromium');
   });
 
-  /** The accent as the page resolves it, read off a probe styled through the CSSOM. */
-  const accent = (page: Page) =>
-    page.evaluate(() => {
-      const probe = document.createElement('i');
-      probe.style.color = 'var(--accent)';
-      document.body.append(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    });
-
   // The ring alone would sit on the footage, where no one colour keeps 3:1.
   test('the Pause / Play chip fills with the accent', async ({ page }) => {
     await gotoRel(page, 'work/trip-planner/');
@@ -346,11 +349,19 @@ test.describe('trip-planner video focus, from the keyboard', () => {
     expect(await toggle.evaluate((el) => el.matches(':focus-visible'))).toBe(true);
     await expect(toggle).toHaveCSS('background-color', await accent(page));
   });
+});
 
-  // The figure frame's overflow clips the video's own ring, so one is drawn inside it.
+test.describe('trip-planner click-to-play video focus, with no script', () => {
+  test.use({ javaScriptEnabled: false });
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'keyboard focus: desktop Chromium');
+  });
+
+  // The native controls stay with no script. The figure frame's overflow clips the video's own
+  // ring, so one is drawn inside it.
   test('a click-to-play video shows a ring inside its frame', async ({ page }) => {
     await gotoRel(page, 'work/trip-planner/');
-    const wrapper = page.locator('[data-video]:not([data-autoplay])').first();
+    const wrapper = page.locator(CLICK_TO_PLAY).first();
     const video = wrapper.locator('video');
     await expect(video).toHaveJSProperty('controls', true);
     await center(video);
@@ -363,6 +374,120 @@ test.describe('trip-planner video focus, from the keyboard', () => {
     await video.focus();
     expect(await video.evaluate((el) => el.matches(':focus-visible'))).toBe(true);
     expect(await ring()).toEqual({ content: '""', style: 'solid', color: await accent(page) });
+  });
+});
+
+test.describe('trip-planner click-to-play videos', () => {
+  test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
+
+  test('have the Play / Pause chip, no native controls and no loop', async ({ page }) => {
+    await gotoRel(page, 'work/trip-planner/');
+    const wrapper = page.locator(CLICK_TO_PLAY).first();
+    const video = wrapper.locator('video');
+    const toggle = wrapper.getByRole('button');
+    await center(video);
+    await expect(video).toHaveJSProperty('controls', false);
+    await expect(video).toHaveJSProperty('loop', false);
+    await expect(toggle).toHaveAccessibleName('Play video');
+    // Nothing plays until it is asked to, on screen or not.
+    await page.waitForTimeout(SETTLE_MS);
+    expect(await isPaused(video)).toBe(true);
+
+    await toggle.click();
+    await expect.poll(() => isPaused(video), { timeout: 10_000 }).toBe(false);
+    await expect(toggle).toHaveAccessibleName('Pause video');
+    await toggle.click();
+    await expect.poll(() => isPaused(video)).toBe(true);
+    await expect(toggle).toHaveAccessibleName('Play video');
+  });
+});
+
+test.describe('trip-planner video lightbox', () => {
+  test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
+
+  const KINDS = [
+    { name: 'a loop', selector: LOOPS, loops: true },
+    { name: 'a click-to-play video', selector: CLICK_TO_PLAY, loops: false },
+  ];
+
+  /** The first video of a kind, on screen, once the lightbox has wired it (it waits for its styles). */
+  async function ready(page: Page, selector: string) {
+    await gotoRel(page, 'work/trip-planner/');
+    const wrapper = page.locator(selector).first();
+    const video = wrapper.locator('video');
+    await center(video);
+    await expect(video).toHaveAttribute('data-zoomable', '');
+    return {
+      video,
+      toggle: wrapper.getByRole('button'),
+      dialog: page.locator('dialog[data-lightbox]'),
+    };
+  }
+
+  /** A point on the picture, well clear of the chip in its bottom-right corner. */
+  const PICTURE = { position: { x: 24, y: 24 } };
+
+  for (const { name, selector, loops } of KINDS) {
+    test(`a click on ${name} opens it large and playing; Esc closes it, focus back on the chip`, async ({
+      page,
+    }) => {
+      const { video, toggle, dialog } = await ready(page, selector);
+      if (loops) await expect.poll(() => isPaused(video), { timeout: 10_000 }).toBe(false);
+
+      await video.click(PICTURE);
+      await expect(dialog).toBeVisible();
+      const clip = dialog.locator('video');
+      await expect(clip).toBeVisible();
+      await expect(clip).toHaveAttribute('aria-label', /\S/);
+      await expect(clip.locator('source')).not.toHaveCount(0);
+      await expect(clip).toHaveJSProperty('controls', true);
+      await expect(clip).toHaveJSProperty('loop', loops);
+      await expect.poll(() => isPaused(clip), { timeout: 10_000 }).toBe(false);
+      // The page's own copy yields to it, and the page behind can't scroll.
+      expect(await isPaused(video)).toBe(true);
+      await expect(page.locator('html')).toHaveClass(/\blightbox-open\b/);
+      await expect(dialog.getByRole('button', { name: 'Close' })).toBeFocused();
+      // There is no larger file to link to.
+      await expect(dialog.locator('.lightbox__full')).toBeHidden();
+
+      await page.keyboard.press('Escape');
+      await expect(dialog).toBeHidden();
+      await expect(toggle).toBeFocused();
+      await expect(page.locator('html')).not.toHaveClass(/lightbox-open|vt-lightbox/);
+      expect(await isPaused(clip)).toBe(true);
+      // A loop that was playing picks up again in the page; one nobody started stays put.
+      if (loops) await expect.poll(() => isPaused(video)).toBe(false);
+      else expect(await isPaused(video)).toBe(true);
+    });
+
+    test(`the chip of ${name} plays or pauses it in the page and opens nothing`, async ({
+      page,
+    }) => {
+      const { video, toggle, dialog } = await ready(page, selector);
+      if (loops) await expect.poll(() => isPaused(video), { timeout: 10_000 }).toBe(false);
+      const wasPaused = await isPaused(video);
+
+      await toggle.click();
+      await expect.poll(() => isPaused(video), { timeout: 10_000 }).toBe(!wasPaused);
+      await expect(dialog).not.toHaveAttribute('open', '');
+      await expect(page.locator('html')).not.toHaveClass(/lightbox-open/);
+    });
+  }
+
+  test('a click on a YouTube player starts it and opens no lightbox', async ({ page }) => {
+    // Hermetic: the player document is stubbed, never fetched from YouTube.
+    await page.route(/^https:\/\/www\.youtube-nocookie\.com\//, (route) =>
+      route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>player</title>' }),
+    );
+    await gotoRel(page, 'work/the-forest/');
+    const frame = page.locator('.yt-frame');
+    const facade = frame.locator('button.yt');
+    await center(facade);
+    await page.waitForLoadState('load');
+    await expect(page.locator('.figure[data-kind="youtube"][data-zoomable]')).toHaveCount(0);
+    await facade.click();
+    await expect(frame.locator('iframe.yt-player')).toBeVisible();
+    await expect(page.locator('dialog[data-lightbox][open]')).toHaveCount(0);
   });
 });
 

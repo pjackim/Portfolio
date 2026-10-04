@@ -66,6 +66,11 @@
   white-space: nowrap;
 }
 
+/* A video has no larger file: the script hides the link, which its display would otherwise win. */
+.lightbox__full[hidden] {
+  display: none;
+}
+
 .lightbox__close {
   border: var(--hairline);
   border-radius: var(--radius-xs);

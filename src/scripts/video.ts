@@ -1,7 +1,10 @@
 /**
- * LoopVideo controller (spec-design-content §3, JS inventory 3). Enhances every
- * `[data-video][data-autoplay]` wrapper rendered by LoopVideo:
- * - swaps the native controls for one visible Pause / Play toggle (WCAG 2.2.2);
+ * LoopVideo controller (spec-design-content §3, JS inventory 3). Enhances every `[data-video]`
+ * wrapper rendered by LoopVideo, autoplay loop or click-to-play, with one visible Pause / Play
+ * toggle in place of the native controls (WCAG 2.2.2). The toggle is a button of its own: a click
+ * on the picture itself is the lightbox's (src/scripts/lightbox.ts), whose copy of the video has
+ * the full native controls. A click-to-play video (no `data-autoplay`) plays only when asked to
+ * and doesn't loop; what follows is for the autoplay loops:
  * - plays while at least half the video is on screen, pauses it when it leaves;
  * - never autoplays while motion isn't allowed — `prefers-reduced-motion: reduce` or the site's
  *   Motion toggle off (`<html data-motion="off">`), both tracked live: switching motion off
@@ -13,7 +16,6 @@
  * - a video the user paused stays paused until they press Play again (motion coming back on
  *   doesn't override that);
  * - a rejected `play()` (e.g. iOS Low Power Mode) just leaves the paused state showing.
- * Click-to-play videos (no `data-autoplay`) keep their native controls and are left alone.
  *
  * Import-free on purpose, so Astro inlines it (no request); the motion check mirrors
  * motionAllowed() in src/scripts/motion.ts, and `motion:change` is that module's event.
@@ -86,7 +88,7 @@ function pause(loop: Loop): void {
   if (!loop.video.paused) loop.video.pause();
 }
 
-for (const wrapper of document.querySelectorAll<HTMLElement>('[data-video][data-autoplay]')) {
+for (const wrapper of document.querySelectorAll<HTMLElement>('[data-video]')) {
   const video = wrapper.querySelector('video');
   if (!video) continue;
   video.controls = false;
@@ -107,7 +109,8 @@ for (const wrapper of document.querySelectorAll<HTMLElement>('[data-video][data-
     ready: false,
     armed: false,
   };
-  loops.set(video, loop);
+  // Only a loop is under autoplay's care; a click-to-play video does what the toggle says.
+  if (wrapper.dataset.autoplay !== undefined) loops.set(video, loop);
 
   button.addEventListener('click', () => {
     loop.held = !video.paused;

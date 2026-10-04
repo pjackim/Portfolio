@@ -2,10 +2,11 @@
 /**
  * Silent screen-recording video (spec-design-content §3). Server-rendered with native
  * `controls` and `preload="none"`, so it works without JS and costs nothing until played.
- * `autoplay` loops are enhanced by `src/scripts/video.ts`: a visible Pause / Play toggle
- * replaces the controls and the loop plays only while on screen (never under reduced motion
- * or Save-Data; on a slow connection only once the page's images are upgraded). Click-to-play
- * videos keep the native controls and don't loop.
+ * `src/scripts/video.ts` replaces the controls with a visible Pause / Play toggle, and the
+ * `autoplay` loops play only while on screen (never under reduced motion or Save-Data; on a
+ * slow connection only once the page's images are upgraded). Click-to-play videos don't loop and
+ * start only from the toggle. A click on the picture itself, on either kind, opens a playing
+ * copy with the native controls in the project's lightbox (src/scripts/lightbox.ts).
  * The poster is a lazy, adaptive `<picture>` (AVIF / WebP, srcset) laid under the `<video>`, so
  * it gets the same quality-first delivery as every other image, and the lite path on a slow
  * connection. The `<video>` keeps a `poster` attribute that is one transparent pixel: with none,
@@ -105,9 +106,9 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     block-size: auto;
   }
 
-  /* A focused click-to-play video (native controls): the figure frame's overflow clips the
-     video's own ring, so the ring is drawn inside it, on a page-colour halo that keeps it
-     legible over any footage (as the card reticle's). */
+  /* A focused click-to-play video (native controls, which it keeps with no script): the figure
+     frame's overflow clips the video's own ring, so the ring is drawn inside it, on a page-colour
+     halo that keeps it legible over any footage (as the card reticle's). */
   .loop-video:has(> video:focus-visible)::after {
     content: '';
     position: absolute;

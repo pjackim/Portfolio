@@ -2,7 +2,10 @@
  * Figure lightbox (interactions spec §4; markup in Lightbox.astro). Every figure image
  * with a large rendition — the figures MediaFigure gives a "Full size" link — opens the dialog:
  * a click on the image, or on the link (Enter included). A modified click on the link (new tab,
- * new window) still just opens the image; without JS the link always does.
+ * new window) still just opens the image; without JS the link always does. So does every video
+ * (an autoplay loop or a click-to-play one, never a YouTube player): a click on the picture —
+ * the Pause / Play chip is a button of its own, outside the <video> — opens a copy of it with the
+ * native controls, playing, and the page's own copy pauses meanwhile.
  *
  * Open: the dialog shows the thumbnail's own (already decoded) image at once, sized to the large
  * rendition's box, and swaps the large rendition in once it has decoded — same box, so nothing
@@ -32,7 +35,7 @@ interface Figure {
   /** Where focus returns on close: the "Full size" link, or a video's play/pause chip. */
   link: HTMLElement;
   thumb: HTMLImageElement | null;
-  /** An autoplay loop's in-page video: opens a playing copy, with no morph. */
+  /** The figure's in-page video: opens a playing copy, with no morph. */
   video?: HTMLVideoElement;
 }
 
@@ -67,7 +70,6 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
   frame.append(img);
   const clip = document.createElement('video');
   clip.controls = true;
-  clip.loop = true;
   clip.muted = true;
   clip.playsInline = true;
   clip.hidden = true;
@@ -96,6 +98,7 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
   const fillVideo = (source: HTMLVideoElement) => {
     img.hidden = true;
     delete frame.dataset.mode;
+    clip.loop = source.loop;
     frame.style.setProperty('--lb-w', String(source.width || 16));
     frame.style.setProperty('--lb-h', String(source.height || 9));
     clip.hidden = false;
@@ -240,7 +243,8 @@ function wire(dialog: HTMLDialogElement, figures: Figure[]): void {
 
   for (const item of figures) {
     if (item.video) {
-      // A click on the picture (the chip is its own button, outside the <video>).
+      // A click on the picture (the chip is its own button, outside the <video>, and video.ts
+      // has taken its native controls away).
       item.video.addEventListener('click', () => open(item));
       item.video.dataset.zoomable = '';
       item.figure.dataset.zoomable = '';
@@ -279,7 +283,7 @@ if (dialog) {
     const link = figure.querySelector<HTMLAnchorElement>('a[data-lightbox-trigger]');
     const thumb = figure.querySelector<HTMLImageElement>('.figure__frame img');
     if (link && thumb) figures.push({ figure, link, thumb });
-    const video = figure.querySelector<HTMLVideoElement>('[data-video][data-autoplay] video');
+    const video = figure.querySelector<HTMLVideoElement>('[data-video] video');
     if (video) figures.push({ figure, link: video, thumb: null, video });
   }
   // Wired once its styles are in: never an unstyled dialog. Until then the links just link.
