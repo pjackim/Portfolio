@@ -5,7 +5,11 @@
  * - plays while at least half the video is on screen, pauses it when it leaves;
  * - never autoplays while motion isn't allowed — `prefers-reduced-motion: reduce` or the site's
  *   Motion toggle off (`<html data-motion="off">`), both tracked live: switching motion off
- *   pauses a playing loop, switching it back on resumes it — or with Save-Data;
+ *   pauses a playing loop, switching it back on resumes it — or in Save-Data mode
+ *   (`<html data-net="save">`, src/lib/net-bootstrap.ts);
+ * - on a slow connection (`data-net="slow"`) a visible loop waits for the page's images to finish
+ *   upgrading (`net:idle`, src/scripts/net.ts), then loads its one high-quality file and plays
+ *   once it can play through; Play always starts it at once;
  * - a video the user paused stays paused until they press Play again (motion coming back on
  *   doesn't override that);
  * - a rejected `play()` (e.g. iOS Low Power Mode) just leaves the paused state showing.
@@ -14,6 +18,8 @@
  * Import-free on purpose, so Astro inlines it (no request); the motion check mirrors
  * motionAllowed() in src/scripts/motion.ts, and `motion:change` is that module's event.
  */
+export {}; // a module (its own scope), though it imports nothing
+
 interface Loop {
   video: HTMLVideoElement;
   button: HTMLButtonElement;
@@ -22,13 +28,16 @@ interface Loop {
   visible: boolean;
   /** Paused by the user: autoplay leaves it alone until they press Play. */
   held: boolean;
+  /** Slow connection: its file has loaded far enough to play through (or it has played). */
+  ready: boolean;
+  /** Slow connection: the file is being loaded for autoplay. */
+  armed: boolean;
 }
 
+const root = document.documentElement;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const saveData =
-  (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
 const mayAutoplay = () =>
-  !reducedMotion.matches && document.documentElement.dataset.motion !== 'off' && !saveData;
+  !reducedMotion.matches && root.dataset.motion !== 'off' && root.dataset.net !== 'save';
 
 const ICON =
   '<svg class="video-toggle__icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">' +
@@ -49,7 +58,28 @@ function play(loop: Loop): void {
 }
 
 function autoplay(loop: Loop): void {
-  if (loop.visible && !loop.held && mayAutoplay()) play(loop);
+  if (!loop.visible || loop.held || !mayAutoplay()) return;
+  if (root.dataset.net !== 'slow' || loop.ready) return play(loop);
+  // Playback is already under way (Play pressed, or a fast-mode autoplay still buffering): never
+  // `load()` it again, which would abort the request and start the download over.
+  if (!loop.video.paused) {
+    loop.armed = true;
+    return;
+  }
+  // Slow connection: the poster and Play stay until the page's images are upgraded and the loop
+  // can play through.
+  if (loop.armed || root.dataset.netBusy !== undefined) return;
+  loop.armed = true;
+  loop.video.addEventListener(
+    'canplaythrough',
+    () => {
+      loop.ready = true;
+      autoplay(loop);
+    },
+    { once: true },
+  );
+  loop.video.preload = 'auto';
+  loop.video.load();
 }
 
 function pause(loop: Loop): void {
@@ -68,7 +98,15 @@ for (const wrapper of document.querySelectorAll<HTMLElement>('[data-video][data-
   wrapper.append(button);
 
   const label = button.querySelector<HTMLElement>('.video-toggle__label')!;
-  const loop: Loop = { video, button, label, visible: false, held: false };
+  const loop: Loop = {
+    video,
+    button,
+    label,
+    visible: false,
+    held: false,
+    ready: false,
+    armed: false,
+  };
   loops.set(video, loop);
 
   button.addEventListener('click', () => {
@@ -78,6 +116,8 @@ for (const wrapper of document.querySelectorAll<HTMLElement>('[data-video][data-
   });
   video.addEventListener('play', () => render(loop));
   video.addEventListener('pause', () => render(loop));
+  // A loop that is playing has what it needs: autoplay never reloads it.
+  video.addEventListener('playing', () => (loop.ready = true));
   render(loop);
 }
 
@@ -106,4 +146,8 @@ if (loops.size > 0) {
   };
   reducedMotion.addEventListener('change', onMotionChange);
   document.addEventListener('motion:change', onMotionChange);
+  // The connection verdict changed, or the page's images finished upgrading: a loop waiting on
+  // either starts (or stops) as motion changes do.
+  document.addEventListener('net:change', onMotionChange);
+  document.addEventListener('net:idle', onMotionChange);
 }

@@ -18,7 +18,6 @@ const SOURCES: ReadonlyArray<readonly [string, string]> = [
   ['img[srcset]', 'srcset'],
   ['source[src]', 'src'],
   ['source[srcset]', 'srcset'],
-  ['video[poster]', 'poster'],
   ['link[rel="stylesheet"][href]', 'href'],
   ['link[rel="icon"][href]', 'href'],
   ['link[rel="preload"][href]', 'href'],

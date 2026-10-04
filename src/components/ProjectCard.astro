@@ -24,7 +24,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { Picture } from 'astro:assets';
 import { pad2 } from '../lib/format';
-import { candidateWidths, frameMode, imageFacts } from '../lib/images';
+import { adaptive, candidateWidths, frameMode, imageFacts, scalableSizes } from '../lib/images';
 import { pageStyle } from '../lib/page-style';
 import { withBase } from '../lib/url';
 import '../styles/reticle.css';
@@ -39,13 +39,11 @@ interface Props {
   lead?: boolean;
   /** A last bento cell widened to half a row (ProjectGrid). */
   span?: 'half' | undefined;
-  /** Above-the-fold card: load the cover eagerly at high priority. */
-  eager?: boolean;
   /** Entrance reveal as it scrolls into view (cards below the first row; spec §4). */
   reveal?: boolean;
 }
 
-const { project, index, lead = false, span, eager = false, reveal = false } = Astro.props;
+const { project, index, lead = false, span, reveal = false } = Astro.props;
 const { id, data } = project;
 
 /** `sizes` from the rendered cover width (ProjectGrid): from 960px the lead is 7 of 12 columns
@@ -59,8 +57,13 @@ const SIZES = {
   half: '(min-width: 2400px) 781px, (min-width: 1760px) 629px, (min-width: 1216px) 565px, (min-width: 960px) 50vw, (min-width: 640px) 50vw, 100vw',
 };
 
+/** The widest srcset candidate of each cell: its widest rendered width at 2×, rounded to a
+    shared step (src/lib/images.ts), so covers reuse each other's files. */
+const MAX_WIDTH = { lead: 2000, normal: 1600, half: 1600 };
+
+const size = lead ? 'lead' : (span ?? 'normal');
 const facts = await imageFacts(data.cover);
-const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
+const widths = candidateWidths(facts.width, MAX_WIDTH[size]);
 const mode = frameMode(facts, 800);
 const style = pageStyle(Astro.locals, {
   'view-transition-name': `cover-${id}`,
@@ -80,12 +83,10 @@ const href = withBase(`work/${id}/`);
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       widths={widths}
-      sizes={SIZES[lead ? 'lead' : (span ?? 'normal')]}
+      sizes={scalableSizes(SIZES[size])}
       alt=""
-      loading={eager ? 'eager' : 'lazy'}
-      decoding="async"
-      fetchpriority={eager ? 'high' : undefined}
       class="card__img"
+      {...adaptive()}
     />
     <span class="card__hud reticle" aria-hidden="true">
       <span class="card__scan"></span>

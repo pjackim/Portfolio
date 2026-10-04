@@ -18,6 +18,7 @@
 import { Picture } from 'astro:assets';
 import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
+import { adaptive, scalableSizes } from '../lib/images';
 import { pageStyle } from '../lib/page-style';
 import type { Project } from '../lib/projects';
 import { withBase } from '../lib/url';
@@ -34,7 +35,7 @@ interface Props {
   projects: readonly Project[];
   /** Number of the first project (rows continue the numbering across sections). */
   start?: number;
-  /** Load the first lead cover eagerly (above the fold). */
+  /** The first lead cover is the page's priority image (eager, high priority; above the fold). */
   eager?: boolean;
   class?: string;
 }
@@ -90,13 +91,13 @@ const items = projects.map((p, i) => ({
             src={p.data.cover}
             formats={['avif', 'webp']}
             fallbackFormat="webp"
-            widths={[480, 800, 1200]}
-            sizes="(min-width: 1760px) 45rem, (min-width: 1216px) 40rem, (min-width: 960px) 56vw, 100vw"
+            widths={[480, 800, 1200, 1600, 2000]}
+            sizes={scalableSizes(
+              '(min-width: 1760px) 45rem, (min-width: 1216px) 40rem, (min-width: 960px) 56vw, 100vw',
+            )}
             alt=""
-            loading={eager && i === 0 ? 'eager' : 'lazy'}
-            fetchpriority={eager && i === 0 ? 'high' : undefined}
-            decoding="async"
             class="lead__img"
+            {...adaptive(eager && i === 0 ? 'priority' : 'auto')}
           />
           <span class="lead__corner lead__corner--tl"></span>
           <span class="lead__corner lead__corner--br"></span>
@@ -182,11 +183,10 @@ const items = projects.map((p, i) => ({
           formats={['avif', 'webp']}
           fallbackFormat="webp"
           widths={[160, 320, 520]}
-          sizes="(min-width: 640px) 260px, 64px"
+          sizes={scalableSizes('(min-width: 640px) 260px, 64px')}
           alt=""
-          loading="lazy"
-          decoding="async"
           class="work-row__thumb"
+          {...adaptive('lite')}
         />
       </li>
     ))}

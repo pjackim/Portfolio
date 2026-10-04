@@ -3,13 +3,15 @@
  * One case-study figure (spec-design-content §3): `<figure>` + `<figcaption>` reading
  * "FIG. nn — caption" (just "FIG. nn" without a caption). Alt text comes from the data and is
  * never repeated in the caption. Dispatches on the media kind:
- * - image → `<Picture>` (lazy, avif/webp, widths capped at the source). Frame modes from
- *   `frameMode`: "cover" fills the column; "panel" (smaller than the column, or portrait)
+ * - image → `<Picture>` (lazy, adaptive, avif/webp, widths capped at the source). Frame modes
+ *   from `frameMode`: "cover" fills the column; "panel" (smaller than the column, or portrait)
  *   shows it whole at no more than its own size on a `--surface-2` plate; "alpha" puts
  *   transparent art on a fixed light plate. Images shown clearly smaller than their source
- *   (well beyond the column, or portrait plates) get a "Full size" link to a big WebP; with JS
- *   that link, and a click on the image, open it in the case study's lightbox instead
- *   (Lightbox.astro, src/scripts/lightbox.ts), which marks such figures `data-zoomable`.
+ *   (well beyond the column, or portrait plates) get a "Full size" link to the image at its
+ *   own resolution: the master file itself (up to MASTER_LINK_MAX, so it is never recompressed),
+ *   else a WebP of it at source width; with JS that link, and a click on the image, open it in
+ *   the case study's lightbox instead (Lightbox.astro, src/scripts/lightbox.ts), which marks
+ *   such figures `data-zoomable`.
  * - video → LoopVideo; youtube → YouTubeFacade.
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
  * grid; this component only marks the figure `figure--wide`). An `inline` figure sits beside its
@@ -19,7 +21,7 @@
  */
 import { getImage, Picture } from 'astro:assets';
 import { pad2 } from '../../lib/format';
-import { candidateWidths, frameMode, imageFacts } from '../../lib/images';
+import { adaptive, candidateWidths, frameMode, imageFacts, scalableSizes } from '../../lib/images';
 import type { MediaItem } from '../../lib/media';
 import { pageStyle } from '../../lib/page-style';
 import Arrow from '../Arrow.astro';
@@ -35,6 +37,11 @@ interface Props {
 }
 
 const { projectId, item, index, inline = false } = Astro.props;
+
+/** A master up to this size is the "Full size" link as it is; a bigger one is re-encoded. */
+const MASTER_LINK_MAX = 2 * 1024 * 1024;
+/** WebP quality of the "Full size" rendition of a master too big to link as it is. */
+const FULL_QUALITY = 97;
 
 /** Rendered width of the two figure columns at the full 72rem container (ProjectLayout). */
 const COLUMN = { normal: 662, wide: 956 };
@@ -58,24 +65,31 @@ const image =
         const mode = frameMode(facts, COLUMN[column]);
         // Worth a link only when the figure shows the image clearly smaller than its source:
         // well beyond the column width, or a portrait plate capped by the viewport height.
-        const full =
-          facts.width > COLUMN[column] * 1.25 || (mode === 'panel' && facts.height > facts.width)
-            ? await getImage({
-                src: item.src,
-                width: Math.min(2400, facts.width),
-                format: 'webp',
-                layout: 'none',
-              })
-            : undefined;
-        const fullWidth = Math.min(2400, facts.width);
+        const zoomable =
+          facts.width > COLUMN[column] * 1.25 || (mode === 'panel' && facts.height > facts.width);
+        // The master itself when it is small enough (reading `.src` has Astro emit the file as
+        // it is, byte for byte), else a high-quality WebP of it at its own width.
+        const full = !zoomable
+          ? undefined
+          : facts.bytes <= MASTER_LINK_MAX
+            ? item.src.src
+            : (
+                await getImage({
+                  src: item.src,
+                  width: facts.width,
+                  format: 'webp',
+                  quality: FULL_QUALITY,
+                  layout: 'none',
+                })
+              ).src;
         return {
           src: item.src,
           alt: item.alt,
           mode,
           widths: candidateWidths(facts.width, COLUMN_MAX[column] * 2),
-          full: full?.src,
-          fullWidth,
-          fullHeight: Math.round((fullWidth * facts.height) / facts.width),
+          full,
+          fullWidth: facts.width,
+          fullHeight: facts.height,
           style: pageStyle(Astro.locals, {
             '--image-max': `${facts.width}px`,
             '--image-w': String(facts.width),
@@ -102,17 +116,22 @@ const caption = item.caption;
         formats={['avif', 'webp']}
         fallbackFormat="webp"
         widths={image.widths}
-        sizes={SIZES[column]}
+        sizes={scalableSizes(SIZES[column])}
         alt={image.alt}
-        loading="lazy"
-        decoding="async"
         class="figure__img"
+        {...adaptive()}
       />
     </div>
   )}
   {item.kind === 'video' && (
     <div class="figure__frame" data-mode="cover">
-      <LoopVideo projectId={projectId} src={item.src} alt={item.alt} autoplay={item.autoplay} />
+      <LoopVideo
+        projectId={projectId}
+        src={item.src}
+        alt={item.alt}
+        autoplay={item.autoplay}
+        sizes={SIZES.normal}
+      />
     </div>
   )}
   {item.kind === 'youtube' && (
@@ -168,9 +187,12 @@ const caption = item.caption;
     display: contents;
   }
 
+  /* The box has its ratio from the image's own size, not from the file that arrives (a light
+     candidate on a slow connection rounds its height differently). */
   .figure__frame :global(img) {
     inline-size: 100%;
     block-size: auto;
+    aspect-ratio: var(--image-w) / var(--image-h);
   }
 
   /* Smaller than the column, or portrait: the whole image on a plate, at most its own size,

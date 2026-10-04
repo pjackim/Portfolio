@@ -5,7 +5,7 @@
  * Pages add head-only tags (e.g. `<link rel="expect">`) through `<slot name="head" />`.
  *
  * Content-Security-Policy (spec-architecture §6): Astro hashes what it bundles and inlines; the
- * hand-inlined elements here — the bootstrap, page style block, JSON-LD — are hashed into the
+ * hand-inlined elements here — the bootstraps, page style block, JSON-LD — are hashed into the
  * policy below. Astro writes the policy `<meta>` near the end of the head; the inline elements
  * before it are hashed too, so the same policy would also hold if sent as a header.
  * The page body is rendered first, so every `pageStyle()` rule its components register
@@ -18,6 +18,7 @@ import ContactSheet from '../components/ContactSheet.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { cspHash } from '../lib/csp';
+import { NET_BOOTSTRAP } from '../lib/net-bootstrap';
 import { takePageStyle } from '../lib/page-style';
 import type { OgImage } from '../lib/seo';
 import '../styles/tokens.css';
@@ -46,6 +47,11 @@ const { title, description, ogImage, ogType, noindex, jsonLd } = Astro.props;
  * cross-document view transitions on both sides of a navigation (`@view-transition` can't be
  * gated by a selector). Its CSP hash is taken from this exact string, which is emitted byte for
  * byte below.
+ *
+ * NET_BOOTSTRAP (src/lib/net-bootstrap.ts) is the adaptive image loader's head script: it picks
+ * full quality or light-first from the connection and the `net` override before any image is
+ * requested. A second element, so a failure in either bootstrap can't stop the other, and ahead
+ * of the stylesheets, so CSS never delays it. Hashed and emitted the same way.
  */
 const BOOTSTRAP = `try {
   const s = localStorage.getItem('scheme');
@@ -81,6 +87,7 @@ const pageCss = takePageStyle(Astro.locals);
 const jsonLdText = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
 
 Astro.csp?.insertScriptHash(cspHash(BOOTSTRAP));
+Astro.csp?.insertScriptHash(cspHash(NET_BOOTSTRAP));
 if (jsonLdText) Astro.csp?.insertScriptHash(cspHash(jsonLdText));
 if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
 ---
@@ -92,6 +99,7 @@ if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <script is:inline set:html={BOOTSTRAP} />
+    <script is:inline set:html={NET_BOOTSTRAP} />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0d10" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb" />
     <Seo
@@ -118,6 +126,8 @@ if (pageCss) Astro.csp?.insertStyleHash(cspHash(pageCss));
     <ContactSheet />
     <!-- One-shot entrance reveals (src/scripts/reveal.ts): import-free, so it is inlined. -->
     <script src="../scripts/reveal.ts"></script>
+    <!-- The adaptive image loader's upgrade queue (src/scripts/net.ts): import-free, inlined. -->
+    <script src="../scripts/net.ts"></script>
     {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}
   </body>
 </html>
