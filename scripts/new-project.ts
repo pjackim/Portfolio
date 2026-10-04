@@ -34,6 +34,7 @@ const template = `---
 # ── Required ────────────────────────────────────────────────────────────────
 title: 'TODO project title' # 2–60 chars
 summary: 'TODO one or two sentences: card text and meta description.' # 20–180 chars
+tldr: 'TODO what it is, in 1–4 plain sentences: shown first on the page.' # 40–420 chars
 year: ${year} # integer 2010–2100
 group: software # security | software | design
 capabilities: [engineering-practice] # 1–4 ids from src/data/taxonomy.ts

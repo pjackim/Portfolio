@@ -30,6 +30,8 @@ const projects = defineCollection({
         title: z.string().min(2).max(60),
         /** Card text and meta description. */
         summary: z.string().min(20).max(180),
+        /** The BLUF, shown first on the project page: what it is, in 1 to 4 plain sentences. */
+        tldr: z.string().min(40).max(420),
         /** Omit when the repo doesn't state it. */
         role: z.string().max(80).optional(),
         year: z.number().int().min(2010).max(2100),

@@ -68,7 +68,8 @@ Keep interviewing, round after round, until the ledger (below) has no gaps. A va
 
 - New: pick a kebab-case slug with the user (it becomes the URL `work/<slug>/`), then
   `npm run new -- <slug>`; it scaffolds every schema field with `draft: true`.
-- Required: `title` (2–60 chars), `summary` (20–180, card text and meta description), `year`,
+- Required: `title` (2–60 chars), `summary` (20–180, card text and meta description), `tldr`
+  (40–420, 1–4 plain sentences on what it is, shown first on the page), `year`,
   `group` (`security` | `software` | `design`), `capabilities` (1–4 ids from
   `src/data/taxonomy.ts`), `stack` (1–8), `cover` + `coverAlt` (≥ 8 chars, describing the
   image).

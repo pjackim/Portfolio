@@ -28,6 +28,15 @@ project's `summary`, `highlights`, captions, alt text and Markdown body.
    can do or see), a before/after, one paragraph beside a diagram, a short story, a plain feature
    list. Pages in the same collection should not all share one skeleton.
 
+## TL;DR (`tldr`, required on every project)
+
+The page opens with it, directly under the title, in a block labeled "TL;DR". One to four short
+sentences (usually two or three, ≤ ~50 words, schema 40–420 characters) saying what the project
+_is_: the first sentence alone gives the point. Then, only if it matters, what makes it notable,
+Parker's part, or where it stands. High level, plain, human. Not a copy of `summary` (the card
+hook) and not a repeat of the body's opening paragraph: if the body used to open with the same
+thing, cut it there.
+
 ## Budgets (soft ceilings; Mordhau is the baseline to beat)
 
 | Field         | Budget                                                                                |

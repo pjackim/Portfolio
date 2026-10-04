@@ -201,7 +201,8 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
   `order` among featured projects, duplicate `legacyPaths`, or a featured count outside 3–8.
 - **Layouts/components** — `src/layouts/BaseLayout.astro` is the document shell (head/SEO,
   theme bootstrap, adaptive-image bootstrap, fonts, skip link, header/footer, inline CSP
-  hashing); `ProjectLayout.astro` is the project template built on it. `src/components/`
+  hashing); `ProjectLayout.astro` is the project template built on it; its header opens with the project's
+  `tldr` (1–4 plain sentences, required frontmatter), the bottom line up front. `src/components/`
   holds page sections; `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro`
   render the three media kinds.
   **Paired paragraphs**: to tie body text to the media that shows it, wrap the Markdown block in
