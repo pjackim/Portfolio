@@ -21,11 +21,13 @@ coverAlt: The tool's in-game menu over Mordhau's loadout screen, with a Cosmetic
 media:
   - kind: video
     src: ./fov-widening.mp4
+    pair: gameplay-package
     alt: A first-person view of a sword facing an axe-wielding dummy in a bare test map, with the field of view widening so the dummy appears smaller.
     caption: Field-of-view demo recording. Field of view was the gameplay option that proved very popular with users.
     wide: true
   - kind: image
     src: ./cosmetic-menu.webp
+    pair: cosmetic-package
     alt: 'The Cosmetics panel beside a gold-armoured knight, with ID fields for helm 43, neck 0, shoulder 6, chest 5, arm 33, glove 12, waist 0, legs 19 and foot 2.'
     caption: The Cosmetic package. Pick an armour ID per slot to wear gear that was only sold before the game launched (Kickstarter content).
   - kind: youtube
@@ -47,9 +49,28 @@ I reverse-engineered the running Unreal Engine 4 client, then wrote a C++ DLL th
 
 ## What I built
 
-- **Memory patching through DLL injection.** The core of the tool, running inside the live client.
-- **Gameplay package.** Ten toggles: field of view; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; faster sprint; automatic parry; and protection from being kicked for inactivity.
-- **Cosmetic package.** An in-game panel for setting the armour ID of each slot, which let users wear Kickstarter-only cosmetics. It was the more popular of the two.
+### Memory patching through DLL injection
+
+The core of the tool, running inside the live client.
+
+<div data-pair="gameplay-package">
+
+### Gameplay package
+
+Ten toggles: field of view; the turn restrictions applied during combat (TurncapX and TurncapY); instant crouch and dodge; dodge for the current class; movement while emoting; movement during the match-start warm-up; faster sprint; automatic parry; and protection from being kicked for inactivity.
+
+</div>
+
+<div data-pair="cosmetic-package">
+
+### Cosmetic package
+
+An in-game panel for setting the armour ID of each slot, which let users wear Kickstarter-only cosmetics. It was the more popular of the two.
+
+</div>
+
+### Access control and support
+
 - **Access control.** User authorization, plus distribution and management of access keys.
 - **Support.** The tool's UX, and tech support for its users.
 
