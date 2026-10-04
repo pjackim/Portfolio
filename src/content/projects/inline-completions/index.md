@@ -11,8 +11,8 @@ capabilities: [engineering-practice]
 stack: [TypeScript, VS Code Extension API, esbuild, MCP, LLM provider APIs]
 cover: ./cover.webp
 coverAlt: 'Placeholder cover image reading "Cover pending".'
-featured: true
-order: 8
+featured: false
+order: 100
 showOnHome: false
 draft: true
 highlights:

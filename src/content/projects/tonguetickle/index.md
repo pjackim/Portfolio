@@ -58,8 +58,8 @@ capabilities: [engineering-practice, languages]
 stack: [Python, FastAPI, httpx, pynput, JavaScript, pytest, Windows SAPI5, uv]
 cover: ./cover.webp
 coverAlt: "TongueTickle's dark Listen screen: a text box above an orange Speak button."
-featured: false
-order: 100
+featured: true
+order: 5
 showOnHome: true
 draft: false
 highlights:
