@@ -18,6 +18,7 @@
  */
 import { readTokenColors } from './canvas-colors';
 import { motionAllowed, onMotionChange } from './motion';
+import { scatterField } from './timeline-field';
 
 /** Where the reader "is": this far down the viewport. */
 const SENSOR = 0.78;
@@ -40,7 +41,10 @@ const LOCK_SNAP_MS = 220;
 /** The field of drifting points sits in the middle band, between the two columns of text. */
 const FIELD_FROM = 0.345;
 const FIELD_TO = 0.655;
-const FIELD_DENSITY = 30; // px of height per point
+/** Spread evenly from FIELD_TOP to FIELD_FOOT above the bottom (see timeline-field.ts). */
+const FIELD_TOP = 10;
+const FIELD_FOOT = 70;
+const FIELD_DENSITY = 26; // px of height per point
 const WIDE = '(width >= 62.5rem)';
 
 interface Point {
@@ -146,26 +150,26 @@ export function createTimeline(root: HTMLElement): void {
     length = along[along.length - 1]!;
     nodeAt = nodeIndex.map((k) => along[k]!);
 
-    const x0 = w * FIELD_FROM;
-    const x1 = w * FIELD_TO;
-    field = [];
-    for (let i = 0; i < Math.round(h / FIELD_DENSITY); i++) {
-      const x = x0 + rnd() * (x1 - x0);
-      const y = 10 + rnd() * (h - 40);
-      field.push({
-        bx: x,
-        by: y,
-        x,
-        y,
-        square: rnd() < 0.2,
-        ax: 5 + rnd() * 7,
-        ay: 4 + rnd() * 6,
-        wx: (0.22 + rnd() * 0.3) / 1000,
-        wy: (0.18 + rnd() * 0.28) / 1000,
-        px: rnd() * Math.PI * 2,
-        py: rnd() * Math.PI * 2,
-      });
-    }
+    const y1 = h - FIELD_FOOT;
+    const spots = scatterField(
+      Math.round((y1 - FIELD_TOP) / FIELD_DENSITY),
+      { x0: w * FIELD_FROM, x1: w * FIELD_TO, y0: FIELD_TOP, y1 },
+      path,
+      rnd,
+    );
+    field = spots.map(({ x, y }) => ({
+      bx: x,
+      by: y,
+      x,
+      y,
+      square: rnd() < 0.2,
+      ax: 5 + rnd() * 7,
+      ay: 4 + rnd() * 6,
+      wx: (0.22 + rnd() * 0.3) / 1000,
+      wy: (0.18 + rnd() * 0.28) / 1000,
+      px: rnd() * Math.PI * 2,
+      py: rnd() * Math.PI * 2,
+    }));
     everything = [...field, ...path];
   }
 
