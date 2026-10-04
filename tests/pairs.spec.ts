@@ -5,9 +5,13 @@
  * are numbered in page order, paired ones leaving the Figures gallery. Runs on every project.
  */
 import { expect, test, type Page } from '@playwright/test';
+import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 const PAGE = 'work/bodycam-external/';
+
+// The page has videos, so on Windows WebKit its `load` never fires and `goto` times out.
+test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
 const PAIR = '.case__prose .pair';
 
 const boxes = (page: Page, index: number) =>
