@@ -5,7 +5,7 @@ summary: Scores how strongly a password correlates with its username, to show us
 year: 2023
 group: security
 featured: true
-order: 1
+order: 2
 capabilities: [data-ml, offensive-security]
 stack: [Python, tkinter, Hadoop MapReduce, Apache Spark, Machine learning]
 highlights:
