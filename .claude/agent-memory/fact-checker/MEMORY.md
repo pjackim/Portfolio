@@ -2,4 +2,5 @@
 - [Claude prompt-history lookup](claude-prompt-history-lookup.md) — verify "per the author" claims in ~/.claude/history.jsonl; chunked -o reads; timestamp math
 - [Bash hook quirks](bash-hook-quirks.md) — get git log data past the read-only hook; ffprobe blocked, grep -a -c for audio-track check; --grep=Claude trailer count
 - [BodyCam source map](reference_bodycam_source_map.md) — bodycam-external entry: claim -> BodyCam repo file:line, verified counts, doc/code disagreements, hook gotchas
-- [Legacy source map](reference_legacy_map.md) — mordhau legacy lines/images at a085340, plus Bash-hook quirks
+- [Legacy source map](reference_legacy_map.md) — mordhau legacy lines/images at a085340, index.html line map, plus Bash-hook quirks
+- [Media header verification](reference_media_header_verification.md) — read-only byte tricks for mp4 frame counts/CRF/WebP/PNG/GIF dims; verified bodycam/lichess/hero-trivia media facts
