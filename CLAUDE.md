@@ -193,6 +193,13 @@ check:media` — media lint (also part of `lint`)
   is the case-study template built on it. `src/components/` holds page sections;
   `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro` render the three media
   kinds.
+  **Paired paragraphs**: to tie body text to the media that shows it, wrap the Markdown block in
+  `<div data-pair="key" data-side="left|right">` (blank lines inside keep it Markdown; an `###`
+  label first reads well) and give the media entry `pair: key`. `ProjectLayout` splits the
+  rendered body at those blocks (`src/lib/pairs.ts`) and `MediaPair.astro` sets each beside its
+  figure, so the media leaves the Figures gallery and figures are numbered in page order.
+  `data-side` is the media's side; omitted, the pairs alternate (first on the right). A key with
+  no block, or a block with no media, fails the build. Mix pairs with plain sections for rhythm.
 - **`src/lib/` roles** — `url.ts` (`withBase`/`absoluteUrl`), `projects.ts` (collection
   queries), `media.ts` (resolves a video's `.webm`/`.poster.webp` siblings and YouTube posters
   via `import.meta.glob`), `legacy.ts` (`REMOVED_LEGACY` map for legacy pages with no project),
