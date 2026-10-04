@@ -30,7 +30,7 @@ project's `summary`, `highlights`, captions, alt text and Markdown body.
 
 ## TL;DR (`tldr`, required on every project)
 
-The page opens with it, directly under the title, in a block labeled "TL;DR". One to four short
+It is the first block under the cover image, in a block labeled "TL;DR". One to four short
 sentences (usually two or three, ≤ ~50 words, schema 40–420 characters) saying what the project
 _is_: the first sentence alone gives the point. Then, only if it matters, what makes it notable,
 Parker's part, or where it stands. High level, plain, human. Not a copy of `summary` (the card

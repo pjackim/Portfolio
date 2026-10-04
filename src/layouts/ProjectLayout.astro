@@ -1,7 +1,7 @@
 ---
 /**
  * Project page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
- * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → Key points
+ * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → TL;DR → Key points
  * (featured highlights) → Markdown body (the default slot, with its paired blocks set beside
  * their media) → numbered figure gallery → PrevNext. Featured and archive projects share it;
  * only the eyebrow differs.
@@ -100,7 +100,7 @@ const indexed = sections.length >= 2;
         kind={kind}
         group={GROUP_LABELS[data.group]}
         title={data.title}
-        tldr={data.tldr}
+        lede={data.summary}
       />
       <ProjectMeta class="case__meta" project={project} />
     </header>
@@ -109,6 +109,12 @@ const indexed = sections.length >= 2;
 
     <div class:list={['case__body', indexed && 'case__body--indexed']}>
       {indexed && <CaseIndex class="case__index" items={sections} />}
+      <section class="case__block case__tldr" aria-labelledby="tldr-title">
+        <h2 class="case__label mono-label" id="tldr-title">
+          TL;DR
+        </h2>
+        <p class="case__tldr-text">{data.tldr}</p>
+      </section>
       {keyPoints.length > 0 && (
         <section class="case__block case__key-points" aria-labelledby="key-points-title">
           <h2 class="case__label mono-label" id="key-points-title">
@@ -240,6 +246,14 @@ const indexed = sections.length >= 2;
 
   .case__count {
     color: var(--text-subtle);
+  }
+
+  /* TL;DR: the bottom line, full-strength text in the lede's size, right under the cover. */
+  .case__tldr-text {
+    color: var(--text);
+    font-size: var(--step-1);
+    line-height: 1.55;
+    text-wrap: pretty;
   }
 
   /* Key points: the skim layer — short accent ticks, as the home capability lists. */

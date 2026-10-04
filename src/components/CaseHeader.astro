@@ -1,8 +1,7 @@
 ---
 /**
  * Project header (spec-design-content §2, §3): mono eyebrow ("PROJECT 01 · SECURITY &
- * SYSTEMS" or "ARCHIVE · DESIGN & 3D"), the page's h1 at step-4, and the TL;DR: the bottom line
- * up front, one to four plain sentences, so the page opens with what the project is.
+ * SYSTEMS" or "ARCHIVE · DESIGN & 3D"), the page's h1 at step-4, and the lede.
  */
 interface Props {
   /** First eyebrow part, shown in the accent: "Project 01" or "Archive". */
@@ -10,12 +9,11 @@ interface Props {
   /** Second eyebrow part: the group label. */
   group: string;
   title: string;
-  /** The project's `tldr` frontmatter. */
-  tldr: string;
+  lede: string;
   class?: string;
 }
 
-const { kind, group, title, tldr, class: className } = Astro.props;
+const { kind, group, title, lede, class: className } = Astro.props;
 ---
 
 <div class:list={['case-header', className]}>
@@ -28,12 +26,7 @@ const { kind, group, title, tldr, class: className } = Astro.props;
     <span>{group}</span>
   </p>
   <h1 class="case-header__title">{title}</h1>
-  <section class="case-header__tldr" aria-labelledby="tldr-title">
-    <h2 class="case-header__tldr-label mono-label" id="tldr-title">
-      TL;DR
-    </h2>
-    <p class="case-header__tldr-text">{tldr}</p>
-  </section>
+  <p class="case-header__lede">{lede}</p>
 </div>
 
 <style>
@@ -56,20 +49,11 @@ const { kind, group, title, tldr, class: className } = Astro.props;
     letter-spacing: -0.02em;
   }
 
-  /* A hairline and a mono label, as the page's other blocks (Key points, Figures); the text is
-     full-strength, not muted: it is the one thing a visitor who reads nothing else should read. */
-  .case-header__tldr {
+  .case-header__lede {
     max-inline-size: 60ch;
     margin-block-start: var(--space-m);
-    padding-block-start: var(--space-xs);
-    border-block-start: var(--hairline);
-  }
-
-  .case-header__tldr-text {
-    margin-block-start: var(--space-2xs);
-    color: var(--text);
+    color: var(--text-muted);
     font-size: var(--step-1);
     line-height: 1.55;
-    text-wrap: pretty;
   }
 </style>
