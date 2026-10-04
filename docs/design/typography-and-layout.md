@@ -58,9 +58,9 @@
 
 ## Applying it here
 
-- Tokens live in `src/styles/tokens.css`; global rules in `global.css`; long-form case-study
+- Tokens live in `src/styles/tokens.css`; global rules in `global.css`; long-form project
   text in `prose.css`. Change values there, not with one-off literals.
-- Case-study prose already has a measure; keep home-page copy blocks short enough to be
+- Project prose already has a measure; keep home-page copy blocks short enough to be
   scanned, not read (see [scanning-and-reading.md](./scanning-and-reading.md)).
 - The mono face is the site's "instrument readout" voice (eyebrow, labels, readouts). Keep it
   to labels, data, and code. It shouldn't become the voice of body copy.

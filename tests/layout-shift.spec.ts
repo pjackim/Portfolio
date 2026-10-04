@@ -1,5 +1,5 @@
 /**
- * Cold-load layout stability (Ruling G11). On a first visit to a case study — a fresh browser
+ * Cold-load layout stability (Ruling G11). On a first visit to a project — a fresh browser
  * context, the HTTP cache off, and images arriving well after the first paint, as they do on a
  * real connection — nothing moves: not the hero cover, and not the figures further down as the
  * page is read through. Every picture's box is final from the server-rendered HTML and CSS (the

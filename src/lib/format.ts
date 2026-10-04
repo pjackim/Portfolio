@@ -1,5 +1,5 @@
 /**
- * Display helpers shared by the home page, /work/ and case studies: zero-padded indices and
+ * Display helpers shared by the home page, /work/ and projects: zero-padded indices and
  * date strings split into plain text and `<time>`-able parts (spec-design-content §7: years
  * use `<time>` where a real date exists).
  */

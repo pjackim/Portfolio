@@ -1,6 +1,6 @@
 /**
  * Build-time facts about local images that `ImageMetadata` doesn't carry, and the shared rules
- * that turn them into frame modes and responsive width candidates (home cards, case-study
+ * that turn them into frame modes and responsive width candidates (home cards, project
  * hero, figures). Runs sharp on the source file at build (and in dev); results are cached per
  * file for the whole build.
  */

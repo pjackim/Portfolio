@@ -91,7 +91,7 @@ export async function getAllProjectEntries(): Promise<Project[]> {
   return getCollection('projects');
 }
 
-/** Featured case studies, sorted by `order`. */
+/** Featured projects, sorted by `order`. */
 export async function getFeatured(): Promise<Project[]> {
   return (await getProjects()).filter((p) => p.data.featured).sort(byOrder);
 }
@@ -118,7 +118,7 @@ export async function getByGroup(): Promise<Map<Group, Project[]>> {
 }
 
 /**
- * Neighbours for the case-study footer. Featured projects step through the featured list by
+ * Neighbours for the project footer. Featured projects step through the featured list by
  * `order`; archive projects step through the archive by year. No wraparound: `undefined` at
  * either end. Throws for an unknown id.
  */

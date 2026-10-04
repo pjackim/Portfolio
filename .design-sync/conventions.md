@@ -24,10 +24,10 @@ Link one stylesheet. It carries the fonts, tokens, and every compiled component 
    those attributes; drop them and the element renders unstyled.
 3. Change only text, `href`, and image `src`. Keep the element structure.
 4. Compare with `guidelines/screenshots/components/<Name>-light.png` / `-dark.png` and the full pages
-   in `guidelines/screenshots/pages/` (home, work, case study; 1440px light/dark, 390px light).
+   in `guidelines/screenshots/pages/` (home, work, project; 1440px light/dark, 390px light).
 
 Pages stack like this: `header.site-header` → `main` holding `section.home-section.container` blocks,
-each opening with a `SectionHeading` (`01 / ABOUT ────`) → `footer.site-footer`. Case studies use
+each opening with a `SectionHeading` (`01 / ABOUT ────`) → `footer.site-footer`. Featured projects use
 `article.case.container` (`CaseHeader`, `ProjectMeta`, `CaseHero`, `CaseIndex`, `KeyPoints`, `Prose`,
 `MediaFigure`, `PrevNext`).
 
@@ -55,7 +55,7 @@ of the words, and doesn't click. Anything important must be _seen_. In priority 
 
 1. **Show Parker's work and who he is.** Lead with the strongest project, biggest and earliest.
    Every visible project shows a real image or loop, a short title, and a summary of 2–3 short
-   sentences (≤ 180 characters) saying what it is and why it's impressive. Case studies open with
+   sentences (≤ 180 characters) saying what it is and why it's impressive. Featured projects open with
    a scannable summary (what, role, outcome, media) before the narrative.
 2. **Modern, satisfying, interactive, never generic.** The hero is the quality bar. Motion rewards
    attention and points at the work (in-view project loops, card hover/focus, scroll reveals).
@@ -69,7 +69,7 @@ contact details. For placeholder slots, write `[TBD]` rather than a made-up clai
 ## Layout and disclosure rules (`guidelines/design/`)
 
 - **Two levels only** (`progressive-disclosure.md`): level 1 is the surface (home, `/work/`: hero,
-  cards, about, contact) and must hold everything a scanner needs. Level 2 is the case study. No
+  cards, about, contact) and must hold everything a scanner needs. Level 2 is the project. No
   third level (no modals or expanders that lead further). A lightbox only enlarges media already on
   the page.
 - **Cards** (`cards.md`): one card is one project. The whole card is clickable through **one** real

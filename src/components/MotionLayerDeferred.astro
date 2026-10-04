@@ -2,7 +2,7 @@
 /**
  * The motion layer (MotionLayer), loaded only once the page has loaded, painted and gone idle —
  * for components whose scripting can wait (the footer's Motion chip), so that on a page where
- * nothing else needs the layer early (a case study) its request never joins the ones the first
+ * nothing else needs the layer early (a project) its request never joins the ones the first
  * paint and the LCP image wait on (spec §0.1). The entry's script tag sits in a template
  * element, inert — neither fetched nor run — until the inline loader below moves it into the
  * page. (No literal tags in this comment: Vite's dependency scan finds script blocks by regex

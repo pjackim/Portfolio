@@ -1,5 +1,5 @@
 /**
- * Case-study section index scrollspy (interactions spec §4; markup in CaseIndex.astro). The
+ * Project section index scrollspy (interactions spec §4; markup in CaseIndex.astro). The
  * current section is the last one whose heading has passed a reading line 30% down the viewport.
  * One IntersectionObserver watches the headings against a band that reaches from far above the
  * page down to that line, so a heading is "in" the band exactly when it is above the line — and

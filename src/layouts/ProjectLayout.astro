@@ -1,6 +1,6 @@
 ---
 /**
- * Case-study page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
+ * Project page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
  * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → Key points
  * (featured highlights) → Markdown body (the default slot) → numbered figure gallery →
  * PrevNext. Featured and archive projects share it; only the eyebrow differs.
@@ -48,7 +48,7 @@ const [featured, { prev, next }, heroVideo, ogImage] = await Promise.all([
   coverOgImage(project),
 ]);
 const position = featured.findIndex((p) => p.id === id);
-const kind = position === -1 ? 'Archive' : `Case study ${pad2(position + 1)}`;
+const kind = position === -1 ? 'Archive' : `Project ${pad2(position + 1)}`;
 const keyPoints = data.featured ? data.highlights : [];
 const gallery = data.media.filter((item) => item !== heroVideo);
 const sections: CaseIndexItem[] = [

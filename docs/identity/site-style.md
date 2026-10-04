@@ -56,7 +56,7 @@ effect**, and don't add a new signature per section (see [anti-slop.md](../desig
 | Display (h1)  | Geist, `--step-5`, 600, lh 1.05, −0.02em      | Names and page titles, short. Never a full sentence.  |
 | Section title | Geist, set by `SectionHeading`                | Paired with a mono index; plain noun labels.          |
 | Lede / intro  | Geist, `--step-1`, `--text-muted`, ≤ 60ch     | One short paragraph under a title.                    |
-| Body          | Geist, `--step-0`, measure `--measure` (66ch) | Case-study prose via `prose.css`.                     |
+| Body          | Geist, `--step-0`, measure `--measure` (66ch) | Project prose via `prose.css`.                        |
 | Labels / data | Geist Mono, `.mono-label` treatment           | Keys, indices, tags, meta, readouts. Never body copy. |
 
 Contrast comes from **weight, size steps, and sans-vs-mono**, not from more fonts or colour.
@@ -93,7 +93,7 @@ scroll hijacking.
 
 - **First person, plain, factual.** Short declarative sentences; specifics over adjectives
   ("wrote an AES-256 encryption tool at 15", not "passionate innovator").
-- Mono keys are **terse nouns**: `Now`, `Edu`, `Focus ›`, `Projects`, `Case studies`.
+- Mono keys are **terse nouns**: `Now`, `Edu`, `Focus ›`, `Projects`, `Featured projects`.
 - Action labels say where they go: "Selected work", "All work", "Full index", "Résumé · PDF".
 - No hype words, no aphorisms, no em-dashes in new visible copy (see
   [anti-slop.md](../design/anti-slop.md)). Every claim traces to a source (fact-only rule, `CLAUDE.md`).

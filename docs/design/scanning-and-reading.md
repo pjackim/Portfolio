@@ -71,7 +71,7 @@ default, so the only lever is formatting. NN/g's fixes:
   sentences, and note the schema caps `summary` at **180 characters** (about 25–30 words), so
   the sentences must be terse. Don't raise the cap without the human's go-ahead. The card's
   image does the rest.
-- **Case studies** (`src/layouts/ProjectLayout.astro`, body under `src/content/projects/`):
+- **Featured projects** (`src/layouts/ProjectLayout.astro`, body under `src/content/projects/`):
   the header block (summary, highlights, meta, cover) must stand alone for someone who reads
   nothing else. `highlights` are the spotted-pattern anchors, so make each a short, concrete
   fact. Section headings (`## Problem`, `## Approach`, …) are generic; the first sentence

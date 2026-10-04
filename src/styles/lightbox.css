@@ -1,8 +1,8 @@
 /*
  * Figure lightbox (interactions spec §4; markup in src/components/Lightbox.astro, behaviour in
- * src/scripts/lightbox.ts, which imports this). Loaded with the case-study code after load +
+ * src/scripts/lightbox.ts, which imports this). Loaded with the project code after load +
  * idle, not with the page: nothing here is needed before the lightbox first opens (the closed
- * <dialog> is display: none by default), so none of it weighs on the case study's first paint.
+ * <dialog> is display: none by default), so none of it weighs on the project's first paint.
  * The targeting brackets are the card reticle's (bundled in from reticle.css).
  */
 @import './reticle.css';

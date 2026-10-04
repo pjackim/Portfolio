@@ -2,7 +2,7 @@
 
 Live: **<https://pjackim.github.io/Portfolio/>**
 
-Parker Jackim's personal portfolio — a home page, a `/work/` index, and one case-study page
+Parker Jackim's personal portfolio — a home page, a `/work/` index, and one project page
 per project. Static site, no backend.
 
 ## Goals
@@ -10,7 +10,7 @@ per project. Static site, no backend.
 **Design for a fast, lazy scanner.** Assume visitors give the site a few seconds, read very
 little prose, and don't click. What matters has to be visible at a glance: a real picture of
 each project with a 2–3 sentence summary, short informative headings, key facts pulled out as
-highlights and tags, and the full case study one click away for anyone who wants depth. The research behind this is in
+highlights and tags, and the full project one click away for anyone who wants depth. The research behind this is in
 [`design/`](design/README.md).
 
 In priority order (when they pull against each other, the higher one wins):
@@ -18,7 +18,7 @@ In priority order (when they pull against each other, the higher one wins):
 1. **Showcase Parker's work and who he is**
    - His projects, his history, and the depth of his abilities, shown through real work
      (images, loops, outcomes) rather than claimed.
-   - Strongest work first and biggest. Case studies open with a scannable summary before the
+   - Strongest work first and biggest. Featured projects open with a scannable summary before the
      narrative.
    - All content stays fact-only (see [Frontmatter reference](#frontmatter-reference)).
 2. **A modern, professional, satisfying, interactive experience**
@@ -75,7 +75,7 @@ Drafts are still schema-validated at build — `draft: true` only hides a projec
 frontmatter references, or the build fails; run step 2 to add that project's media before the
 next `npm run build`.
 
-Case studies conventionally use `## Problem`, `## Approach`, `## What I built`,
+Featured projects conventionally use `## Problem`, `## Approach`, `## What I built`,
 `## Outcome & lessons` as body headings — omit any section the source material doesn't support.
 
 ## Frontmatter reference
@@ -132,7 +132,7 @@ lint`, and run in CI) enforces naming, sibling files, budgets, and rejects EXIF/
   autoplay/pause/reduced-motion behaviour, YouTube facade loads nothing until clicked).
 - **`npm run test:lhci`** (Lighthouse CI, `lighthouserc.json`) — performance ≥0.95,
   accessibility/SEO =1, best-practices ≥0.95, zero third-party requests, JS/font size caps, CLS
-  ≤0.02, LCP ≤2000ms, plus page-weight budgets for the home page and case studies.
+  ≤0.02, LCP ≤2000ms, plus page-weight budgets for the home page and projects.
 
 All three run in `.github/workflows/ci.yml` on every PR to `master` (Lighthouse only on PRs);
 `npm run ci` runs the non-Lighthouse subset locally.
