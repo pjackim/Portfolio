@@ -1,0 +1,26 @@
+---
+/**
+ * Every error screen but 404 (src/pages/404.astro, which the host serves on its own), each
+ * built to `errors/<code>/`: the documents to hand a server or CDN as its 400, 403, 410, 500,
+ * 503 … error pages. Copy is in src/data/errors.ts. Not indexed, and kept out of the sitemap
+ * (astro.config.ts).
+ */
+import type { GetStaticPaths } from 'astro';
+import ErrorScreen from '../../components/ErrorScreen.astro';
+import { ERROR_ROUTE_CODES, errorDescription, errorScreen, errorTitle } from '../../data/errors';
+import { site } from '../../data/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = (() =>
+  ERROR_ROUTE_CODES.map((code) => ({
+    params: { code: String(code) },
+    props: { code },
+  }))) satisfies GetStaticPaths;
+
+const { code } = Astro.props;
+const screen = errorScreen(code);
+---
+
+<BaseLayout title={errorTitle(screen, site.name)} description={errorDescription(screen)} noindex>
+  <ErrorScreen screen={screen} />
+</BaseLayout>
