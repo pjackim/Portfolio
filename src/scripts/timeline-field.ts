@@ -23,6 +23,15 @@ export interface FieldBounds {
   y1: number;
 }
 
+/**
+ * Share of the timeline's width the points live in. The stops' text ends or starts 30px outside
+ * their nodes (AboutTimeline.astro) and the nodes sit at 35-38% (left) and 62-64% (right)
+ * (src/lib/timeline.ts), so 38%-62% keeps every point at least 30px clear of the text before it
+ * drifts (up to 12px, about-timeline.ts), at any width.
+ */
+export const FIELD_FROM = 0.38;
+export const FIELD_TO = 0.62;
+
 /** Candidates tried per point, uniform draws averaged per x (more = tighter to the centre). */
 const CANDIDATES = 6;
 const BELL = 3;

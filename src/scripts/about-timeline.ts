@@ -22,7 +22,7 @@
  */
 import { readTokenColors } from './canvas-colors';
 import { motionAllowed, onMotionChange } from './motion';
-import { scatterField } from './timeline-field';
+import { FIELD_FROM, FIELD_TO, scatterField } from './timeline-field';
 
 /** Where the reader "is": this far down the viewport. */
 const SENSOR = 0.78;
@@ -49,10 +49,9 @@ const LOCK_SNAP_MS = 220;
 const ACQUIRE = 90;
 const ACQUIRE_RELEASE = 110;
 const SWITCH_MARGIN = 12;
-const ACQUIRE_EASE_MS = 240;
-/** The field of drifting points sits in the middle band, between the two columns of text. */
-const FIELD_FROM = 0.345;
-const FIELD_TO = 0.655;
+/** The lock fades in over ENGAGE_MS and out faster (ms time constants). */
+const ENGAGE_MS = 240;
+const RELEASE_MS = 110;
 /** Spread evenly from FIELD_TOP to FIELD_FOOT above the bottom (see timeline-field.ts). */
 const FIELD_TOP = 10;
 const FIELD_FOOT = 70;
@@ -139,6 +138,8 @@ export function createTimeline(root: HTMLElement): void {
   let onScreen = false;
   /** The pointer in viewport px (null when away or touch), as of its last move. */
   let client: { x: number; y: number } | null = null;
+  /** Set by a pointer move, taken by the next frame: only a moving pointer picks a new point. */
+  let pointerMoved = false;
   /** How locked-on the hover is (0..1, eased), the field point it holds (-1: none) and since when. */
   let engaged = 0;
   let acquired = -1;
@@ -236,37 +237,39 @@ export function createTimeline(root: HTMLElement): void {
     }
   }
 
-  /** Locks the field point nearest the pointer, and keeps it until it is clearly out of reach. */
-  function acquire(now: number, moving: boolean): void {
-    if (!client || !moving) {
-      if (engaged === 0) acquired = -1;
-      return;
-    }
+  /**
+   * The field point the pointer wants locked (-1: none): the nearest within ACQUIRE, held until
+   * it is clearly out of reach. Only a pointer that moved takes a new point, so the page
+   * scrolling under a resting pointer lets go of the point instead of hopping between them.
+   */
+  function pick(moved: boolean): number {
+    if (!client) return -1;
     const box = root.getBoundingClientRect();
     const px = client.x - box.left;
     const py = client.y - box.top;
     if (px < 0 || py < 0 || px > box.width || py > box.height) {
       // Scrolled out from under a pointer that never reported leaving.
       client = null;
-      return;
+      return -1;
     }
     const dist = (i: number) => Math.hypot(field[i]!.x - px, field[i]!.y - py);
     let best = -1;
     let bestD = ACQUIRE;
-    field.forEach((_, i) => {
-      const d = dist(i);
-      if (d < bestD) {
-        bestD = d;
-        best = i;
-      }
-    });
-    if (best === acquired) return;
+    if (moved) {
+      field.forEach((_, i) => {
+        const d = dist(i);
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      });
+    }
+    if (best === acquired) return best;
     if (acquired >= 0) {
       const held = dist(acquired);
-      if (held < ACQUIRE_RELEASE && (best < 0 || bestD > held - SWITCH_MARGIN)) return;
+      if (held < ACQUIRE_RELEASE && (best < 0 || bestD > held - SWITCH_MARGIN)) return acquired;
     }
-    acquired = best;
-    acquiredAt = now;
+    return best;
   }
 
   const show = (i: number) => delete stops[i]!.dataset.tl;
@@ -288,9 +291,19 @@ export function createTimeline(root: HTMLElement): void {
   function step(now: number, moving: boolean): void {
     const ms = Math.min(MAX_STEP_MS, now - last);
     last = now;
-    engaged += ((client && moving ? 1 : 0) - engaged) * (1 - Math.exp(-ms / ACQUIRE_EASE_MS));
-    if (engaged < 0.002 || !moving) engaged = 0;
-    acquire(now, moving);
+    const moved = pointerMoved;
+    pointerMoved = false;
+    const want = moving ? pick(moved) : -1;
+    if (want >= 0 && want !== acquired) {
+      acquired = want;
+      acquiredAt = now;
+    }
+    engaged +=
+      ((want >= 0 ? 1 : 0) - engaged) * (1 - Math.exp(-ms / (want >= 0 ? ENGAGE_MS : RELEASE_MS)));
+    if (!moving || (want < 0 && engaged < 0.01)) {
+      engaged = 0;
+      acquired = -1;
+    }
     if (!moving) {
       current = target = length;
     } else {
@@ -543,7 +556,9 @@ export function createTimeline(root: HTMLElement): void {
   root.addEventListener(
     'pointermove',
     (event) => {
-      if (event.pointerType !== 'touch') client = { x: event.clientX, y: event.clientY };
+      if (event.pointerType === 'touch') return;
+      client = { x: event.clientX, y: event.clientY };
+      pointerMoved = true;
     },
     { passive: true },
   );

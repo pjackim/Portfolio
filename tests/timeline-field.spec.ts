@@ -6,12 +6,12 @@
  */
 import { expect, test } from '@playwright/test';
 import { timelineHeight, timelineX, timelineY } from '../src/lib/timeline.ts';
-import { scatterField, type Spot } from '../src/scripts/timeline-field.ts';
+import { FIELD_FROM, FIELD_TO, scatterField, type Spot } from '../src/scripts/timeline-field.ts';
 
 const STOPS = 6;
 const WIDTH = 1152;
 const HEIGHT = timelineHeight(STOPS);
-const BOUNDS = { x0: WIDTH * 0.345, x1: WIDTH * 0.655, y0: 10, y1: HEIGHT - 70 };
+const BOUNDS = { x0: WIDTH * FIELD_FROM, x1: WIDTH * FIELD_TO, y0: 10, y1: HEIGHT - 70 };
 const COUNT = 23;
 const BANDS = 6;
 
@@ -70,4 +70,21 @@ test('the same seed gives the same field', () => {
   expect(scatterField(COUNT, BOUNDS, nodes, seeded(11))).toEqual(
     scatterField(COUNT, BOUNDS, nodes, seeded(11)),
   );
+});
+
+test('no point comes within 16px of a text column, drift included', () => {
+  const DRIFT = 12; // about-timeline.ts: a point wanders up to 12px either way
+  for (const width of [880, 1000, 1152]) {
+    const bounds = { x0: width * FIELD_FROM, x1: width * FIELD_TO, y0: 10, y1: HEIGHT - 70 };
+    const stopNodes = nodes.map((n) => ({ x: (n.x / WIDTH) * width, y: n.y }));
+    // Left stops' text ends 30px before their node, right stops' starts 30px after it.
+    const leftEdge = Math.max(...stopNodes.filter((_, i) => i % 2 === 0).map((n) => n.x - 30));
+    const rightEdge = Math.min(...stopNodes.filter((_, i) => i % 2 === 1).map((n) => n.x + 30));
+    for (const seed of SEEDS) {
+      for (const p of scatterField(COUNT, bounds, stopNodes, seeded(seed))) {
+        expect(p.x - DRIFT - leftEdge, `seed ${seed} width ${width}`).toBeGreaterThanOrEqual(16);
+        expect(rightEdge - (p.x + DRIFT), `seed ${seed} width ${width}`).toBeGreaterThanOrEqual(16);
+      }
+    }
+  }
 });
