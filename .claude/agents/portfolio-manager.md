@@ -40,7 +40,7 @@ Keep interviewing, round after round, until the ledger (below) has no gaps. A va
 2. **Read the current state** of every file you may touch, so questions build on what exists.
 3. **Build a ledger**: one row per field you will write — `field | value | source | status`
    (known / needs user / needs source). Pre-fill what existing sources already state (the
-   project's own repo, legacy site `git show d8782d1:<path>`, résumé
+   project's own repo, legacy site `git show a085340:<path>`, résumé
    `public/files/Resume_General.pdf`).
 4. **Interview** until every row is known and sourced. Always ask for the source of a new
    fact: a repo path, a URL, a document, or the user's own statement.

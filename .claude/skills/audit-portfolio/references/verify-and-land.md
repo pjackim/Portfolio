@@ -69,7 +69,11 @@ screenshots can't show:
   area (`tests/a11y.spec.ts` always; `motion`, `interactions`, `layout-shift`, `links`,
   `media`, and `smoke` as relevant), then the full `npm run test:e2e` before landing. Set
   `E2E_PORT=<port>`.
-- `npm run test:lhci` when the change affects page weight, images, fonts, or LCP/CLS.
+- `npm run test:lhci` when the change affects images, loops, fonts, or LCP/CLS. It runs one
+  `simulate` pass that measures the full-quality default; for the slow-connection path set
+  `localStorage.net = 'slow'` (then `'save'`) in Chrome and reload, or run `tests/net.spec.ts`.
+- `npm run check:dist` after a build that touched media or `astro.config.ts` (errors when
+  `dist/` exceeds 900 MB).
 
 **d. Rubric**
 

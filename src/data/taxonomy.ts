@@ -1,7 +1,7 @@
 /**
  * Capability taxonomy (spec-design-content §5b) and project groups.
  *
- * Every item below comes from the legacy site (commit d8782d1) or the résumé PDF — see the
+ * Every item below comes from the legacy site (commit a085340) or the résumé PDF — see the
  * source note on each group. Do not add skills that are not in the repo.
  */
 

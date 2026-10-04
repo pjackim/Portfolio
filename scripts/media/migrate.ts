@@ -12,7 +12,8 @@
  * 5. print a size table and enforce the per-file / per-project / total caps
  *
  * Images are lossless unless an entry says `"lossy": true`; videos get one quality-first
- * encode per codec (see lib.ts). Nothing is ever squeezed to fit a cap: over is an error.
+ * encode per codec (see lib.ts). Nothing is squeezed automatically to fit a cap: over is an
+ * error, and an entry's `crf` is the recorded, deliberate answer for a dithered GIF.
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';

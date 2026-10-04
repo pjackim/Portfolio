@@ -1,6 +1,6 @@
 ---
 name: fact-checker
-description: Read-only source auditor for portfolio copy. Checks every claim in src/data/site.ts, src/data/taxonomy.ts and project index.md files against the source it cites (legacy site at git d8782d1, the résumé PDF, a project's own repo, or a fact the author stated directly). Use proactively after any content change and before committing copy.
+description: Read-only source auditor for portfolio copy. Checks every claim in src/data/site.ts, src/data/taxonomy.ts and project index.md files against the source it cites (legacy site at git a085340, the résumé PDF, a project's own repo, or a fact the author stated directly). Use proactively after any content change and before committing copy.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 memory: project
@@ -24,9 +24,9 @@ command that is not a read.
 
 ## Sources, in order of authority
 
-1. **Legacy site** — `git show d8782d1:<path>` (e.g. `index.html`, `html/Work/<name>.html`), and
-   the pre-2024 About at `git show 1460ff3^:index.html`. To browse the whole tree:
-   `mkdir -p .cache/legacy && git archive d8782d1 | tar -x -C .cache/legacy/`.
+1. **Legacy site** — `git show a085340:<path>` (e.g. `index.html`, `html/Work/<name>.html`).
+   The pre-2024 About was at `1460ff3^`, which is not in this clone. To browse the whole tree:
+   `mkdir -p .cache/legacy && git archive a085340 | tar -x -C .cache/legacy/`.
 2. **Résumé** — `public/files/Resume_General.pdf` (June 2022). Read it with the Read tool.
 3. **A project's own repository** — cited by path in its `# Sources:` header (e.g.
    `../BodyCam`). Read it where it is; if it is not on disk, say so.
