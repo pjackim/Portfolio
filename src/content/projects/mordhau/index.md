@@ -3,6 +3,7 @@
 # Media: all from the legacy site at git a085340 (the commit before the legacy removal, 907a195) — Images/fovhack/screenshot-overview.jpg (cover; also the project's legacy home-page thumbnail), screenshot-cosmetic.jpg, fov_demo.gif (15 s, 1280x655, orphaned in the legacy HTML, encoded as a loop; that it shows the field of view widening is read from its frames, 0 s vs 15 s, and its file and folder names, not stated in any legacy text), and the page's two YouTube embeds S1XTb5wbYFc and elRSqVSCXu8 (titles from YouTube oEmbed, checked 2026-10-03; their captions reuse words from those titles). Not used: screenshot-gameplay.jpg (514x917, the gameplay menu already in the cover), fov_preview.png (1669x854 still of the same scene as the loop).
 title: Mordhau — Runtime Memory Patching
 summary: A C++ DLL injected into Mordhau's Unreal Engine 4 client that patches memory at runtime to change field-of-view, turn-rate, movement and cooldown limits.
+tldr: 'A cheat I wrote in 2021 for the sword-fighting game Mordhau, and sold access to. It adds options the game does not offer, like a wider field of view and armour that was only sold before launch. I also handled the access keys, the menu and user support.'
 year: 2021
 period: Fall 2021
 group: security

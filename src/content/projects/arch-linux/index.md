@@ -2,6 +2,7 @@
 # Sources: html/Work/archlinux.html:76-78, :85-103, :127-136, :144-154
 title: Arch Linux
 summary: I learned Linux from zero by building an Arch Linux desktop and customizing everything in it. My configurations are public on GitHub.
+tldr: 'I built my own desktop on Arch Linux, a do-it-yourself version of the Linux operating system, to teach myself Linux from zero. I customized it heavily, and my settings files are public on GitHub for anyone to borrow.'
 year: 2020
 group: software
 showOnHome: true

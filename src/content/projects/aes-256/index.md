@@ -2,6 +2,7 @@
 # Sources: html/Work/aes.html:77-79, :86-98, :113; index.html:176-177, :528
 title: AES-256 Encryptor
 summary: A recursive AES-256 encryptor I wrote at 15. Its command-line arguments encrypt clipboard text, single files, or entire volumes with a password.
+tldr: 'I wrote this at 15, one of my first big projects on my own. It is a command-line tool that scrambles text, files, or whole folders so only someone with the password can read them, using AES-256, a widely used strong encryption standard.'
 year: 2016
 period: c. 2016
 group: security

@@ -34,6 +34,7 @@ const template = `---
 # ── Required ────────────────────────────────────────────────────────────────
 title: 'TODO project title' # 2–60 chars
 summary: 'TODO one or two sentences: card text and meta description.' # 20–180 chars
+tldr: 'TODO what it is, in 1–4 plain sentences: shown first on the page.' # 40–420 chars
 year: ${year} # integer 2010–2100
 group: software # security | software | design
 capabilities: [engineering-practice] # 1–4 ids from src/data/taxonomy.ts
@@ -73,22 +74,10 @@ links: {}
 legacyPaths: [] # e.g. ['html/Work/old_page.html'] — only for pages that existed on the old site
 ---
 
-<!-- Featured projects use the four sections below; omit a section with no source.
-     Archive entries can be one or two short paragraphs instead. -->
-
-## Problem
-
-TODO
-
-## Approach
-
-TODO
-
-## What I built
-
-TODO
-
-## Outcome & lessons
+<!-- Write for a stranger with no context: docs/design/project-copy.md. About 180 words, features
+     and outcomes over mechanisms, one honest line on where it stands. Pick the structure that
+     fits the work (a demo-led tour of paired blocks, before/after, a short story); Problem /
+     Approach / What I built is not the default. -->
 
 TODO
 `;

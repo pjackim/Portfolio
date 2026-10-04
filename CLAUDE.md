@@ -60,7 +60,8 @@ before using any of their advice. The site's own look and voice are defined in
    - Projects are the evidence. Lead with the strongest work and show the real artifact
      (screenshot, loop, diagram, outcome) instead of adjectives.
    - Featured projects open with a scannable summary (what it is, Parker's role, the outcome, the
-     media) before the `Problem → Approach → What I built → Outcome` narrative.
+     media) before a short body whose shape fits the work (`docs/design/project-copy.md`:
+     Problem → Approach → What I built is one option, not the template).
    - The fact-only rule below still binds. "High-tier" is earned by presenting real work
      sharply, never by inflating claims.
 2. **A modern, professional, highly satisfying and interactive experience.**
@@ -200,7 +201,8 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
   `order` among featured projects, duplicate `legacyPaths`, or a featured count outside 3–8.
 - **Layouts/components** — `src/layouts/BaseLayout.astro` is the document shell (head/SEO,
   theme bootstrap, adaptive-image bootstrap, fonts, skip link, header/footer, inline CSP
-  hashing); `ProjectLayout.astro` is the project template built on it. `src/components/`
+  hashing); `ProjectLayout.astro` is the project template built on it; the first block under its cover is the
+  project's `tldr` (1–4 plain sentences, required frontmatter), the bottom line. `src/components/`
   holds page sections; `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro`
   render the three media kinds.
   **Paired paragraphs**: to tie body text to the media that shows it, wrap the Markdown block in

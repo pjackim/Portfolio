@@ -8,6 +8,7 @@
 #   Each is a lossless `npm run media` encode of that PNG, uncropped (re-encoded 2026-10-03).
 title: LichessApp
 summary: A minimal desktop wrapper around Lichess puzzles, built with Nativefier and injected CSS/JS that strip the page to a compact, always-on-top puzzle widget.
+tldr: 'A small desktop app I made in 2023 for myself. It shows Lichess chess puzzles in a compact floating window, with the rest of the site trimmed away, by wrapping the real Lichess website.'
 year: 2023
 group: software
 capabilities: [engines-systems]

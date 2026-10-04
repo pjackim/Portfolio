@@ -2,6 +2,7 @@
 # Sources: html/Work/lost_city.html:70-72, :79-82, :104-121; public/files/Resume_General.pdf (Education: high school 2015–2019)
 title: Lost City
 summary: A high-school class illustration of transcendentalism that brings a Ralph Waldo Emerson quote to life, made in Photoshop.
+tldr: 'For a 2019 high-school class assignment I made a digital illustration in Photoshop: a see-through, moss-covered figure in a forest that brings a Ralph Waldo Emerson quote to life. A second version adds a road and a utility pole to the same scene.'
 role: Class project
 year: 2019
 period: High school

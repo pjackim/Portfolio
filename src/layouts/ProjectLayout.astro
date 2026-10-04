@@ -1,7 +1,7 @@
 ---
 /**
  * Project page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
- * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → Key points
+ * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → TL;DR → Key points
  * (featured highlights) → Markdown body (the default slot, with its paired blocks set beside
  * their media) → numbered figure gallery → PrevNext. Featured and archive projects share it;
  * only the eyebrow differs.
@@ -109,6 +109,12 @@ const indexed = sections.length >= 2;
 
     <div class:list={['case__body', indexed && 'case__body--indexed']}>
       {indexed && <CaseIndex class="case__index" items={sections} />}
+      <section class="case__block case__tldr" aria-labelledby="tldr-title">
+        <h2 class="case__label mono-label" id="tldr-title">
+          TL;DR
+        </h2>
+        <p class="case__tldr-text">{data.tldr}</p>
+      </section>
       {keyPoints.length > 0 && (
         <section class="case__block case__key-points" aria-labelledby="key-points-title">
           <h2 class="case__label mono-label" id="key-points-title">
@@ -153,6 +159,15 @@ const indexed = sections.length >= 2;
 
   <PrevNext class="case__prev-next container" prev={prev} next={next} />
 </BaseLayout>
+
+<script>
+  // Lifts the gallery's early skip (see the .case__figures rule below) a second after load, well
+  // clear of the cover's paint, so the figures' requests never share the line with it.
+  const release = () =>
+    setTimeout(() => document.documentElement.setAttribute('data-page-loaded', ''), 1000);
+  if (document.readyState === 'complete') release();
+  else addEventListener('load', release, { once: true });
+</script>
 
 <style>
   .case {
@@ -233,6 +248,14 @@ const indexed = sections.length >= 2;
     color: var(--text-subtle);
   }
 
+  /* TL;DR: the bottom line, full-strength text in the lede's size, right under the cover. */
+  .case__tldr-text {
+    color: var(--text);
+    font-size: var(--step-1);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
   /* Key points: the skim layer — short accent ticks, as the home capability lists. */
   .key-points {
     display: grid;
@@ -263,6 +286,22 @@ const indexed = sections.length >= 2;
   .case__figures {
     display: grid;
     row-gap: var(--space-xl);
+  }
+
+  /* Phones: a lazy image still loads once it is within a few thousand px of the viewport, and a
+     short page puts the gallery there, so its posters compete with the cover (the LCP image).
+     For the first second after load (the script below then sets [data-page-loaded]),
+     content-visibility keeps each gallery figure's rendering, and so its requests, off until it
+     nears the viewport; after that nothing is skipped, so the lightbox and everything else see
+     the plain page. The
+     placeholder is taller than any figure and caption, so a layout query on a skipped figure
+     never overlaps its neighbour. Wider screens lay the figures out as subgrids, which this
+     containment would break. */
+  @media (width < 64rem) {
+    :global(html:not([data-page-loaded])) .case__figures > :global(.figure) {
+      content-visibility: auto;
+      contain-intrinsic-block-size: auto 26rem;
+    }
   }
 
   :global(.case__prev-next) {

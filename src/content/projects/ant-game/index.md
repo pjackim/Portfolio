@@ -2,6 +2,7 @@
 # Sources: html/Work/ant_game.html:75-77, :84-99, :123-132, :138-150, :159-183, :192-206, :212; public/files/Resume_General.pdf (Ant Game)
 title: Ant Game
 summary: Sculpted, textured and rigged insect models in ZBrush, Substance Painter and Maya, then brought them into Unity for an ant game I made with a friend.
+tldr: 'In fall 2019 a friend and I started an ant video game, and I made the insects: scientifically accurate 3D models, from sculpting to the skeleton that lets them move. We did not get far, so it stayed unfinished.'
 role: Insect modeling, texturing & rigging
 year: 2019
 period: Fall 2019

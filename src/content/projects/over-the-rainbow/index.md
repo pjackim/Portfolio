@@ -2,6 +2,7 @@
 # Sources: html/Work/over_the_rainbow.html:69-73, :80-85, :100-110
 title: Over the Rainbow
 summary: A digital artwork and video inspired by Israel Kamakawiwoʻole's “Over The Rainbow”, depicting where I imagine his spirit resides in the afterlife.
+tldr: 'A 2021 digital artwork and video of a floating mountain island with a waterfall and a rainbow, inspired by Israel Kamakawiwoʻole’s “Over The Rainbow”. It shows where I imagine his spirit resides in the afterlife. I made the art in Photoshop and the video in Premiere.'
 role: Personal project
 year: 2021
 group: design

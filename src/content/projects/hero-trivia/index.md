@@ -5,6 +5,7 @@
 # longer one is 25 MB at CRF 20, over the 24 MB loop guard rail.
 title: Hero Trivia
 summary: A rapid prototype of a comic-book trivia crossword for a freelance client — answer a trivia question for each letter of the hint word.
+tldr: 'A comic-book trivia game built like a crossword: a hint word runs down the grid, and each of its letters gets its own trivia question. I prototyped it quickly for a freelance client in 2022. It is a proof of concept, not a finished product.'
 role: Freelance developer
 year: 2022
 group: software
