@@ -10,7 +10,8 @@
 # bodycam/, 9 panel tabs in bodycam/ui/pages, 25 offline checks and 41 probes in scripts/.
 # media: all of it the owner's own, recorded against a live match on 2026-10-03.
 # panel-overview, panel-lobby and panel-diagnostics ← ../BodyCam/.media/{overview,lobby,
-# overview-bottom}.jpg, bottom 256 px cropped off (the desktop behind the panel); orbs-and-zombie
+# overview-bottom}.jpg, cropped to the 2198×824 panel (the desktop behind it cut off at the
+# bottom, 256–257 px, and 8 px at the left); orbs-and-zombie
 # ← .media/zombie-spawn.jpg. cover.webp is the frame at 1:09 of world-editor.mp4 (the owner's
 # recording, ~/Videos/portfolio-to-add/bodycam), cropped 16:10. The loops are trims of the same
 # folder: world-editor.mp4 0:06–0:18 and 1:03.5–1:18, teleport-map.mp4 0:00–0:14,
