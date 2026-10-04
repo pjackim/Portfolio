@@ -84,6 +84,9 @@ Contrast comes from **weight, size steps, and sans-vs-mono**, not from more font
   is off (`data-motion="off"` or reduced motion).
 - **Never in the way of LCP.** Hero effects start after `load` + idle; nothing hides content at
   rest.
+- **Quality first.** Media ships at the best quality its original allows. Only a detected slow
+  connection or Save-Data gets lighter content first, upgraded in the background.
+  Accessibility, layout stability (CLS), the CSP and the 30 KB script budget still bind.
 
 Off-vibe motion: bounce/elastic easing, long fades, parallax on content, anything that loops
 forever, hover effects that visibly scale (beyond the card's 1.02 settle) or rotate images,
@@ -103,6 +106,7 @@ scroll hijacking.
 | On-vibe                                                   | Off-vibe                                                   |
 | --------------------------------------------------------- | ---------------------------------------------------------- |
 | Real screenshot or loop of the work, framed by a hairline | Stock illustration, div-built fake UI, placeholder imagery |
+| Pixel-sharp at 2×, no visible compression                 | Soft, banded or smeared images; a lossy re-encode          |
 | Mono key + value pairs for facts                          | Big-number "stat" tiles with invented or vague metrics     |
 | Accent used on one thing per view                         | Accent used as decoration on many things                   |
 | Hover: reticle lock-on, underline to accent, arrow nudge  | Hover: lift + shadow, scale, glow, colour-flooded card     |

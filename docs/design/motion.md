@@ -84,7 +84,8 @@ Names worth knowing when discussing options, with how each fits here:
   matches the layout (column side, rise for single columns), and never hide content if the
   script fails. The hero keeps the one authored focal moment.
 - Hand-written modules only, inside the 30 KB/page script budget and the Lighthouse budgets
-  (LCP ≤ 2000 ms, CLS ≤ 0.02).
+  (CLS ≤ 0.02; LCP is capped in `lighthouserc.json`). Delight never costs accessibility, and
+  loops never auto-start under Save-Data or before a slow connection has upgraded the images.
 - Best use of motion under the scan-first goal: **loops of the actual projects** that play when
   in view, plus crisp hover and focus feedback on cards. Motion that points at the work, not at
   itself.

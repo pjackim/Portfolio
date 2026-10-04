@@ -1,7 +1,7 @@
 /**
  * Site identity and home-page copy (spec-design-content §5a, §5c, §5f).
  *
- * Every fact here comes from the legacy site (`git show d8782d1:index.html`, the pre-2024
+ * Every fact here comes from the legacy site (`git show a085340:index.html`, the pre-2024
  * About at `git show 1460ff3^:index.html`, the legacy project pages) or the résumé
  * (`public/files/Resume_General.pdf`, June 2022). Unknown ⇒ omitted. Email is the only
  * published contact detail.

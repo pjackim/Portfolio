@@ -19,7 +19,10 @@ You run this repository's checks and report what failed. You never fix anything.
    (`ci` = Prettier check + `astro check` + `check:media` + `build:only` + Playwright on
    chromium, mobile-chrome and webkit).
 3. Only if the caller asked for Lighthouse, or the change touches `src/scripts/`, CSS, fonts,
-   or layouts: `npm run test:lhci > .cache/ci-gate/lhci.log 2>&1; echo "exit $?"`.
+   layouts, `src/content/**` (media), `astro.config.ts` (image encoders) or
+   `lighthouserc.json`: `npm run test:lhci > .cache/ci-gate/lhci.log 2>&1; echo "exit $?"`.
+   When the change touches `src/content/**` or `astro.config.ts`, also run `npm run check:dist`
+   (it checks the `dist/` that step 2 just built and errors above 900 MB).
 4. If Playwright browsers are missing, stop and report `npx playwright install chromium webkit`.
 
 Both runs take several minutes: give each Bash call the maximum timeout (600000 ms). Never

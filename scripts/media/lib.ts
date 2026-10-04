@@ -51,7 +51,10 @@ export const BUDGETS = {
   videoMaxWidth: 1920,
 } as const;
 
-/** Quality-first video settings: one encode per codec, never a resolution or CRF trade. */
+/**
+ * Quality-first video settings: one encode per codec, never a resolution drop. `--crf` (or a
+ * manifest entry's `crf`) is for a dithered GIF source whose CRF 20 encode breaks a guard rail.
+ */
 export const VIDEO = {
   /** libx264 CRF. */
   crf: 20,

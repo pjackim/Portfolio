@@ -44,7 +44,13 @@ caller names a commit range or paths.
 7. **Erasable TypeScript** in `scripts/` and `.claude/**/*.ts`: no `enum`, `namespace`, or
    constructor parameter properties.
 8. **Media.** Under `src/content/` only `.webp`, `.mp4`, `.webm` and `.poster.webp`, with
-   kebab-case names, added via `npm run media` — never a raw PNG/JPG/GIF export.
+   kebab-case names, added via `npm run media` — never a raw PNG/JPG/GIF export. Quality
+   first: a replaced master is encoded from the original (never from a file already encoded for
+   the site) and is lossless unless `--lossy` is justified in the project's `# Sources:`
+   header, which also records the command; flag a replaced master with no `media:verify`
+   result, and any video squeezed to fit a size limit: a smaller resolution, or a higher CRF
+   that isn't the recorded exception for a dithered GIF source (the limits are guard rails,
+   not quality governors).
 9. **No pasted legacy markup.** Legacy text ported as clean Markdown/Astro, never legacy HTML
    structure (the Rust compiler rejects its broken nesting).
 10. **Script budget.** Flag any new `import` of a `src/scripts/` module into a component or

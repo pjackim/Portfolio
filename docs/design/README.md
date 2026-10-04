@@ -31,7 +31,7 @@ with that identity, the identity wins, within `CLAUDE.md`'s constraints.
 ## Ground rules for using these
 
 - **Precedence:** the repo's constraints in `CLAUDE.md` (CSP, 30 KB JS budget, zero
-  third-party requests, WCAG 2.2 AA, reduced motion, fact-only content), then the goals, then
+  third-party requests, WCAG 2.2 AA, reduced motion, fact-only content, quality-first media), then the goals, then
   these files, then any outside skill's defaults.
 - **Numbers are from the sources, not measured here.** Cite them as heuristics, not as facts
   about this site's visitors.

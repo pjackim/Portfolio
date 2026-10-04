@@ -1,5 +1,8 @@
 ---
 # Sources: html/Work/hero_trivia.html:69-74, :81-91, :115-125, :134-144, :153-162; index.html:577-579
+# media: legacy Images/hero_trivia at git a085340 via scripts/media/legacy-manifest.json. The two
+# loops are dithered 256-colour GIFs; they use x264 CRF 24 (not the default 20), because the
+# longer one is 25 MB at CRF 20, over the 24 MB loop guard rail.
 title: Hero Trivia
 summary: A rapid prototype of a comic-book trivia crossword for a freelance client — answer a trivia question for each letter of the hint word.
 role: Freelance developer

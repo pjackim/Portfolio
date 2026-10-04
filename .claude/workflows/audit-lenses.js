@@ -139,7 +139,7 @@ const LENSES = [
   {
     key: 'constraints',
     prompt:
-      'Lens: CONSTRAINTS (checks X1–X7, static part). From source and manifest.json: inline style= or on*= handlers in src/ markup; per-instance CSS not via src/lib/page-style.ts; raw href="/…" or src="/…" instead of withBase(); jsBytes per page vs the 30 KB budget; any thirdPartyRequests; consoleErrors; imagesWithoutAlt; media outside the pipeline (non-WebP images or videos without MP4+WebM+poster under src/content); visible contrast problems in screenshots (verify token pairs in tokens.css when in doubt); heading order; new dependencies in package.json. The session runs axe/lint/build/e2e itself; don\'t claim results you didn\'t see.',
+      'Lens: CONSTRAINTS (checks X1–X7, static part). From source and manifest.json: inline style= or on*= handlers in src/ markup; per-instance CSS not via src/lib/page-style.ts; raw href="/…" or src="/…" instead of withBase(); jsBytes per page vs the 30 KB budget; any thirdPartyRequests; consoleErrors; imagesWithoutAlt; media outside the pipeline (non-WebP images or videos without MP4+WebM+poster under src/content); lossy masters that have a recoverable original (npm run check:media lists them) and images or loops that look visibly compressed at 2x (quality first: media ships at the best quality its original allows); visible contrast problems in screenshots (verify token pairs in tokens.css when in doubt); heading order; new dependencies in package.json. The session runs axe/lint/build/e2e itself; don\'t claim results you didn\'t see.',
   },
 ];
 

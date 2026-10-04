@@ -75,9 +75,10 @@ issue a careful visitor would notice · **P3** polish.
 | --- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | -------------- |
 | X1  | WCAG 2.2 AA: axe clean both schemes; contrast 4.5:1 body / 3:1 large and UI; visible focus; logical order.      | `npx playwright test tests/a11y.spec.ts --project=chromium` | M              |
 | X2  | CSP: no inline `style=`, no inline handlers, per-instance CSS via `page-style.ts`.                              | grep `style=`, `on[a-z]+=` in `src/`                        | M              |
-| X3  | ≤ 30 KB JS/page, zero third-party requests, LCP ≤ 2000 ms, CLS ≤ 0.02.                                          | `capture.ts` request report; `npm run test:lhci`            | M              |
+| X3  | ≤ 30 KB JS/page, zero third-party requests, CLS ≤ 0.02, LCP within the cap in `lighthouserc.json`.              | `capture.ts` request report; `npm run test:lhci`            | M              |
 | X4  | Links through `withBase()`; no raw `href="/…"`/`src="/…"`.                                                      | grep; `tests/links.spec.ts`                                 | M              |
-| X5  | Media only via the pipeline (WebP, MP4+WebM+poster); `npm run check:media` passes.                              | `npm run check:media`                                       | M              |
+| X5  | Media only via the pipeline (WebP, MP4+WebM+poster), lossless masters from the original; `check:media` passes.  | `npm run check:media`; `npm run media:verify` if replaced   | M              |
 | X6  | Fact-only: every new claim, date, metric, contact detail traces to legacy, résumé, or a cited author statement. | Read sources/comments                                       | J (ask Parker) |
 | X7  | No new dependency, framework, or third-party font/icon without the human's go-ahead.                            | `git diff package.json`                                     | J              |
 | X8  | `npm run lint`, `npm run build:only`, and `npm run test:e2e` pass.                                              | Run them                                                    | M              |
+| X9  | Slow connection (`net` = `slow`): lighter images first, then full quality, no shift; `save` never upgrades.     | Chrome: set `localStorage.net`, reload; `tests/net.spec.ts` | M              |

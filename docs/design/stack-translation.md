@@ -9,7 +9,9 @@ implementation.** Use this page to turn any outside advice into something that b
 Astro 7 static output · `.astro` components · plain CSS with design tokens · hand-written
 vanilla TypeScript modules in `src/scripts/` · no UI framework, no CSS framework, no animation
 library · a strict CSP (no inline `style=`, no `'unsafe-inline'`) · ≤ 30 KB JS per page ·
-**zero third-party requests** at runtime (enforced by Lighthouse CI) · npm.
+**zero third-party requests** at runtime (enforced by Lighthouse CI) · quality-first media (best
+quality the original allows; only a detected slow connection or Save-Data gets lighter content
+first, upgraded in the background) · npm.
 
 ## Translation table
 
@@ -23,7 +25,7 @@ library · a strict CSP (no inline `style=`, no `'unsafe-inline'`) · ≤ 30 KB 
 | Three.js / WebGL / shader backgrounds                               | Out (budget, CSP, reduced motion). Get depth from CSS (gradients, masks, blend modes) or a small canvas in a hand-written module, as the hero graph does (`hero-graph.ts`).                                                                                                                                                    |
 | "Check `useReducedMotion()`"                                        | Use `motionAllowed()` / `onMotionChange()` from `src/scripts/motion.ts` (honours both `prefers-reduced-motion` and the site toggle `data-motion="off"`). In CSS, key on `:root:not([data-motion='off'])` inside `@media (prefers-reduced-motion: no-preference)` (in a scoped component `<style>`, wrap it in `:global(...)`). |
 | Inline `style={{…}}` / per-item CSS variables in markup             | Classes, or `src/lib/page-style.ts` for per-instance CSS (the CSP forbids inline `style=`).                                                                                                                                                                                                                                    |
-| `next/image priority`, `<img>` with a CDN URL                       | `astro:assets` `<Picture>` / `<Image>` with `loading="eager"` + `fetchpriority="high"` above the fold; source files only through the media pipeline (`npm run media`).                                                                                                                                                         |
+| `next/image priority`, `<img>` with a CDN URL                       | `astro:assets` `<Picture>` / `<Image>` with `{...adaptive('priority')}` above the fold, `adaptive()` elsewhere (`src/lib/images.ts`; `sizes` in plain px/rem/vw); source files only through the media pipeline (`npm run media`), from the original.                                                                           |
 | Placeholder photos (picsum, Unsplash URLs), image-generation tools  | Never on this site: all imagery must be Parker's real work or his photo (fact-only rule), encoded by the media pipeline. If an image is missing, ask for it.                                                                                                                                                                   |
 | Google Fonts / CDN fonts / "pick Satoshi, Cabinet Grotesk…"         | Fonts are self-hosted through Astro's Fonts API (`astro.config.ts`: Geist, Geist Mono). A font change is a brand decision for Parker, not a styling tweak.                                                                                                                                                                     |
 | Icon libraries via CDN (Lucide, Phosphor)                           | No CDN. The site's marks are small authored components (`Arrow.astro`, `Logo.astro`). Adding an icon package needs approval and goes through `npm i`.                                                                                                                                                                          |

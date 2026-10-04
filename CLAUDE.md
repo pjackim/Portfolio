@@ -13,7 +13,7 @@ segmented 4-item section nav in the header (scroll-spy fill, `src/scripts/nav-sc
 full-height scroll-snap chapter panels on the home page (`HomeMobilePanels.astro`), a sticky
 "Get in touch" bar, and a contact bottom sheet (`ContactSheet.astro`). No UI framework, no backend, no
 CMS. Content is a mix of Markdown frontmatter/body and hand-authored copy in `src/data/`, all
-sourced from the frozen legacy site (commit `d8782d1`) and the résumé PDF.
+sourced from the frozen legacy site (commit `a085340`) and the résumé PDF.
 
 ## Goals (in priority order)
 
@@ -77,7 +77,10 @@ before using any of their advice. The site's own look and voice are defined in
      section.
    - Interaction stays inside the site's constraints: vanilla client JS within the 30 KB/page
      budget, motion that respects `prefers-reduced-motion` and the motion toggle, WCAG 2.2 AA,
-     and the Lighthouse budgets. Delight never costs accessibility or speed.
+     and the Lighthouse budgets. Delight never costs accessibility. Quality first: media ships
+     at the best quality its original allows. Only a detected slow connection or Save-Data gets
+     lighter content first, upgraded in the background. Accessibility, layout stability (CLS),
+     the CSP and the 30 KB script budget still bind.
 3. **Make Parker easy to recognise and contact.**
    - His profile photo (`src/assets/profile/parker-jackim.webp`), the logo
      (`src/assets/brand/logo.png`), and his name read as one consistent identity across the header,
@@ -146,7 +149,8 @@ Custom agents in `.claude/agents/`. Their hooks live in `.claude/hooks/`.
 - **`live-verifier`** (foreground, Playwright MCP): checks the affected pages in both
   themes, with motion on and off, at phone and desktop widths.
 - **`media-manager`** (worktree): link and YouTube health, orphaned files, renames based on
-  image content, size budgets, and re-encoding from originals.
+  image content, size guard rails, lossy masters with a recoverable original, and
+  re-encoding from originals (checked with `media:verify`).
 - **`media-finder`** (worktree, foreground for Chrome): finds visible media gaps on one
   project's pages, sources official or owner-published assets, and re-checks until each gap
   is closed. It records every asset's source in the project's `# Sources:` header.
@@ -165,10 +169,16 @@ Custom agents in `.claude/agents/`. Their hooks live in `.claude/hooks/`.
 install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.spec.ts
 --project=chromium` (add `-g "<title>"` to filter). `BASE_URL=<url> npx playwright test
 --grep @prod` runs the post-deploy subset against a live site without a local server
-- `npm run test:lhci` — Lighthouse CI budgets (`lighthouserc.json`)
+- `npm run test:lhci` — Lighthouse CI budgets (`lighthouserc.json`; one `simulate` pass that
+  measures the full-quality default, the slow-connection path is covered by `tests/net.spec.ts`)
 - `npm run new -- <slug>` — scaffold a project; `npm run media -- <files...> --project <slug>`
-  — encode media into it; `npm run media:migrate` — one-time legacy media import; `npm run
-check:media` — media lint (also part of `lint`)
+  — encode media into it (it prints the exact command to record in `# Sources:`);
+  `npm run media:migrate` — one-time legacy media import; `npm run check:media` — media lint
+  (also part of `lint`); `npm run media:verify -- --project <slug> [--against <rev>]` —
+  proves a re-encoded file is the same picture and no worse (run it whenever a master is
+  replaced)
+- `npm run check:dist` — after a build: errors when `dist/` exceeds 900 MB (the GitHub Pages
+  limit is 1 GB)
 - `npm run og` — regenerate the header logo asset (`src/assets/brand/logo-mark.webp`),
   `public/og-default.png`, the favicon and the touch icons from the master logo
   `src/assets/brand/logo.png`
@@ -189,10 +199,10 @@ check:media` — media lint (also part of `lint`)
   `prevNext`), which excludes drafts outside `astro dev` and throws at build time on duplicate
   `order` among featured projects, duplicate `legacyPaths`, or a featured count outside 3–8.
 - **Layouts/components** — `src/layouts/BaseLayout.astro` is the document shell (head/SEO,
-  theme bootstrap, fonts, skip link, header/footer, inline CSP hashing); `ProjectLayout.astro`
-  is the case-study template built on it. `src/components/` holds page sections;
-  `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro` render the three media
-  kinds.
+  theme bootstrap, adaptive-image bootstrap, fonts, skip link, header/footer, inline CSP
+  hashing); `ProjectLayout.astro` is the case-study template built on it. `src/components/`
+  holds page sections; `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro`
+  render the three media kinds.
   **Paired paragraphs**: to tie body text to the media that shows it, wrap the Markdown block in
   `<div data-pair="key" data-side="left|right">` (blank lines inside keep it Markdown; an `###`
   label first reads well) and give the media entry `pair: key`. `ProjectLayout` splits the
@@ -203,10 +213,11 @@ check:media` — media lint (also part of `lint`)
 - **`src/lib/` roles** — `url.ts` (`withBase`/`absoluteUrl`), `projects.ts` (collection
   queries), `media.ts` (resolves a video's `.webm`/`.poster.webp` siblings and YouTube posters
   via `import.meta.glob`), `legacy.ts` (`REMOVED_LEGACY` map for legacy pages with no project),
-  `images.ts` (build-time image facts via sharp), `seo.ts` (OG images, JSON-LD), `csp.ts`
-  (hashes hand-inlined scripts/styles for the CSP `<meta>`), `format.ts` (date/index display
-  helpers), `page-style.ts` (per-instance CSS without inline `style=`, to keep the CSP free of
-  `'unsafe-inline'`).
+  `images.ts` (build-time image facts via sharp; `adaptive()` marks an image for the
+  slow-connection loader), `net-bootstrap.ts` (the inline head script behind it), `seo.ts`
+  (OG images, JSON-LD), `csp.ts` (hashes hand-inlined scripts/styles for the CSP `<meta>`),
+  `format.ts` (date/index display helpers), `page-style.ts` (per-instance CSS without inline
+  `style=`, to keep the CSP free of `'unsafe-inline'`).
 - **Data files** — `src/data/site.ts` (name, role, bio, timeline, and the Experience git log's
   commits and skills — every line sourced with a comment back to the legacy file/line, the
   résumé or the author) and `src/data/taxonomy.ts` (`CAPABILITIES`, `GROUPS`, and the capability
@@ -217,22 +228,33 @@ check:media` — media lint (also part of `lint`)
   `REMOVED_LEGACY` entries (e.g. `alvin` → `work/`). GitHub Pages can't send HTTP redirects, so
   these are real documents with a zero-delay `<meta http-equiv="refresh">`, a visible fallback
   link, and `noindex`.
-- **Scripts** — `scripts/media/{build,check,migrate,lib}.ts` (the media pipeline; runs on
-  Node's native TypeScript type-stripping, so erasable syntax only — no enums/namespaces/param
-  properties) and `scripts/new-project.ts` (project scaffolding). `scripts/og/` renders the logo
-  asset, OG card and icons from the master logo.
+- **Scripts** — `scripts/media/{build,check,verify,migrate,lib}.ts` (the media pipeline; runs
+  on Node's native TypeScript type-stripping, so erasable syntax only — no enums/namespaces/param
+  properties), `scripts/check-dist.ts` (the `dist/` size gate) and `scripts/new-project.ts`
+  (project scaffolding). `scripts/og/` renders the logo asset, OG card and icons from the
+  master logo.
+- **Media delivery** — `astro.config.ts` sets the image encoders (AVIF q88 4:4:4, WebP q95
+  smartSubsample, JPEG q90 4:4:4) and a `cacheDir` versioned by them, so a changed encoder never
+  reuses stale renditions. Images carry `data-net-img` (helper `adaptive()` in
+  `src/lib/images.ts`). `src/lib/net-bootstrap.ts` (inline, CSP-hashed in `BaseLayout.astro`)
+  sets `html[data-net]` to `slow` or `save`; `src/scripts/net.ts` upgrades images to full
+  quality one at a time. `localStorage.net` = `fast|slow|save` overrides detection (the tests
+  pin `fast`). Loops show their poster first on a slow connection and never auto-start under
+  Save-Data.
 - **Client JS** — hand-written modules in `src/scripts/` (theme, motion/motion-toggle,
   video, youtube, lightbox, work-filter, hero, case-index, etc.), each imported by the
   component that needs it, plus Astro's built-in hover prefetch. Motion is user-toggleable
   (`data-motion="off"` on `<html>`, persisted in `localStorage`) on top of
   `prefers-reduced-motion`. Script budget is 30 KB/page, enforced by `lighthouserc.json`.
+  `net.ts` (adaptive image upgrades, import-free so Astro inlines it) and `video.ts` (which
+  reads `html[data-net]` to hold loops back on a slow connection) stay inside it.
   Scroll entrances stay declarative: `reveal.ts` only toggles `data-reveal-state`; direction,
   distance, and stagger are CSS presets (`data-reveal-from="start|end|rise"` + `--i`) in
   `global.css`, so a new section opts in without touching the script.
 - **Build info** — `src/lib/build-info.ts` derives the footer year from `SOURCE_DATE_EPOCH` or
   HEAD's commit date (not wall clock), so builds are byte-reproducible; don't introduce
   `new Date()` into rendered output.
-- **CI** — `.github/workflows/ci.yml` (format, media, check, build, e2e, LHCI),
+- **CI** — `.github/workflows/ci.yml` (format, media, check, build, dist size, e2e, LHCI),
   `deploy.yml` (Pages deploy, then `@prod` Playwright against the live URL), `links.yml`
   (weekly link check).
 
@@ -247,12 +269,24 @@ check:media` — media lint (also part of `lint`)
   cropped from the master `logo.png` by `npm run og`) on a transparent ground, no tile. The
   favicon and touch icons are transparent too; only the OG card keeps a graphite ground.
   Re-run `npm run og` after changing the master.
-- **Media only via the pipeline.** Never hand-encode or commit a raw image/video export — run
-  `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy batch).
-  Filenames are kebab-case; only WebP images and MP4+WebM+poster videos are allowed under
-  `src/content`; size budgets are enforced by `check:media` (`scripts/media/check.ts`).
+- **Media only via the pipeline, quality first.** Never hand-encode or commit a raw image/video
+  export — run `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy
+  batch). Filenames are kebab-case; only WebP images and MP4+WebM+poster videos are allowed
+  under `src/content`. Masters are lossless WebP by default (long edge up to 3840 px);
+  `--lossy` (q95) is only for a large photographic source, with the reason recorded in the
+  project's `# Sources:` header (`--lossless` is accepted but no longer needed). Video is one
+  encode per codec (x264 CRF 20, two-pass VP9 matched to it, up to 1920 px wide, 30 fps cap,
+  BT.709), never a resolution drop to fit a size. A higher `--crf` is the one recorded exception, for a
+  dithered GIF source that would break a guard rail. Posters come from the source, lossless.
+  Always encode from the original, never from a file already encoded for the site: `--name`,
+  `--crop W:H:X:Y`, `--trim A-B`, `--frame T` and `--crf N` keep that one generation, and the
+  command `npm run media` prints goes in `# Sources:`. Run `media:verify` whenever a master is
+  replaced. The size limits are guard rails, not quality governors (loop mp4/webm 24 MB each and
+  ≤ 45 s, click-to-play 48 MB each, any file 50 MB, project folder 150 MB, all of `src/content`
+  500 MB), enforced by `check:media` (`scripts/media/check.ts`, which also warns about lossy
+  masters) and, for `dist/`, by `check:dist`.
 - **Content is fact-only.** Everything in `src/data/site.ts`, `src/data/taxonomy.ts`, and every
-  project's frontmatter/body must trace to the legacy site (`git show d8782d1:<path>`), the
+  project's frontmatter/body must trace to the legacy site (`git show a085340:<path>`), the
   résumé PDF, the project's own repository (cited in its `# Sources:` header), or something
   Parker stated directly (cite it in a comment, e.g. "per the author
   (Sept 2026)"). Never invent accomplishments, metrics, employers, dates, skills, contact
@@ -264,8 +298,8 @@ check:media` — media lint (also part of `lint`)
 - **TypeScript is pinned `~6`** (not `^`) — `@astrojs/check` only supports 5–6; a bare `npm i
 typescript` would pick up 7.x. Dependabot is configured to ignore major bumps of `typescript`
   and `@types/node` for the same reason.
-- **The legacy site is fully recoverable** at commit `d8782d1` (`git show d8782d1:<path>`, or
-  `git archive d8782d1 <path> | tar -x -C .cache/legacy`) if you need to check original copy,
+- **The legacy site is fully recoverable** at commit `a085340` (`git show a085340:<path>`, or
+  `git archive a085340 <path> | tar -x -C .cache/legacy`) if you need to check original copy,
   images, or markup.
 - **Pushing is allowed.** Commit in small, scoped commits and push to the branch you were
   given, then open a PR for it. GitHub access otherwise goes through `gh` — see
