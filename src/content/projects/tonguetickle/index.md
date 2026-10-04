@@ -69,30 +69,35 @@ highlights:
   - 'Plays a 150 ms silent primer before hotkey audio on Windows and pads Grok WAVs with a 300 ms silent lead, to address clipped first words.'
   - 'Grok auto-express: an LLM adds speech tags per user-made preset, previewed before Speak, and a sanitizer strips any tag the model invents.'
 media:
+  - kind: image
+    src: ./flow-and-provider-registry.webp
+    pair: provider-registry
+    alt: 'Diagram in two parts: a four-step flow (global hotkey, selected text, active provider, local playback), and a provider registry table listing Qwen3-TTS at priority 1, Grok Voice at 2, OpenAI Voice at 3 and the free offline voice at 100.'
+    caption: 'How a hotkey press becomes speech, and the order providers are tried in.'
+    wide: true
   - kind: video
     src: ./listen-speak-loop.mp4
+    pair: web-ui
     alt: "Short silent loop of the TongueTickle Listen screen: the sentence 'Hear any text read aloud.' is typed into the box, Speak turns into Pause, and a player bar with animated bars counts up from 0:00 to 0:02 with the Echo voice before the text clears."
     caption: 'Recorded from the running app with the free offline Echo voice; the loop has no sound.'
     autoplay: true
   - kind: image
     src: ./voice-library-light.webp
+    pair: voice-library
     alt: "TongueTickle's Voices screen in the light theme: search box, filter chips, provider tabs (All voices, Grok Voice, Offline voice), an active-voice strip for Echo, and a grid of six voice cards (Eve, Ara, Rex, Leo, Sal, Echo) with gradient avatars, tags and Use buttons."
     caption: 'The voice library as it appears with only the free offline voice configured; the Grok voices are listed but not connected.'
     wide: false
   - kind: image
-    src: ./listen-grok-expression-tags.webp
-    alt: "TongueTickle's Listen screen with the Grok expression bar open: Auto-moments and Auto-delivery toggles, a preset picker and an Auto-express button, clickable moment tags such as [pause], [laugh] and [sigh] and delivery tags such as <whisper>, <emphasis> and <slow>, above a text box reading 'The report is ready for review [pause] please read it before Friday.'"
-    caption: "Grok's expression tags: 'moments' insert at the cursor and 'delivery' tags wrap the selection."
-    wide: true
-  - kind: image
     src: ./provider-settings-dark.webp
+    pair: provider-settings
     alt: "TongueTickle's Settings screen in the dark theme: a Global shortcut card showing Ctrl Shift S with a Change button, then the TTS providers list in priority order starting with Qwen3-TTS (local), marked 'Server offline' with no key saved, its server URL, voice and language fields."
     caption: 'The first provider in the priority-ordered list, with no key saved and its local server offline on the capture machine.'
     wide: true
   - kind: image
-    src: ./flow-and-provider-registry.webp
-    alt: 'Diagram in two parts: a four-step flow (global hotkey, selected text, active provider, local playback), and a provider registry table listing Qwen3-TTS at priority 1, Grok Voice at 2, OpenAI Voice at 3 and the free offline voice at 100.'
-    caption: 'How a hotkey press becomes speech, and the order providers are tried in.'
+    src: ./listen-grok-expression-tags.webp
+    pair: grok-auto-express
+    alt: "TongueTickle's Listen screen with the Grok expression bar open: Auto-moments and Auto-delivery toggles, a preset picker and an Auto-express button, clickable moment tags such as [pause], [laugh] and [sigh] and delivery tags such as <whisper>, <emphasis> and <slow>, above a text box reading 'The report is ready for review [pause] please read it before Friday.'"
+    caption: 'Expression bar open with the Grok voice Ara selected; Auto-express not pressed. Moment tags insert at the cursor and delivery tags wrap the selection.'
     wide: true
 links:
   private: [repo]
@@ -113,16 +118,58 @@ Every TTS backend sits behind one provider interface and a priority registry, so
 
 ## What I built
 
-- **Hotkey capture.** A global hotkey (Ctrl+Shift+S by default) releases held Shift and Alt, sends a clean Ctrl+C, and reads the clipboard through `pyperclip`. `pynput` is imported lazily so the server and tests run headless.
-- **Provider registry.** Qwen3-TTS through a self-hosted vLLM-Omni server (priority 1), Grok Voice (2), OpenAI Voice (3), and an offline voice (100). Qwen needs no API key (one is optional), so it counts as configured only while its `/health` endpoint answers, which lets the registry fall through to the next provider when the GPU server is down.
+### Hotkey capture
+
+A global hotkey (Ctrl+Shift+S by default) releases held Shift and Alt, sends a clean Ctrl+C, and reads the clipboard through `pyperclip`. `pynput` is imported lazily so the server and tests run headless.
+
+<div data-pair="provider-registry" data-side="left">
+
+### Provider registry
+
+Qwen3-TTS through a self-hosted vLLM-Omni server (priority 1), Grok Voice (2), OpenAI Voice (3), and an offline voice (100). Qwen needs no API key (one is optional), so it counts as configured only while its `/health` endpoint answers, which lets the registry fall through to the next provider when the GPU server is down.
+
+</div>
+
+<div data-pair="web-ui" data-side="right">
+
+### Web UI
+
+A vanilla HTML, CSS and JS single page with Listen, Voices and Settings views.
+
+The web UI's own wordmark reads "TongueTickler"; the project, package and repo are named TongueTickle.
+
+</div>
+
+<div data-pair="voice-library" data-side="left">
+
+### Voices
+
+A voice library with filters, and one-click Use to set the active voice.
+
+</div>
+
+<div data-pair="provider-settings" data-side="right">
+
+### Settings
+
+Per-provider settings cards, generated from each provider's declared settings schema.
+
+</div>
+
+<div data-pair="grok-auto-express" data-side="left">
+
+### Grok auto-express
+
+A `grok-4-fast-non-reasoning` pass inserts inline tags like `[laugh]` and wrapping tags like `<whisper>` under user-made presets. The result lands in the text box for review, and a sanitizer removes any tag outside the allowed set.
+
+</div>
+
+### Internals
+
 - **Shared HTTP plumbing.** One `post_with_retry` for all three network providers: up to 3 attempts on 429, 500, 502, 503, 504 and network errors, with exponential backoff or the `Retry-After` header.
 - **Offline voice.** Windows SAPI5 through PowerShell `System.Speech`, with the text passed via a temp file rather than interpolated into a script. It is Windows-only.
 - **Playback workarounds.** xAI returns WAV files with streaming placeholder chunk sizes that `winsound` refuses to play, so I rewrite the RIFF and data sizes. For clipped first words on sleeping audio devices, I play a 150 ms silent clip synchronously before every hotkey playback on Windows, and pad Grok's WAV output with 300 ms of silence.
-- **Web UI.** A vanilla HTML, CSS and JS single page with Listen, Voices and Settings views: a voice library with filters, one-click Use to set the active voice, and per-provider settings cards generated from each provider's declared settings schema.
-- **Grok auto-express.** A `grok-4-fast-non-reasoning` pass inserts inline tags like `[laugh]` and wrapping tags like `<whisper>` under user-made presets. The result lands in the text box for review, and a sanitizer removes any tag outside the allowed set.
 - **Cost tracking.** A tracker records spend for hotkey speaks. The web UI does not show it yet.
-
-The web UI's own wordmark reads "TongueTickler"; the project, package and repo are named TongueTickle.
 
 ## Outcome & lessons
 

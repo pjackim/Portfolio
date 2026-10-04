@@ -20,34 +20,34 @@ cover: ./cover.webp
 coverAlt: Trip Planner map in the T22 2 Eazy app, with a multi-stop trip drawn in blue lines across the world and a place pop-up.
 media:
   - kind: video
+    src: ./iterative-design.mp4
+    pair: iterative-design
+    alt: Screen recording of adding Fort Collins places to a trip, server logs and a Git branch checkout in a terminal, and the trip redrawn on the map.
+    autoplay: false
+  - kind: video
+    src: ./database-search.mp4
+    pair: database-search
+    alt: Screen recording of Find Place searches, then filtering results by type (airport, heliport, balloonport) and by country.
+    autoplay: false
+  - kind: video
+    src: ./interoperability.mp4
+    pair: interoperability
+    alt: The Server Connection dialog switching from the t22 2 Eazy server to t23 Stuck in Beta; the footer then confirms the new connection.
+    autoplay: true
+  - kind: image
+    src: ./trip-manager.webp
+    pair: storage
+    alt: Trip Manager dialog listing saved trips (lakes.json, christmas_2020.json, my_vacation.json) with Load Trip, Save Trip and JSON, CSV, SVG options.
+  - kind: video
+    src: ./tour-optimization.mp4
+    pair: trip-optimization
+    alt: A tangled world trip is optimized into a single loop, and the trip total drops from 636,462 mi to 86,942 mi.
+    autoplay: true
+  - kind: video
     src: ./full-demo.mp4
     alt: 'Screen recording of the Trip Planner: searching places, building a multi-stop world trip, filtering by country, and saving the trip.'
     caption: Full demo of the planner's functionality (recording sped up 2×).
     autoplay: false
-  - kind: video
-    src: ./iterative-design.mp4
-    alt: Screen recording of adding Fort Collins places to a trip, server logs and a Git branch checkout in a terminal, and the trip redrawn on the map.
-    caption: Iterative design — most changes came from “customer” feature requests and from external UX testers.
-    autoplay: false
-  - kind: video
-    src: ./database-search.mp4
-    alt: Screen recording of Find Place searches, then filtering results by type (airport, heliport, balloonport) and by country.
-    caption: Querying the database efficiently and applying filters to the query.
-    autoplay: false
-  - kind: video
-    src: ./interoperability.mp4
-    alt: The Server Connection dialog switching from the t22 2 Eazy server to t23 Stuck in Beta; the footer then confirms the new connection.
-    caption: My team's front end connecting to another team's back end, following the shared protocol.
-    autoplay: true
-  - kind: image
-    src: ./trip-manager.webp
-    alt: Trip Manager dialog listing saved trips (lakes.json, christmas_2020.json, my_vacation.json) with Load Trip, Save Trip and JSON, CSV, SVG options.
-    caption: Saving and loading trips. Browser storage also retains loaded trips and download preferences.
-  - kind: video
-    src: ./tour-optimization.mp4
-    alt: A tangled world trip is optimized into a single loop, and the trip total drops from 636,462 mi to 86,942 mi.
-    caption: Traveling Salesman optimization, required to handle any size trip in under a second.
-    autoplay: true
 legacyPaths: [html/Work/tripsite.html]
 ---
 
@@ -59,16 +59,49 @@ In CSU's CS 314, teams worked on an existing codebase to build a trip-planning w
 
 We ran the project under CMMI — configuration and change management, development and release of baselines, record keeping, integrity and maintainability audits, integration strategies, design evaluation and peer evaluation — alongside SCRUM, GitHub, ZenHub and Code Climate.
 
+<div data-pair="iterative-design">
+
+### Iterative design
+
 Design was iterative for the whole semester. Most changes came from feedback in two forms: "customer" demand for new features, which required UX adjustments to implement well, and external people who served as our UX testers.
+
+</div>
 
 ## What I built
 
-With my team, on the existing codebase:
+With my team, on the existing codebase.
 
-- **Database search.** Places come from a database, queried efficiently with filters applied to the query — one of the most rewarding parts of the project, because it put practical information in front of users.
-- **Interoperability.** Each team followed shared protocols so any team's front end could work with any team's back end, and vice versa. The interoperability recording shows our front end connected to another team's back end.
-- **Storage.** Users can save and load trips. We went above and beyond and added browser storage that keeps loaded trips and download preferences.
-- **Trip optimization.** The classic Traveling Salesman problem, built against the requirement to optimize any size trip in under a second — good practice in testing and efficient resource usage.
+<div data-pair="database-search">
+
+### Database search
+
+Places come from a database, queried efficiently with filters applied to the query — one of the most rewarding parts of the project, because it put practical information in front of users.
+
+</div>
+
+<div data-pair="interoperability">
+
+### Interoperability
+
+Each team followed shared protocols so any team's front end could work with any team's back end, and vice versa. The interoperability recording shows our front end connected to another team's back end.
+
+</div>
+
+<div data-pair="storage">
+
+### Storage
+
+Users can save and load trips. We went above and beyond and added browser storage that keeps loaded trips and download preferences.
+
+</div>
+
+<div data-pair="trip-optimization">
+
+### Trip optimization
+
+The classic Traveling Salesman problem, built against the requirement to optimize any size trip in under a second — good practice in testing and efficient resource usage.
+
+</div>
 
 ## Outcome & lessons
 
