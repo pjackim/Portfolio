@@ -40,22 +40,27 @@ highlights:
 media:
   - kind: video
     src: ./world-editor-outline.mp4
+    pair: edit-mode
     alt: 'Edit mode in the game: a red laser runs from the gun to whatever the crosshair hits, and a thin green outline traces a door, a wall monitor and a railing, while large floor slabs fill solid green.'
     caption: 'Edit mode: the laser and the outline are actors the game draws, green when the editor can act on the target.'
   - kind: video
     src: ./world-editor-lights.mp4
+    pair: world-editor
     alt: "A red point light placed in a corridor from the panel's light library, then its colour switched to green while brightness and reach are adjusted in the properties card beside the game."
     caption: 'Placing a light and retuning it live. Runtime lights are host-side only; they do not replicate.'
   - kind: video
     src: ./teleport-map.mp4
+    pair: map-and-spawner
     alt: "The Spawn tab in teleport mode: a click on the level's top-down map moves the player to that spot, and the game view beside the panel jumps from corridor to corridor."
     caption: "Click to teleport on a map drawn from the level's own placed meshes."
   - kind: video
     src: ./zombie-spawn-single.mp4
+    pair: zombies
     alt: 'The Spawn tab in spawn mode: a click on the map drops a zombie into a graffiti-covered corridor, and it heads toward the player.'
     caption: 'Spawn mode: a click on the map puts a zombie in the corridor, in a mode that has none of its own.'
   - kind: image
     src: ./panel-overview.webp
+    pair: out-of-process
     alt: 'The Overview tab over the live game: player, zombie, orb and dispatch tiles, the world chain from UWorld down to the local pawn, resource usage with a memory-traffic graph, and an Owed to the game list of restore points and byte patches.'
     caption: 'Overview, attached to a live match: the world chain, memory traffic, and what the tool will put back on detach.'
     wide: true
@@ -66,11 +71,13 @@ media:
     wide: true
   - kind: image
     src: ./panel-lobby.webp
+    pair: control-panel
     alt: 'The Lobby tab: a roster with team lock and stack controls, and a host-only column of lobby-wide rows for gravity, slow motion, unlimited ammo, Quick Scope, Speed + Melee and boundaries, each tagged Replicates, Players, Host-local or One-shot.'
     caption: 'Lobby: every toggle carries a reach tag, so what only I see and what everyone sees is never left to guesswork.'
     wide: true
   - kind: image
     src: ./panel-diagnostics.webp
+    pair: game-thread
     alt: "The lower half of the Overview: subsystem status tiles, the ProcessEvent hook's prologue, cave and anchor with queue, dispatch, gate-skip and game-thread counters reading healthy, and the start of the build snapshot."
     caption: "Diagnostics: the ProcessEvent hook, its game-thread gate, and status tiles for the tool's main subsystems."
     wide: true
@@ -87,19 +94,71 @@ So this tool works from outside the process.
 
 ## Approach
 
+<div data-pair="out-of-process">
+
 The tool runs out of process. `pymem` reads and writes the game's memory from a separate Python process, and the only code it puts inside the game is a ProcessEvent trampoline and a few in-place bytecode patches, whose original bytes go back on detach. Its memory and assembler layers were ported from MordMod, an earlier tool of mine for Mordhau (Unreal Engine 4).
+
+</div>
 
 The main change from that project is where offsets come from. MordMod's were found by hand in Cheat Engine and Ghidra, and broke silently on game updates. Here a generator parses an SDK dump of the game (6,218 classes, 6,193 structs) into a checked-in offset table, and a live layer resolves field offsets by name from the running game's reflection data. The generated table is demoted to an expectation that an audit command diffs against.
 
 ## What I built
 
-- **World editor.** Look at, grab, clone, delete or place an actor from the crosshair, with a library of 19 kinds: 13 lights, 4 devices (two drones, an RC car, a bomb) and 2 pieces of cover. Edit mode's feedback is drawn by the game itself: the laser is the game's own beam mesh attached to the camera, and the outline is a reverse-culled, inflated copy of the hit mesh.
-- **Map and spawner.** A top-down map of the level, drawn from its placed meshes and cached on disk per game build, where a click teleports or spawns. Orbs, placed at the crosshair and dragged on the map, are named per-map layouts that zombie waves are dealt across.
-- **Zombies in any mode.** The zombie classes are loaded in every mode, but spawning one with the engine's call gives a statue. The spawner sets the fields the game's own spawner would have set (target, skin pool, perception), re-points each zombie's target every second, silences the game's re-target with a bytecode patch, and dresses it from meshes already in memory.
-- **Game-thread calls.** A ProcessEvent trampoline with a single-slot queue, drained on the game thread and only at a ReceiveTick entry. Host-only actions check for an authority game mode and report "not host" instead of failing silently.
-- **Restore ledger.** Values the tool changes are captured once before the first write; a few one-shot actions are deliberately not restorable. Restore points are tied to the current world and dropped on map change, and the Overview lists what the tool still owes the game.
-- **Control panel.** A frameless glass PyQt6 window in the game's own menu language: nine tabs, scope as structure ("affects only me" against "affects everyone, host required"), a reach tag on every lobby row, bindable global hotkeys, saved profiles, a lobby browser, and a context pane that explains the last row clicked.
-- **Overlay and CLI.** A click-through crosshair and ESP overlay that tracks the game window, and a Typer command line that mirrors the panel, with a GVAS reader/writer for the game's loadout save file.
+<div data-pair="world-editor">
+
+### World editor
+
+Look at, grab, clone, delete or place an actor from the crosshair, with a library of 19 kinds: 13 lights, 4 devices (two drones, an RC car, a bomb) and 2 pieces of cover.
+
+</div>
+
+<div data-pair="edit-mode">
+
+### Edit mode
+
+Edit mode's feedback is drawn by the game itself: the laser is the game's own beam mesh attached to the camera, and the outline is a reverse-culled, inflated copy of the hit mesh.
+
+</div>
+
+### Restore ledger
+
+Values the tool changes are captured once before the first write; a few one-shot actions are deliberately not restorable. Restore points are tied to the current world and dropped on map change, and the Overview lists what the tool still owes the game.
+
+<div data-pair="map-and-spawner">
+
+### Map and spawner
+
+A top-down map of the level, drawn from its placed meshes and cached on disk per game build, where a click teleports or spawns. Orbs, placed at the crosshair and dragged on the map, are named per-map layouts that zombie waves are dealt across.
+
+</div>
+
+<div data-pair="zombies">
+
+### Zombies in any mode
+
+The zombie classes are loaded in every mode, but spawning one with the engine's call gives a statue. The spawner sets the fields the game's own spawner would have set (target, skin pool, perception), re-points each zombie's target every second, silences the game's re-target with a bytecode patch, and dresses it from meshes already in memory.
+
+</div>
+
+<div data-pair="game-thread">
+
+### Game-thread calls
+
+A ProcessEvent trampoline with a single-slot queue, drained on the game thread and only at a ReceiveTick entry. Host-only actions check for an authority game mode and report "not host" instead of failing silently.
+
+</div>
+
+<div data-pair="control-panel">
+
+### Control panel
+
+A frameless glass PyQt6 window in the game's own menu language: nine tabs, scope as structure ("affects only me" against "affects everyone, host required"), a reach tag on every lobby row, bindable global hotkeys, saved profiles, a lobby browser, and a context pane that explains the last row clicked.
+
+</div>
+
+### Overlay and CLI
+
+A click-through crosshair and ESP overlay that tracks the game window, and a Typer command line that mirrors the panel, with a GVAS reader/writer for the game's loadout save file.
 
 ## Outcome & lessons
 

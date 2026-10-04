@@ -10,9 +10,10 @@
  *   (well beyond the column, or portrait plates) get a "Full size" link to a big WebP; with JS
  *   that link, and a click on the image, open it in the project's lightbox instead
  *   (Lightbox.astro, src/scripts/lightbox.ts), which marks such figures `data-zoomable`.
- * - video → LoopVideo; youtube → YouTubeFacade.
+ * - video → LoopVideo (autoplay loops open a playing copy in the lightbox on click); youtube → YouTubeFacade.
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
- * grid; this component only marks the figure `figure--wide`).
+ * grid; this component only marks the figure `figure--wide`). An `inline` figure sits beside its
+ * paragraph (MediaPair) at the normal column's size, `wide` or not.
  * Figures play an entrance as they scroll into view (global.css `[data-reveal]`,
  * src/scripts/reveal.ts; they are never above the fold).
  */
@@ -30,9 +31,10 @@ interface Props {
   item: MediaItem;
   /** 1-based figure number. */
   index: number;
+  inline?: boolean;
 }
 
-const { projectId, item, index } = Astro.props;
+const { projectId, item, index, inline = false } = Astro.props;
 
 /** Rendered width of the two figure columns at the full 72rem container (ProjectLayout). */
 const COLUMN = { normal: 662, wide: 956 };
@@ -46,7 +48,7 @@ const SIZES = {
   wide: '(min-width: 2400px) 1316px, (min-width: 1760px) 1063px, (min-width: 1232px) 956px, (min-width: 1024px) 78vw, 100vw',
 };
 
-const wide = item.kind === 'youtube' || (item.kind === 'image' && item.wide);
+const wide = !inline && (item.kind === 'youtube' || (item.kind === 'image' && item.wide));
 const column = wide ? 'wide' : 'normal';
 
 const image =
@@ -119,7 +121,7 @@ const caption = item.caption;
       videoId={item.id}
       title={item.title}
       start={item.start}
-      sizes={SIZES.wide}
+      sizes={inline ? SIZES.normal : SIZES.wide}
     />
   )}
   <figcaption class="figure__caption">

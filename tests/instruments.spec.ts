@@ -790,7 +790,6 @@ test.describe('in-page scrolling (Ruling G9)', () => {
     });
     await page.locator('#malformed-link').click();
     await expect(page).toHaveURL(/#%zz$/);
-    await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/);
     expect(errors).toEqual([]);
   });
 
@@ -803,37 +802,41 @@ test.describe('in-page scrolling (Ruling G9)', () => {
       await page.waitForLoadState('load');
       const link = page.locator('.site-nav a', { hasText: 'About' });
       await expect(link).toBeVisible();
-      // Glide or jump is decided when the click is handled, not by how many frames the browser
-      // then paints, so it is read at that moment. Counting the scroll events on the way made
-      // the test a frame-rate gauge: CI's software-rastered WebKit paints 0-4 frames of a glide
-      // under load, and a glide that lands in one frame is indistinguishable from a jump. A jump
-      // has landed by the time click() returns; a glide has not moved yet, with smooth scrolling
-      // switched on for it.
-      const click = await link.evaluate((a) => {
-        const html = document.documentElement;
-        const before = scrollY;
-        (a as HTMLElement).click();
-        return {
-          before,
-          after: scrollY,
-          smoothClass: html.classList.contains('smooth-scroll'),
-          behavior: getComputedStyle(html).scrollBehavior,
-        };
-      });
+      // Lenis only drives mouse-and-wheel desktops (touch projects keep native scrolling), and
+      // is fetched after load + idle: wait for it before the click.
+      const lenis =
+        motion === 'on' &&
+        (await page.evaluate(() => matchMedia('(hover: hover) and (pointer: fine)').matches));
+      if (lenis) await expect(page.locator('html')).toHaveClass(/\blenis\b/);
+      // Glide or jump is told by the positions the page passes through, sampled every frame
+      // from the click until it settles: a jump leaves only its start and end, a glide (Lenis
+      // rewinds the browser's instant fragment jump and eases to it) shows positions between.
+      const run = await link.evaluate(
+        (a) =>
+          new Promise<{ before: number; ys: number[] }>((resolve) => {
+            const before = scrollY;
+            const ys: number[] = [];
+            (a as HTMLElement).click();
+            let still = 0;
+            const sample = () => {
+              const y = Math.round(scrollY);
+              still = y === ys[ys.length - 1] ? still + 1 : 0;
+              ys.push(y);
+              if (still > 20 || ys.length > 400) resolve({ before, ys });
+              else requestAnimationFrame(sample);
+            };
+            sample();
+          }),
+      );
       await expect(page).toHaveURL(/#about$/);
       await expect(page.locator('#about')).toBeInViewport();
-      await expect(page.locator('html')).not.toHaveClass(/\bsmooth-scroll\b/, { timeout: 8000 });
-      expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
-      if (motion === 'on') {
-        expect(click.smoothClass).toBe(true);
-        expect(click.behavior).toBe('smooth');
-        expect(click.after, 'nothing has scrolled yet when the click returns').toBe(click.before);
+      const end = run.ys[run.ys.length - 1] ?? run.before;
+      expect(end).toBeGreaterThan(run.before);
+      const between = run.ys.filter((y) => y > run.before && y < end);
+      if (lenis) {
+        expect(between.length, `scroll positions after the click: ${run.ys}`).toBeGreaterThan(0);
       } else {
-        expect(click.smoothClass).toBe(false);
-        expect(click.behavior).toBe('auto');
-        expect(click.after, 'the page has already landed when the click returns').toBeGreaterThan(
-          click.before,
-        );
+        expect(between, `scroll positions after the click: ${run.ys}`).toEqual([]);
       }
     });
   }

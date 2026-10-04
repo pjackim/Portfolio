@@ -2,18 +2,24 @@
 /**
  * Project page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
  * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → Key points
- * (featured highlights) → Markdown body (the default slot) → numbered figure gallery →
- * PrevNext. Featured and archive projects share it; only the eyebrow differs.
+ * (featured highlights) → Markdown body (the default slot, with its paired blocks set beside
+ * their media) → numbered figure gallery → PrevNext. Featured and archive projects share it;
+ * only the eyebrow differs.
+ *
+ * Paired blocks (src/lib/pairs.ts, MediaPair): a `<div data-pair="key">` in the Markdown body is
+ * set beside the media entry whose `pair` is that key — text on one side, figure on the other —
+ * and that media leaves the gallery. Figures are numbered in page order: the paired ones as they
+ * come down the body, then the gallery's.
  *
  * Desktop body grid: 12 columns. Text (key points, prose, section labels, captions) runs in
- * columns 3–9; `wide` figures break out to 2–11. Below 64rem everything is one column,
- * media full width.
+ * columns 3–9; `wide` figures and paired blocks break out to 2–11. Below 64rem everything is one
+ * column, media full width.
  *
  * Instruments (interactions spec §4): a reading-progress bar under the sticky header (CSS scroll
  * timeline, decorative); from 72rem, a sticky section index in columns 1–2 (CaseIndex) — built
  * from the Markdown body's `h2`s plus Figures, when there are at least two sections — with `wide`
- * figures then breaking out to the right only (3–12, the same width), clear of it; and a figure
- * lightbox (Lightbox) when the gallery has images.
+ * figures and paired blocks then breaking out to the right only (3–12, the same width), clear of
+ * it; and a figure lightbox (Lightbox) when any figure is an image.
  */
 import type { MarkdownHeading } from 'astro';
 import Arrow from '../components/Arrow.astro';
@@ -22,11 +28,13 @@ import CaseHero from '../components/CaseHero.astro';
 import CaseIndex, { type CaseIndexItem } from '../components/CaseIndex.astro';
 import Lightbox from '../components/Lightbox.astro';
 import MediaFigure from '../components/media/MediaFigure.astro';
+import MediaPair from '../components/media/MediaPair.astro';
 import PrevNext from '../components/PrevNext.astro';
 import ProjectMeta from '../components/ProjectMeta.astro';
 import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
 import { coverYouTube } from '../lib/media';
+import { pairMedia, splitPairs } from '../lib/pairs';
 import { getFeatured, getPrevNext, type Project } from '../lib/projects';
 import { coverOgImage, creativeWorkJsonLd } from '../lib/seo';
 import { withBase } from '../lib/url';
@@ -50,7 +58,19 @@ const [featured, { prev, next }, heroVideo, ogImage] = await Promise.all([
 const position = featured.findIndex((p) => p.id === id);
 const kind = position === -1 ? 'Archive' : `Project ${pad2(position + 1)}`;
 const keyPoints = data.featured ? data.highlights : [];
-const gallery = data.media.filter((item) => item !== heroVideo);
+
+// The rendered body, cut at its paired blocks: each pair takes its media out of the gallery, and
+// the figures are numbered in the order a reader meets them.
+const segments = splitPairs(await Astro.slots.render('default'));
+const paired = pairMedia(segments, data.media, id);
+let figureNumber = 0;
+const body = segments.map((segment) =>
+  segment.kind === 'pair'
+    ? { ...segment, item: paired.get(segment.key)!, index: ++figureNumber }
+    : segment,
+);
+const gallery = data.media.filter((item) => item !== heroVideo && !item.pair);
+const hasImages = [...paired.values(), ...gallery].some((item) => item.kind === 'image');
 const sections: CaseIndexItem[] = [
   ...headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text })),
   ...(gallery.length > 0 ? [{ id: 'figures-title', label: 'Figures' }] : []),
@@ -103,7 +123,15 @@ const indexed = sections.length >= 2;
       )}
 
       <div class="case__prose prose">
-        <slot />
+        {body.map((segment) =>
+          segment.kind === 'pair' ? (
+            <MediaPair projectId={id} item={segment.item} index={segment.index} side={segment.side}>
+              <Fragment set:html={segment.html} />
+            </MediaPair>
+          ) : (
+            <Fragment set:html={segment.html} />
+          ),
+        )}
       </div>
 
       {gallery.length > 0 && (
@@ -114,13 +142,13 @@ const indexed = sections.length >= 2;
           </h2>
           <div class="case__figures">
             {gallery.map((item, i) => (
-              <MediaFigure projectId={id} item={item} index={i + 1} />
+              <MediaFigure projectId={id} item={item} index={figureNumber + i + 1} />
             ))}
           </div>
         </section>
       )}
     </div>
-    {gallery.some((item) => item.kind === 'image') && <Lightbox />}
+    {hasImages && <Lightbox />}
   </article>
 
   <PrevNext class="case__prev-next container" prev={prev} next={next} />
@@ -167,6 +195,24 @@ const indexed = sections.length >= 2;
     display: grid;
     gap: var(--space-2xl);
     margin-block-start: var(--space-2xl);
+  }
+
+  /* The Markdown body: the prose measure belongs to its text blocks, not the container, so a
+     paired block (text beside its figure) can run wider than the measure. */
+  .case__prose {
+    max-inline-size: none;
+  }
+
+  .case__prose > :global(*:not(.pair)) {
+    max-inline-size: var(--measure);
+  }
+
+  .case__prose > :global(.pair) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .case__prose > :global(.pair + *:not(h2)) {
+    margin-block-start: var(--space-xl);
   }
 
   /* Block sections (Key points, Figures): a hairline, then a mono label. */
@@ -235,6 +281,21 @@ const indexed = sections.length >= 2;
       grid-column: 3 / 10;
     }
 
+    /* The prose takes the full grid so a paired block can break out of columns 3–9. */
+    .case__body > .case__prose {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+
+    .case__prose > :global(*) {
+      grid-column: 3 / 10;
+    }
+
+    .case__prose > :global(.pair) {
+      grid-column: 2 / 12;
+    }
+
     .case__body > .case__gallery {
       grid-column: 1 / -1;
       display: grid;
@@ -285,6 +346,10 @@ const indexed = sections.length >= 2;
     }
 
     .case__body--indexed .case__figures > :global(.figure--wide) > :global(:not(figcaption)) {
+      grid-column: 3 / -1;
+    }
+
+    .case__body--indexed .case__prose > :global(.pair) {
       grid-column: 3 / -1;
     }
   }

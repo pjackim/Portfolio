@@ -58,6 +58,10 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     position: relative;
   }
 
+  video[data-zoomable] {
+    cursor: zoom-in;
+  }
+
   video {
     inline-size: 100%;
     block-size: auto;

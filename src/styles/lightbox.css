@@ -140,7 +140,8 @@
   display: grid;
 }
 
-.lightbox__frame img {
+.lightbox__frame img,
+.lightbox__frame video {
   display: block;
   inline-size: min(
     calc(var(--lb-w, 1600) * 1px),
@@ -154,6 +155,10 @@
   outline: var(--hairline);
   background-color: var(--surface-2);
   cursor: default;
+}
+
+.lightbox__frame [hidden] {
+  display: none;
 }
 
 .lightbox__frame[data-mode='alpha'] img {
