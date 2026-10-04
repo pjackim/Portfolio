@@ -298,7 +298,7 @@ a {
 }
 
 /* One-shot entrance reveals (interactions spec §3; Ruling G6), below the fold only: cards
-   after the first row, capability boxes, archive rows, project figures. src/scripts/reveal.ts
+   after the first row, capability boxes, index rows, project figures. src/scripts/reveal.ts
    marks items that are entirely below the viewport once the page has loaded `pending`, and
    `in` once one's top edge is a tenth of the viewport into view (any height of item); it plays
    once, then the state is dropped. Visible by

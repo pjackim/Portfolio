@@ -13,7 +13,6 @@ cover: ./cover.webp
 coverAlt: 'Placeholder cover image reading "Cover pending".'
 featured: false
 order: 100
-showOnHome: false
 draft: true
 highlights:
   - Works with 17+ AI services. Use your own account and switch any time.

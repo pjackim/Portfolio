@@ -1,8 +1,8 @@
 ---
 /**
  * Project footer navigation (spec-design-content §2, §3): "← PREVIOUS / title" and
- * "NEXT → / title" — featured projects step by `order`, archive projects by year
- * (`getPrevNext`). A missing side is simply left out; Next stays in the right-hand cell.
+ * "NEXT → / title" — every project steps through the display order (`getPrevNext`). A missing side
+ * is simply left out; Next stays in the right-hand cell.
  * Whole cells are the targets; links are hover-prefetched (Ruling R24).
  */
 import type { Project } from '../lib/projects';
@@ -63,7 +63,7 @@ const href = (project: Project) => withBase(`work/${project.id}/`);
     border-block-start: var(--hairline);
   }
 
-  /* Hover wash, bled past the text edge like the archive rows. */
+  /* Hover wash, bled past the text edge like the index rows. */
   .prev-next__link::before {
     content: '';
     position: absolute;

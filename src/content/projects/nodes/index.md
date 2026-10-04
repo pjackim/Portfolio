@@ -6,7 +6,6 @@ tldr: 'A bracelet that works as a wearable to-do list: each bead is a button tha
 role: Team project
 year: 2021
 group: design
-showOnHome: true
 capabilities: [design-3d, engineering-practice]
 stack: [SCRUM, Cinema 4D, Photoshop]
 cover: ./cover.webp

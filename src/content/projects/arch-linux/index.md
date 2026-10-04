@@ -5,7 +5,6 @@ summary: I learned Linux from zero by building an Arch Linux desktop and customi
 tldr: 'I built my own desktop on Arch Linux, a do-it-yourself version of the Linux operating system, to teach myself Linux from zero. I customized it heavily, and my settings files are public on GitHub for anyone to borrow.'
 year: 2020
 group: software
-showOnHome: true
 capabilities: [engines-systems]
 stack: [Linux, Bash, Vim, GitHub]
 cover: ./cover.webp

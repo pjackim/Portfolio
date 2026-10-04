@@ -104,7 +104,6 @@ metrics, employers, dates, or links.
 | `group`                           | `security` \| `software` \| `design`                                   | Which `/work/` section                                                            |
 | `featured`                        | boolean, default `false`                                               | Shown on the home page                                                            |
 | `order`                           | int, default `100`                                                     | Sort key among featured projects; must be unique                                  |
-| `showOnHome`                      | boolean, default `false`                                               | Archive projects only — also list on the home page                                |
 | `draft`                           | boolean, default `false`                                               | Hidden outside `astro dev` until `false`                                          |
 | `capabilities`                    | 1–4 of the enum in `src/data/taxonomy.ts`                              |                                                                                   |
 | `stack`                           | 1–8 strings                                                            |                                                                                   |

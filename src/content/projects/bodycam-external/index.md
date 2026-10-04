@@ -36,7 +36,6 @@ coverAlt: "BodyCam's control panel beside a red-lit game corridor, with the leve
 coverPosition: 'center 6%'
 featured: true
 order: 1
-showOnHome: false
 draft: false
 highlights:
   - 'Edit a live match as host: place lights, drones and more.'

@@ -3,8 +3,8 @@
  * Project page (spec-design-content §2, §3, §4): back link → CaseHeader → ProjectMeta →
  * hero (cover, or the YouTube facade when the cover is its poster — Ruling R21) → TL;DR → Key points
  * (featured highlights) → Markdown body (the default slot, with its paired blocks set beside
- * their media) → numbered figure gallery → PrevNext. Featured and archive projects share it;
- * only the eyebrow differs.
+ * their media) → numbered figure gallery → PrevNext. Every project shares it; the eyebrow's
+ * number is the project's place in the display order, and only featured projects show Key points.
  *
  * Paired blocks (src/lib/pairs.ts, MediaPair): a `<div data-pair="key">` in the Markdown body is
  * set beside the media entry whose `pair` is that key — text on one side, figure on the other —
@@ -35,7 +35,7 @@ import { GROUP_LABELS } from '../data/taxonomy';
 import { pad2 } from '../lib/format';
 import { coverYouTube } from '../lib/media';
 import { pairMedia, splitPairs } from '../lib/pairs';
-import { getFeatured, getPrevNext, type Project } from '../lib/projects';
+import { getOrdered, getPrevNext, type Project } from '../lib/projects';
 import { coverOgImage, creativeWorkJsonLd } from '../lib/seo';
 import { withBase } from '../lib/url';
 import BaseLayout from './BaseLayout.astro';
@@ -49,14 +49,13 @@ interface Props {
 const { project, headings = [] } = Astro.props;
 const { id, data } = project;
 
-const [featured, { prev, next }, heroVideo, ogImage] = await Promise.all([
-  getFeatured(),
+const [ordered, { prev, next }, heroVideo, ogImage] = await Promise.all([
+  getOrdered(),
   getPrevNext(id),
   coverYouTube(project),
   coverOgImage(project),
 ]);
-const position = featured.findIndex((p) => p.id === id);
-const kind = position === -1 ? 'Archive' : `Project ${pad2(position + 1)}`;
+const kind = `Project ${pad2(ordered.findIndex((p) => p.id === id) + 1)}`;
 const keyPoints = data.featured ? data.highlights : [];
 
 // The rendered body, cut at its paired blocks: each pair takes its media out of the gallery, and

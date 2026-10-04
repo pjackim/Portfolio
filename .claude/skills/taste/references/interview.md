@@ -36,7 +36,7 @@ request; don't read these out verbatim.
    now?" Recommend the goal it most plausibly serves (G1 story, G2 work visible without a click,
    G3 strongest work biggest, Goal 2 interaction, Goal 3 contact), phrased as a visitor takeaway.
 2. **Surface.** "Which part exactly?" when the request could mean several (for example "the
-   cards" could be `ProjectCard` on home, `ArchiveRow` in earlier work, or the `/work/` grid).
+   cards" could be `ProjectCard` on home or a row on the `/work/` index).
    Recommend the one the request's wording and the latest audit point at.
 3. **Mode.** "Keep the current look and sharpen it, or rethink this section's structure?"
    Recommend **preserve** unless the user said "redo", "rethink", or "from scratch". A change to

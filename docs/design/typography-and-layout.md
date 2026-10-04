@@ -49,7 +49,7 @@
 - A bento grid has **exactly** as many cells as there is content. No filler tiles.
 - A long flat list with a hairline under every row is the laziest layout. When there are more
   than about 5 items, group them, show the top few with a link to the rest, or give each an
-  image. Exception: views built for comparison or lookup (the `/work/` index, the archive) stay
+  image. Exception: views built for comparison or lookup (the `/work/` index) stay
   lists, per NN/g ([cards.md](./cards.md)), made scannable by grouping and filters instead.
 - One copy register per page (don't mix terminal-mono telemetry, editorial prose, and
   marketing punch without reason).

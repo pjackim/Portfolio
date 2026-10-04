@@ -96,37 +96,34 @@ export async function getFeatured(): Promise<Project[]> {
   return (await getProjects()).filter((p) => p.data.featured).sort(byOrder);
 }
 
-/** Non-featured projects, newest year first, then by title. */
-export async function getArchive(): Promise<Project[]> {
-  return (await getProjects()).filter((p) => !p.data.featured).sort(byYearDescThenTitle);
-}
-
-/** The archive rows shown on the home page (`showOnHome`), in archive order. */
-export async function getHomeArchive(): Promise<Project[]> {
-  return (await getArchive()).filter((p) => p.data.showOnHome);
+/**
+ * Every project in one display order: the featured ones by `order`, then the rest newest year
+ * first, then by title. The one list `/work/` shows and the project footer steps through.
+ */
+export async function getOrdered(): Promise<Project[]> {
+  const projects = await getProjects();
+  const featured = projects.filter((p) => p.data.featured).sort(byOrder);
+  const rest = projects.filter((p) => !p.data.featured).sort(byYearDescThenTitle);
+  return [...featured, ...rest];
 }
 
 /**
- * Projects by group, keyed in `GROUPS` order (every group present, possibly empty). Within a
- * group: featured first by `order`, then the archive by year (newest first) and title.
+ * Projects by group, keyed in `GROUPS` order (every group present, possibly empty), each in
+ * display order.
  */
 export async function getByGroup(): Promise<Map<Group, Project[]>> {
-  const [featured, archive] = await Promise.all([getFeatured(), getArchive()]);
   const groups = new Map<Group, Project[]>(GROUPS.map((g) => [g, []]));
-  for (const p of [...featured, ...archive]) groups.get(p.data.group)?.push(p);
+  for (const p of await getOrdered()) groups.get(p.data.group)?.push(p);
   return groups;
 }
 
 /**
- * Neighbours for the project footer. Featured projects step through the featured list by
- * `order`; archive projects step through the archive by year. No wraparound: `undefined` at
- * either end. Throws for an unknown id.
+ * Neighbours for the project footer, in display order. No wraparound: `undefined` at either
+ * end. Throws for an unknown id.
  */
 export async function getPrevNext(id: string): Promise<PrevNext> {
-  const [featured, archive] = await Promise.all([getFeatured(), getArchive()]);
-  for (const list of [featured, archive]) {
-    const i = list.findIndex((p) => p.id === id);
-    if (i !== -1) return { prev: list[i - 1], next: list[i + 1] };
-  }
-  throw new Error(`getPrevNext: no published project with id "${id}"`);
+  const ordered = await getOrdered();
+  const i = ordered.findIndex((p) => p.id === id);
+  if (i === -1) throw new Error(`getPrevNext: no published project with id "${id}"`);
+  return { prev: ordered[i - 1], next: ordered[i + 1] };
 }

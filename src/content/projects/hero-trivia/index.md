@@ -9,7 +9,6 @@ tldr: 'A comic-book trivia game built like a crossword: a hint word runs down th
 role: Freelance developer
 year: 2022
 group: software
-showOnHome: true
 capabilities: [languages, engineering-practice]
 stack: [React, Hooks, NPM, Data parsing]
 cover: ./cover.webp

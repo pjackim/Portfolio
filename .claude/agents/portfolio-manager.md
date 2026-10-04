@@ -77,7 +77,7 @@ Keep interviewing, round after round, until the ledger (below) has no gaps. A va
   `links` (`repo`/`demo`/`video`), `legacyPaths` (only for pages that existed on the legacy
   site), `coverPosition`.
 - Placement: `featured` needs a unique `order`, and the build fails unless 3–8 projects are
-  featured; archive projects can set `showOnHome`. Ask where it should appear.
+  featured. Ask whether it should be one of them.
 - Body: a short body in the structure that fits the work, written to
   `docs/design/project-copy.md` (about 180 words; not a fixed Problem / Approach skeleton; see
   `bodycam-external`). Plain Markdown — never pasted legacy HTML.

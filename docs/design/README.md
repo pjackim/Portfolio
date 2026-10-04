@@ -14,7 +14,7 @@ says what to take from each installed design skill.
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | [scanning-and-reading.md](./scanning-and-reading.md)     | writing any copy, headings, summaries, or laying out a section                           | Strong: NN/g eyetracking and log-data research              |
 | [project-copy.md](./project-copy.md)                     | writing or editing a project page: summary, key points, body, captions, structure        | Repo rule, from Parker's feedback on the 2026 pages         |
-| [cards.md](./cards.md)                                   | building or changing a project card, archive row, or any clickable tile                  | Strong: NN/g plus two accessibility references              |
+| [cards.md](./cards.md)                                   | building or changing a project card, index row, or any clickable tile                    | Strong: NN/g plus two accessibility references              |
 | [progressive-disclosure.md](./progressive-disclosure.md) | deciding what shows on the surface vs. on the project page or behind a click             | Strong: NN/g                                                |
 | [bento-grid.md](./bento-grid.md)                         | laying out a grid of projects/capabilities with varied importance                        | Moderate: practitioner guide, not research; use judgement   |
 | [anti-slop.md](./anti-slop.md)                           | choosing colour, type, decoration, labels, or copy; reviewing whether UI looks generic   | Practitioner consensus (Anthropic, impeccable, taste-skill) |
