@@ -1,13 +1,13 @@
 /**
  * The experience git log and the /work/ showcases (Portfolio.dc.html, Claude Design, Sept 2026;
  * the log reworked on design/git-log-rework).
- * - Git log (/experience/, and home's Experience): every milestone, newest first, HEAD open and
- *   the rest folded; a milestone's toggle opens its skills, nested under it; every row carries a
+ * - Git log (/experience/, and home's Experience): every milestone, newest first, all open by
+ *   default; a milestone's toggle folds and opens its skills, nested under it; every row carries a
  *   graph slice exactly its own height, so the lanes meet row to row whatever wraps; a `--grep`
  *   chip opens its family's milestones, dims the rest and says so in the command line, a
  *   milestone's toggle still works while a family is picked, and "all" goes back; skills still
- *   being learned sit above HEAD, marked; without JavaScript there are no controls and HEAD's
- *   skills still show.
+ *   being learned sit above HEAD, marked; without JavaScript there are no controls and every
+ *   milestone's skills still show.
  * - Showcases (/work/): each lead's tick fills over 6 s and moves the lead on when it's full;
  *   hover or the status button pauses it (WCAG 2.2.2), and with reduced motion nothing runs; a
  *   tick picks a project and focus follows to the same tick in the new lead; hovering a row (fine
@@ -33,7 +33,7 @@ const logHeight = (page: Page) =>
 test.describe('experience log', () => {
   test.use({ reducedMotion: 'reduce' });
 
-  test('every milestone, newest first: HEAD open, the rest folded', async ({ page }) => {
+  test('every milestone, newest first: all open by default', async ({ page }) => {
     await gotoRel(page, 'experience/');
     const commits = page.locator(COMMIT);
     expect(await commits.count()).toBeGreaterThan(3);
@@ -42,20 +42,29 @@ test.describe('experience log', () => {
     await expect(head).toHaveAttribute('data-open');
     await expect(head.locator('[data-skill]').first()).toBeVisible();
     await expect(head.locator('.commit__toggle')).toHaveAttribute('aria-expanded', 'true');
-    const openBelowHead = await commits.evaluateAll(
-      (els) => els.slice(1).filter((el) => el.hasAttribute('data-open')).length,
+    const folded = await commits.evaluateAll(
+      (els) =>
+        els.filter((el) => el.querySelector('.commit__toggle') && !el.hasAttribute('data-open'))
+          .length,
     );
-    expect(openBelowHead).toBe(0);
+    expect(folded).toBe(0);
+    await expect(page.locator(`${COMMIT} .commit__toggle[aria-expanded="false"]`)).toHaveCount(0);
   });
 
-  test('a toggle opens its milestone, with its skills nested under it', async ({ page }) => {
+  test('a toggle folds and opens its milestone, with its skills nested under it', async ({
+    page,
+  }) => {
     await gotoRel(page, 'experience/');
     await logReady(page);
     const commit = page.locator(`${COMMIT}:has(button.commit__toggle)`).nth(1);
     const toggle = commit.locator('button.commit__toggle');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(commit.locator('[data-skill]').first()).toBeVisible();
+    const before = await logHeight(page);
+    await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(commit.locator('[data-skill]').first()).toBeHidden();
-    const before = await logHeight(page);
+    await expect.poll(() => logHeight(page)).toBeLessThan(before);
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     const skill = commit.locator('[data-skill] .skill__name').first();
@@ -92,9 +101,6 @@ test.describe('experience log', () => {
       }
       expect(a.tick).toBe(a.dot);
     }
-    await expect.poll(() => logHeight(page)).toBeGreaterThan(before);
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect.poll(() => logHeight(page)).toBe(before);
   });
 
