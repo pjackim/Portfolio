@@ -44,11 +44,11 @@ highlights:
 media:
   - kind: video
     src: ./world-editor-outline.mp4
-    pair: aim-and-edit
     alt: 'A red laser runs from the gun to whatever the crosshair hits, and a thin green outline traces a door, a wall monitor and a railing.'
+    caption: 'Edit mode: green means the editor can act on the target, red means it refuses.'
   - kind: video
     src: ./world-editor-lights.mp4
-    pair: place-things
+    pair: world-editor
     alt: "A red light placed in a corridor from the panel's light library, then switched to green while brightness and reach are adjusted."
     caption: 'Only I see these lights. Other players do not.'
   - kind: video
@@ -88,23 +88,15 @@ legacyPaths: []
 
 All of this works when I'm hosting the match.
 
-<div data-pair="aim-and-edit" data-side="right">
+<div data-pair="world-editor" data-side="right">
 
-### Aim and edit
+### Edit the level live
 
-Point at an object. A **green outline** means the editor can act on it; red means it refuses.
-
-</div>
-
-<div data-pair="place-things" data-side="left">
-
-### Place lights and gadgets
-
-Drop in lights, drones, an RC car, a bomb or cover barriers. **19 kinds** in all, and lights can be retuned live.
+Aim at an object, then place lights, drones, an RC car, a bomb or cover barriers. **19 kinds** in all, and lights can be retuned live.
 
 </div>
 
-<div data-pair="teleport" data-side="right">
+<div data-pair="teleport" data-side="left">
 
 ### Teleport by clicking
 
@@ -112,7 +104,7 @@ A top-down map of the level. **One click** and you are there.
 
 </div>
 
-<div data-pair="zombies" data-side="left">
+<div data-pair="zombies" data-side="right">
 
 ### Spawn zombies
 
@@ -120,7 +112,7 @@ The game's Zombies maps never shipped. I click the map and a zombie appears in a
 
 </div>
 
-<div data-pair="control-panel" data-side="right">
+<div data-pair="control-panel" data-side="left">
 
 ### Tune the match
 
