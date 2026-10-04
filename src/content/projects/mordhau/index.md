@@ -7,7 +7,7 @@ year: 2021
 period: Fall 2021
 group: security
 featured: true
-order: 2
+order: 3
 capabilities: [offensive-security]
 stack: [C++, DLL injection, Memory patching, Reverse engineering, Unreal Engine 4]
 highlights:

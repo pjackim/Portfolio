@@ -37,8 +37,8 @@ interface Props {
   index: number;
   /** The lead cell: biggest cover, plus the summary and stack. */
   lead?: boolean;
-  /** The last bento cell widened to fill its row (ProjectGrid): a whole row, or half of one. */
-  span?: 'full' | 'half' | undefined;
+  /** A last bento cell widened to half a row (ProjectGrid). */
+  span?: 'half' | undefined;
   /** Above-the-fold card: load the cover eagerly at high priority. */
   eager?: boolean;
   /** Entrance reveal as it scrolls into view (cards below the first row; spec §4). */
@@ -55,16 +55,12 @@ const SIZES = {
   lead: '(min-width: 2400px) 910px, (min-width: 1760px) 745px, (min-width: 1216px) 40rem, (min-width: 960px) 56vw, 100vw',
   normal:
     '(min-width: 2400px) 650px, (min-width: 1760px) 530px, (min-width: 1216px) 30rem, (min-width: 960px) 40vw, (min-width: 640px) 50vw, 100vw',
-  // The last card widened to fill its row: a whole container, or half of one.
-  full: '(min-width: 2400px) 1584px, (min-width: 1760px) 1280px, (min-width: 1216px) 72rem, 100vw',
+  // Last cards widened to fill their row: half a container.
   half: '(min-width: 2400px) 781px, (min-width: 1760px) 629px, (min-width: 1216px) 565px, (min-width: 960px) 50vw, (min-width: 640px) 50vw, 100vw',
 };
 
 const facts = await imageFacts(data.cover);
-const widths =
-  span === 'full'
-    ? candidateWidths(facts.width, 1600, [480, 800, 1200, 1600])
-    : candidateWidths(facts.width, 1200, [480, 800, 1200]);
+const widths = candidateWidths(facts.width, 1200, [480, 800, 1200]);
 const mode = frameMode(facts, 800);
 const style = pageStyle(Astro.locals, {
   'view-transition-name': `cover-${id}`,

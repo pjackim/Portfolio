@@ -28,7 +28,7 @@ cover: ./cover.webp
 coverAlt: "The BodyCam control panel's Spawn tab open beside a red-lit corridor: the world editor's light library with Emergency red armed, its brightness, colour and reach controls, and the lit LOUNGE doorway in the game."
 coverPosition: 'center 6%'
 featured: true
-order: 7
+order: 1
 showOnHome: false
 draft: false
 highlights:

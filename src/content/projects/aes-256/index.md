@@ -6,7 +6,7 @@ year: 2016
 period: c. 2016
 group: security
 featured: true
-order: 6
+order: 7
 capabilities: [offensive-security]
 stack: [C++, CLI, Testing, GitHub]
 highlights:

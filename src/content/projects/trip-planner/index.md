@@ -7,7 +7,7 @@ year: 2021
 period: Fall 2021
 group: software
 featured: true
-order: 3
+order: 4
 capabilities: [engineering-practice]
 stack: [React, Reactstrap, GitHub, ZenHub, Code Climate, SCRUM]
 highlights:
