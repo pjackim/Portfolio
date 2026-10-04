@@ -3,9 +3,11 @@
  * can be measured without a browser.
  *
  * Uniform random placement clumps: with ~20 points, a whole third of the height can end up with
- * two of them while one band carries half the faint links. So placement is stratified instead:
- * one point per vertical slice (jittered inside it), and each point's x is the best of a few
- * candidates, the one farthest from everything already placed and from the path. The same
+ * two of them while one band carries half the faint links. So the height is stratified: one
+ * point per vertical slice, jittered inside it. Across, the points gather toward the middle of
+ * the band, between the two columns of text: each x is the mean of a few uniform draws, so it is
+ * bell-shaped around the centre. Of a few such candidates the one with the most room wins, with
+ * room capped at CLEAR_CAP so the pick never drifts outward chasing the emptiest spot. The same
  * seeded `rnd` gives the same field on every visit and resize.
  */
 
@@ -21,8 +23,12 @@ export interface FieldBounds {
   y1: number;
 }
 
-/** How many x positions each point tries, and how far into its slice the y may wander. */
-const CANDIDATES = 14;
+/** Candidates tried per point, uniform draws averaged per x (more = tighter to the centre). */
+const CANDIDATES = 6;
+const BELL = 3;
+/** Distance (px) from the other points and the path beyond which more room doesn't matter. */
+const CLEAR_CAP = 60;
+/** How far into its slice a point's y may wander (share of the slice, each side). */
 const SLICE_MARGIN = 0.15;
 
 /** `count` points over `bounds`, one per vertical slice, kept clear of each other and `avoid`. */
@@ -36,15 +42,17 @@ export function scatterField(
   const placed: Spot[] = [];
   for (let k = 0; k < count; k++) {
     const y = bounds.y0 + (k + SLICE_MARGIN + rnd() * (1 - 2 * SLICE_MARGIN)) * slice;
-    let best: Spot = { x: bounds.x0, y };
-    let clearance = -1;
+    let best: Spot = { x: (bounds.x0 + bounds.x1) / 2, y };
+    let room = -1;
     for (let c = 0; c < CANDIDATES; c++) {
-      const x = bounds.x0 + rnd() * (bounds.x1 - bounds.x0);
-      let nearest = Infinity;
+      let u = 0;
+      for (let b = 0; b < BELL; b++) u += rnd();
+      const x = bounds.x0 + (u / BELL) * (bounds.x1 - bounds.x0);
+      let nearest = CLEAR_CAP;
       for (const p of avoid) nearest = Math.min(nearest, Math.hypot(p.x - x, p.y - y));
       for (const p of placed) nearest = Math.min(nearest, Math.hypot(p.x - x, p.y - y));
-      if (nearest > clearance) {
-        clearance = nearest;
+      if (nearest > room) {
+        room = nearest;
         best = { x, y };
       }
     }
