@@ -9,7 +9,7 @@
  *
  * The graph is drawn here, one SVG slice per row (src/lib/git-log.ts): the lanes don't depend on
  * what's open, so src/scripts/git-log.ts only toggles state. Slices fill their rows, so rows wrap
- * freely at any width, phones included. Without JS the default state stays (HEAD open) and the
+ * freely at any width, phones included. Without JS the default state stays (every milestone open) and the
  * controls, which would do nothing, are not shown.
  */
 import { site, LOG_FAMILIES, type LogCommit } from '../data/site';
@@ -96,7 +96,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
             data-commit={c.id}
             data-title={c.title}
             data-fams={g?.row.fams}
-            data-open={(i === 0 && skills.length > 0) || undefined}
+            data-open={skills.length > 0 || undefined}
           >
             <div class="git-log__row commit__row">
               <span class="git-log__when">{c.when}</span>
@@ -118,7 +118,7 @@ const plural = (n: number) => `${n} ${n === 1 ? 'skill' : 'skills'}`;
                 <button
                   type="button"
                   class="commit__toggle"
-                  aria-expanded={i === 0 ? 'true' : 'false'}
+                  aria-expanded="true"
                   aria-controls={`${idPrefix}-${c.id}-skills`}
                 >
                   <span class="commit__count" aria-hidden="true">

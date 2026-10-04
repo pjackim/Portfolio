@@ -75,7 +75,7 @@ test('off the home page, the current section is marked and Contact opens the she
   await expect(page.locator(SHEET)).toBeHidden();
 });
 
-test('experience: the graph stays, and a tap anywhere on a milestone opens its skills', async ({
+test('experience: the graph stays, and a tap anywhere on a milestone folds its skills', async ({
   page,
 }) => {
   await gotoRel(page, 'experience/');
@@ -84,12 +84,12 @@ test('experience: the graph stays, and a tap anywhere on a milestone opens its s
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const commit = page.locator('li[data-commit]:has(button.commit__toggle)').nth(1);
   const chip = commit.locator('[data-skill]').first();
-  await expect(chip).toBeHidden();
+  await expect(chip).toBeVisible();
   // The row's title, not the toggle itself: the toggle's target covers the row.
   const title = (await commit.locator('.commit__title').boundingBox())!;
   await page.mouse.click(title.x + 4, title.y + title.height / 2);
-  await expect(commit.locator('button.commit__toggle')).toHaveAttribute('aria-expanded', 'true');
-  await expect(chip).toBeVisible();
+  await expect(commit.locator('button.commit__toggle')).toHaveAttribute('aria-expanded', 'false');
+  await expect(chip).toBeHidden();
 });
 
 test('work: a lead card, and rows with 64px thumbnails', async ({ page }) => {
