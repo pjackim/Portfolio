@@ -81,10 +81,11 @@ function spanOf(i: number): 'half' | undefined {
       grid-column: span 6;
     }
 
-    /* A half-width card's head stacks: title, then index and year. */
+    /* A half-width card's head stacks: title, then index and year. Stretched, so a long title
+       ellipsizes inside the card instead of sizing to its text and pushing past the viewport. */
     .project-grid > :global(.card:not(:first-child) .card__head) {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
     }
   }
 
