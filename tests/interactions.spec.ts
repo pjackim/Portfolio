@@ -727,6 +727,83 @@ test.describe('entrance reveals, motion on', () => {
       .toBe(true);
   });
 
+  /**
+   * Sweeps the pointer down the middle of the About constellation's field (the points are spread
+   * over the whole height, so one is always within reach) and reports whether one got locked on.
+   */
+  async function sweepField(page: Page): Promise<boolean> {
+    const timeline = page.locator('[data-timeline]');
+    const box = (await timeline.boundingBox())!;
+    for (const share of [0.2, 0.35, 0.5, 0.65, 0.8]) {
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height * share, { steps: 4 });
+      await page.waitForTimeout(150);
+      if ((await timeline.getAttribute('data-locked')) !== null) return true;
+    }
+    return false;
+  }
+
+  test('about timeline: the pointer locks onto the nearest field point and lets go', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoRel(page, 'about/');
+    await page.waitForLoadState('load');
+    test.skip(
+      !(await page.evaluate(() => matchMedia('(hover: hover) and (pointer: fine)').matches)),
+      'hover needs a fine pointer',
+    );
+    const timeline = page.locator('[data-timeline]');
+    await expect(timeline).toHaveAttribute('data-live', '', { timeout: 5000 });
+    await scrollIntoView(page, '[data-timeline]', 'center');
+    await expect(page.locator('.timeline__stop[data-tl]')).toHaveCount(0, { timeout: 8000 });
+    expect(await sweepField(page)).toBe(true);
+    await page.mouse.move(4, 4, { steps: 4 });
+    await expect(timeline).not.toHaveAttribute('data-locked', { timeout: 4000 });
+  });
+
+  test('about timeline: a touch pointer locks nothing, a mouse at the same spots does', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoRel(page, 'about/');
+    await page.waitForLoadState('load');
+    const timeline = page.locator('[data-timeline]');
+    await expect(timeline).toHaveAttribute('data-live', '', { timeout: 5000 });
+    await scrollIntoView(page, '[data-timeline]', 'center');
+    await expect(page.locator('.timeline__stop[data-tl]')).toHaveCount(0, { timeout: 8000 });
+    const box = (await timeline.boundingBox())!;
+    // Synthetic pointer events, so the pointer type is ours to choose on every project.
+    const sweepAs = async (pointerType: 'touch' | 'mouse') => {
+      for (const share of [0.2, 0.35, 0.5, 0.65, 0.8]) {
+        await timeline.evaluate(
+          (el, move) =>
+            el.dispatchEvent(new PointerEvent('pointermove', { ...move, bubbles: true })),
+          {
+            pointerType,
+            clientX: box.x + box.width / 2,
+            clientY: box.y + box.height * share,
+          },
+        );
+        await page.waitForTimeout(150);
+        if ((await timeline.getAttribute('data-locked')) !== null) return true;
+      }
+      return false;
+    };
+    expect(await sweepAs('touch')).toBe(false);
+    expect(await sweepAs('mouse')).toBe(true);
+  });
+
+  test('about timeline: nothing is locked on with motion off', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoRel(page, 'about/');
+    await page.waitForLoadState('load');
+    const timeline = page.locator('[data-timeline]');
+    await expect(timeline).toHaveAttribute('data-live', '', { timeout: 5000 });
+    await scrollIntoView(page, '[data-timeline]', 'center');
+    expect(await sweepField(page)).toBe(false);
+  });
+
   test('the experience log wipes down once as it scrolls in, leaving nothing behind', async ({
     page,
   }) => {
