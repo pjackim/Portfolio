@@ -8,6 +8,10 @@
  * drops back out if the reader scrolls back above it. When the trace completes, a reticle
  * closes on the last node and the whole path glows once.
  *
+ * Hover (pointer devices): the field point nearest the pointer is locked on, so corner brackets
+ * snap onto it and its own links turn accent, then release as the pointer moves on. It
+ * carries no information and only plays with motion on, like the loop it rides.
+ *
  * Motion gate (src/scripts/motion.ts): with motion off the trace is simply drawn complete, every
  * stop is shown, the field holds still, and nothing loops. With motion on, a frame loop runs
  * only while the timeline is within 200px of the viewport. Nothing here listens to `scroll`: the
@@ -38,6 +42,14 @@ const TAIL_SLICES = 12;
 const FLASH_MS = 700;
 const LOCK_MS = 1400;
 const LOCK_SNAP_MS = 220;
+/**
+ * Hover: a field point within ACQUIRE px of the pointer is locked on, held until the pointer is
+ * ACQUIRE_RELEASE px away, and swapped for a nearer one only if that is SWITCH_MARGIN px closer.
+ */
+const ACQUIRE = 90;
+const ACQUIRE_RELEASE = 110;
+const SWITCH_MARGIN = 12;
+const ACQUIRE_EASE_MS = 240;
 /** The field of drifting points sits in the middle band, between the two columns of text. */
 const FIELD_FROM = 0.345;
 const FIELD_TO = 0.655;
@@ -46,6 +58,13 @@ const FIELD_TOP = 10;
 const FIELD_FOOT = 70;
 const FIELD_DENSITY = 26; // px of height per point
 const WIDE = '(width >= 62.5rem)';
+
+const CORNERS = [
+  [-1, -1],
+  [1, -1],
+  [1, 1],
+  [-1, 1],
+] as const;
 
 interface Point {
   x: number;
@@ -64,6 +83,25 @@ interface Drifter extends Point {
   wy: number;
   px: number;
   py: number;
+}
+
+/** Four corner brackets, `half` from (x, y) with arms `arm` long, stroked in the caller's style. */
+function brackets(
+  c: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  half: number,
+  arm: number,
+): void {
+  c.beginPath();
+  for (const [sx, sy] of CORNERS) {
+    const cx = x + sx * half;
+    const cy = y + sy * half;
+    c.moveTo(cx - sx * arm, cy);
+    c.lineTo(cx, cy);
+    c.lineTo(cx, cy - sy * arm);
+  }
+  c.stroke();
 }
 
 export function createTimeline(root: HTMLElement): void {
@@ -99,6 +137,12 @@ export function createTimeline(root: HTMLElement): void {
   const reached = stops.map(() => true);
   let live = false;
   let onScreen = false;
+  /** The pointer in viewport px (null when away or touch), as of its last move. */
+  let client: { x: number; y: number } | null = null;
+  /** How locked-on the hover is (0..1, eased), the field point it holds (-1: none) and since when. */
+  let engaged = 0;
+  let acquired = -1;
+  let acquiredAt = 0;
   let colors = { edge: '#686c72', accent: '#f2893d', bg: '#0c0d10' };
 
   const readColors = () => {
@@ -192,6 +236,34 @@ export function createTimeline(root: HTMLElement): void {
     }
   }
 
+  /** Locks the field point nearest the pointer, and keeps it until it is clearly out of reach. */
+  function acquire(now: number, moving: boolean): void {
+    if (!client || !moving) {
+      if (engaged === 0) acquired = -1;
+      return;
+    }
+    const box = root.getBoundingClientRect();
+    const px = client.x - box.left;
+    const py = client.y - box.top;
+    const dist = (i: number) => Math.hypot(field[i]!.x - px, field[i]!.y - py);
+    let best = -1;
+    let bestD = ACQUIRE;
+    field.forEach((_, i) => {
+      const d = dist(i);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    if (best === acquired) return;
+    if (acquired >= 0) {
+      const held = dist(acquired);
+      if (held < ACQUIRE_RELEASE && (best < 0 || bestD > held - SWITCH_MARGIN)) return;
+    }
+    acquired = best;
+    acquiredAt = now;
+  }
+
   const show = (i: number) => delete stops[i]!.dataset.tl;
   const hide = (i: number) => (stops[i]!.dataset.tl = 'off');
 
@@ -211,6 +283,9 @@ export function createTimeline(root: HTMLElement): void {
   function step(now: number, moving: boolean): void {
     const ms = Math.min(MAX_STEP_MS, now - last);
     last = now;
+    engaged += ((client && moving ? 1 : 0) - engaged) * (1 - Math.exp(-ms / ACQUIRE_EASE_MS));
+    if (engaged < 0.002 || !moving) engaged = 0;
+    acquire(now, moving);
     if (!moving) {
       current = target = length;
     } else {
@@ -264,6 +339,22 @@ export function createTimeline(root: HTMLElement): void {
         c.lineTo(b.x, b.y);
         c.stroke();
       }
+    }
+    // Hover: the locked point's own links turn accent.
+    const locked = engaged > 0 && acquired >= 0 ? field[acquired] : undefined;
+    if (locked) {
+      c.strokeStyle = colors.accent;
+      for (const o of everything) {
+        if (o === locked) continue;
+        const d = Math.hypot(o.x - locked.x, o.y - locked.y);
+        if (d >= LINK) continue;
+        c.globalAlpha = 0.75 * (1 - d / LINK) * engaged;
+        c.beginPath();
+        c.moveTo(locked.x, locked.y);
+        c.lineTo(o.x, o.y);
+        c.stroke();
+      }
+      c.strokeStyle = colors.edge;
     }
     c.globalAlpha = 0.8;
     for (const p of field) {
@@ -363,29 +454,23 @@ export function createTimeline(root: HTMLElement): void {
       }
     });
 
+    // Hover: brackets close in on the locked point.
+    if (locked) {
+      const e = 1 - (1 - Math.min(1, (now - acquiredAt) / LOCK_SNAP_MS)) ** 3;
+      c.globalAlpha = engaged;
+      c.strokeStyle = colors.accent;
+      c.lineWidth = 1.25;
+      brackets(c, locked.x, locked.y, 15 - 8 * e, 4);
+    }
+
     // Lock-on: four brackets close in on the last node.
     if (sinceLock >= 0 || lockedAt === -Infinity) {
       const t = path[path.length - 1]!;
       const e = lockedAt === -Infinity ? 1 : 1 - (1 - Math.min(1, sinceLock / LOCK_SNAP_MS)) ** 3;
-      const s = 22 - 8 * e;
-      const arm = 5;
       c.globalAlpha = 1;
       c.strokeStyle = colors.accent;
       c.lineWidth = 1.5;
-      c.beginPath();
-      for (const [sx, sy] of [
-        [-1, -1],
-        [1, -1],
-        [1, 1],
-        [-1, 1],
-      ] as const) {
-        const x = t.x + sx * s;
-        const y = t.y + sy * s;
-        c.moveTo(x - sx * arm, y);
-        c.lineTo(x, y);
-        c.lineTo(x, y - sy * arm);
-      }
-      c.stroke();
+      brackets(c, t.x, t.y, 22 - 8 * e, 5);
     }
     c.globalAlpha = 1;
   }
@@ -397,6 +482,7 @@ export function createTimeline(root: HTMLElement): void {
     sense();
     step(now, moving);
     draw(now, moving);
+    root.toggleAttribute('data-locked', engaged > 0 && acquired >= 0);
     if (moving && onScreen) raf = requestAnimationFrame(frame);
   };
 
@@ -435,6 +521,10 @@ export function createTimeline(root: HTMLElement): void {
     cancelAnimationFrame(raf);
     raf = 0;
     delete root.dataset.live;
+    delete root.dataset.locked;
+    client = null;
+    engaged = 0;
+    acquired = -1;
     stops.forEach((_, i) => {
       reached[i] = true;
       show(i);
@@ -444,6 +534,15 @@ export function createTimeline(root: HTMLElement): void {
   const sync = () => (wide.matches ? start() : stop());
   wide.addEventListener('change', sync);
   sync();
+
+  root.addEventListener(
+    'pointermove',
+    (event) => {
+      if (event.pointerType !== 'touch') client = { x: event.clientX, y: event.clientY };
+    },
+    { passive: true },
+  );
+  root.addEventListener('pointerleave', () => (client = null), { passive: true });
 
   new ResizeObserver(() => {
     if (!live) return;
