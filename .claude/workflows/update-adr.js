@@ -48,7 +48,7 @@ const SECTIONS = [
   {
     title: 'Client runtime and motion',
     scope:
-      'src/scripts/ (motion, motion-toggle, reveal, hero*, theme, lightbox, work-filter, video, youtube), the 30 KB/page script budget in lighthouserc.json',
+      'src/scripts/ (motion, motion-toggle, reveal, hero*, theme, lightbox, work-filter, video, youtube, net), the 30 KB/page script budget in lighthouserc.json',
     aspects: ['hotspots', 'clusters', 'cycles'],
   },
   {
@@ -60,7 +60,7 @@ const SECTIONS = [
   {
     title: 'Media pipeline',
     scope:
-      'scripts/media/ (build, check, migrate, lib), src/lib/media.ts, src/lib/images.ts, src/components/media/, scripts/og/, src/assets/brand/',
+      'scripts/media/ (build, check, verify, migrate, lib), scripts/check-dist.ts, src/lib/media.ts, src/lib/images.ts, src/lib/net-bootstrap.ts, src/scripts/net.ts, the image encoders and cacheDir in astro.config.ts, src/components/media/, scripts/og/, src/assets/brand/. Policy: quality first, media ships at the best quality its original allows; only a detected slow connection or Save-Data gets lighter content first, upgraded in the background',
     aspects: ['entry_points', 'clusters', 'hotspots'],
   },
   {

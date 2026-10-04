@@ -3,36 +3,31 @@
     "src": "Images/correlation_visualizer/googlesearch.png",
     "project": "credential-correlation",
     "name": "password-checker-search",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/correlation_visualizer/credentials.png",
     "project": "credential-correlation",
     "name": "dummy-credentials",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/correlation_visualizer/trap1.png",
     "project": "credential-correlation",
     "name": "checker-rated-strong",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/correlation_visualizer/trap2.png",
     "project": "credential-correlation",
     "name": "checker-crack-time",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/correlation_visualizer/Software.png",
     "project": "credential-correlation",
     "name": "gui-visualizer",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   { "youtube": "klYKJ2U_WKk", "project": "credential-correlation", "cover": true },
 
@@ -41,25 +36,29 @@
     "project": "mordhau",
     "name": "cover",
     "kind": "image",
-    "lossless": true,
-    "cover": true,
-    "crop": { "left": 902, "top": 547, "width": 514, "height": 321 }
+    "cover": true
   },
   {
-    "src": "Images/fovhack/screenshot-gameplay.jpg",
+    "src": "Images/fovhack/screenshot-cosmetic.jpg",
     "project": "mordhau",
-    "name": "gameplay-toggles",
-    "kind": "image",
-    "lossless": true,
-    "crop": { "left": 0, "top": 145, "width": 514, "height": 244 }
+    "name": "cosmetic-menu",
+    "kind": "image"
   },
+  {
+    "src": "Images/fovhack/fov_demo.gif",
+    "project": "mordhau",
+    "name": "fov-widening",
+    "kind": "video",
+    "mode": "loop"
+  },
+  { "youtube": "S1XTb5wbYFc", "project": "mordhau" },
+  { "youtube": "elRSqVSCXu8", "project": "mordhau" },
 
   {
     "src": "Images/cs314/map.png",
     "project": "trip-planner",
     "name": "cover",
     "kind": "image",
-    "lossless": true,
     "cover": true
   },
   {
@@ -75,7 +74,7 @@
     "project": "trip-planner",
     "name": "iterative-design",
     "kind": "video",
-    "mode": "loop"
+    "mode": "click"
   },
   {
     "src": "Images/cs314/database.gif",
@@ -95,8 +94,7 @@
     "src": "Images/cs314/file.png",
     "project": "trip-planner",
     "name": "trip-manager",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/cs314/optimize.gif",
@@ -123,8 +121,7 @@
     "src": "Images/Forest Hack/UX.png",
     "project": "the-forest",
     "name": "menu-panels",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   { "youtube": "lbqOiXaPm08", "project": "the-forest" },
 
@@ -154,8 +151,7 @@
     "src": "Images/aes/Screenshot_1.png",
     "project": "aes-256",
     "name": "aes-source-code",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
 
   {
@@ -171,14 +167,16 @@
     "project": "hero-trivia",
     "name": "gameplay",
     "kind": "video",
-    "mode": "loop"
+    "mode": "loop",
+    "crf": 24
   },
   {
     "src": "Images/hero_trivia/hero_trivia_variety.gif",
     "project": "hero-trivia",
     "name": "puzzle-variety",
     "kind": "video",
-    "mode": "loop"
+    "mode": "loop",
+    "crf": 24
   },
 
   {
@@ -186,22 +184,19 @@
     "project": "arch-linux",
     "name": "cover",
     "kind": "image",
-    "lossless": true,
     "cover": true
   },
   {
     "src": "Images/arch linux/bottom.png",
     "project": "arch-linux",
     "name": "tiling-workspace",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/arch linux/trim.png",
     "project": "arch-linux",
     "name": "launcher-panel",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
 
   {
@@ -257,15 +252,13 @@
     "src": "Images/Ant Game/Ant Rig/ant_rig1.png",
     "project": "ant-game",
     "name": "rig-mesh",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/Ant Game/Ant Rig/ant_rig2.png",
     "project": "ant-game",
     "name": "rig-joints",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   { "youtube": "MBJ0LGR1R4o", "project": "ant-game" },
 
@@ -273,30 +266,26 @@
     "src": "Images/Paradox/paradox2.png",
     "project": "paradox",
     "name": "zexilemodz-banner",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/Paradox/exileLogo.png",
     "project": "paradox",
     "name": "zexilemodz-logo",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/Paradox/paradox3.png",
     "project": "paradox",
     "name": "cover",
     "kind": "image",
-    "lossless": true,
     "cover": true
   },
   {
     "src": "Images/Paradox/red_paradox.png",
     "project": "paradox",
     "name": "paradox-logo",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   { "youtube": "a7VCZaQSSMg", "project": "paradox" },
 
@@ -305,15 +294,13 @@
     "project": "nodes",
     "name": "cover",
     "kind": "image",
-    "lossless": true,
     "cover": true
   },
   {
     "src": "Images/Nodes/node_diagram.png",
     "project": "nodes",
     "name": "bead-diagram",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
 
   {
@@ -333,15 +320,13 @@
     "src": "Images/Spectre/logo_white.png",
     "project": "spectre",
     "name": "octopus-logo",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
   {
     "src": "Images/Spectre/white_bg.png",
     "project": "spectre",
     "name": "specter-wordmark-light",
-    "kind": "image",
-    "lossless": true
+    "kind": "image"
   },
 
   {
@@ -370,7 +355,8 @@
     "src": "Images/Go Green/original.jpg",
     "project": "go-green",
     "name": "reference-photo",
-    "kind": "image"
+    "kind": "image",
+    "lossy": true
   },
 
   {

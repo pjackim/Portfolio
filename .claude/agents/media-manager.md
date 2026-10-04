@@ -1,6 +1,6 @@
 ---
 name: media-manager
-description: Audits and repairs the media and references of existing projects — URL and YouTube health, missing and orphaned files, descriptive renames based on what each image shows, size budgets, re-encoding from better originals, alt text that matches the image. Works in its own worktree and commits there. Use periodically, after media changes, or when a link or asset looks broken.
+description: Audits and repairs the media and references of existing projects — URL and YouTube health, missing and orphaned files, descriptive renames based on what each image shows, size guard rails, lossy masters that have a recoverable original, re-encoding from better originals, alt text that matches the image. Works in its own worktree and commits there. Use periodically, after media changes, or when a link or asset looks broken.
 model: sonnet
 tools: Read, Grep, Glob, Bash, Edit, Write, WebFetch
 isolation: worktree
@@ -61,25 +61,37 @@ For each project, map files to references:
 - If `alt`, `coverAlt` or a caption does not describe the image, rewrite it from what you see
   (alt text is description, not a new claim).
 
-## 5. Web performance
+## 5. Quality first
 
-- Budgets from `scripts/media/lib.ts`: 8 MB per file, 15 MB per project, 60 MB for all of
-  `src/content`; loop videos ≤ 2.5 MB mp4 / 1.5 MB webm and ≤ 45 s; click-to-play ≤ 8 / 5 MB;
-  covers ≥ 1200 px wide. Covers render in a 16:10 frame, and covers under 800 px wide
-  are shown whole on a panel.
+Media ships at the best quality its original allows. Only a detected slow connection or
+Save-Data gets lighter content first, upgraded in the background. The size limits are guard
+rails, never a reason to encode harder.
+
+- Guard rails from `scripts/media/lib.ts`: loop videos ≤ 24 MB mp4 / 24 MB webm and ≤ 45 s;
+  click-to-play ≤ 48 / 48 MB; 50 MB per file, 150 MB per project, 500 MB for all of
+  `src/content`; masters up to 3840 px on the long edge. `npm run check:dist` errors when
+  `dist/` exceeds 900 MB. Covers ≥ 1200 px wide (a warning). Covers render in a 16:10 frame,
+  and covers under 800 px wide are shown whole on a panel.
 - Get dimensions with `node -e "import('sharp').then(async ({default: s}) =>
 console.log(await s('<file>').metadata()))"` and video facts with `ffprobe`.
-- Re-encode only from a better original, never by recompressing an existing `.webp`/`.mp4`
+- Re-encode only from the original, never from a `.webp`/`.mp4` already encoded for the site
   (quality loss). Originals in order: the legacy site (`mkdir -p .cache/legacy && git archive
-d8782d1 | tar -x -C .cache/legacy/`), then the project's own repo. Encode with
-  `npm run media -- <original> --project <slug>` (add `--lossless` for UI and line art), then
-  rename the output to the existing name.
-- Also flag: images with an alpha channel that do not need one, photos stored lossless,
-  covers far below 1200 px, and loops that would be better click-to-play.
+a085340 | tar -x -C .cache/legacy/`), then the project's own repo. Encode with
+  `npm run media -- <original> --project <slug> --name <existing-name>`. Masters are lossless
+  by default (`--lossless` is accepted but no longer needed); use `--crop W:H:X:Y`,
+  `--trim A-B`, `--frame T` and `--crf N` rather than renaming or cropping after the encode;
+  `--lossy` (q95) only for a large photographic source, with the reason in the project's
+  `# Sources:` header. Record the command `npm run media` prints in that header.
+- Run `npm run media:verify -- --project <slug> [--against HEAD]` whenever you replace a
+  master: it proves the new file is the same picture and no worse.
+- Also flag: lossy masters (`check:media` lists them) whose original is recoverable from the
+  legacy site or the project's repo, images with an alpha channel that do not need one, covers
+  far below 1200 px, and loops that would be better click-to-play.
 
 ## 6. Validate and commit
 
-1. `npm run check:media`, `npm run check`, `npm run build:only`, then with a random port
+1. `npm run check:media`, `npm run media:verify -- --project <slug>` for every project whose
+   master you replaced, `npm run check`, `npm run build:only`, then with a random port
    `E2E_PORT=$((4500 + RANDOM % 400)) npx playwright test tests/media.spec.ts tests/links.spec.ts --project=chromium`
    (one Bash call).
 2. Commit one logical change per commit (`fix(media): …`, `chore(media): …`). No attribution

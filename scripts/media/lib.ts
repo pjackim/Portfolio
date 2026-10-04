@@ -27,56 +27,47 @@ export const PROJECTS_DIR = join(CONTENT_DIR, 'projects');
 export const KB = 1000;
 export const MB = 1000 * KB;
 
+/**
+ * Guard rails, not quality governors: nothing is ever encoded harder to fit one. They stop a
+ * mistake (a raw screen recording, a 4K lossless photo dump) from landing in git, and keep the
+ * built site well under GitHub Pages' 1 GB limit.
+ */
 export const BUDGETS = {
   /** Autoplaying, muted loops. */
-  loop: { mp4: 2.5 * MB, webm: 1.5 * MB, maxDuration: 45 },
+  loop: { mp4: 24 * MB, webm: 24 * MB, maxDuration: 45 },
   /** Click-to-play videos (controls, preload none). */
-  click: { mp4: 8 * MB, webm: 5 * MB },
-  /** No single file in src/content may exceed this. */
-  file: 8 * MB,
+  click: { mp4: 48 * MB, webm: 48 * MB },
+  /** No single file in src/content may exceed this (GitHub warns at 50 MB). */
+  file: 50 * MB,
   /** Sum of one src/content/projects/<slug>/ folder. */
-  project: 15 * MB,
+  project: 150 * MB,
   /** Sum of everything in src/content. */
-  total: 60 * MB,
+  total: 500 * MB,
   /** Covers narrower than this only produce a warning. */
   coverMinWidth: 1200,
   /** WebP masters are capped at this long edge. */
-  imageMaxEdge: 2400,
-  /** Lossless falls back to near-lossless when > this factor × the q90 size… */
-  losslessFactor: 2,
-  /** …and also larger than this. */
-  losslessFloor: 400 * KB,
+  imageMaxEdge: 3840,
+  /** Videos wider than this are scaled down to it (2× the widest figure column). */
+  videoMaxWidth: 1920,
 } as const;
 
-export interface LadderStep {
-  /** libx264 CRF for the .mp4 */
-  mp4: number;
-  /** libvpx-vp9 CRF for the .webm (moves in lock-step with the x264 CRF) */
-  webm: number;
-  /** MAXW in `scale='trunc(min(MAXW,iw)/2)*2':-2` */
-  maxWidth: number;
-}
-
 /**
- * Budget escalation (spec-architecture §5): base CRF, then CRF +2 per step up to 32
- * (VP9 36 → 42 alongside), then MAXW 960.
+ * Quality-first video settings: one encode per codec, never a resolution drop. `--crf` (or a
+ * manifest entry's `crf`) is for a dithered GIF source whose CRF 20 encode breaks a guard rail.
  */
-export const LADDER: readonly LadderStep[] = [
-  { mp4: 26, webm: 36, maxWidth: 1280 },
-  { mp4: 28, webm: 38, maxWidth: 1280 },
-  { mp4: 30, webm: 40, maxWidth: 1280 },
-  { mp4: 32, webm: 42, maxWidth: 1280 },
-  { mp4: 32, webm: 42, maxWidth: 960 },
-];
-
-/**
- * One extra step past the spec ladder, used only to squeeze click-to-play videos when a
- * project folder would otherwise exceed BUDGETS.project (see migrate.ts `fitProject`).
- */
-export const PROJECT_FIT_LADDER: readonly LadderStep[] = [
-  ...LADDER,
-  { mp4: 32, webm: 42, maxWidth: 720 },
-];
+export const VIDEO = {
+  /** libx264 CRF. */
+  crf: 20,
+  /**
+   * libvpx-vp9 CRF = the x264 CRF + this. Calibrated on a 1080p BodyCam loop against its
+   * source: x264 CRF 20 scores SSIM 0.9932, VP9 CRF 26 scores 0.9932 (CRF 30 only 0.9920).
+   * The .webm is the first <source>, so it must not be the weaker file.
+   */
+  webmCrfOffset: 6,
+  /** Allowed `--crf` range. */
+  crfRange: [14, 28],
+  maxFps: 30,
+} as const;
 
 export type VideoMode = 'loop' | 'click';
 
@@ -116,6 +107,17 @@ async function run(cmd: string, args: readonly string[]): Promise<string> {
   }
 }
 
+/** Like `run`, for commands that write binary data (a PNG frame) to stdout. */
+async function runBuffer(cmd: string, args: readonly string[]): Promise<Buffer> {
+  try {
+    const { stdout } = await execFile(cmd, [...args], { maxBuffer: 512 * MB, encoding: 'buffer' });
+    return stdout;
+  } catch (error) {
+    const stderr = (error as { stderr?: Buffer }).stderr?.toString().trim();
+    throw new Error(`${cmd} failed${stderr ? `: ${stderr}` : ''}`, { cause: error });
+  }
+}
+
 /* ─────────────────────────── probing ─────────────────────────── */
 
 export interface VideoProbe {
@@ -125,6 +127,9 @@ export interface VideoProbe {
   fps: number;
   /** Seconds. */
   duration: number;
+  pixFmt: string;
+  /** The stream's YUV matrix tag (`color_space`); undefined when it carries none. */
+  colorSpace: string | undefined;
 }
 
 function parseRate(rate: string | undefined): number {
@@ -142,30 +147,39 @@ export async function probeVideo(path: string): Promise<VideoProbe> {
     '-select_streams',
     'v:0',
     '-show_entries',
-    'stream=width,height,avg_frame_rate:format=duration',
+    'stream=width,height,avg_frame_rate,pix_fmt,color_space:format=duration',
     '-of',
     'json',
     path,
   ]);
   const json = JSON.parse(out) as {
-    streams?: { width?: number; height?: number; avg_frame_rate?: string }[];
+    streams?: {
+      width?: number;
+      height?: number;
+      avg_frame_rate?: string;
+      pix_fmt?: string;
+      color_space?: string;
+    }[];
     format?: { duration?: string };
   };
   const stream = json.streams?.[0];
   if (!stream?.width || !stream.height) throw new Error(`ffprobe: no video stream in ${path}`);
+  const tagged = stream.color_space && stream.color_space !== 'unknown';
   return {
     width: stream.width,
     height: stream.height,
     fps: parseRate(stream.avg_frame_rate),
     duration: Number(json.format?.duration ?? 0),
+    pixFmt: stream.pix_fmt ?? '',
+    colorSpace: tagged ? stream.color_space : undefined,
   };
 }
 
 /* ─────────────────────────── images ─────────────────────────── */
 
 export interface EncodeImageOptions {
-  /** Lossless WebP (UI/code screenshots, logos, alpha). Default: lossy q90. */
-  lossless?: boolean;
+  /** Lossy WebP q95, for a large photographic source whose lossless file is unreasonable. */
+  lossy?: boolean;
   /** Region of the (auto-rotated) source to keep, applied before resizing. */
   crop?: Crop | undefined;
 }
@@ -175,71 +189,113 @@ export interface EncodeImageResult {
   width: number;
   height: number;
   /** What was actually written. */
-  encoding: 'lossless' | 'near-lossless' | 'q90';
+  encoding: 'lossless' | 'q95';
 }
 
-function imagePipeline(input: string | Buffer, crop: Crop | undefined): Sharp {
+/** The master's pixels: auto-rotated, cropped, capped at BUDGETS.imageMaxEdge, 8-bit sRGB. */
+async function imagePixels(input: string | Buffer, crop: Crop | undefined) {
   let img = sharp(input).rotate();
   if (crop) img = img.extract(crop);
-  return img.resize({
-    width: BUDGETS.imageMaxEdge,
-    height: BUDGETS.imageMaxEdge,
-    fit: 'inside',
-    withoutEnlargement: true,
-  });
+  return img
+    .resize({
+      width: BUDGETS.imageMaxEdge,
+      height: BUDGETS.imageMaxEdge,
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .toColourspace('srgb')
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+}
+
+/** Throws unless `webp` decodes to exactly `pixels` (colour under zero alpha is ignored). */
+async function assertSamePixels(pixels: Sharp, webp: Buffer, label: string): Promise<void> {
+  const want = await pixels.ensureAlpha().raw().toBuffer();
+  const got = await sharp(webp).ensureAlpha().raw().toBuffer();
+  if (want.length !== got.length) throw new Error(`${label}: lossless output changed size`);
+  for (let i = 0; i < want.length; i += 4) {
+    if (want[i + 3] === 0 && got[i + 3] === 0) continue;
+    if (
+      want[i] !== got[i] ||
+      want[i + 1] !== got[i + 1] ||
+      want[i + 2] !== got[i + 2] ||
+      want[i + 3] !== got[i + 3]
+    ) {
+      throw new Error(`${label}: lossless output differs from its source at pixel ${i / 4}`);
+    }
+  }
 }
 
 /**
- * Encode any still image to a WebP master (≤2400px long edge, metadata stripped — sharp's
- * default). Lossless output that is > 2× the q90 size and > 400 KB falls back to
- * near-lossless q90.
+ * Encode any still image to a WebP master (≤3840px long edge, metadata stripped — sharp's
+ * default). Lossless unless `lossy`: the site's delivery encodes are made from this file, so
+ * any loss here caps what a visitor can ever see. A lossless result is decoded and compared
+ * with its source pixels before it is written.
  */
 export async function encodeImage(
   input: string | Buffer,
   output: string,
-  { lossless = false, crop }: EncodeImageOptions = {},
+  { lossy = false, crop }: EncodeImageOptions = {},
 ): Promise<EncodeImageResult> {
   await mkdir(dirname(output), { recursive: true });
-  const lossy = () =>
-    imagePipeline(input, crop).webp({ quality: 90, effort: 6, smartSubsample: true });
+  const { data, info } = await imagePixels(input, crop);
+  const pixels = () =>
+    sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } });
 
-  let encoding: EncodeImageResult['encoding'] = 'q90';
-  let result = await lossy().toBuffer({ resolveWithObject: true });
+  const webp = lossy
+    ? await pixels()
+        .webp({ quality: 95, effort: 6, smartSubsample: true, alphaQuality: 100 })
+        .toBuffer()
+    : await pixels().webp({ lossless: true, effort: 6 }).toBuffer();
+  if (!lossy) await assertSamePixels(pixels(), webp, output);
 
-  if (lossless) {
-    const exact = await imagePipeline(input, crop)
-      .webp({ lossless: true, effort: 6 })
-      .toBuffer({ resolveWithObject: true });
-    const bloated =
-      exact.info.size > BUDGETS.losslessFactor * result.info.size &&
-      exact.info.size > BUDGETS.losslessFloor;
-    if (bloated) {
-      encoding = 'near-lossless';
-      result = await imagePipeline(input, crop)
-        .webp({ nearLossless: true, quality: 90, effort: 6 })
-        .toBuffer({ resolveWithObject: true });
-    } else {
-      encoding = 'lossless';
-      result = exact;
-    }
-  }
-
-  await writeFile(output, result.data);
+  await writeFile(output, webp);
   return {
-    bytes: await fileSize(output),
-    width: result.info.width,
-    height: result.info.height,
-    encoding,
+    bytes: webp.length,
+    width: info.width,
+    height: info.height,
+    encoding: lossy ? 'q95' : 'lossless',
   };
 }
 
+/**
+ * Whether a WebP file is lossless (a `VP8L` bitstream) rather than lossy (`VP8 `, with any
+ * alpha in a separate `ALPH` chunk). Walks the RIFF chunks, so an extended (`VP8X`) file
+ * with a colour profile or animation header in front is read correctly.
+ */
+export function webpIsLossless(file: Buffer): boolean {
+  if (file.toString('latin1', 0, 4) !== 'RIFF' || file.toString('latin1', 8, 12) !== 'WEBP') {
+    throw new Error('not a WebP file');
+  }
+  for (let at = 12; at + 8 <= file.length;) {
+    const chunk = file.toString('latin1', at, at + 4);
+    if (chunk === 'VP8L') return true;
+    if (chunk === 'VP8 ') return false;
+    // Chunks are padded to an even length.
+    at += 8 + file.readUInt32LE(at + 4) + (file.readUInt32LE(at + 4) % 2);
+  }
+  throw new Error('WebP file has no image data');
+}
+
 /* ─────────────────────────── videos ─────────────────────────── */
+
+/** A span of the source, in seconds. */
+export interface Trim {
+  start: number;
+  end: number;
+}
 
 export interface EncodeVideoOptions {
   mode: VideoMode;
   /** Playback speed-up (setpts=PTS/speed), e.g. 2 for long screen recordings. */
   speed?: number | undefined;
-  /** Keep the smallest over-budget result instead of throwing. */
+  /** Keep only this span of the source (frame-accurate). */
+  trim?: Trim | undefined;
+  /** Region of the source frame to keep, applied before any scaling. */
+  crop?: Crop | undefined;
+  /** libx264 CRF (default VIDEO.crf); the .webm uses this + VIDEO.webmCrfOffset. */
+  crf?: number | undefined;
+  /** Keep an over-budget result instead of throwing. */
   allowOver?: boolean | undefined;
   log?: ((message: string) => void) | undefined;
 }
@@ -248,28 +304,35 @@ export type Codec = 'mp4' | 'webm';
 
 export interface CodecResult {
   bytes: number;
-  /** Index into the ladder that produced this file. */
-  step: number;
   crf: number;
-  maxWidth: number;
   width: number;
   height: number;
   budget: number;
   overBudget: boolean;
 }
 
-export interface VideoTiming {
+/** Everything both codecs and the poster share: timing, output frame, filter chains. */
+export interface VideoPlan {
   fps: number;
   /** Speed-up factor applied (1 = none). */
   speed: number;
-  /** Output duration in seconds (after speed-up). */
+  /** Output duration in seconds (after trim and speed-up). */
   duration: number;
-  /** Source frame width, used to skip ladder steps that would change nothing. */
-  sourceWidth: number;
+  width: number;
+  height: number;
+  /** ffmpeg options placed before `-i` (the trim). */
+  inputArgs: string[];
+  /** Filter chain ending in BT.709 limited-range yuv420p, for the encodes. */
+  yuv: string;
+  /** The same geometry ending in rgb24, for the poster. */
+  rgb: string;
 }
 
-export interface EncodeVideoResult extends VideoTiming {
+export interface EncodeVideoResult {
   mode: VideoMode;
+  fps: number;
+  speed: number;
+  duration: number;
   mp4: CodecResult;
   webm: CodecResult;
   poster: PosterResult;
@@ -290,153 +353,177 @@ export class BudgetError extends Error {
   }
 }
 
-function videoFilter(fps: number, maxWidth: number, speed: number): string {
-  const chain = [
-    `fps=${fps}`,
-    `scale='trunc(min(${maxWidth},iw)/2)*2':-2:flags=lanczos`,
-    'format=yuv420p',
-  ];
-  if (speed !== 1) chain.unshift(`setpts=PTS/${speed}`);
-  return chain.join(',');
-}
+const SCALE_FLAGS = 'lanczos+accurate_rnd+full_chroma_int';
+// prettier-ignore
+const BT709 = ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv'];
 
-function codecArgs(codec: Codec, input: string, vf: string, crf: number, fps: number, out: string) {
-  // prettier-ignore
-  return codec === 'mp4'
-    ? [
-        '-hide_banner', '-loglevel', 'error', '-y', '-i', input, '-vf', vf,
-        '-an', '-sn', '-dn', '-map_metadata', '-1', '-map_chapters', '-1',
-        '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf),
-        '-profile:v', 'high', '-level:v', '4.1', '-pix_fmt', 'yuv420p',
-        '-g', String(fps * 5), '-movflags', '+faststart', out,
-      ]
-    : [
-        '-hide_banner', '-loglevel', 'error', '-y', '-i', input, '-vf', vf,
-        '-an', '-map_metadata', '-1',
-        '-c:v', 'libvpx-vp9', '-crf', String(crf), '-b:v', '0',
-        '-deadline', 'good', '-cpu-used', '2', '-row-mt', '1', '-tile-columns', '2',
-        '-g', String(fps * 5), '-pix_fmt', 'yuv420p', out,
-      ];
-}
-
-/** Output frame rate and speed factor for a source: FPS = min(30, round(avg fps)). */
-export async function videoTiming(input: string, speed: number | undefined): Promise<VideoTiming> {
-  const probe = await probeVideo(input);
-  const factor = speed && speed > 0 ? speed : 1;
-  return {
-    fps: Math.max(1, Math.min(30, Math.round(probe.fps || 30))),
-    speed: factor,
-    duration: probe.duration / factor,
-    sourceWidth: probe.width,
-  };
+/**
+ * `:in_color_matrix=…` for a YUV source that carries no matrix tag (players assume BT.709 from
+ * 720 lines up, BT.601 below); empty when the stream is tagged or isn't YUV.
+ */
+function inputMatrix(probe: VideoProbe): string {
+  if (probe.colorSpace || !probe.pixFmt.startsWith('yuv')) return '';
+  return `:in_color_matrix=${probe.height >= 720 ? 'bt709' : 'bt601'}`;
 }
 
 /**
- * Next ladder index after `step` whose settings differ from `current` — e.g. MAXW 960 is
- * skipped for a 906px-wide source because it would re-encode the identical file.
+ * Timing and geometry for a source. FPS = min(30, round(avg fps)). A frame wider than
+ * BUDGETS.videoMaxWidth is scaled down to it; a narrower one is never resampled — an odd
+ * edge loses its last pixel row/column instead (yuv420p needs even dimensions).
  */
-export function nextStep(
-  ladder: readonly LadderStep[],
-  codec: Codec,
-  step: number,
-  current: { crf: number; width: number } | undefined,
-  sourceWidth: number,
-): number | undefined {
-  for (let i = step + 1; i < ladder.length; i++) {
-    const s = ladder[i];
-    if (!s) break;
-    const width = Math.trunc(Math.min(s.maxWidth, sourceWidth) / 2) * 2;
-    if (!current || s[codec] !== current.crf || width !== current.width) return i;
-  }
-  return undefined;
-}
-
-/** Encode one codec at one ladder step. */
-export async function encodeVideoStep(
+export async function planVideo(
   input: string,
-  out: string,
-  codec: Codec,
-  ladder: readonly LadderStep[],
-  step: number,
-  timing: { fps: number; speed: number },
-  budget: number,
-): Promise<CodecResult> {
-  const s = ladder[step];
-  if (!s) throw new Error(`no ladder step ${step}`);
-  const vf = videoFilter(timing.fps, s.maxWidth, timing.speed);
-  await run('ffmpeg', codecArgs(codec, input, vf, s[codec], timing.fps, out));
-  const bytes = await fileSize(out);
-  const { width, height } = await probeVideo(out);
+  { speed, trim, crop }: Pick<EncodeVideoOptions, 'speed' | 'trim' | 'crop'> = {},
+): Promise<VideoPlan> {
+  const probe = await probeVideo(input);
+  const factor = speed && speed > 0 ? speed : 1;
+  if (trim && !(trim.start >= 0 && trim.end > trim.start && trim.end <= probe.duration + 0.05)) {
+    throw new Error(`trim ${trim.start}-${trim.end} s is outside the ${probe.duration} s source`);
+  }
+  const source = crop ?? { left: 0, top: 0, width: probe.width, height: probe.height };
+  if (source.left + source.width > probe.width || source.top + source.height > probe.height) {
+    throw new Error(`crop is outside the ${probe.width}×${probe.height} frame`);
+  }
+
+  const even = (n: number) => Math.trunc(n / 2) * 2;
+  const scaled = source.width > BUDGETS.videoMaxWidth;
+  const width = even(scaled ? BUDGETS.videoMaxWidth : source.width);
+  const height = scaled
+    ? Math.round((source.height * width) / source.width / 2) * 2
+    : even(source.height);
+  const region = scaled ? source : { ...source, width, height };
+  const whole = region.width === probe.width && region.height === probe.height;
+
+  const fps = Math.max(1, Math.min(VIDEO.maxFps, Math.round(probe.fps || VIDEO.maxFps)));
+  const span = trim ? trim.end - trim.start : probe.duration;
+  const head = [
+    ...(whole ? [] : [`crop=${region.width}:${region.height}:${region.left}:${region.top}`]),
+    ...(factor === 1 ? [] : [`setpts=PTS/${factor}`]),
+    `fps=${fps}`,
+  ];
+  const scale = `scale=${width}:${height}:flags=${SCALE_FLAGS}${inputMatrix(probe)}`;
   return {
-    bytes,
-    step,
-    crf: s[codec],
-    maxWidth: s.maxWidth,
+    fps,
+    speed: factor,
+    duration: span / factor,
     width,
     height,
-    budget,
-    overBudget: bytes > budget,
+    inputArgs: trim ? ['-ss', trim.start.toFixed(3), '-t', span.toFixed(3)] : [],
+    yuv: [...head, `${scale}:out_color_matrix=bt709:out_range=tv`, 'format=yuv420p'].join(','),
+    rgb: [...head, scale, 'format=rgb24'].join(','),
   };
 }
 
-/** Walk LADDER until the file fits its budget; returns the first fitting (or the last) step. */
-async function encodeWithinBudget(
-  codec: Codec,
-  input: string,
-  out: string,
-  timing: VideoTiming,
-  budget: number,
-  log: (message: string) => void,
-): Promise<CodecResult> {
-  let last: CodecResult | undefined;
-  let step = nextStep(LADDER, codec, -1, undefined, timing.sourceWidth);
-  while (step !== undefined) {
-    last = await encodeVideoStep(input, out, codec, LADDER, step, timing, budget);
-    log(describeStep(codec, last));
-    if (!last.overBudget) return last;
-    step = nextStep(LADDER, codec, step, last, timing.sourceWidth);
-  }
-  if (!last) throw new Error('unreachable: empty encode ladder');
-  return last;
+/** Lowest H.264 level (from 4.1) whose frame size and macroblock rate hold the output. */
+function h264Level({ width, height, fps }: VideoPlan): string {
+  const blocks = Math.ceil(width / 16) * Math.ceil(height / 16);
+  const rate = blocks * fps;
+  if (blocks <= 8192 && rate <= 245_760) return '4.1';
+  if (blocks <= 8704 && rate <= 522_240) return '4.2';
+  if (blocks <= 22_080 && rate <= 589_824) return '5.0';
+  return '5.1';
 }
 
-export function describeStep(codec: Codec, r: CodecResult): string {
+function commonArgs(input: string, plan: VideoPlan): string[] {
+  // prettier-ignore
+  return [
+    '-hide_banner', '-loglevel', 'error', '-y', ...plan.inputArgs, '-i', input, '-vf', plan.yuv,
+    '-an', '-sn', '-dn', '-map_metadata', '-1', '-map_chapters', '-1',
+  ];
+}
+
+async function encodeMp4(input: string, out: string, plan: VideoPlan, crf: number, gop: number) {
+  // prettier-ignore
+  await run('ffmpeg', [
+    ...commonArgs(input, plan),
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf), '-aq-mode', '3',
+    '-profile:v', 'high', '-level:v', h264Level(plan), '-pix_fmt', 'yuv420p', ...BT709,
+    '-g', String(gop), '-movflags', '+faststart', out,
+  ]);
+}
+
+/** Two-pass constant-quality VP9: the first pass only gathers statistics for the second. */
+async function encodeWebm(input: string, out: string, plan: VideoPlan, crf: number, gop: number) {
+  const tmpDir = join(CACHE_DIR, 'tmp');
+  await mkdir(tmpDir, { recursive: true });
+  const stats = join(tmpDir, `vp9-${randomUUID()}`);
+  // prettier-ignore
+  const pass = (n: 1 | 2, tail: string[]) => run('ffmpeg', [
+    ...commonArgs(input, plan),
+    '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', String(crf), '-deadline', 'good',
+    '-row-mt', '1', '-tile-columns', '2', '-pix_fmt', 'yuv420p', ...BT709, '-g', String(gop),
+    '-pass', String(n), '-passlogfile', stats, ...tail,
+  ]);
+  try {
+    await pass(1, ['-cpu-used', '4', '-f', 'null', '-']);
+    await pass(2, ['-cpu-used', '1', '-auto-alt-ref', '1', '-lag-in-frames', '25', out]);
+  } finally {
+    await rm(`${stats}-0.log`, { force: true });
+  }
+}
+
+export function describeCodec(codec: Codec, r: CodecResult): string {
   return (
-    `    ${codec} crf ${r.crf} maxw ${r.maxWidth} → ${formatBytes(r.bytes)}` +
+    `    ${codec} crf ${r.crf} ${r.width}×${r.height} → ${formatBytes(r.bytes)}` +
     (r.overBudget ? ` (over ${formatBytes(r.budget)})` : '')
   );
 }
 
 /**
  * GIF/MP4/MOV/WebM → `<outBase>.mp4` (H.264) + `<outBase>.webm` (VP9) + `<outBase>.poster.webp`.
- * FPS = min(30, round(source avg fps)); each codec walks LADDER until it fits its budget.
- * Throws BudgetError when a budget can't be met, unless `allowOver`.
+ * One encode per codec at VIDEO.crf (or `crf`): quality is never traded for a budget. Throws
+ * BudgetError when a result is over its guard rail, unless `allowOver`.
  */
 export async function encodeVideo(
   input: string,
   outBase: string,
-  { mode, speed, allowOver = false, log = () => {} }: EncodeVideoOptions,
+  options: EncodeVideoOptions,
 ): Promise<EncodeVideoResult> {
-  const timing = await videoTiming(input, speed);
+  const { mode, speed, trim, crop, crf = VIDEO.crf, allowOver = false, log = () => {} } = options;
+  const plan = await planVideo(input, { speed, trim, crop });
   const budget = BUDGETS[mode];
 
-  if (mode === 'loop' && timing.duration > BUDGETS.loop.maxDuration && !allowOver) {
+  if (mode === 'loop' && plan.duration > BUDGETS.loop.maxDuration && !allowOver) {
     throw new BudgetError(
-      `loop is ${timing.duration.toFixed(1)} s (> ${BUDGETS.loop.maxDuration} s); use click-to-play`,
+      `loop is ${plan.duration.toFixed(1)} s (> ${BUDGETS.loop.maxDuration} s); use click-to-play`,
     );
   }
 
   await mkdir(dirname(outBase), { recursive: true });
+  // Loops restart often and are never scrubbed; click-to-play gets a keyframe every 2 s.
+  const gop = plan.fps * (mode === 'loop' ? 5 : 2);
+  const finish = async (codec: Codec, codecCrf: number): Promise<CodecResult> => {
+    const bytes = await fileSize(`${outBase}.${codec}`);
+    const result: CodecResult = {
+      bytes,
+      crf: codecCrf,
+      width: plan.width,
+      height: plan.height,
+      budget: budget[codec],
+      overBudget: bytes > budget[codec],
+    };
+    log(describeCodec(codec, result));
+    return result;
+  };
+  const webmCrf = crf + VIDEO.webmCrfOffset;
   const [mp4, webm] = await Promise.all([
-    encodeWithinBudget('mp4', input, `${outBase}.mp4`, timing, budget.mp4, log),
-    encodeWithinBudget('webm', input, `${outBase}.webm`, timing, budget.webm, log),
+    encodeMp4(input, `${outBase}.mp4`, plan, crf, gop).then(() => finish('mp4', crf)),
+    encodeWebm(input, `${outBase}.webm`, plan, webmCrf, gop).then(() => finish('webm', webmCrf)),
   ]);
-  const poster = await extractPoster(input, `${outBase}.poster.webp`, timing, mp4.maxWidth);
-  const result: EncodeVideoResult = { mode, ...timing, mp4, webm, poster };
+  const poster = await extractPoster(input, `${outBase}.poster.webp`, plan);
+  const result: EncodeVideoResult = {
+    mode,
+    fps: plan.fps,
+    speed: plan.speed,
+    duration: plan.duration,
+    mp4,
+    webm,
+    poster,
+  };
 
   if ((mp4.overBudget || webm.overBudget) && !allowOver) {
     throw new BudgetError(
-      `${mode} budget exceeded after full escalation: mp4 ${formatBytes(mp4.bytes)} / ` +
+      `${mode} guard rail exceeded: mp4 ${formatBytes(mp4.bytes)} / ` +
         `${formatBytes(budget.mp4)}, webm ${formatBytes(webm.bytes)} / ${formatBytes(budget.webm)}`,
       result,
     );
@@ -445,32 +532,35 @@ export async function encodeVideo(
 }
 
 /**
- * Poster: the frame at 10% of the output duration, rendered through the same filter chain as
- * the .mp4 (so dimensions match) → PNG in .cache/tmp → WebP q90.
+ * Poster: the frame at 10% of the output duration, taken from the source (not from an encode)
+ * through the same trim, crop and scale as the videos, stored lossless.
  */
 export async function extractPoster(
   input: string,
   output: string,
-  timing: VideoTiming,
-  maxWidth: number,
+  plan: VideoPlan,
 ): Promise<PosterResult> {
-  const tmpDir = join(CACHE_DIR, 'tmp');
-  await mkdir(tmpDir, { recursive: true });
-  const png = join(tmpDir, `poster-${randomUUID()}.png`);
-  const vf = videoFilter(timing.fps, maxWidth, timing.speed).replace(/,format=yuv420p$/, '');
-  try {
-    // prettier-ignore
-    await run('ffmpeg', [
-      '-hide_banner', '-loglevel', 'error', '-y', '-i', input, '-vf', vf,
-      '-ss', (timing.duration * 0.1).toFixed(3), '-frames:v', '1', '-update', '1', png,
-    ]);
-    const info = await sharp(png)
-      .webp({ quality: 90, effort: 6, smartSubsample: true })
-      .toFile(output);
-    return { bytes: info.size, width: info.width, height: info.height };
-  } finally {
-    await rm(png, { force: true });
+  // prettier-ignore
+  const png = await runBuffer('ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', ...plan.inputArgs, '-i', input, '-vf', plan.rgb,
+    '-ss', (plan.duration * 0.1).toFixed(3), '-frames:v', '1', '-f', 'image2pipe', '-c:v', 'png', '-',
+  ]);
+  const info = await sharp(png).webp({ lossless: true, effort: 6 }).toFile(output);
+  return { bytes: info.size, width: info.width, height: info.height };
+}
+
+/** One frame of a video at `time` seconds, as a PNG: the input for a still made from footage. */
+export async function extractFrame(input: string, time: number): Promise<Buffer> {
+  const probe = await probeVideo(input);
+  if (!(time >= 0 && time <= probe.duration)) {
+    throw new Error(`frame time ${time} s is outside the ${probe.duration} s source`);
   }
+  const vf = `scale=iw:ih:flags=${SCALE_FLAGS}${inputMatrix(probe)},format=rgb24`;
+  // prettier-ignore
+  return runBuffer('ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', '-ss', time.toFixed(3), '-i', input, '-vf', vf,
+    '-frames:v', '1', '-f', 'image2pipe', '-c:v', 'png', '-',
+  ]);
 }
 
 /* ─────────────────────────── YouTube ─────────────────────────── */
@@ -504,7 +594,8 @@ async function trimLetterbox(buf: Buffer): Promise<Sharp> {
 }
 
 /**
- * Download a YouTube poster (maxresdefault → hqdefault fallback) and store it as WebP q90.
+ * Download a YouTube poster (maxresdefault → hqdefault fallback) and store it as lossless
+ * WebP: the JPEG is already lossy, so a second lossy pass would only compound it.
  * Throws if neither size exists.
  */
 export async function fetchYouTubePoster(
@@ -517,7 +608,7 @@ export async function fetchYouTubePoster(
     if (!buf) continue;
     await mkdir(dirname(output), { recursive: true });
     const img = size === 'hqdefault' ? await trimLetterbox(buf) : sharp(buf);
-    const info = await img.webp({ quality: 90, effort: 6, smartSubsample: true }).toFile(output);
+    const info = await img.webp({ lossless: true, effort: 6 }).toFile(output);
     return { bytes: info.size, width: info.width, height: info.height, source: size };
   }
   throw new Error(`no YouTube poster available for ${id}`);

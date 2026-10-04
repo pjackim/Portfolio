@@ -22,7 +22,7 @@ audits join step 5's verification.
 
 Read these in step 1. They win over any outside skill's defaults, in this order:
 
-1. `CLAUDE.md`: constraints (CSP, 30 KB JS, WCAG 2.2 AA, fact-only, media pipeline, `withBase`)
+1. `CLAUDE.md`: constraints (CSP, 30 KB JS, WCAG 2.2 AA, fact-only, quality-first media pipeline, `withBase`)
    and the **Goals**, especially the scan-first ground rule.
 2. `docs/identity/site-style.md`: the operator-console identity (palette roles, type roles,
    signature elements, motion personality, voice). "On-vibe" means this. Also read any other
@@ -70,7 +70,8 @@ already settles):
 6. **Edges:** phone layout, keyboard path, empty or long content, 3–8 featured items (if it
    lists projects), both themes.
 7. **Scope and risk:** what's explicitly out of scope; any new dependency (needs a yes); budget
-   impact (JS, LCP, CLS).
+   impact (JS, CLS, LCP). Media is quality first, so its weight is a guard rail, not a budget;
+   what must hold is the slow-connection path (lighter first, no layout shift).
 
 End the interview by writing the **design brief** (template below) and asking the user to confirm
 it. That confirmation is **gate 1**.
@@ -108,7 +109,8 @@ the prototypes; don't start the real build.
   `LoopVideo`. New client code goes in a module in `src/scripts/`, imported by the component.
 - Hold the constraints as you write, not after: tokens only, no inline `style=`, `withBase()`
   for every URL, motion behind the CSS and TS gates, content visible at rest, real media through
-  `npm run media`, and every copy line sourced (cite new author-stated facts in a comment).
+  `npm run media` (from the original, lossless masters, `media:verify` when one is replaced),
+  and every copy line sourced (cite new author-stated facts in a comment).
 - If the feature changes behaviour the Playwright suite covers, or adds new behaviour worth
   guarding (interaction, reduced-motion state, layout shift), update or add a spec in `tests/`.
 - If the build settled a new identity decision, add it to `docs/identity/site-style.md` in the

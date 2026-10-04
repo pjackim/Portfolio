@@ -10,11 +10,15 @@
 # bodycam/, 9 panel tabs in bodycam/ui/pages, 25 offline checks and 41 probes in scripts/.
 # media: all of it the owner's own, recorded against a live match on 2026-10-03.
 # panel-overview, panel-lobby and panel-diagnostics ← ../BodyCam/.media/{overview,lobby,
-# overview-bottom}.jpg, bottom 256 px cropped off (the desktop behind the panel); orbs-and-zombie
+# overview-bottom}.jpg, cropped to the 2198×824 panel (the desktop behind it cut off at the
+# bottom, 256–257 px, and 8 px at the left); orbs-and-zombie
 # ← .media/zombie-spawn.jpg. cover.webp is the frame at 1:09 of world-editor.mp4 (the owner's
 # recording, ~/Videos/portfolio-to-add/bodycam), cropped 16:10. The loops are trims of the same
-# folder: world-editor.mp4 0:06–0:18 and 1:03–1:18, teleport-map.mp4 0:00–0:14,
-# zombie-spawn-single.mp4 0:06–0:20; the recordings' audio is dropped. Not used: the server
+# folder: world-editor.mp4 0:06–0:18 and 1:03.5–1:18, teleport-map.mp4 0:00–0:14,
+# zombie-spawn-single.mp4 0:06–0:20; the recordings' audio is dropped. Every file is one
+# `npm run media` encode straight from its original (lossless stills; loops at 1920 px):
+# cover `--frame 69 --crop 2304:1440:0:0`, the three panels `--crop 2198:824:8:0`, the loops
+# `--trim 6-18`, `--trim 63.5-78`, `--trim 0-14` and `--trim 6-20`. Not used: the server
 # browser shots (they list other players' lobby names) and the overview, classic-features,
 # detach-menu and zombie-horde recordings.
 title: 'BodyCam External'

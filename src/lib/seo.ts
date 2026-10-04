@@ -47,7 +47,7 @@ function cropPosition(objectPosition: string | undefined): string | undefined {
 }
 
 /**
- * The project's cover cropped to 1200×630 for link previews — JPEG q85, 4–8× smaller than PNG
+ * The project's cover cropped to 1200×630 for link previews — JPEG q80, 4–8× smaller than PNG
  * for these covers. Astro never upscales, so a smaller cover gets the largest crop of the same
  * 40:21 shape instead, and one too small for even 600×315 gets the default card. Transparent
  * covers are flattened onto the site's light plate, so dark artwork never lands on black.
@@ -67,8 +67,11 @@ export async function coverOgImage(project: Project): Promise<OgImage> {
     fit: 'cover',
     ...(position ? { position } : {}),
     background: ALPHA_PLATE,
+    // The service's JPEG encoder (astro.config.ts) sets everything but the quality. These cards
+    // are only ever seen as link previews, and some unfurlers (WhatsApp) skip a card over about
+    // 300 KB, so they stay a notch below the service default (q90 made three of them 330-360 KB).
     format: 'jpeg',
-    quality: 85,
+    quality: 80,
     // One file: without this the global `constrained` layout adds a srcset of unused widths.
     layout: 'none',
   });

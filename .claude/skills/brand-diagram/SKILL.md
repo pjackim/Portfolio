@@ -14,7 +14,7 @@ folder reproduces it. If `$ARGUMENTS` is empty, ask for the description and stop
 ## Rules
 
 - **Fact-only.** Every node, label and number must come from a source: the project's own repo,
-  the legacy site (`git show d8782d1:<path>`), or something Parker stated. Read the source
+  the legacy site (`git show a085340:<path>`), or something Parker stated. Read the source
   first. Omit what you can't cite; never invent steps, metrics or names.
 - **Scan-first.** One idea per diagram, at most two stacked sections, 3-5 items each. Short
   labels (title 2-3 words, description under 70 characters). Lead with the most important item.
@@ -69,7 +69,8 @@ plain note on the left, the project name on the right.
 
    Then add the printed `media:` entry to the project's `index.md` with alt text that
    describes what the diagram shows (not "diagram"), a one-line caption, `wide: true`, and a
-   `# media:` source line citing what the diagram was authored from. Run `npm run check:media`.
+   `# media:` source line citing what the diagram was authored from, followed by the `npm run media`
+   command the pipeline printed. Run `npm run check:media`.
 
 6. **No project named** (a README banner, a doc, a social image): render to the destination
    with `--out <path>.webp` (WebP is encoded from the 2x PNG), keep the fragment next to it,

@@ -5,10 +5,14 @@
  * the reader hadn't paused), and
  * the YouTube facade on the-forest (nothing requested from YouTube or ytimg until the click,
  * then a titled, focused player). Keyboard focus shows on footage: the loop chip fills with the
- * accent, and a click-to-play video draws its ring inside the frame. Runs on desktop Chromium
- * and mobile WebKit.
+ * accent, and a click-to-play video draws its ring inside the frame. The poster is a picture
+ * under the video, whose own `poster` is a transparent pixel; it shows with or without JS.
+ * On a slow connection a loop waits until the page's images are upgraded before it starts.
+ * Runs on desktop Chromium and mobile WebKit.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import sharp from 'sharp';
+import { forceNet, holdFullImages, serverWidths } from './helpers/net.ts';
 import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
 import { gotoRel } from './helpers/routes.ts';
 
@@ -40,7 +44,6 @@ test.describe('trip-planner loops', () => {
         playsInline: v.playsInline,
         loop: v.loop,
         controls: v.controls,
-        poster: v.getAttribute('poster') ?? '',
       }));
       expect(state).toMatchObject({
         muted: true,
@@ -49,7 +52,14 @@ test.describe('trip-planner loops', () => {
         loop: true,
         controls: false,
       });
-      expect(state.poster).toMatch(/^\/Portfolio\/.+\.webp$/);
+      // The poster is the picture under the video; it loads as the loop nears the screen. The
+      // video's own `poster` is a transparent pixel, so the picture shows through.
+      await center(video);
+      const still = loop.locator('img.loop-video__poster');
+      await expect
+        .poll(() => still.evaluate((img: HTMLImageElement) => img.currentSrc))
+        .toMatch(/\/Portfolio\/_astro\/.+\.(avif|webp)$/);
+      await expect(video).toHaveAttribute('poster', /^data:image\/gif;base64,/);
       const toggle = loop.getByRole('button', { name: /^(Pause|Play) video$/ });
       await expect(toggle).toBeVisible();
     }
@@ -156,6 +166,158 @@ test.describe('trip-planner loops', () => {
       await page.waitForTimeout(SETTLE_MS);
       expect(await isPaused(video)).toBe(true);
     });
+  });
+});
+
+test.describe('trip-planner poster, under the video', () => {
+  test.use({ javaScriptEnabled: false });
+  test.skip(({ browserName }) => isWindowsWebKit(browserName), WINDOWS_WEBKIT.media);
+
+  // The `<video>` has no background and a transparent pixel for a poster: until it has a frame
+  // the picture beneath is what shows (with no poster at all, Chromium and WebKit paint it as an
+  // opaque box). Checked as pixels, with no script: the loop's top part (the native controls
+  // draw over its bottom) looks the same with the video hidden as with it showing.
+  test('shows the picture under a video with no frame yet', async ({ page }) => {
+    await page.goto('work/trip-planner/');
+    const loop = page.locator('[data-video]').first();
+    const video = loop.locator('video');
+    await expect(video).toHaveAttribute('poster', /^data:image\/gif;base64,/);
+    const still = loop.locator('img.loop-video__poster');
+    await video.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await expect
+      .poll(() => still.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0))
+      .toBe(true);
+    const shoot = async () => {
+      const png = await loop.screenshot();
+      const { width = 0, height = 0 } = await sharp(png).metadata();
+      return sharp(png)
+        .extract({ left: 0, top: 0, width, height: Math.round(height * 0.6) })
+        .removeAlpha()
+        .raw()
+        .toBuffer();
+    };
+    // Painted: a picture still decoding (it is `decoding="async"`) shows the plate, so look at
+    // the picture alone until two looks in a row agree (timers and rAF don't run without JS).
+    await video.evaluate((el) => (el.style.visibility = 'hidden'));
+    let pictureOnly = await shoot();
+    for (let tries = 0; tries < 20; tries++) {
+      await page.waitForTimeout(100);
+      const next = await shoot();
+      const settled = next.equals(pictureOnly);
+      pictureOnly = next;
+      if (settled) break;
+    }
+    await video.evaluate((el) => (el.style.visibility = ''));
+    const withVideo = await shoot();
+
+    // The picture is on screen (not a flat plate) ...
+    const mean = pictureOnly.reduce((sum, v) => sum + v, 0) / pictureOnly.length;
+    const spread = Math.sqrt(
+      pictureOnly.reduce((sum, v) => sum + (v - mean) ** 2, 0) / pictureOnly.length,
+    );
+    expect(spread).toBeGreaterThan(10);
+    // ... and the video adds nothing over it.
+    let difference = 0;
+    for (let i = 0; i < withVideo.length; i++) {
+      difference += Math.abs(withVideo[i]! - pictureOnly[i]!);
+    }
+    expect(difference / withVideo.length).toBeLessThan(1);
+  });
+});
+
+test.describe('trip-planner loops on a slow connection', () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'canplaythrough without a play: Chromium');
+  });
+
+  // The loop waits for the page's images to be upgraded to full quality (the hero's full file is
+  // held here), then loads its one file, and plays once it can play through.
+  test('wait for the images to be upgraded, then play', async ({ page }) => {
+    test.setTimeout(60_000);
+    const path = 'work/trip-planner/';
+    await forceNet(page, 'slow');
+    const { release } = await holdFullImages(page, serverWidths(path));
+    await gotoRel(page, path);
+    const html = page.locator('html');
+    await expect(html).toHaveAttribute('data-net', 'slow');
+    const video = page.locator(`${LOOPS} video`).first();
+    await center(video);
+
+    await expect(html).toHaveAttribute('data-net-busy', '');
+    await page.waitForTimeout(SETTLE_MS);
+    expect(await isPaused(video)).toBe(true);
+    expect(await video.evaluate((v: HTMLVideoElement) => v.preload)).toBe('none');
+    await expect(page.locator(LOOPS).first().getByRole('button')).toHaveAccessibleName(
+      'Play video',
+    );
+
+    release();
+    await expect(html).not.toHaveAttribute('data-net-busy', { timeout: 20_000 });
+    await expect.poll(() => isPaused(video), { timeout: 20_000 }).toBe(false);
+    expect(await video.evaluate((v: HTMLVideoElement) => v.preload)).toBe('auto');
+    await expect(page.locator(LOOPS).first().getByRole('button')).toHaveAccessibleName(
+      'Pause video',
+    );
+  });
+
+  test('Play starts one at once', async ({ page }) => {
+    const path = 'work/trip-planner/';
+    await forceNet(page, 'slow');
+    const { release } = await holdFullImages(page, serverWidths(path));
+    await gotoRel(page, path);
+    const loop = page.locator(LOOPS).first();
+    const video = loop.locator('video');
+    await center(video);
+    await expect(page.locator('html')).toHaveAttribute('data-net-busy', '');
+    expect(await isPaused(video)).toBe(true);
+    await loop.getByRole('button').click();
+    await expect.poll(() => isPaused(video), { timeout: 20_000 }).toBe(false);
+    release();
+  });
+
+  // A Play already pressed (its file still arriving) is not undone when the images finish: the
+  // loop must not be armed with a load(), which aborts that request and starts the download over.
+  test('a loop already playing is not reloaded when the images finish', async ({ page }) => {
+    test.setTimeout(60_000);
+    const path = 'work/trip-planner/';
+    await forceNet(page, 'slow');
+    const { release } = await holdFullImages(page, serverWidths(path));
+    // Hold the video file too, so play() stays pending while the images are released.
+    const videoRequests: string[] = [];
+    let releaseVideo!: () => void;
+    const videoHeld = new Promise<void>((resolve) => (releaseVideo = resolve));
+    await page.route(/\.(?:mp4|webm)(?:\?|$)/, async (route) => {
+      videoRequests.push(route.request().url());
+      await videoHeld;
+      await route.continue();
+    });
+    await gotoRel(page, path);
+    const loop = page.locator(LOOPS).first();
+    const video = loop.locator('video');
+    await center(video);
+    await expect(page.locator('html')).toHaveAttribute('data-net-busy', '');
+    await video.evaluate((v: HTMLVideoElement) => {
+      v.dataset.emptied = '0';
+      v.addEventListener('emptied', () => (v.dataset.emptied = String(+v.dataset.emptied! + 1)));
+    });
+
+    await loop.getByRole('button').click();
+    await expect.poll(() => videoRequests.length).toBe(1);
+    expect(await isPaused(video)).toBe(false);
+
+    release();
+    await expect(page.locator('html')).not.toHaveAttribute('data-net-busy', { timeout: 20_000 });
+    await page.waitForTimeout(SETTLE_MS);
+    expect(await video.evaluate((v: HTMLVideoElement) => v.dataset.emptied)).toBe('0');
+    expect(videoRequests).toHaveLength(1);
+    expect(await isPaused(video)).toBe(false);
+
+    releaseVideo();
+    await expect
+      .poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused && v.readyState >= 3), {
+        timeout: 20_000,
+      })
+      .toBe(true);
   });
 });
 

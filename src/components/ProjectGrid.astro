@@ -9,9 +9,10 @@
  * (the lead pairs too when the count is even, so none is left alone).
  * Below that, one column.
  *
- * Cards numbered by rendered position; the lead's cover loads eagerly, and cards past the first
- * row rise in as they scroll into view. The list is the spotlight's delegation root
- * (`data-spotlight`, src/scripts/interactions.ts via the motion layer).
+ * Cards numbered by rendered position; every cover is lazy (the grid sits below the hero, and on
+ * phones the whole section is hidden), and cards past the first row rise in as they scroll into
+ * view. The list is the spotlight's delegation root (`data-spotlight`,
+ * src/scripts/interactions.ts via the motion layer).
  */
 import type { CollectionEntry } from 'astro:content';
 import MotionLayer from './MotionLayer.astro';
@@ -39,14 +40,7 @@ function spanOf(i: number): 'half' | undefined {
 
 <ol class:list={['project-grid', className]} role="list" data-spotlight>
   {projects.map((project, i) => (
-    <ProjectCard
-      project={project}
-      index={i}
-      lead={i === 0}
-      span={spanOf(i)}
-      eager={i === 0}
-      reveal={i >= 3}
-    />
+    <ProjectCard project={project} index={i} lead={i === 0} span={spanOf(i)} reveal={i >= 3} />
   ))}
 </ol>
 <MotionLayer />

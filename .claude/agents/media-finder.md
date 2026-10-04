@@ -40,6 +40,8 @@ List each gap with its evidence. Typical gaps:
 - The cover is a placeholder, blurry, upscaled, under 1200 px wide (the build warns), or
   under 800 px (the card then shows it small on a panel).
 - The 16:10 card crop cuts off the subject; `coverPosition` could fix it without a new file.
+- The cover or a figure looks visibly compressed at 2× (banding, smeared or blocky detail):
+  its master is lossy, or was encoded from a file that was already encoded for the site.
 - The cover's style clashes with neighbouring cards (a screenshot among artwork, a light image
   among dark ones).
 - The case study has no media, or long text with nothing that shows the thing working.
@@ -51,7 +53,7 @@ If there is no real gap, say so and stop — do not replace media for its own sa
 
 1. The project's own material: its repo (the `# Sources:` header names it, e.g.
    `../BodyCam`) — screenshots, docs images, README media; the legacy site
-   (`git archive d8782d1`) for older projects. Also check for design-source files sitting
+   (`git archive a085340`) for older projects. Also check for design-source files sitting
    alongside it — `.ai`, `.psd`, `.eps` — logo/icon/brand-mark originals that aren't
    themselves web images. Don't skip these as "unsupported": extract a flattened raster via
    the Adobe connector (confirmed working 2026-09-27 on real `.ai`/`.psd` files):
@@ -81,7 +83,8 @@ Rules — all mandatory:
 - **Rights.** Only official or owner-published assets. Never stock images, watermarked
   images, fan-wiki uploads, social media reposts, or AI-generated images.
 - **Recorded.** For every new asset, add a line to the project's `# Sources:` header:
-  `media: <file> ← <source URL or path> (<licence or press-kit terms>, fetched YYYY-MM-DD)`.
+  `media: <file> ← <source URL or path> (<licence or press-kit terms>, fetched YYYY-MM-DD)`,
+  plus the `npm run media -- …` command the pipeline prints for it.
 - If rights or accuracy are unclear, stop and end your turn with a `NEEDS_INPUT` block listing
   the candidates, their sources, and the question.
 
@@ -90,11 +93,15 @@ Rules — all mandatory:
 1. Download to `.cache/finder/<slug>/raw/` with `curl -L -A 'Mozilla/5.0' -o <file> <url>`
    (never committed). Look at each candidate with the Read tool; drop anything low-res,
    watermarked or off-subject.
-2. Crop with sharp: covers at 16:10, at least 1200 px wide and ideally 2400 px, with the
-   subject centred or placed with `coverPosition`. Never upscale.
-3. Encode only through the pipeline: `npm run media -- <prepared file> --project <slug>`
-   (`--lossless` for UI screenshots and line art). Name the prepared file for its final name
-   (`cover.png` → `cover.webp`; others descriptive kebab-case).
+2. Size and crop for quality first: covers at 16:10, at least 1200 px wide and ideally
+   2560–3840 px, with the subject centred or placed with `coverPosition`. Never upscale. Crop
+   from the original in the pipeline (`--crop W:H:X:Y`), or with sharp to a lossless PNG, never
+   to a JPEG: a lossy intermediate caps what the visitor sees.
+3. Encode only through the pipeline, with
+   `npm run media -- <prepared file> --project <slug> [--name <kebab>]`. Masters are lossless
+   WebP by default (`--lossless` is no longer needed); `--lossy` (q95) only for a large
+   photographic source, with the reason in `# Sources:`. Name the file for its final name
+   (`--name cover` → `cover.webp`; others descriptive kebab-case).
 4. Update the frontmatter: `cover`/`coverAlt` (describe the new image), `coverPosition`, or
    new `media` entries with real `alt` text and captions that make no new claims.
 5. Leave `draft` alone — publishing is the user's call.
@@ -104,7 +111,8 @@ Rules — all mandatory:
 Rebuild, reload the same views, and save "after" screenshots to `.cache/finder/<slug>/after/`.
 A gap is closed only when all of these hold:
 
-- It looks sharp at 2× at both card and case-study sizes, with no bad crop, in both themes.
+- It looks sharp at 2× at both card and case-study sizes, with no visible compression and no
+  bad crop, in both themes.
 - `npm run check:media` passes with no cover-width warning for this project.
 - No layout shift or console errors on the project's pages.
 

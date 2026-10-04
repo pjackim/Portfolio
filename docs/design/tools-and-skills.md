@@ -25,7 +25,7 @@ table in [anti-slop.md](./anti-slop.md) as known and accepted.
 
 - **Repo constraints override every tool** (`CLAUDE.md`): no UI or CSS framework, no animation
   library, CSP with no inline styles, 30 KB JS per page, zero third-party requests, WCAG 2.2 AA,
-  fact-only content, media only through the pipeline.
+  fact-only content, quality-first media only through the pipeline.
 - Adding a dependency, hook, or tool config (including `DESIGN.md`/`PRODUCT.md`-style files a
   skill may want to generate) needs the human's go-ahead. Dependencies go through `npm i`,
   never hand-edited into `package.json`.

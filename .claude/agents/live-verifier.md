@@ -30,6 +30,12 @@ With the Playwright MCP tools, at 390px and 1280px wide:
   and shows as `<html data-scheme>`; the theme toggle is `[data-theme-toggle]`.
 - **Motion.** On and off. Off is `localStorage.motion = 'off'` → `<html data-motion="off">`;
   the toggle is `[data-motion-toggle]`.
+- **Slow connection.** Where the change touches images, loops or posters: set
+  `localStorage.net = 'slow'` and reload. Lighter images should show first, then upgrade to
+  full quality one at a time with no layout shift (compare the boxes' rects before and after;
+  a loop shows its poster first, then plays). Repeat with `'save'`: lighter images that are
+  never upgraded, and loops that never auto-start (Play still works). Set `'fast'` (or remove
+  the key) afterwards.
 - **Console.** Any CSP violation or error is a failure.
 - **Layout.** Horizontal overflow (`scrollWidth > clientWidth`), layout shift during load,
   broken or missing images, and text overlapping media.

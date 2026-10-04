@@ -11,16 +11,25 @@
  *  - references (skipped by --skip-refs): every media file is referenced from its folder's
  *    index.md — by file name; .webm/.poster.webp through their .mp4; yt-<id>.webp through
  *    its id — and every yt-<id>.webp matches a youtube media entry
- *  - size caps: no file > 8 MB, project folder ≤ 15 MB, src/content ≤ 60 MB
+ *  - guard rails (BUDGETS in lib.ts): no file > 50 MB, project folder ≤ 150 MB,
+ *    src/content ≤ 500 MB, no .webp longer than 3840 px on its long edge
  *  - no EXIF/XMP/IPTC metadata in any .webp
- *  - warning only: cover narrower than 1200 px
+ *  - warnings only: cover narrower than 1200 px; lossy WebP masters (the site's delivery
+ *    encodes are made from the master, so a lossy one caps what a visitor can see)
  */
 import { existsSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
 import { basename, join, relative, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
-import { BUDGETS, CONTENT_DIR, PROJECTS_DIR, fileSize, formatBytes } from './lib.ts';
+import {
+  BUDGETS,
+  CONTENT_DIR,
+  PROJECTS_DIR,
+  fileSize,
+  formatBytes,
+  webpIsLossless,
+} from './lib.ts';
 
 const NAME = /^[a-z0-9]+(-[a-z0-9]+)*(\.poster)?\.(md|webp|mp4|webm)$/;
 const YT_POSTER = /^yt-([\w-]{11})\.webp$/;
@@ -32,6 +41,7 @@ const skipRefs = values['skip-refs'];
 
 const errors: string[] = [];
 const warnings: string[] = [];
+const lossyMasters: string[] = [];
 /** `path` relative to the content dir, `/`-separated on every OS (Windows yields `\`). */
 const rel = (path: string) => relative(CONTENT_DIR, path).split(sep).join('/');
 
@@ -50,11 +60,16 @@ async function walk(dir: string): Promise<string[]> {
     .sort();
 }
 
-async function checkWebpMetadata(path: string): Promise<void> {
+async function checkWebp(path: string): Promise<void> {
   const meta = await sharp(path).metadata();
   const found = (['exif', 'xmp', 'iptc'] as const).filter((k) => meta[k] !== undefined);
   if (found.length > 0)
     errors.push(`${rel(path)}: embedded ${found.join('/').toUpperCase()} metadata`);
+  const edge = Math.max(meta.width, meta.height);
+  if (edge > BUDGETS.imageMaxEdge) {
+    errors.push(`${rel(path)}: ${edge}px long edge exceeds ${BUDGETS.imageMaxEdge}px`);
+  }
+  if (!webpIsLossless(await readFile(path))) lossyMasters.push(rel(path));
 }
 
 async function checkProject(slug: string): Promise<void> {
@@ -134,7 +149,7 @@ async function main(): Promise<void> {
     if (bytes > BUDGETS.file) {
       errors.push(`${rel(path)}: ${formatBytes(bytes)} exceeds ${formatBytes(BUDGETS.file)}`);
     }
-    if (name.endsWith('.webp')) await checkWebpMetadata(path);
+    if (name.endsWith('.webp')) await checkWebp(path);
   }
   if (total > BUDGETS.total) {
     errors.push(`src/content: ${formatBytes(total)} exceeds ${formatBytes(BUDGETS.total)}`);
@@ -152,6 +167,12 @@ async function main(): Promise<void> {
     `check:media — ${projects.length} project folders, ${files.length} files, ` +
       `${formatBytes(total)} total${skipRefs ? ' (reference check skipped)' : ''}`,
   );
+  if (lossyMasters.length > 0) {
+    warnings.push(
+      `${lossyMasters.length} lossy WebP master(s), fine only where no lossless original ` +
+        `exists: ${lossyMasters.join(', ')}`,
+    );
+  }
   if (warnings.length > 0) {
     console.log(`\n⚠ ${warnings.length} warning(s):`);
     for (const w of warnings) console.log(`  ${w}`);

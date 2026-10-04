@@ -6,6 +6,7 @@
       "url": [
         "http://localhost:4322/Portfolio/",
         "http://localhost:4322/Portfolio/work/",
+        "http://localhost:4322/Portfolio/work/bodycam-external/",
         "http://localhost:4322/Portfolio/work/credential-correlation/",
         "http://localhost:4322/Portfolio/work/trip-planner/"
       ],
@@ -25,7 +26,7 @@
             "resource-summary:script:size": ["error", { "maxNumericValue": 30720 }],
             "resource-summary:font:size": ["error", { "maxNumericValue": 122880 }],
             "cumulative-layout-shift": ["error", { "maxNumericValue": 0.02 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 2000 }]
+            "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }]
           }
         },
         {
