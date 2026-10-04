@@ -480,8 +480,8 @@ test.describe('arrow nudges', () => {
       await page.locator('.contact__channel').first().hover();
       await expectNudge('.contact__channel');
       await gotoRel(page, '404.html');
-      await page.locator('.not-found__actions a:has(.arrow)').hover();
-      await expectNudge('.not-found__actions a:has(.arrow)');
+      await page.locator('.error__actions a:has(.arrow)').hover();
+      await expectNudge('.error__actions a:has(.arrow)');
     });
   }
 });

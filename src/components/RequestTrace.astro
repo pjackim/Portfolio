@@ -1,0 +1,281 @@
+---
+/**
+ * Request trace: the brand's attack-path chain (the hero graph's entry → hops → target), drawn
+ * for a request that didn't land. Browser → Server → Page, three squares on a hairline; the
+ * part of the path the request reached is solid, the rest is faint, and the stop is a danger
+ * mark: an × on the leg it never crossed (`request`, `page`) or the server square itself
+ * turned red (`server`). Used inside ErrorScreen's panel.
+ *
+ * Motion (the gate, global.css): one signal pulse, a small accent square, runs the path from
+ * the browser to the stop in about a second and a half. The legs it crosses draw behind it,
+ * each square it passes lights, and the mark lands when it arrives. It plays once. At rest, with
+ * motion off, or with a reduced-motion request, the finished trace is all there is. The labels
+ * are real text; the drawing is `aria-hidden`, and the figure's own label says where it stopped.
+ */
+import type { ErrorStop } from '../data/errors';
+
+interface Props {
+  stop: ErrorStop;
+  /** What assistive tech reads in place of the drawing. */
+  label: string;
+}
+
+const { stop, label } = Astro.props;
+---
+
+<figure class="trace" role="img" aria-label={label} data-stop={stop}>
+  <div class="trace__track" data-stop={stop} aria-hidden="true">
+    <span class="trace__node trace__node--origin"></span>
+    <span class="trace__leg trace__leg--first">
+      {stop === 'request' ? (
+        <>
+          <i class="trace__seg trace__seg--live"></i>
+          <i class="trace__x"></i>
+          <i class="trace__seg trace__seg--idle"></i>
+        </>
+      ) : (
+        <i class="trace__seg trace__seg--live"></i>
+      )}
+    </span>
+    <span
+      class:list={[
+        'trace__node trace__node--server',
+        stop === 'request' && 'is-idle',
+        stop === 'server' && 'is-failed',
+      ]}
+    ></span>
+    <span class="trace__leg trace__leg--second">
+      {stop === 'page' ? (
+        <>
+          <i class="trace__seg trace__seg--live"></i>
+          <i class="trace__x"></i>
+          <i class="trace__seg trace__seg--idle"></i>
+        </>
+      ) : (
+        <i class="trace__seg trace__seg--idle"></i>
+      )}
+    </span>
+    <span class="trace__node trace__node--page is-idle"></span>
+    <span class="trace__pulse"></span>
+  </div>
+  <div class="trace__labels mono-label" aria-hidden="true">
+    <span>Browser</span>
+    <span>Server</span>
+    <span>Page</span>
+  </div>
+</figure>
+
+<style>
+  .trace {
+    --trace-reached: var(--text-muted);
+    --trace-idle: var(--line-ui);
+    --node: 0.75rem;
+    margin: 0;
+  }
+
+  /* The track is a size container so the pulse can travel in units of its own width. */
+  .trace__track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    container-type: inline-size;
+    block-size: 2rem;
+  }
+
+  .trace__node {
+    flex: none;
+    inline-size: var(--node);
+    block-size: var(--node);
+    background-color: var(--trace-reached);
+  }
+
+  .trace__node.is-idle {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--trace-idle);
+  }
+
+  .trace__node.is-failed {
+    background-color: var(--danger);
+  }
+
+  /* Each leg is a flex row of segments (and, where the request stopped, the × between them). */
+  .trace__leg {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    min-inline-size: 0;
+    padding-inline: 0.375rem;
+  }
+
+  .trace__seg {
+    display: block;
+    flex: 1 1 0;
+    min-inline-size: 0;
+    block-size: 0;
+    border-block-start: 1px solid var(--trace-reached);
+  }
+
+  .trace__seg--idle {
+    border-block-start: 1px dashed var(--trace-idle);
+  }
+
+  /* The × where the request stopped: two bars at the diagonals, in the danger colour. */
+  .trace__x {
+    position: relative;
+    flex: none;
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin-inline: 0.25rem;
+  }
+
+  .trace__x::before,
+  .trace__x::after {
+    content: '';
+    position: absolute;
+    inset: calc(50% - 0.75px) 0 auto;
+    block-size: 1.5px;
+    background-color: var(--danger);
+    rotate: 45deg;
+  }
+
+  .trace__x::after {
+    rotate: -45deg;
+  }
+
+  /* The pulse is only drawn while it runs (motion gate below). */
+  .trace__pulse {
+    display: none;
+  }
+
+  .trace__labels {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    margin-block-start: var(--space-2xs);
+  }
+
+  .trace__labels > :first-child {
+    justify-self: start;
+  }
+
+  .trace__labels > :last-child {
+    justify-self: end;
+  }
+
+  @media (forced-colors: active) {
+    .trace {
+      --trace-reached: CanvasText;
+      --trace-idle: GrayText;
+    }
+
+    .trace__node.is-failed,
+    .trace__x::before,
+    .trace__x::after {
+      background-color: Highlight;
+    }
+  }
+
+  /* ── The run (motion gate, global.css) ───────────────────────────────────────────────
+     One pulse crosses the track at a constant speed (linear, so it and the legs drawing behind
+     it stay together). `--stop` is how far along the track it gets: the middle of the leg the
+     request never crossed (a quarter or three quarters), or the server square (half). The run
+     takes --run for the full width, so it lasts --run × --stop. Everything the pulse passes
+     starts hidden or faint and arrives with it; the stop lands last. */
+  @media (prefers-reduced-motion: no-preference) {
+    .trace__track[data-stop='request'] {
+      --stop: 0.25;
+    }
+
+    .trace__track[data-stop='server'] {
+      --stop: 0.5;
+    }
+
+    .trace__track[data-stop='page'] {
+      --stop: 0.75;
+    }
+
+    .trace__track {
+      --run: 1500ms;
+      --arrive: calc(var(--run) * var(--stop));
+      --first-leg: calc(var(--run) * min(var(--stop), 0.5));
+    }
+
+    @keyframes trace-draw {
+      from {
+        scale: 0 1;
+      }
+    }
+
+    @keyframes trace-light {
+      from {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px var(--trace-idle);
+      }
+    }
+
+    @keyframes trace-fail {
+      from {
+        background-color: var(--trace-reached);
+      }
+    }
+
+    @keyframes trace-land {
+      from {
+        scale: 0;
+        opacity: 0;
+      }
+    }
+
+    @keyframes trace-pulse {
+      from {
+        translate: 0 0;
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      to {
+        translate: calc((100cqw - var(--node)) * var(--stop)) 0;
+        opacity: 0;
+      }
+    }
+
+    /* The first leg is crossed in the first half of the track, the second in the second. A
+       leg the request stopped on is crossed only as far as its ×. */
+    :global(:root:not([data-motion='off'])) .trace__leg--first .trace__seg--live {
+      transform-origin: 0 50%;
+      animation: trace-draw var(--first-leg) linear backwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .trace__leg--second .trace__seg--live {
+      transform-origin: 0 50%;
+      animation: trace-draw calc(var(--run) * 0.25) linear calc(var(--run) * 0.5) backwards;
+    }
+
+    /* The server square lights as the pulse reaches the middle of the track. */
+    :global(:root:not([data-motion='off'])) .trace__node--server:not(.is-idle) {
+      animation: trace-light var(--dur-fast) var(--ease-out) calc(var(--run) * 0.5) backwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .trace__node--server.is-failed {
+      animation: trace-fail var(--dur-base) var(--ease-out) var(--arrive) backwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .trace__x {
+      animation: trace-land var(--dur-base) var(--ease-out) var(--arrive) backwards;
+    }
+
+    :global(:root:not([data-motion='off'])) .trace__pulse {
+      position: absolute;
+      inset-block-start: calc(50% - 0.1875rem);
+      inset-inline-start: calc(var(--node) / 2 - 0.1875rem);
+      display: block;
+      inline-size: 0.375rem;
+      block-size: 0.375rem;
+      background-color: var(--accent);
+      animation: trace-pulse var(--arrive) linear both;
+      pointer-events: none;
+    }
+  }
+</style>

@@ -1,0 +1,290 @@
+---
+/**
+ * An error screen (404, 500, …): the site's console voice for a request that didn't land.
+ * Copy and statuses are in src/data/errors.ts; the pages that use this are
+ * src/pages/404.astro and src/pages/errors/[code].astro. Not indexed.
+ *
+ * Left: the status as a readout (the hero's rolling reels, in `--danger`'s company: the red
+ * signal square is the one place that colour appears), a plain headline, one or two short
+ * sentences and the next step. A retryable status leads with "Try again" (a link to the same
+ * address, so it works without script); the rest lead with the work. Right: the request trace
+ * (RequestTrace) over a few mono readouts: status, the path that was asked for, where the
+ * request stopped, and whether retrying can help.
+ *
+ * What only the browser knows is filled in by src/scripts/error-screen.ts, into slots that are
+ * laid out from first paint (nothing moves when it arrives; without script they stay blank):
+ * the requested path, and, on the 404, the closest real page to it (`suggest`: [path, label]
+ * pairs, paths relative to the base). The status reels roll through the motion layer
+ * (src/scripts/motion-layer.ts), like the home hero's readouts.
+ */
+import type { ErrorScreenCopy } from '../data/errors';
+import { withBase } from '../lib/url';
+import Arrow from './Arrow.astro';
+import Readouts from './Readouts.astro';
+import RequestTrace from './RequestTrace.astro';
+
+interface Props {
+  screen: ErrorScreenCopy;
+  /** Pages the visitor might have meant: the 404 offers the closest to the path it was asked for. */
+  suggest?: ReadonlyArray<readonly [path: string, label: string]>;
+}
+
+const { screen, suggest } = Astro.props;
+const { code, status, title, body, stop, retry } = screen;
+
+/** Backticked spans in the copy are inline code. */
+const bodyParts = body.split('`');
+
+const STOPPED_AT = { request: 'Request', server: 'Server', page: 'Page' } as const;
+const TRACE_LABEL = {
+  request: 'The request never reached the server.',
+  server: 'The request reached the server, and the server failed.',
+  page: 'The request reached the server, but no page came back.',
+} as const;
+---
+
+<section
+  class="error container"
+  aria-labelledby="error-title"
+  data-error-screen
+  data-base={withBase('')}
+  data-routes={suggest ? JSON.stringify(suggest) : undefined}
+>
+  <div class="error__main">
+    <div class="error__status">
+      <span class="error__signal" aria-hidden="true"></span>
+      <Readouts
+        class="error__code"
+        items={[{ value: String(code), label: status, spoken: `Error ${code}, ${status}` }]}
+      />
+    </div>
+    <h1 class="error__title" id="error-title">
+      {title}
+    </h1>
+    <p class="error__body">{bodyParts.map((part, i) => (i % 2 ? <code>{part}</code> : part))}</p>
+    <ul class="error__actions" role="list">
+      <li>
+        <a class="button button--secondary" href={withBase('')}>
+          Home
+        </a>
+      </li>
+      <li>
+        {retry ? (
+          <a class="button button--primary" href="">
+            Try again
+          </a>
+        ) : (
+          <a class="button button--primary" href={withBase('work/')}>
+            All work
+            <Arrow />
+          </a>
+        )}
+      </li>
+    </ul>
+    {suggest && (
+      <p class="error__suggest" data-suggest>
+        <span class="error__suggest-key mono-label">Closest match ›</span>
+        <a class="error__suggest-link" data-suggest-link>
+          <span data-suggest-label></span>
+          <Arrow />
+        </a>
+      </p>
+    )}
+  </div>
+
+  <section class="error__panel" aria-labelledby="error-trace-title">
+    <h2 class="error__panel-title mono-label" id="error-trace-title">
+      Request trace
+    </h2>
+    <RequestTrace stop={stop} label={TRACE_LABEL[stop]} />
+    <dl class="error__rows">
+      <div class="error__row">
+        <dt class="mono-label">Status</dt>
+        <dd>
+          {code} {status}
+        </dd>
+      </div>
+      <div class="error__row" data-live>
+        <dt class="mono-label">Path</dt>
+        <dd data-error-path></dd>
+      </div>
+      <div class="error__row">
+        <dt class="mono-label">Stopped at</dt>
+        <dd>{STOPPED_AT[stop]}</dd>
+      </div>
+      <div class="error__row">
+        <dt class="mono-label">Retry</dt>
+        <dd>{retry ? 'Yes' : 'No'}</dd>
+      </div>
+    </dl>
+  </section>
+</section>
+
+<script src="../scripts/error-screen.ts"></script>
+
+<style>
+  /* Centred in the space between the header and the footer, so a short screen on a tall window
+     sits in the middle of it rather than hanging from the top (the footer is about 7rem). */
+  .error {
+    display: grid;
+    align-content: center;
+    gap: var(--space-l);
+    min-block-size: calc(100dvh - var(--header-h) - 7rem);
+    padding-block: clamp(2rem, 1rem + 5vw, 6rem);
+  }
+
+  /* Wide: the message on the left, the trace panel to its right, both from the top. */
+  @media (width >= 60rem) {
+    .error {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: start;
+      gap: var(--space-2xl);
+    }
+
+    .error__panel {
+      margin-block-start: 0.375rem;
+    }
+  }
+
+  /* ── The message ── */
+  .error__status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* The signal square of the hero eyebrow, in the danger colour: the one place it changes. */
+  .error__signal {
+    flex: none;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    background-color: var(--danger);
+  }
+
+  /* One row at every width: the readouts list stacks its items on phones, and this is one item. */
+  .error__status :global(.error__code) {
+    flex-direction: row;
+    font-size: var(--step-0);
+  }
+
+  .error__title {
+    margin-block-start: var(--space-m);
+    font-size: var(--step-5);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .error__body {
+    max-inline-size: 60ch;
+    margin-block-start: var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+
+  .error__body code {
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-xs);
+    background-color: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  .error__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-xl);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The closest match: one line, in the layout from first paint (blank until the script finds a
+     page near enough to the path; `visibility` keeps the line's space either way). */
+  .error__suggest {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.625rem;
+    min-block-size: 2.75rem;
+    margin-block-start: var(--space-2xs);
+  }
+
+  .error__suggest:not([data-ready]) {
+    visibility: hidden;
+  }
+
+  .error__suggest-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375em;
+    min-block-size: 2.75rem;
+    font-weight: 500;
+  }
+
+  /* ── The panel: tone and a hairline, no elevation ── */
+  .error__panel {
+    padding: var(--space-m);
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--surface);
+  }
+
+  .error__panel-title {
+    margin-block-end: var(--space-m);
+  }
+
+  .error__rows {
+    margin-block-start: var(--space-m);
+    padding: 0;
+  }
+
+  .error__row {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-xs);
+    padding-block: var(--space-2xs);
+    border-block-start: var(--hairline);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+
+  .error__row dd {
+    min-inline-size: 0;
+    min-block-size: 1lh;
+    margin: 0;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  /* The path is filled in by the script: its row keeps its place, and shows once it has a value. */
+  .error__row[data-live]:not([data-ready]) {
+    visibility: hidden;
+  }
+
+  /* With scripting off nothing will ever fill them, so the slots reserved for the path and the
+     closest match give their space back. */
+  @media (scripting: none) {
+    .error__row[data-live],
+    .error__suggest {
+      display: none;
+    }
+  }
+
+  /* Motion (the gate, global.css): the arrow nudges toward where it points. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .error :global(.arrow) {
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      :global(:root:not([data-motion='off'])) .error a:hover :global(.arrow) {
+        translate: 2px 0;
+      }
+    }
+  }
+</style>

@@ -53,10 +53,11 @@ here that is not built from the shared parts: it is a supplied illustration, use
 | [Signal trace](#signal-trace)       | An orange pulse hops a path through the graph and locks a node. | Hero backdrop           |
 | [Decrypt](#decrypt)                 | Text resolves out of cycling glyphs, or briefly glitches.       | Hero eyebrow, headings  |
 | [Lock-on reticle](#lock-on-reticle) | Corner brackets snap onto a target in two beats.                | Project cards, lightbox |
-| [Cursor block](#cursor-block)       | The accent block as a mark: the caret and the signal square.    | Hero, 404               |
+| [Cursor block](#cursor-block)       | The accent block as a mark: the caret and the signal square.    | Hero, error screens     |
 | [Typed prompt](#typed-prompt)       | `KEY ›` then text typed out behind a block caret.               | Hero focus line         |
 | [Readout reels](#readout-reels)     | Each digit drum turns one revolution and settles on its value.  | Hero readouts           |
 | [Rule draw](#rule-draw)             | A mono index counts up and a hairline draws out from a label.   | Section headings        |
+| [Request trace](#request-trace)     | A pulse runs the path and stops where the request did.          | Error screens           |
 
 Each pattern below uses the same five fields: **Signals**, **Anatomy**, **Values**, **Rules**,
 **Source**.
@@ -131,12 +132,12 @@ Also called the scramble. Two modes of one function.
 - **Signals:** a live terminal. The same solid accent block recurs wherever input would be.
 - **Anatomy:** a solid accent rectangle, always upright, placed where input would be.
   1. **Caret:** the typed prompt's accent block (below).
-  2. **Signal square:** a 0.5 rem accent square leading the hero eyebrow. The 404 line uses the
-     same square in `--danger`, the one place the block changes colour.
+  2. **Signal square:** a 0.5 rem accent square leading the hero eyebrow. The error screens'
+     status line uses the same square in `--danger`, the one place the block changes colour.
 - **Values:** caret 0.5 em wide, full line height; signal square 0.5 rem.
-- **Rules:** the block is always the accent colour (the 404 error square excepted) and always
+- **Rules:** the block is always the accent colour (the error screens' square excepted) and always
   square-cornered. It blinks only as the caret, and only a fixed number of times.
-- **Source:** `src/components/Hero.astro`, `src/pages/404.astro`.
+- **Source:** `src/components/Hero.astro`, `src/components/ErrorScreen.astro`.
 
 ## Typed prompt
 
@@ -165,7 +166,8 @@ Also called the scramble. Two modes of one function.
   75% visibility; zero-padded numbers (`pad2`) on tabular digits.
 - **Rules:** a reel never shows a wrong value at rest and never counts up from zero. Terse mono
   keys only (`Now`, `Edu`). Numbers must be real facts; no invented stats.
-- **Source:** `src/scripts/readouts.ts`, `src/components/Readouts.astro`.
+- **Source:** `src/scripts/readouts.ts`, `src/components/Readouts.astro`. The error screens
+  reuse both for the status code (`404 NOT FOUND`); the motion layer rolls it.
 
 ## Rule draw
 
@@ -179,6 +181,26 @@ Also called the scramble. Two modes of one function.
   never redraws. Print always shows the rule. Use `SectionHeading`; don't rebuild it per
   section.
 - **Source:** `src/components/SectionHeading.astro`, `src/scripts/interactions.ts`.
+
+## Request trace
+
+- **Signals:** the signal trace for a request that didn't land: the chain stops short, and you
+  see where.
+- **Anatomy:**
+  1. Three squares on a hairline: Browser, Server, Page. What the request reached is solid; the
+     rest is faint and dashed.
+  2. The stop is the one red mark: an × on the leg it never crossed (request, page), or the
+     server square itself turned red.
+  3. One accent pulse runs from the browser to the stop at a constant speed. The legs draw
+     behind it, each square lights as it passes, and the mark lands last. It plays once.
+- **Values:** 1.5 s for the full width, so a run lasts 1.5 s × how far along the track it
+  stops (a quarter, half or three quarters: 0.4 to 1.1 s); linear; the mark lands in 220 ms.
+  Squares 0.75 rem, the pulse 0.375 rem.
+- **Rules:** the drawing is `aria-hidden` and the figure carries a sentence saying where the
+  request stopped; the same fact is in the panel's readouts beside it, so nothing depends on
+  seeing it. `--danger` marks the stop and nothing else in the drawing. At rest, with motion
+  off, or on a reduced-motion request, only the finished trace shows.
+- **Source:** `src/components/RequestTrace.astro`, `src/components/ErrorScreen.astro`.
 
 ## Rules for every pattern
 

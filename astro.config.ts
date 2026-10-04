@@ -42,7 +42,8 @@ export default defineConfig({
   // Shiki colours code blocks with inline style attributes, which the CSP below forbids; code
   // stays plain, styled by prose.css.
   markdown: { syntaxHighlight: false },
-  integrations: [sitemap({ filter: (p) => !p.includes('/html/Work/') })],
+  // The redirect stubs and the error screens are noindex pages, not part of the site map.
+  integrations: [sitemap({ filter: (p) => !p.includes('/html/Work/') && !p.includes('/errors/') })],
   // Fonts API: local provider → `<Font cssVariable=… />` emits the @font-face rules, the
   // `--font-sans` / `--font-mono` variables and metric-matched fallbacks (Arial / Courier New).
   fonts: [

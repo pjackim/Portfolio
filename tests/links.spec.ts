@@ -7,9 +7,9 @@
  * The markup is the same in every browser, so this runs in the `chromium` project only.
  */
 import { expect, test } from '@playwright/test';
-import { gotoRel, NOT_FOUND_PAGE, ROUTES } from './helpers/routes.ts';
+import { ERROR_ROUTES, gotoRel, NOT_FOUND_PAGE, ROUTES } from './helpers/routes.ts';
 
-const PAGES = [...ROUTES, NOT_FOUND_PAGE];
+const PAGES = [...ROUTES, NOT_FOUND_PAGE, ...ERROR_ROUTES];
 
 /** URL-bearing attributes: [selector, attribute]. `srcset` holds a candidate list. */
 const SOURCES: ReadonlyArray<readonly [string, string]> = [
