@@ -266,6 +266,15 @@ const TRACE_LABEL = {
     visibility: hidden;
   }
 
+  /* With scripting off nothing will ever fill them, so the slots reserved for the path and the
+     closest match give their space back. */
+  @media (scripting: none) {
+    .error__row[data-live],
+    .error__suggest {
+      display: none;
+    }
+  }
+
   /* Motion (the gate, global.css): the arrow nudges toward where it points. */
   @media (prefers-reduced-motion: no-preference) {
     :global(:root:not([data-motion='off'])) .error :global(.arrow) {

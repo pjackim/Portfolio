@@ -203,6 +203,20 @@ test.describe('the trace, motion off', () => {
   });
 });
 
+test.describe('without script', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('the slots only the browser can fill are gone, and the screen still says it all', async ({
+    page,
+  }) => {
+    await gotoRel(page, 'work/credential-corelation/');
+    await expect(page.locator('h1')).toHaveText('Page not found.');
+    await expect(page.locator('.error__row[data-live]')).toHaveCSS('display', 'none');
+    await expect(page.locator('[data-suggest]')).toHaveCSS('display', 'none');
+    await expect(page.locator('.error__actions a[href="/Portfolio/work/"]')).toBeVisible();
+  });
+});
+
 test.describe('on a phone', () => {
   test.use({ viewport: { width: 360, height: 780 } });
 
