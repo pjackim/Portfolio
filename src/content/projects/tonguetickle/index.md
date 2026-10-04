@@ -21,6 +21,10 @@
 # Author statements: Parker's prompts (Claude Code prompt history, project TongueTickle) on
 #   2026-07-02 (auto-express request, hotkey bug reports, real Grok test) and 2026-09-27 (provider
 #   order, locally hosted Qwen3-TTS).
+#   Exact words (history.jsonl): July 2026: "implement two features for grok voice under listen:
+#   auto-moments, auto-delivery" and "bug: when using my hot key, the first word or first few words seem
+#   to get cut off in the audio"; September 2026: "we will assume locally hosted qwen3-tts" and
+#   "1. Qwen3-TTS 2. Grok Voice API 3. OpenAI Voice API".
 # Period: git dates 2026-07-02 → 2026-09-27; the July 2 'Initial commit' snapshotted earlier work
 #   (filesystem and session logs put the first code at 2026-06-30, not used for the period).
 # Deliberately omitted: the removed earlier cloud provider's name (author asked for it scrubbed),
@@ -56,8 +60,8 @@ cover: ./cover.webp
 coverAlt: "TongueTickle's Listen screen in its dark theme: the headline 'Hear anything on your screen, in a voice you chose.', the Ctrl Shift S hotkey with the active voice Echo, and a text box with a sample sentence typed in above an orange Speak button."
 featured: false
 order: 100
-showOnHome: false
-draft: true
+showOnHome: true
+draft: false
 highlights:
   - 'Speaks any highlighted text from a global hotkey; a free offline Windows voice works with no API key.'
   - 'Ranked provider registry (Qwen3-TTS, Grok, OpenAI, offline voice); by default the highest-priority configured one speaks. A new provider is one module.'
