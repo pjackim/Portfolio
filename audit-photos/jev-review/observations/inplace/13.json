@@ -1,0 +1,42 @@
+{
+  "id": 13,
+  "views": [
+    {
+      "file": "inplace/13--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; image fills the card.",
+      "visible_vs_full": "The 3D ant model fills the frame; leg ends are cut at the left and right edges and the top is cut at the neck; both mandible tips are visible; dark grey background around.",
+      "readable_here": "No text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A close-up sculpted metallic ant head with open mandibles on a dark grey background."
+    },
+    {
+      "file": "inplace/13--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Thin text-only row of a list: index \"12\", title \"Ant Game\", \"DESIGN & 3D\", \"2019\", arrow.",
+      "visible_vs_full": "No part of the image is visible in this crop; the row contains only text.",
+      "readable_here": "Title \"Ant Game\", the category \"DESIGN & 3D\", the year \"2019\" and the index \"12\" are readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Text row with a title and category; no picture in this placement."
+    },
+    {
+      "file": "inplace/13--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page.",
+      "visible_vs_full": "Full 3D ant head visible; leg tips at left and right edges cut, and the top of the body cut, as in the standalone file; dark background all round.",
+      "readable_here": "Surface detail on the head and mandible teeth is visible; no text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A metallic ant head with open jaws on a dark background."
+    },
+    {
+      "file": "inplace/13--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Card image without border, rounded top corners; a light strip along the bottom edge.",
+      "visible_vs_full": "Image cropped tighter than the standalone: legs and edges are cut more at left, right and top; the mandible tips are cut at the bottom edge.",
+      "readable_here": "Head texture and mandible teeth are readable; no text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A large metallic ant head with open jaws, filling the frame."
+    }
+  ],
+  "observer_confirms_blind": true
+}

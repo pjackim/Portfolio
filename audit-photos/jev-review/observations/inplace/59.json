@@ -1,0 +1,24 @@
+{
+  "id": 59,
+  "views": [
+    {
+      "file": "inplace/59--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Square figure left-aligned in the column with white space to its right; caption 'FIG. 02 — The logo I created for the zExileModz team.' below.",
+      "visible_vs_full": "Entire square logo visible, same framing as standalone; no crop.",
+      "readable_here": "Z emblem shape and grain readable; caption readable. Image contains no text.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Red-outlined dark angular Z emblem on black; clear logo shape."
+    },
+    {
+      "file": "inplace/59--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width frame slightly taller than square, caption over two lines below.",
+      "visible_vs_full": "Whole logo visible, edges match standalone; slightly taller frame than square but image appears complete.",
+      "readable_here": "Emblem edges, scratches and grain visible at this size. Caption readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Bold red and charcoal Z emblem on black."
+    }
+  ],
+  "observer_confirms_blind": true
+}

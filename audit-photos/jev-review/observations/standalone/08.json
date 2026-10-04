@@ -1,0 +1,13 @@
+{
+  "id": 8,
+  "file": "reference-assets/08--cover.Bnry21de.webp",
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "depicts": "Crossword-style trivia game: HERO TRIVIA logo at top, a grid with letters spelling SILV, SHANG-CHI and X-MEN, and a clue box below, over a blurred comic-book collage background.",
+  "text_readable": "Readable: \"HeroTrivia\" logo, \"_____ Surfer, servant of Galactus who bretrayed him to save Earth\", grid letters \"S\", \"H\", \"A\", \"N\", \"G\". Comic cover text in the background is blurred and unreadable. The clue contains the spelling \"bretrayed\".",
+  "composition": "Logo at top centre, grid centred in the upper-middle with glowing yellow cells, clue box across the lower centre. Left and right thirds are background collage only.",
+  "tone_and_contrast": "Background is saturated and busy but blurred and dimmed; dark grid cells with glowing yellow-orange letters give clear contrast. Clue box is dark translucent with light text.",
+  "sharpness_and_artifacts": "Background blurred deliberately; letters in the grid have a glow and some look smeared at native size. Grid cells are dark and semi-transparent. No watermark, cursor or HUD visible.",
+  "scan_first_read": "A comic-themed crossword game titled HeroTrivia with a Silver Surfer clue; the theme reads quickly.",
+  "observer_confirms_blind": true
+}

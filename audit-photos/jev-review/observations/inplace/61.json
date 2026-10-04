@@ -1,0 +1,24 @@
+{
+  "id": 61,
+  "views": [
+    {
+      "file": "inplace/61--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure frame with black side bars; centered 'PLAY | YOUTUBE' button; caption FIG. 04 about the UI designed, beneath.",
+      "visible_vs_full": "Full video poster visible: game screenshot with black bars left and right, matching the standalone file; button covers the centre.",
+      "readable_here": "Radar, '$800', color wheels small; 'COLORS' 'CONFIGS' readable near the button; smaller menu labels are hard to read. Caption readable.",
+      "overlays_or_intrusions": "Centered 'PLAY | YOUTUBE' light button covers the centre of the menu and part of an ESP panel.",
+      "at_a_glance": "Orange CS-style game scene with a custom colour-menu UI and a play button over it."
+    },
+    {
+      "file": "inplace/61--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width frame with black side bars; large 'PLAY | YOUTUBE' button centered; caption over three lines.",
+      "visible_vs_full": "Whole poster visible with black side bars; the button covers the upper menu panel, hiding the COLORS and CONFIGS headers and two colour wheels.",
+      "readable_here": "Radar, '$800' and lower colour wheel panels visible; most menu labels are too small to read. Caption readable.",
+      "overlays_or_intrusions": "Large 'PLAY | YOUTUBE' button covers about the middle of the poster, over the menu panel.",
+      "at_a_glance": "Orange game scene with a large play button; the designed menu UI is partly hidden behind it."
+    }
+  ],
+  "observer_confirms_blind": true
+}

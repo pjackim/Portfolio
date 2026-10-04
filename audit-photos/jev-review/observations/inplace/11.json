@@ -1,0 +1,33 @@
+{
+  "id": 11,
+  "views": [
+    {
+      "file": "inplace/11--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; dark image fills the card.",
+      "visible_vs_full": "Full frame shown from the 16:9 file; the octopus sits in the centre with dark textured background on all sides; nothing cropped.",
+      "readable_here": "Tentacle shapes and the two eye slits are visible; smoke strands are fine detail. No text.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A white octopus silhouette with smoke rising from its head on a dark textured background."
+    },
+    {
+      "file": "inplace/11--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border, pale page above and below.",
+      "visible_vs_full": "Full frame visible at reduced size; octopus centred; whole dark background shown with no cropping.",
+      "readable_here": "White shape, eye slits and tentacles are visible; smoke wisps are softer. No text.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A white octopus with smoke on a dark background."
+    },
+    {
+      "file": "inplace/11--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Small rounded thumbnail at left of a list row; title \"Spectre\", meta \"2021 · DESIGN & 3D\", index \"10\" at right.",
+      "visible_vs_full": "Whole frame visible in a small wide thumbnail; dark background fills it; octopus centred and occupies about half the height.",
+      "readable_here": "Row text \"Spectre\" and \"2021 · DESIGN & 3D\" readable; thumbnail shows only the white octopus shape, no fine detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+  ],
+  "observer_confirms_blind": true
+}

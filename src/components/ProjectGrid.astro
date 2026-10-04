@@ -3,8 +3,10 @@
  * Selected work as a bento grid (Portfolio.dc.html, Claude Design, Sept 2026 — "1b, size by
  * importance"): the featured case studies in `order`, the first the lead cell. From 960px, a
  * 12-column grid of 240px rows: the lead spans 7 columns and 2 rows, the next two 5 columns each
- * beside it, the rest 4 columns, three to a row; a short last row widens its cards to fill it
- * (so any count from 3 to 8 comes out whole). 640–959px: the lead full width, the rest in pairs.
+ * beside it, the rest 4 columns, three to a row; a short last row widens its cards to fill it, but
+ * never a lone card across the whole width: one left over pairs up with the three before it (two
+ * rows of two), two left over halve the row. 640–959px: the lead full width, the rest in pairs
+ * (the lead pairs too when the count is even, so none is left alone).
  * Below that, one column.
  *
  * Cards numbered by rendered position; the lead's cover loads eagerly, and cards past the first
@@ -21,11 +23,30 @@ interface Props {
 }
 
 const { projects, class: className } = Astro.props;
+
+/** Mirrors the bento rules below, so each card's `sizes` matches the width its cell really gets:
+    from the 4th card on, rows of three; with one left over, the last four are halves (never one
+    card alone across the row), with two left over, the last two are. */
+function spanOf(i: number): 'half' | undefined {
+  const n = projects.length;
+  const pos = i + 1;
+  if (pos < 4) return undefined;
+  if (n % 3 === 1 && pos > n - 4) return 'half';
+  if (n % 3 === 2 && pos > n - 2) return 'half';
+  return undefined;
+}
 ---
 
 <ol class:list={['project-grid', className]} role="list" data-spotlight>
   {projects.map((project, i) => (
-    <ProjectCard project={project} index={i} lead={i === 0} eager={i === 0} reveal={i >= 3} />
+    <ProjectCard
+      project={project}
+      index={i}
+      lead={i === 0}
+      span={spanOf(i)}
+      eager={i === 0}
+      reveal={i >= 3}
+    />
   ))}
 </ol>
 <MotionLayer />
@@ -51,20 +72,20 @@ const { projects, class: className } = Astro.props;
     --i: 1;
   }
 
-  /* Tablets: the lead full width, the rest in pairs; an odd one out takes the whole row. */
-  @media (width >= 40rem) {
-    .project-grid > :global(.card:not(:first-child)) {
+  /* Tablets: the lead full width, the rest in pairs; with an even count the lead pairs too, so
+     no card is left alone on a row. Bounded above: these selectors outrank the bento's plain
+     `.card` span, so left open they would leak into it. */
+  @media (40rem <= width < 60rem) {
+    .project-grid > :global(.card:not(:first-child)),
+    .project-grid > :global(.card:first-child:nth-last-child(even)) {
       grid-column: span 6;
     }
 
-    .project-grid > :global(.card:last-child:nth-child(even)) {
-      grid-column: 1 / -1;
-    }
-
-    /* A half-width card's head stacks: title, then index and year. */
+    /* A half-width card's head stacks: title, then index and year. Stretched, so a long title
+       ellipsizes inside the card instead of sizing to its text and pushing past the viewport. */
     .project-grid > :global(.card:not(:first-child) .card__head) {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
     }
   }
 
@@ -88,13 +109,14 @@ const { projects, class: className } = Astro.props;
       grid-column: span 5;
     }
 
-    /* Rows of three from the 4th card: one left over fills the row, two left over halve it. */
-    .project-grid > :global(.card:last-child:nth-child(3n + 4)) {
-      grid-column: 1 / -1;
-    }
-
+    /* Rows of three from the 4th card: two left over halve the row; one left over joins the
+       three before it as two rows of two. */
     .project-grid > :global(.card:nth-last-child(2):nth-child(3n + 4)),
-    .project-grid > :global(.card:last-child:nth-child(3n + 5)) {
+    .project-grid > :global(.card:last-child:nth-child(3n + 5)),
+    .project-grid > :global(.card:last-child:nth-child(3n + 4)),
+    .project-grid > :global(.card:nth-last-child(2):nth-child(3n + 3):not(:nth-child(-n + 3))),
+    .project-grid > :global(.card:nth-last-child(3):nth-child(3n + 2):not(:nth-child(-n + 3))),
+    .project-grid > :global(.card:nth-last-child(4):nth-child(3n + 1):not(:first-child)) {
       grid-column: span 6;
     }
 

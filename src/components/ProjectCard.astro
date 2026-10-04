@@ -37,13 +37,15 @@ interface Props {
   index: number;
   /** The lead cell: biggest cover, plus the summary and stack. */
   lead?: boolean;
+  /** A last bento cell widened to half a row (ProjectGrid). */
+  span?: 'half' | undefined;
   /** Above-the-fold card: load the cover eagerly at high priority. */
   eager?: boolean;
   /** Entrance reveal as it scrolls into view (cards below the first row; spec §4). */
   reveal?: boolean;
 }
 
-const { project, index, lead = false, eager = false, reveal = false } = Astro.props;
+const { project, index, lead = false, span, eager = false, reveal = false } = Astro.props;
 const { id, data } = project;
 
 /** `sizes` from the rendered cover width (ProjectGrid): from 960px the lead is 7 of 12 columns
@@ -53,6 +55,8 @@ const SIZES = {
   lead: '(min-width: 2400px) 910px, (min-width: 1760px) 745px, (min-width: 1216px) 40rem, (min-width: 960px) 56vw, 100vw',
   normal:
     '(min-width: 2400px) 650px, (min-width: 1760px) 530px, (min-width: 1216px) 30rem, (min-width: 960px) 40vw, (min-width: 640px) 50vw, 100vw',
+  // Last cards widened to fill their row: half a container.
+  half: '(min-width: 2400px) 781px, (min-width: 1760px) 629px, (min-width: 1216px) 565px, (min-width: 960px) 50vw, (min-width: 640px) 50vw, 100vw',
 };
 
 const facts = await imageFacts(data.cover);
@@ -76,7 +80,7 @@ const href = withBase(`work/${id}/`);
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       widths={widths}
-      sizes={SIZES[lead ? 'lead' : 'normal']}
+      sizes={SIZES[lead ? 'lead' : (span ?? 'normal')]}
       alt=""
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"

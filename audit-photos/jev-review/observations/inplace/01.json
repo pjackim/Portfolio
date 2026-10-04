@@ -1,0 +1,42 @@
+{
+  "id": 1,
+  "views": [
+    {
+      "file": "inplace/01--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide case-study hero frame with grey border; image fills it edge to edge.",
+      "visible_vs_full": "Whole frame appears visible with the full width and height; matches the standalone file's layout, with a slightly wider frame edge around it.",
+      "readable_here": "Top strings 'Green86Boot!' and 'Boot19Green86!' readable; small annotation captions ('This pattern occurs in both the…') are small and blurry.",
+      "overlays_or_intrusions": "Centered white 'PLAY | YOUTUBE' pill button over the middle of the diagram, covering some of the arrows and captions.",
+      "at_a_glance": "Dark screen with colored text and arrows; a play button in the center signals a video."
+    },
+    {
+      "file": "inplace/01--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Project card with a wide image on top; title, description and tags below on light background.",
+      "visible_vs_full": "Crop shows the top portion; the bottom captions ('This capital letter occurs…') are cut off at the image edge and the right and left sides appear trimmed.",
+      "readable_here": "Card title readable. Inside the image only the two password strings and arrows are discernible; annotation captions are tiny and blurred.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Colored arrow diagram on a dark background above the title 'Credential Correlation Visualizer'."
+    },
+    {
+      "file": "inplace/01--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Case-study hero frame with large PLAY YOUTUBE button in the middle.",
+      "visible_vs_full": "Whole frame appears visible, slightly narrower crop at the edges than the standalone; window bar at the top and bottom glow edge both visible.",
+      "readable_here": "Top strings 'Green86Boot!' and 'Boot19Green86!' readable; captions blurred and partly hidden behind the button.",
+      "overlays_or_intrusions": "Large white 'PLAY | YOUTUBE' button covers about a third of the image width across the middle, hiding several captions and arrows.",
+      "at_a_glance": "A play button dominates; behind it a dark screen with colored text lines."
+    },
+    {
+      "file": "inplace/01--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Square-ish project card: image on top, then '2023 · SECURITY', number 01, title and truncated description.",
+      "visible_vs_full": "Image is cropped to a wide strip: top bar and lower captions partly cut off at the bottom edge, sides trimmed relative to the standalone.",
+      "readable_here": "Title and metadata readable. Diagram strings blurred; captions cannot be read at this size.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark colorful diagram over the title 'Credential Correlation Visualizer' with a security label."
+    }
+  ],
+  "observer_confirms_blind": true
+}

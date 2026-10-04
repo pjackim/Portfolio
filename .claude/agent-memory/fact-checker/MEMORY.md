@@ -1,0 +1,5 @@
+- [TongueTickle source map](tonguetickle-source-map.md) — topic -> path:lines in ../TongueTickle, commit/test counts, exact author quotes, 3 audit passes (2026-09-29)
+- [Claude prompt-history lookup](claude-prompt-history-lookup.md) — verify "per the author" claims in ~/.claude/history.jsonl; chunked -o reads; timestamp math
+- [Bash hook quirks](bash-hook-quirks.md) — get git log data past the read-only hook; ffprobe blocked, grep -a -c for audio-track check; --grep=Claude trailer count
+- [BodyCam source map](reference_bodycam_source_map.md) — bodycam-external entry: claim -> BodyCam repo file:line, verified counts, doc/code disagreements, hook gotchas
+- [Legacy source map](reference_legacy_map.md) — mordhau legacy lines/images at a085340, plus Bash-hook quirks

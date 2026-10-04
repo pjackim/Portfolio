@@ -1,0 +1,7 @@
+{
+ "id": 25,
+ "standalone": "none",
+ "in_place": "minor",
+ "in_place_worst_file": "inplace/25--mobile--1.png",
+ "evidence": "Map, popup and trip list readable and clear. In place, video controls gradient covers the second list entry (The Oval)."
+}

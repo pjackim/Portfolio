@@ -1,0 +1,13 @@
+{
+  "id": 11,
+  "file": "reference-assets/11--cover.rf1al80g.webp",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "A white octopus silhouette emblem with curled tentacles, its head dissolving into white smoke, centred on a dark charcoal textured background.",
+  "text_readable": "no text",
+  "composition": "Emblem centred both ways; dark empty margins on all sides; smoke rises toward upper centre; subject fully visible.",
+  "tone_and_contrast": "Pure white shape on dark grey; very high contrast; smoke has soft gradient edges; background has mottled slightly lighter blotches.",
+  "sharpness_and_artifacts": "Clean vector-like edges on the tentacles; faint mottled texture in the background; no visible noise, watermark or banding at this view.",
+  "scan_first_read": "A white smoky octopus logo on dark; instantly readable emblem.",
+  "observer_confirms_blind": true
+}

@@ -79,8 +79,8 @@ before using any of their advice. The site's own look and voice are defined in
      budget, motion that respects `prefers-reduced-motion` and the motion toggle, WCAG 2.2 AA,
      and the Lighthouse budgets. Delight never costs accessibility or speed.
 3. **Make Parker easy to recognise and contact.**
-   - His profile photo (`src/assets/profile/parker-jackim.webp`), the monogram
-     (`src/lib/monogram.ts`), and his name read as one consistent identity across the header,
+   - His profile photo (`src/assets/profile/parker-jackim.webp`), the logo
+     (`src/assets/brand/logo.png`), and his name read as one consistent identity across the header,
      contact section, favicon, and OG card. His face should show up early, not only at the
      bottom of the page.
    - Contact channels (email, GitHub, LinkedIn, résumé, and any others such as a phone number)
@@ -169,8 +169,9 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
 - `npm run new -- <slug>` — scaffold a project; `npm run media -- <files...> --project <slug>`
   — encode media into it; `npm run media:migrate` — one-time legacy media import; `npm run
 check:media` — media lint (also part of `lint`)
-- `npm run og` — regenerate `public/og-default.png`, favicon, and touch icon from
-  `src/lib/monogram.ts`
+- `npm run og` — regenerate the header logo asset (`src/assets/brand/logo-mark.webp`),
+  `public/og-default.png`, the favicon and the touch icons from the master logo
+  `src/assets/brand/logo.png`
 - `npm run ci` — `lint` + `build:only` + `test:e2e`, the local approximation of the CI gate
 - `npm run clean` — delete build/cache/test output (`-- --all` also removes `node_modules`); VS Code
   tasks for all of the above live in `.vscode/tasks.json`
@@ -198,8 +199,7 @@ check:media` — media lint (also part of `lint`)
   `images.ts` (build-time image facts via sharp), `seo.ts` (OG images, JSON-LD), `csp.ts`
   (hashes hand-inlined scripts/styles for the CSP `<meta>`), `format.ts` (date/index display
   helpers), `page-style.ts` (per-instance CSS without inline `style=`, to keep the CSP free of
-  `'unsafe-inline'`), `monogram.ts` (shared logo geometry; also imported by `scripts/og/`, so it
-  stays import-free).
+  `'unsafe-inline'`).
 - **Data files** — `src/data/site.ts` (name, role, bio, timeline, and the Experience git log's
   commits and skills — every line sourced with a comment back to the legacy file/line, the
   résumé or the author) and `src/data/taxonomy.ts` (`CAPABILITIES`, `GROUPS`, and the capability
@@ -212,8 +212,8 @@ check:media` — media lint (also part of `lint`)
   link, and `noindex`.
 - **Scripts** — `scripts/media/{build,check,migrate,lib}.ts` (the media pipeline; runs on
   Node's native TypeScript type-stripping, so erasable syntax only — no enums/namespaces/param
-  properties) and `scripts/new-project.ts` (project scaffolding). `scripts/og/` renders the OG
-  card and icons from the shared monogram geometry.
+  properties) and `scripts/new-project.ts` (project scaffolding). `scripts/og/` renders the logo
+  asset, OG card and icons from the master logo.
 - **Client JS** — hand-written modules in `src/scripts/` (theme, motion/motion-toggle,
   video, youtube, lightbox, work-filter, hero, case-index, etc.), each imported by the
   component that needs it, plus Astro's built-in hover prefetch. Motion is user-toggleable
@@ -236,6 +236,10 @@ check:media` — media lint (also part of `lint`)
 - **Never paste legacy HTML.** Astro 7's Rust compiler rejects invalid/unclosed nesting (the
   legacy `credential_correlation.html` has broken nesting) — port legacy **text** only, into
   clean Astro/Markdown markup.
+- **The logo is bare.** `Logo.astro` draws the mark (`src/assets/brand/logo-mark.webp`,
+  cropped from the master `logo.png` by `npm run og`) on a transparent ground, no tile. The
+  favicon and touch icons are transparent too; only the OG card keeps a graphite ground.
+  Re-run `npm run og` after changing the master.
 - **Media only via the pipeline.** Never hand-encode or commit a raw image/video export — run
   `npm run media -- <files> --project <slug>` (or `media:migrate` for the legacy batch).
   Filenames are kebab-case; only WebP images and MP4+WebM+poster videos are allowed under

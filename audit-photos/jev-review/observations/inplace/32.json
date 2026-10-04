@@ -1,0 +1,24 @@
+{
+  "id": 32,
+  "views": [
+    {
+      "file": "inplace/32--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide game screenshot in a figure, caption FIG. 01 and FULL SIZE link at right.",
+      "visible_vs_full": "Whole image shown at a smaller scale; walls, corridor, fighters and full grid floor visible, no visible crop versus the standalone.",
+      "readable_here": "No text in the image; the caption text is readable, the small fighters are visible but tiny.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark walls form a corridor to a small fight on a floor with a yellow grid."
+    },
+    {
+      "file": "inplace/32--mobile--1.png",
+      "viewport": "mobile",
+      "context": "The same screenshot at phone width, caption and FULL SIZE link below.",
+      "visible_vs_full": "Whole image shown at phone width; walls, corridor, fighters and grid floor all visible, no visible crop versus the standalone.",
+      "readable_here": "No text in the image; the fighters are small but discernible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A dark corridor between tall walls with a few small fighters and a bright yellow floor grid."
+    }
+  ],
+  "observer_confirms_blind": true
+}

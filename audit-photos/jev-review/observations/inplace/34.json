@@ -1,0 +1,24 @@
+{
+  "id": 34,
+  "views": [
+    {
+      "file": "inplace/34--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with rounded frame and \"FIG. 03\" label; a \"PLAY | YOUTUBE\" button sits centered over the image.",
+      "visible_vs_full": "Full 16:9 frame visible, including the FPS counter, PHYSX + CPU label, score, and server chat line as in the standalone file.",
+      "readable_here": "HUD text \"PHYSX + CPU\" is readable; the FPS counter, \"+11 OBJECTIVE\" and server chat line are tiny and hard to read.",
+      "overlays_or_intrusions": "Centered \"PLAY | YOUTUBE\" button covers the middle of the sky and the top of the sword blade.",
+      "at_a_glance": "First-person sword view in a dark stone arena, with a play button to open a video."
+    },
+    {
+      "file": "inplace/34--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width; \"FIG. 03\" label below; large centered \"PLAY | YOUTUBE\" button over the image.",
+      "visible_vs_full": "Full frame visible at smaller size, same content as the standalone file.",
+      "readable_here": "\"PHYSX + CPU\" readable. Score, objective text and server chat line are very small; at this size the chat line is hard to make out.",
+      "overlays_or_intrusions": "Large \"PLAY | YOUTUBE\" button covers a big part of the central sky and the sword blade.",
+      "at_a_glance": "A play button dominates; behind it a first-person sword view in a stone arena."
+    }
+  ],
+  "observer_confirms_blind": true
+}

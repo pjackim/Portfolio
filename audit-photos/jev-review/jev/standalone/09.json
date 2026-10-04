@@ -1,0 +1,206 @@
+{
+ "id": 9,
+ "state": {
+  "project": "nodes",
+  "kind": "3d-render",
+  "file_pixels": "1920 x 1080 px, large (1600px or wider)",
+  "file_sharpness": "moderate",
+  "file_exposure": "blown",
+  "file_contrast": "high",
+  "empty_bands": "left 27% of the width is a near-uniform empty band; right 32% of the width is a near-uniform empty band",
+  "observation": {
+   "depicts": "A ring of eleven black glossy spheres, each with a dark recessed disc edged in red, yellow or green, joined by a curved black clasp at the lower right, on white.",
+   "text_readable": "no text",
+   "composition": "Ring tilted in three-quarter view, centred slightly left of middle; large empty white areas on the left and right sides; whole subject visible and uncropped.",
+   "tone_and_contrast": "Near-black objects on pure white background; very high separation, but the dark spheres show little internal shading detail; coloured rims are faint.",
+   "sharpness_and_artifacts": "Smooth surfaces, soft edges on the spheres; no visible noise, banding or watermark; soft shadow-free cutout on flat white.",
+   "scan_first_read": "A black bead ring or bracelet object on white; coloured rim accents hint at status lights."
+  }
+ },
+ "model": "jev-1.13.0",
+ "scoreIds": [
+  "resolution_headroom",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 1.52,
+   "confidence": 0.57,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.52,
+    "2": 0.44,
+    "3": 0.04,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 3.12,
+   "confidence": 0.8,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.05,
+    "3": 0.77,
+    "4": 0.18
+   },
+   "decision": "accept"
+  },
+  "framing": {
+   "type": "score",
+   "score": 0.81,
+   "confidence": 0.84,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0.19,
+    "1": 0.81,
+    "2": 0,
+    "3": 0,
+    "4": 0
+   },
+   "decision": "accept"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 3.18,
+   "confidence": 0.63,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0.01,
+    "1": 0,
+    "2": 0.1,
+    "3": 0.58,
+    "4": 0.31
+   },
+   "decision": "review"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 3.99,
+   "confidence": 0.99,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1
+   },
+   "decision": "accept"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 2.59,
+   "confidence": 0.65,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.02,
+    "2": 0.36,
+    "3": 0.62,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.85,
+   "p": 0.85,
+   "read": "yes"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.54,
+   "p": 0.54,
+   "read": "uncertain"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.28,
+   "p": 0.28,
+   "read": "uncertain"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "poor_framing_or_dead_space",
+   "confidence": 1,
+   "probabilities": {
+    "low_contrast_or_dark": 0,
+    "none": 0,
+    "low_resolution": 0,
+    "unreadable_text": 0,
+    "busy_background": 0,
+    "poor_framing_or_dead_space": 1,
+    "artifacts_or_overlays": 0,
+    "other": 0
+   },
+   "decision": "accept"
+  }
+ },
+ "severity": {
+  "choice": "moderate",
+  "confidence": 0.71,
+  "decision": "review",
+  "probabilities": {
+   "severe": 0.17,
+   "moderate": 0.78,
+   "minor": 0.03,
+   "none": 0.02
+  }
+ },
+ "remedy": {
+  "choice": "recrop-or-recapture",
+  "confidence": 0.34,
+  "decision": "reject",
+  "probabilities": {
+   "gentle-ai-touchup": 0.43,
+   "recrop-or-recapture": 0.56,
+   "replace": 0.01
+  }
+ }
+}

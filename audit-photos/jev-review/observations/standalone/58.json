@@ -1,0 +1,13 @@
+{
+  "id": 58,
+  "file": "reference-assets/58--zexilemodz-banner.BnJCZVTT.webp",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "A wide channel banner: a dark band with a red-edged Z emblem on rubble, text beside it, set inside a large flat grey canvas above and below.",
+  "text_readable": "Readable: \"THE OFFICIAL CHANNEL OF\", \"zExileModz\". Faint and hard to read at native size: \"DESIGNED BY ATLASHD\" at lower left (spelling uncertain).",
+  "composition": "The artwork is a thin horizontal strip across the vertical middle; flat grey fills the top and bottom of the frame. Emblem sits left of centre, text right of centre.",
+  "tone_and_contrast": "Very dark black-red strip with dim grey emblem and thin red glowing edges; text is grey on near-black. Low contrast within the strip; the grey surround is slightly lighter than the strip.",
+  "sharpness_and_artifacts": "Smooth and slightly soft inside the strip with faint particles and vertical banding lines. The grey margins above and below are baked into the image. Small credit text is dim.",
+  "scan_first_read": "A mostly empty grey rectangle with a dark strip; a red Z shape is barely noticeable.",
+  "observer_confirms_blind": true
+}

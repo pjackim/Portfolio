@@ -1,0 +1,42 @@
+{
+  "id": 9,
+  "views": [
+    {
+      "file": "inplace/09--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded-corner card on light page, grey card background; title text not inside the frame.",
+      "visible_vs_full": "Full width of the subject is shown, with the standalone white background replaced by light grey card fill; ring sits centred; no cropping of the ring or handle visible.",
+      "readable_here": "Only the black spheres and coloured ring accents (red, yellow, green) are seen; no text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A ring of black spheres with red, yellow and green glowing rims on a plain pale background."
+    },
+    {
+      "file": "inplace/09--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Small rounded card, thumbnail size, light grey fill with thin border.",
+      "visible_vs_full": "Whole ring and handle visible; content scaled down to about a third of the standalone width; grey fill fills the card sides.",
+      "readable_here": "Sphere shapes and coloured rims are visible; the small glow rings are faint at this size.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A dark bead ring on light grey; coloured rims barely register at this size."
+    },
+    {
+      "file": "inplace/09--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page, grey inner fill.",
+      "visible_vs_full": "Whole ring and handle shown, centred with wide grey margins left and right; nothing cut off.",
+      "readable_here": "Sphere forms and red/yellow/green rims are readable; no text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A ring of black spheres with coloured glowing rims centred in a grey card."
+    },
+    {
+      "file": "inplace/09--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Small rounded thumbnail at left of a list row; title \"Nodes\", meta \"2021 · DESIGN & 3D\", index \"08\" at right.",
+      "visible_vs_full": "The ring and handle fit inside a wide landscape thumbnail; grey fill on either side; whole subject visible.",
+      "readable_here": "Row text \"Nodes\" and \"2021 · DESIGN & 3D\" readable; thumbnail shows only the dark ring shape, no fine detail.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tiny thumbnail beside a title and category label; the subject is recognisable only by silhouette and colour."
+    }
+  ],
+  "observer_confirms_blind": true
+}

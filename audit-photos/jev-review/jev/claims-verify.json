@@ -1,0 +1,756 @@
+[
+ {
+  "asset": 1,
+  "evidence_size_chars": 4258,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The homepage cover crop trims interface/annotation content of the visualizer.",
+     "p": 0.96,
+     "read": "yes"
+    },
+    {
+     "claim": "The Credential Correlation cover source is a full desktop/video frame.",
+     "p": 0.74,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The cover has small colored labels over a translucent, busy background.",
+     "p": 0.28,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The cover reads poorly as a thumbnail.",
+     "p": 0.67,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 3
+  },
+  "claim_ids": [
+   "C083",
+   "C084",
+   "C085",
+   "C086"
+  ]
+ },
+ {
+  "asset": 2,
+  "evidence_size_chars": 5928,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Mordhau cover has incomplete framing.",
+     "p": 0.67,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The Mordhau 514x321 source already cuts through the top slider/label.",
+     "p": 0.98,
+     "read": "yes"
+    },
+    {
+     "claim": "The Mordhau cover leaves most of the frame empty.",
+     "p": 0.89,
+     "read": "yes"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C029",
+   "C046",
+   "C047"
+  ]
+ },
+ {
+  "asset": 3,
+  "evidence_size_chars": 3509,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The mobile homepage cuts off the Trip Planner app header/footer.",
+     "p": 0.48,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The Trip Planner cover at about 131x140 on the desktop homepage is too small to read.",
+     "p": 0.1,
+     "read": "no"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 1,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C063",
+   "C066"
+  ]
+ },
+ {
+  "asset": 4,
+  "evidence_size_chars": 3974,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Parts of the Forest menu and HUD are cut off in the homepage crop.",
+     "p": 0.83,
+     "read": "yes"
+    },
+    {
+     "claim": "The full Forest project image is much better framed than the homepage crop.",
+     "p": 0.77,
+     "read": "yes"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C097",
+   "C098"
+  ]
+ },
+ {
+  "asset": 6,
+  "evidence_size_chars": 4010,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The AES cover becomes an anonymous dark strip on the homepage.",
+     "p": 0.66,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The AES case-study poster has very small code.",
+     "p": 0.61,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 0,
+   "uncertain": 2
+  },
+  "claim_ids": [
+   "C042",
+   "C043"
+  ]
+ },
+ {
+  "asset": 12,
+  "evidence_size_chars": 2526,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The left launcher/avatar and text of the Arch Linux cover get cut at the left edge.",
+     "p": 0.93,
+     "read": "yes"
+    },
+    {
+     "claim": "The Arch Linux problem is a presentation crop, not a low-resolution original.",
+     "p": 0.91,
+     "read": "yes"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C105",
+   "C106"
+  ]
+ },
+ {
+  "asset": 17,
+  "evidence_size_chars": 2397,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Small result URLs in the password-checker-search screenshot are soft at reduced phone sizes.",
+     "p": 0.55,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The password-checker-search screenshot is readable on normal desktop and is not a broken image.",
+     "p": 0.97,
+     "read": "yes"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C131",
+   "C132"
+  ]
+ },
+ {
+  "asset": 18,
+  "evidence_size_chars": 2149,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The short line of text in the dummy-credentials image is still readable.",
+     "p": 0.97,
+     "read": "yes"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C137"
+  ]
+ },
+ {
+  "asset": 19,
+  "evidence_size_chars": 2377,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Some secondary labels in the checker-rated-strong screenshot are faint and small.",
+     "p": 0.97,
+     "read": "yes"
+    },
+    {
+     "claim": "The checker-rated-strong screenshot is readable at normal desktop scale.",
+     "p": 0.93,
+     "read": "yes"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C140",
+   "C141"
+  ]
+ },
+ {
+  "asset": 20,
+  "evidence_size_chars": 2412,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The main result in the checker-crack-time screenshot remains legible.",
+     "p": 0.97,
+     "read": "yes"
+    },
+    {
+     "claim": "Small explanatory copy in the checker-crack-time screenshot is hard to read on phones.",
+     "p": 0.66,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C145",
+   "C146"
+  ]
+ },
+ {
+  "asset": 21,
+  "evidence_size_chars": 2732,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The visualizer image retains small red, green and blue labels over a translucent desktop background.",
+     "p": 0.36,
+     "read": "uncertain"
+    },
+    {
+     "claim": "Even the expanded (lightbox) visualizer image has weak contrast.",
+     "p": 0.36,
+     "read": "uncertain"
+    },
+    {
+     "claim": "At phone width the visualizer annotations are difficult to read.",
+     "p": 0.84,
+     "read": "yes"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 2
+  },
+  "claim_ids": [
+   "C089",
+   "C090",
+   "C091"
+  ]
+ },
+ {
+  "asset": 22,
+  "evidence_size_chars": 2442,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Mordhau gameplay-toggles has background text interfering with the menu.",
+     "p": 0.92,
+     "read": "yes"
+    },
+    {
+     "claim": "Background patch-note text shows through the Mordhau gameplay menu and competes with its labels.",
+     "p": 0.92,
+     "read": "yes"
+    },
+    {
+     "claim": "The Mordhau gameplay-toggles capture ends tightly at the controls.",
+     "p": 0.37,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The Mordhau gameplay-toggles contrast problem is in the original file, not caused by responsive CSS.",
+     "p": 0.84,
+     "read": "yes"
+    }
+   ],
+   "supported": 3,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C030",
+   "C054",
+   "C055",
+   "C056"
+  ]
+ },
+ {
+  "asset": 23,
+  "evidence_size_chars": 2501,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The trip-manager modal contains a long list of very small text.",
+     "p": 0.59,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The trip-manager text is difficult to read at about 308 px on mobile.",
+     "p": 0.07,
+     "read": "no"
+    },
+    {
+     "claim": "The full-size trip-manager source is better than the mobile rendering.",
+     "p": 0.47,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 1,
+   "uncertain": 2
+  },
+  "claim_ids": [
+   "C151",
+   "C152",
+   "C153"
+  ]
+ },
+ {
+  "asset": 30,
+  "evidence_size_chars": 2300,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The Forest menu panels are composited over detailed, dark foliage.",
+     "p": 0.17,
+     "read": "no"
+    },
+    {
+     "claim": "Small text in the Forest menu panels has weak separation from the scene, particularly at 390px and 320px.",
+     "p": 0.28,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 1,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C110",
+   "C111"
+  ]
+ },
+ {
+  "asset": 34,
+  "evidence_size_chars": 2545,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The Hardpoint poster contains a prominent PHYSX CPU overlay in the upper left.",
+     "p": 0.77,
+     "read": "yes"
+    },
+    {
+     "claim": "The Hardpoint poster has a large foreground weapon.",
+     "p": 0.96,
+     "read": "yes"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C156",
+   "C157"
+  ]
+ },
+ {
+  "asset": 35,
+  "evidence_size_chars": 2376,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The AES code capture begins partway through a data table.",
+     "p": 0.93,
+     "read": "yes"
+    },
+    {
+     "claim": "The AES code capture ends at an incomplete function near the lower/right edge.",
+     "p": 0.65,
+     "read": "uncertain"
+    },
+    {
+     "claim": "Most of the AES code frame is hexadecimal data.",
+     "p": 0.88,
+     "read": "yes"
+    },
+    {
+     "claim": "Meaningful code in the AES capture becomes tiny on phones.",
+     "p": 0.68,
+     "read": "uncertain"
+    },
+    {
+     "claim": "The source framing problem is present in the native (unscaled) file.",
+     "p": 0.85,
+     "read": "yes"
+    }
+   ],
+   "supported": 3,
+   "unsupported": 0,
+   "uncertain": 2
+  },
+  "claim_ids": [
+   "C114",
+   "C115",
+   "C116",
+   "C117",
+   "C118"
+  ]
+ },
+ {
+  "asset": 37,
+  "evidence_size_chars": 2604,
+  "raw": {
+   "claims": [
+    {
+     "claim": "On 390px and 320px layouts the Play button covers the right end of the clue at the bottom of the puzzle poster.",
+     "p": 0.45,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C126"
+  ]
+ },
+ {
+  "asset": 44,
+  "evidence_size_chars": 2623,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The launcher-panel capture has small quote/menu text.",
+     "p": 0.96,
+     "read": "yes"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C162"
+  ]
+ },
+ {
+  "asset": 45,
+  "evidence_size_chars": 2350,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The three-quarter sculpt overview cuts off a lower leg at the bottom edge.",
+     "p": 0.91,
+     "read": "yes"
+    },
+    {
+     "claim": "The sculpt overview retains editor gizmo/cursor residue at the right.",
+     "p": 0.92,
+     "read": "yes"
+    },
+    {
+     "claim": "The original file has the same framing as seen on the page.",
+     "p": 0.14,
+     "read": "no"
+    }
+   ],
+   "supported": 2,
+   "unsupported": 1,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C121",
+   "C122",
+   "C123"
+  ]
+ },
+ {
+  "asset": 54,
+  "evidence_size_chars": 2695,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Ant Game's video poster is extremely dark.",
+     "p": 0.96,
+     "read": "yes"
+    },
+    {
+     "claim": "Ant Game's video poster has debug/desktop overlays.",
+     "p": 0.92,
+     "read": "yes"
+    },
+    {
+     "claim": "The ant is almost a silhouette against the ground.",
+     "p": 0.98,
+     "read": "yes"
+    },
+    {
+     "claim": "The original includes development/performance text.",
+     "p": 0.94,
+     "read": "yes"
+    },
+    {
+     "claim": "The original includes an Activate Windows watermark.",
+     "p": 0.99,
+     "read": "yes"
+    },
+    {
+     "claim": "The scene is hard to identify on desktop and mobile.",
+     "p": 0.73,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 5,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C032",
+   "C034",
+   "C069",
+   "C070",
+   "C071",
+   "C072"
+  ]
+ },
+ {
+  "asset": 55,
+  "evidence_size_chars": 2623,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The Go Green brochure paragraph is packed into a small corner.",
+     "p": 0.1,
+     "read": "no"
+    },
+    {
+     "claim": "The Go Green brochure paragraph is illegible at 343 px and 276 px displayed widths.",
+     "p": 0.1,
+     "read": "no"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 2,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C167",
+   "C168"
+  ]
+ },
+ {
+  "asset": 58,
+  "evidence_size_chars": 2460,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Paradox's old banner has excessive baked-in margins.",
+     "p": 0.89,
+     "read": "yes"
+    },
+    {
+     "claim": "Paradox's old banner has very low contrast.",
+     "p": 0.9,
+     "read": "yes"
+    },
+    {
+     "claim": "The visible Paradox banner occupies only a narrow middle band of the file.",
+     "p": 0.94,
+     "read": "yes"
+    },
+    {
+     "claim": "The logo and channel name in the Paradox banner have very low contrast.",
+     "p": 0.86,
+     "read": "yes"
+    },
+    {
+     "claim": "On phones the actual Paradox banner becomes a tiny dark strip.",
+     "p": 0.71,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 4,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C035",
+   "C036",
+   "C077",
+   "C078",
+   "C079"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 2575,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Hero Trivia background blur is deliberate/not bad resolution (not automatically classified as a resolution defect).",
+     "p": 0.95,
+     "read": "yes"
+    }
+   ],
+   "supported": 1,
+   "unsupported": 0,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C173"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 601,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The Arch Linux pixel-art wallpaper is not a resolution defect.",
+     "p": 0.61,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C174"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 4247,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Deliberate ant detail close-ups are not a resolution defect.",
+     "p": 0.45,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C175"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 5605,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Smoke/cloud effects were not automatically classified as bad resolution.",
+     "p": 0.57,
+     "read": "uncertain"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 0,
+   "uncertain": 1
+  },
+  "claim_ids": [
+   "C176"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 4120,
+  "raw": {
+   "claims": [
+    {
+     "claim": "The portrait, logo exports, most renders and scenic images had no material image-quality defect at these sizes.",
+     "p": 0.05,
+     "read": "no"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 1,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C177"
+  ]
+ },
+ {
+  "asset": null,
+  "evidence_size_chars": 4958,
+  "raw": {
+   "claims": [
+    {
+     "claim": "Dense diagrams/screenshots benefit from their full-size links.",
+     "p": 0.09,
+     "read": "no"
+    }
+   ],
+   "supported": 0,
+   "unsupported": 1,
+   "uncertain": 0
+  },
+  "claim_ids": [
+   "C178"
+  ]
+ }
+]

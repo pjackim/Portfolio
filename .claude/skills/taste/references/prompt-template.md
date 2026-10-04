@@ -108,7 +108,7 @@ Step 4. Run in writing:
 - Preservation audit: every URL, anchor, `legacyPaths` entry, nav label, and contact channel
   changed. Empty unless I approved.
 - Brand fidelity audit: `--accent` is the only chromatic colour, Geist and Geist Mono only,
-  radii 2 to 4px, depth by tone and hairline, monogram untouched.
+  radii 2 to 4px, depth by tone and hairline, logo untouched.
 - Fact audit: every new visible claim, number, and link traces to a source.
 - Review checklist: every ID this touches (<list: G…, S…, C…, A…, X…>) passes or has a
   written reason.

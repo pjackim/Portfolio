@@ -1,0 +1,13 @@
+{
+  "id": 29,
+  "file": "reference-assets/29--menus-in-game.Ejwtc6fN.webp",
+  "project": "the-forest",
+  "kind": "game-screenshot",
+  "depicts": "First-person view in a pine forest holding a wooden stick, two translucent mod menu panels at left, a status ring at lower right, two prompts bottom left.",
+  "text_readable": "\"Spawn Menu\", \"Options\", \"Despawn All\", \"Go to Closest\", \"God Mode\", \"Toggle Fly\"; \"NEW ITEMS AVAILABLE TO CRAFT. PRESS B TO OPEN SURVIVAL BOOK\". Tab \"Evironmen\" appears truncated; window title \"TheForest\".",
+  "composition": "Menu panels occupy the left quarter full height; stick rises centre-right; trees fill the rest. Window title bar is included at top. Lower left is dark with text prompts.",
+  "tone_and_contrast": "Dark, dappled green forest with bright light patches upper centre; menu panels are dark and translucent with cyan headings; shadows are heavy at bottom left.",
+  "sharpness_and_artifacts": "Window title bar and minimise/maximise/close buttons baked in at the top. \"Successful Injection\" text at top left is faint. Foliage textures look noisy and blocky; menu text is sharp. HUD ring at lower right.",
+  "scan_first_read": "A dark forest game scene with a cheat-style menu on the left.",
+  "observer_confirms_blind": true
+}

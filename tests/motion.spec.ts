@@ -12,16 +12,15 @@
  *   connection so slow the CSS failsafe has already shown the line, it isn't retyped.
  * - The toggle: stops everything live (canvas, typing), is keyboard operable, and persists
  *   across a reload — and a navigation made after switching it off has no cross-document view
- *   transition; revealing it never shifts the layout (tablet widths, either motion state). The
- *   monogram caret blinks on the first page of a session only.
+ *   transition; revealing it never shifts the layout (tablet widths, either motion state).
  * - Phones (under 40rem, Portfolio.dc.html "1c Summary first"): the hero is the summary alone,
- *   with no graph, focus line, readouts or hero chip; the footer chip is the motion control and
- *   the prompt's monogram is the one that blinks. The instrument tests above run on a wide
- *   viewport on every project so the phone engines still cover them.
+ *   with no graph, focus line, readouts or hero chip; the footer chip is the motion control.
+ *   The instrument tests above run on a wide viewport on every project so the phone engines
+ *   still cover them.
  * Runs on every project (desktop Chromium, Pixel 7, iPhone 15 / WebKit).
  */
 import { expect, test, type Page } from '@playwright/test';
-import { headerMonogram, themeToggle } from './helpers/header.ts';
+import { themeToggle } from './helpers/header.ts';
 import { gotoRel, ROUTES } from './helpers/routes.ts';
 
 declare global {
@@ -220,12 +219,6 @@ test.describe('reduced motion', () => {
     await expect(page.locator('.hero__eyebrow [data-scramble]').first()).toHaveText(
       'Cyber Security Researcher',
     );
-  });
-
-  test('the monogram caret does not blink', async ({ page }) => {
-    await gotoRel(page, '');
-    const cursor = headerMonogram(page).locator('.monogram__cursor');
-    expect(await cursor.evaluate((el) => el.getAnimations().length)).toBe(0);
   });
 
   test('the Motion toggle defers to the system setting', async ({ page }) => {
@@ -549,18 +542,6 @@ test.describe('motion on', () => {
     await page.keyboard.press('Space');
     await expect(page.locator('html')).not.toHaveAttribute('data-motion');
   });
-
-  test('the monogram caret blinks on the first page of a session only', async ({ page }) => {
-    await gotoRel(page, '');
-    const monogram = headerMonogram(page);
-    const blinking = () =>
-      monogram.locator('.monogram__cursor').evaluate((el) => el.getAnimations().length);
-    await expect(monogram).toHaveClass(/\bis-blinking\b/);
-    expect(await blinking()).toBe(1);
-    await gotoRel(page, 'work/');
-    await expect(monogram).not.toHaveClass(/\bis-blinking\b/);
-    expect(await blinking()).toBe(0);
-  });
 });
 
 test.describe('phones', () => {
@@ -577,10 +558,6 @@ test.describe('phones', () => {
     for (const hidden of [GRAPH, '[data-readouts]', TOGGLE, '.hero .status-strip']) {
       await expect(page.locator(hidden), hidden).toBeHidden();
     }
-    // The phone bar's monogram is the one on show, and it blinks on the first page.
-    const monogram = headerMonogram(page);
-    await expect(monogram).toHaveCount(1);
-    await expect(monogram).toHaveClass(/\bis-blinking\b/);
     const chip = page.locator('footer [data-motion-toggle]');
     await expect(chip).not.toBeHidden({ timeout: 10_000 });
     await chip.click();

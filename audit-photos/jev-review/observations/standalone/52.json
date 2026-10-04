@@ -1,0 +1,13 @@
+{
+  "id": 52,
+  "file": "reference-assets/52--rig-mesh.DaFjZIOx.webp",
+  "project": "ant-game",
+  "kind": "app-ui-screenshot",
+  "depicts": "Maya viewport screenshot of a grey untextured ant model with purple circular rig controls around the legs and body, on a flat grey background.",
+  "text_readable": "Readable: \"Symmetry: Object X\" at top centre and \"persp\" at bottom centre. Both are tiny. No other text.",
+  "composition": "Ant occupies the central area with wide flat grey margins on all sides; small axis gizmo at bottom-left. Model floats in the middle, legs reaching down centre-right.",
+  "tone_and_contrast": "Mid-grey background with light-grey model and thin purple and red control lines; low colour contrast between model and background, thin lines stand out.",
+  "sharpness_and_artifacts": "Thin control-curve lines are legible at native size; viewport labels are small. Baked-in Maya viewport text and axis widget. Slight compression softness on line edges. No cursors.",
+  "scan_first_read": "A grey ant sculpt with purple rings; reads as a 3D software view.",
+  "observer_confirms_blind": true
+}

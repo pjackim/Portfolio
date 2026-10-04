@@ -1,0 +1,24 @@
+{
+  "id": 50,
+  "views": [
+    {
+      "file": "inplace/50--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in the ant-game case study with 'FIG. 06' caption at left and 'FULL SIZE' link at right, on a light page.",
+      "visible_vs_full": "Full frame shown at the standalone's proportions; right antenna tip still touches the right edge as in the standalone.",
+      "readable_here": "Caption text readable. Ant body, legs and leaf litter visible; the small head details are small at this width. No text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Red-brown ant seen from above on a dirt path with leaves; the whole body is visible."
+    },
+    {
+      "file": "inplace/50--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure with 'FIG. 06' caption and 'FULL SIZE' link beneath.",
+      "visible_vs_full": "Frame is closer to 4:3, so side edges are trimmed; left rear leg and right antenna tip lie at or beyond the edges compared with the standalone.",
+      "readable_here": "Caption legible. Ant head, thorax and leg joints are visible; no text in the image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Large red-brown ant across a sandy path; body spans the full width, antenna touching the right edge."
+    }
+  ],
+  "observer_confirms_blind": true
+}

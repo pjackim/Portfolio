@@ -1,0 +1,24 @@
+{
+  "id": 23,
+  "views": [
+    {
+      "file": "inplace/23--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in grey rounded panel with phone-shaped app screenshot inset, caption \"FIG. 05\" and \"FULL SIZE\" link on the caption row.",
+      "visible_vs_full": "Whole screenshot visible, narrower than the panel with grey margins left and right; same content as standalone.",
+      "readable_here": "Dialog title, file names, place names and mileage badges readable; small address lines and background list text small; bottom status text faint.",
+      "overlays_or_intrusions": "none on image; \"FULL SIZE\" link in caption row.",
+      "at_a_glance": "Green-themed app with a Trip Manager dialog listing files and places with distances; caption says saving and loading trips."
+    },
+    {
+      "file": "inplace/23--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width grey panel with app screenshot inset; caption in large text and \"FULL SIZE\" link below.",
+      "visible_vs_full": "Whole screenshot visible with grey margin; nothing cropped relative to standalone, scaled to phone width.",
+      "readable_here": "Dialog title, file names, place names, mileage badges, buttons readable; background list and status text small and faint.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Trip Manager dialog over a dimmed place list with JSON, CSV, SVG options; green theme."
+    }
+  ],
+  "observer_confirms_blind": true
+}

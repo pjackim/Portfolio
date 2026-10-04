@@ -1,0 +1,13 @@
+{
+  "id": 61,
+  "file": "reference-assets/61--yt-a7VCZaQSSMg.D3Ut14wj.webp",
+  "project": "paradox",
+  "kind": "video-poster",
+  "depicts": "A first-person game screenshot with orange walls and tiled floor, an overlaid green-and-grey cheat menu with colour wheels, outlined player figures and a held pistol.",
+  "text_readable": "Readable: \"COLORS\", \"CONFIGS\", \"ESP Color\", \"Chams Color\", \"Glow Color\", \"$800\", \"BOT Perry (RADIO): Enemy spotted.\", \"Ron\", \"Calvin\". Small labels like \"Glock18\" and \"77HP\" are tiny and hard to read.",
+  "composition": "Menu panel spans lower left and centre; radar at upper left; two outlined figures right of centre; pistol at lower right. Black bars run down the left and right edges.",
+  "tone_and_contrast": "Saturated orange scene with dark grey menu panel, green outlines and text, and multicolour wheels. Menu separates well from the orange; small green text is on grey.",
+  "sharpness_and_artifacts": "Video-frame softness and compression noise around text and edges; overlapping ghosted outlines behind the menu. Black pillarbox bars are baked in on both sides. HUD elements and radar are visible.",
+  "scan_first_read": "A game screen with a colourful settings menu overlay on an orange scene.",
+  "observer_confirms_blind": true
+}

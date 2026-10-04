@@ -1,0 +1,24 @@
+{
+  "id": 51,
+  "views": [
+    {
+      "file": "inplace/51--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in the ant-game case study, caption 'FIG. 07' at left and 'FULL SIZE' link at right.",
+      "visible_vs_full": "Full frame shown at the standalone's proportions; nothing letterboxed.",
+      "readable_here": "Caption readable. Ant silhouette, legs and blurred forest are visible; the ant occupies a small band of the frame. No text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small dark ant in profile floating mid-frame against a green and orange blurred forest slope."
+    },
+    {
+      "file": "inplace/51--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure with 'FIG. 07' caption and 'FULL SIZE' link below it.",
+      "visible_vs_full": "Frame is closer to 4:3, so left and right sides are trimmed; the ant sits with its tail nearer the left edge and antennae nearer the right than in the standalone.",
+      "readable_here": "Caption legible. Ant legs and antenna segments visible; background is soft. No text in image.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Ant in profile across the middle of a blurred forest; ant fills about the middle third of the height."
+    }
+  ],
+  "observer_confirms_blind": true
+}

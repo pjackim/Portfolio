@@ -1,0 +1,24 @@
+{
+  "id": 40,
+  "views": [
+    {
+      "file": "inplace/40--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in a rounded dark frame with \"FIG. 01\" label and \"FULL SIZE\" link below.",
+      "visible_vs_full": "Full 16:9 frame visible, with the octopus and \"ATLAS\" wordmark small in the center and wide dark margins.",
+      "readable_here": "\"ATLAS\" wordmark is readable; the octopus emblem and smoke are readable; the smoke wisps at the start of \"ATLAS\" are small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small white octopus logo and \"ATLAS\" on a large dark textured background."
+    },
+    {
+      "file": "inplace/40--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width in a rounded dark frame; \"FIG. 01\" and \"FULL SIZE\" below.",
+      "visible_vs_full": "Full frame visible at smaller size; same content as the standalone file.",
+      "readable_here": "\"ATLAS\" is readable but small; the smoke detail on the emblem is fine at this size.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small white octopus emblem and \"ATLAS\" on a dark background."
+    }
+  ],
+  "observer_confirms_blind": true
+}

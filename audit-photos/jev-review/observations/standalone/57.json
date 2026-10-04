@@ -1,0 +1,13 @@
+{
+  "id": 57,
+  "file": "reference-assets/57--forest-version.BqGISrTe.webp",
+  "project": "lost-city",
+  "kind": "other",
+  "depicts": "A mossy old-growth forest with a translucent moss-textured human figure standing on a rock, and a translucent text box with a quotation at upper left.",
+  "text_readable": "Quote text is readable at native size: \"Standing on the bare ground, — my head bathed by the blithe air\", \"I become a transparent eye-ball\"; also \"Parker Jackim Period 2\" in the lower right corner. Nothing left unreadable.",
+  "composition": "Figure stands right of centre in the lower half; quote box occupies upper left; name label sits in the lower right corner. Dense foliage fills the rest of the frame.",
+  "tone_and_contrast": "Saturated greens with dark shadowed mossy areas; white bold text on a semi-transparent green panel. The figure is moss-green and blends with its surroundings.",
+  "sharpness_and_artifacts": "Figure edges blend into the background by design. Text is crisp; the quote panel has a thin white bracket outline. A name and class-period label is baked into the corner.",
+  "scan_first_read": "A lush green forest with a quotation panel; the ghostly figure is hard to notice.",
+  "observer_confirms_blind": true
+}

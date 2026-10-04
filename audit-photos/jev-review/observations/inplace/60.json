@@ -1,0 +1,24 @@
+{
+  "id": 60,
+  "views": [
+    {
+      "file": "inplace/60--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Square frame with thin border on white page, left-aligned; caption FIG. 03 about reworking branding below.",
+      "visible_vs_full": "Entire logo with white background visible; white artwork margin merges with white-ish frame so only a thin border marks the edge.",
+      "readable_here": "PARADOX.SH wordmark readable, letters clear; caption readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Grey and red impossible-triangle logo with PARADOX.SH wordmark on white."
+    },
+    {
+      "file": "inplace/60--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width bordered frame, caption over two lines, FIG. 03 label above text.",
+      "visible_vs_full": "Whole image visible, white margins around the triangle, same as standalone.",
+      "readable_here": "PARADOX.SH wordmark clearly readable; red and grey stripe detail visible. Caption readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Paradox triangle logo with red streaks; name readable at once."
+    }
+  ],
+  "observer_confirms_blind": true
+}

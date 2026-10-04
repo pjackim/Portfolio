@@ -1,0 +1,24 @@
+{
+  "id": 17,
+  "views": [
+    {
+      "file": "inplace/17--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in a light page column, dark screenshot with caption \"FIG. 01\" directly below; white page space left and right.",
+      "visible_vs_full": "Whole image visible, no crop and no letterbox; same content as the standalone file, rendered at similar width.",
+      "readable_here": "Search box text, both URLs, both blue-purple result titles readable; small kebab-dot icons are tiny.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark Google-style search for \"password checker\" with two results; caption says it is the first trap for inexperienced users."
+    },
+    {
+      "file": "inplace/17--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure at top of frame, dark screenshot with rounded corners, caption in large text wrapping to two lines below.",
+      "visible_vs_full": "Whole image visible, edge to edge, no crop; same content as standalone file, scaled to phone width.",
+      "readable_here": "Search text, URLs and result titles all readable; icons in search bar visible; text slightly soft at this zoom.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Search query \"password checker\" with two results, caption gives context; reads as a search-engine screenshot."
+    }
+  ],
+  "observer_confirms_blind": true
+}

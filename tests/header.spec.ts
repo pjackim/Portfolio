@@ -1,13 +1,13 @@
 /**
  * The site header (SiteHeader.astro, Portfolio.dc.html `navDesk`/`navMob`), as deployed.
- * - From 40rem: one 3.5rem row on the page ground — the home link (monogram + wordmark) at the
+ * - From 40rem: one 3.5rem row on the page ground — the home link (logo + wordmark) at the
  *   start and, at the end, the numbered nav (About/Experience/Work/Contact), Capabilities, the
  *   Résumé link and the theme switch. Capabilities, Résumé and the nav's 01–04 indices need
  *   64rem; below it the labels stand alone. On the home page the nav is a scroll-spy: each
  *   item's bar fills once its section has been reached, the nearest section to the header is
  *   `.is-active`, and at the top of the page nothing is marked. Off the home page the current
  *   page's item carries `aria-current` instead, and Capabilities underlines itself on its own page.
- * - Phones (under 40rem): the segmented bar — pj's monogram, the same four items (the active or
+ * - Phones (under 40rem): the segmented bar — the logo, the same four items (the active or
  *   current one grows and shows its label; sections read fill grey, only the active one is the
  *   accent) and the theme switch. Work goes to /work/; About, Experience and Contact to the home
  *   page's panels (Contact is a button for the sheet off the home page). Without script, About
@@ -16,6 +16,7 @@
  * Reduced motion throughout, so fills are discrete (0 or 1) and colour changes are instant.
  */
 import { expect, type Locator, type Page, test } from '@playwright/test';
+import { headerLogo } from './helpers/header.ts';
 import { gotoRel } from './helpers/routes.ts';
 
 test.use({ reducedMotion: 'reduce' });
@@ -40,6 +41,34 @@ const IDS = ['about', 'experience', 'work', 'contact'] as const;
 
 const navItem = (page: Page, id: string) => page.locator(`.site-nav a[data-nav-id="${id}"]`);
 const phoneItem = (page: Page, id: string) => page.locator(`.phone-nav__item[data-nav-id="${id}"]`);
+
+/**
+ * The logo on show has loaded (not a broken image) and is decorative, sits on no tile
+ * in both colour schemes (its white paper vanishes on a light ground), and fits inside it.
+ */
+async function expectLogoTransparent(page: Page, where: string): Promise<void> {
+  const logo = headerLogo(page);
+  await expect(logo, where).toBeVisible();
+  const mark = logo.locator('img');
+  await expect(mark, where).toHaveAttribute('alt', '');
+  await expect
+    .poll(() => mark.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0), {
+      message: `${where}: the mark loads`,
+    })
+    .toBe(true);
+  for (const colorScheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme });
+    expect(
+      await logo.evaluate((el) => getComputedStyle(el).backgroundColor),
+      `${where}, ${colorScheme}: no tile behind the mark`,
+    ).toBe('rgba(0, 0, 0, 0)');
+  }
+  const [tile, drawn] = [await box(logo), await box(mark)];
+  expect(drawn.width, where).toBeLessThanOrEqual(tile.width + 0.5);
+  expect(drawn.height, where).toBeLessThanOrEqual(tile.height + 0.5);
+  expect(drawn.x, where).toBeGreaterThanOrEqual(tile.x);
+  expect(drawn.y + drawn.height, where).toBeLessThanOrEqual(tile.y + tile.height + 0.5);
+}
 
 const widthsOf = (items: Locator) =>
   items.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
@@ -129,6 +158,15 @@ test.describe('header from 40rem', () => {
     // The phone bar isn't laid out here.
     await expect(page.locator('.phone-nav')).toBeHidden();
     await expect(page.locator('.phone-brand')).toBeHidden();
+  });
+
+  test('header logo: the bare mark on a transparent ground, beside the wordmark', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await gotoRel(page, '');
+    await expectLogoTransparent(page, 'desktop');
+    await expect(page.locator('.brand')).toHaveAccessibleName(/home/i);
   });
 
   test('header breakpoints: the wordmark from 40rem; Capabilities, Résumé and the indices from 64rem', async ({
@@ -249,6 +287,12 @@ test.describe('header from 40rem', () => {
 
 test.describe('phone header', () => {
   test.use({ viewport: { width: 390, height: 844 } });
+
+  test('phone logo: the bare mark on a transparent ground, linking home', async ({ page }) => {
+    await gotoRel(page, 'work/');
+    await expectLogoTransparent(page, 'phone');
+    await expect(page.locator('.phone-brand')).toHaveAccessibleName(/home/i);
+  });
 
   test('phone nav: four numbered items — Work to /work/, the rest to the home panels; nothing marked at the top', async ({
     page,
@@ -415,7 +459,7 @@ test.describe('phone header at 320px', () => {
       for (const width of widths) {
         expect(width, `${where}: ${widths.join(', ')}`).toBeGreaterThanOrEqual(24);
       }
-      // Monogram, nav and theme switch left to right, none overlapping, the switch (the bar's
+      // Logo, nav and theme switch left to right, none overlapping, the switch (the bar's
       // last item) whole on screen, and nothing in the bar overflowing the header.
       const viewport = await page.evaluate(() => document.documentElement.clientWidth);
       let right = 0;

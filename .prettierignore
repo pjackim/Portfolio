@@ -21,3 +21,6 @@ docs/codebase
 .claude/skills/prototype
 .claude/skills/redesign-existing-projects
 .claude/skills/stitch-design-taste
+
+# Generated audit data and second-pass reports (hand-formatted tables, machine-written JSON)
+audit-photos

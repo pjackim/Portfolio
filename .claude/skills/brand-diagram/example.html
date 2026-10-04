@@ -1,0 +1,60 @@
+<main class="canvas">
+  <span class="mono sec"><span class="ix">01</span> / Flow</span>
+  <div class="flow">
+    <div class="step">
+      <span class="mono">01 · Trigger</span>
+      <h3>Global hotkey</h3>
+      <p>Ctrl+Shift+S by default, while text is selected in any app</p>
+    </div>
+    <div class="step">
+      <span class="mono">02 · Capture</span>
+      <h3>Selected text</h3>
+      <p>The highlighted text is grabbed through the clipboard</p>
+    </div>
+    <div class="step">
+      <span class="mono">03 · Synthesize</span>
+      <h3>Active provider</h3>
+      <p>The saved provider, else the first configured one, turns it into audio</p>
+    </div>
+    <div class="step">
+      <span class="mono">04 · Play</span>
+      <h3>Local playback</h3>
+      <p>Audio plays through the system speakers</p>
+    </div>
+  </div>
+
+  <span class="mono sec"
+    ><span class="ix">02</span> / Provider registry · lower priority is tried first</span
+  >
+  <div class="rows">
+    <div class="row is-signal">
+      <div class="key"><span class="mono">Priority</span><b>1</b></div>
+      <div class="name">Qwen3-TTS</div>
+      <div class="desc">Self-hosted server; configured only while its health check answers</div>
+      <div class="tag">qwen</div>
+    </div>
+    <div class="row">
+      <div class="key"><span class="mono">Priority</span><b>2</b></div>
+      <div class="name">Grok Voice</div>
+      <div class="desc">xAI hosted voices</div>
+      <div class="tag">grok</div>
+    </div>
+    <div class="row">
+      <div class="key"><span class="mono">Priority</span><b>3</b></div>
+      <div class="name">OpenAI Voice</div>
+      <div class="desc">OpenAI hosted voices</div>
+      <div class="tag">openai</div>
+    </div>
+    <div class="row is-quiet">
+      <div class="key"><span class="mono">Priority</span><b>100</b></div>
+      <div class="name">Offline voice</div>
+      <div class="desc">Free, no key; the fallback when nothing above is configured</div>
+      <div class="tag">local</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="mono">Each provider is one module implementing a shared interface</span>
+    <span class="mono">TongueTickle</span>
+  </div>
+</main>

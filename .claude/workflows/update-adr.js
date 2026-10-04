@@ -60,7 +60,7 @@ const SECTIONS = [
   {
     title: 'Media pipeline',
     scope:
-      'scripts/media/ (build, check, migrate, lib), src/lib/media.ts, src/lib/images.ts, src/components/media/, scripts/og/, src/lib/monogram.ts',
+      'scripts/media/ (build, check, migrate, lib), src/lib/media.ts, src/lib/images.ts, src/components/media/, scripts/og/, src/assets/brand/',
     aspects: ['entry_points', 'clusters', 'hotspots'],
   },
   {

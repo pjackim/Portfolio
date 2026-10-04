@@ -1,0 +1,585 @@
+/*
+ * brand-diagram kit: the dark "operator console" look, reverse-engineered from
+ * src/content/projects/tonguetickle/flow-and-provider-registry.webp and the tokens in
+ * src/styles/tokens.css (dark values, hard-coded because a rendered image has no theme).
+ * Canvas is 1200x720 CSS px, rendered at 2x (2400x1440). Change a value here and every
+ * diagram inherits it; never restyle inside one diagram.
+ */
+:root {
+  --bg: #0c0d10;
+  --surface: #131518;
+  --surface-2: #1c1e22;
+  --line: #2b2e32;
+  --line-ui: #686c72;
+  --text: #eff0f2;
+  --text-muted: #aeb1b6;
+  --text-subtle: #8e9398;
+  --accent: #f2893d;
+  --font-sans: 'Geist Variable', 'Geist', Arial, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The only atmospheric background: a masked 64px hairline grid. */
+.canvas {
+  position: relative;
+  width: var(--w, 1200px);
+  height: var(--h, 720px);
+  padding: 44px 56px 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 85%);
+  pointer-events: none;
+}
+.canvas > * {
+  position: relative;
+}
+
+/* Mono telemetry label: uppercase, 0.06em tracking, 500, muted. Accent index before the slash. */
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.mono .ix {
+  color: var(--accent);
+}
+
+/* Section heading: "01 / LABEL". */
+.sec {
+  display: block;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 16px;
+}
+.sec + .sec,
+.gap-section {
+  margin-top: 26px;
+}
+
+/* ---- Flow: N step cards joined by accent arrows. Use 3 to 5 steps. ---- */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 36px;
+  margin-bottom: 26px;
+}
+.step {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 158px;
+  padding: 16px 22px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+}
+.step .mono {
+  color: var(--accent);
+  font-size: 13px;
+}
+.step h3 {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.step p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.36;
+  color: var(--text-muted);
+}
+/* Arrow in the gap to the next step. */
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+}
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 4px);
+  left: calc(100% + 28px);
+  border-left: 8px solid var(--accent);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+/* ---- Ranked rows: label / number, name, description, mono tag. First row is the signal. ---- */
+.rows {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 172px 230px 1fr 90px;
+  align-items: center;
+  column-gap: 0;
+  height: 74px;
+  padding: 0 24px;
+  border-top: 1px solid var(--line);
+}
+.row:first-child {
+  border-top: 0;
+}
+.row.is-signal {
+  background: var(--surface-2);
+}
+.row.is-signal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.row .key {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.row .key .mono {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+.row .key b {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.row.is-quiet .key b {
+  color: var(--text-subtle);
+}
+.row .name {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.row .desc {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.row .tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-subtle);
+  text-align: right;
+}
+
+/* ---- Cards: a plain grid of facts, for "parts of X" diagrams. ---- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.card {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+}
+.card.is-signal {
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+}
+.card .mono {
+  color: var(--accent);
+}
+.card h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.card p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---- Inline SVG helpers: use these classes so SVG diagrams stay on-token. ---- */
+svg.diagram {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+svg .node {
+  fill: var(--surface);
+  stroke: var(--line-ui);
+  stroke-width: 1;
+}
+svg .node-signal {
+  fill: var(--surface-2);
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+svg .edge {
+  fill: none;
+  stroke: var(--line-ui);
+  stroke-width: 1;
+}
+svg .edge-signal {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+svg .t-title {
+  fill: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+svg .t-body {
+  fill: var(--text-muted);
+  font-size: 14px;
+}
+svg .t-mono {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+svg .t-mono-signal {
+  fill: var(--accent);
+}
+
+/* Footer strip pinned to the bottom of the canvas: a plain note left, the project right. */
+.foot {
+  position: absolute !important;
+  left: 56px;
+  right: 56px;
+  bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+.foot .mono {
+  color: var(--text-subtle);
+}
+
+/* ---- Splash parts (README banners, covers): display type, reticle, trace, tiles, CTA. ---- */
+.display {
+  font-size: 104px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+.lede {
+  text-wrap: balance;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+/* Typed prompt: "FOCUS ›" key, text, then the 3/8 accent block caret. */
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.prompt .k {
+  color: var(--text-subtle);
+}
+.prompt .caret {
+  width: 11px;
+  height: 22px;
+  background: var(--accent);
+}
+/* Lock-on reticle: four accent L-corners around a target (an image, a node). Never a full box. */
+.reticle {
+  --len: 22px;
+  --t: 2px;
+  position: relative;
+  padding: 14px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) top left / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top left / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) top right / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom left / var(--t) var(--len) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / var(--len) var(--t) no-repeat,
+    linear-gradient(var(--accent), var(--accent)) bottom right / var(--t) var(--len) no-repeat;
+}
+.reticle img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+/* Mono key / value readout pairs. */
+.readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.readout dt {
+  color: var(--text-subtle);
+}
+.readout dd {
+  margin: 0;
+  color: var(--text);
+}
+
+/* ---- Trace: a horizontal timeline. Neutral line; the last (current) node and segment are signal. ---- */
+.trace {
+  display: flex;
+  position: relative;
+  margin-top: 8px;
+}
+.trace::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 1px;
+  background: var(--line-ui);
+}
+.trace .pt {
+  position: relative;
+  flex: 1 1 0;
+  padding-right: 20px;
+}
+.trace .pt::before {
+  content: '';
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin-bottom: 22px;
+  background: var(--bg);
+  border: 1px solid var(--line-ui);
+}
+.trace .pt.is-now::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.trace .pt.is-now::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 6px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+}
+.trace .pt.is-now .mono {
+  color: var(--accent);
+}
+.trace h3 {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.trace p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---- Tiles: image-first project tiles in a bento grid (.bento sets the grid areas inline). ---- */
+.bento {
+  display: grid;
+  gap: 20px;
+}
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--line-ui);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.tile.is-signal {
+  border-left: 3px solid var(--accent);
+}
+.tile img {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
+.tile .cap {
+  padding: 14px 18px 16px;
+  background: var(--surface-2);
+}
+.tile .cap h3 {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.tile.is-signal .cap .mono {
+  color: var(--accent);
+}
+
+/* ---- CTA: one big call to action, the signal block. ---- */
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.cta .go {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 34px;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.cta .go .arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* ---- Layout utilities. ---- */
+.split {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+.split > .grow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+.stack.g-s {
+  gap: 14px;
+}
+.stack.g-m {
+  gap: 22px;
+}
+.stack.g-l {
+  gap: 34px;
+}
+.mark {
+  display: block;
+  align-self: flex-start;
+  height: 56px;
+  width: auto;
+}
+.bento.b5 {
+  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: var(--bh, 540px);
+}
+.bento.b5 .tile:first-child {
+  grid-row: span 2;
+}
+.display-m {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+.cta .go.sm,
+.go.sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.go.sm .arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.split.fill {
+  align-items: stretch;
+}
+.stack.between {
+  justify-content: space-between;
+}
+.prompt.sm {
+  font-size: 15px;
+  gap: 12px;
+}
+.prompt.sm .caret {
+  width: 9px;
+  height: 18px;
+}
+.reticle.tall img {
+  object-position: center 28%;
+}
+.go.sm {
+  align-self: flex-start;
+}

@@ -1,0 +1,13 @@
+{
+  "id": 16,
+  "file": "reference-assets/16--cover.DwR4v-4e.webp",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "A dark grey impossible-triangle logo with red streaks and dots and a white outline, with the wordmark \"PARADOX.SH\" beneath it, on a plain white background.",
+  "text_readable": "Readable: \"PARADOX.SH\" (dark letters with red \".SH\"). No other text.",
+  "composition": "Logo centred with the wordmark below; wide empty white margins on all sides; subject occupies a small central area of the frame; fully visible.",
+  "tone_and_contrast": "Dark grey and red on white; high contrast; wordmark letters are small relative to the frame.",
+  "sharpness_and_artifacts": "Clean sharp vector-style edges; soft shadow smears under the lower-left streaks; no noise, banding or watermark visible.",
+  "scan_first_read": "A dark triangular PARADOX.SH logo with red accents on white; clear brand mark.",
+  "observer_confirms_blind": true
+}

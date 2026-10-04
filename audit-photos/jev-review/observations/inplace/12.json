@@ -1,0 +1,24 @@
+{
+  "id": 12,
+  "views": [
+    {
+      "file": "inplace/12--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; image fills the card.",
+      "visible_vs_full": "Left and right parts of the desktop screenshot are cut off; the top bar, left panel and right panel are partly cropped at the sides; the central painting is fully visible.",
+      "readable_here": "Clock \"2:27 > Sat 22\" and the button labels at centre-left are readable; the left panel text and right terminal text are cut or too small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A colourful desktop screenshot with widgets around a large abstract blocky painting."
+    },
+    {
+      "file": "inplace/12--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page.",
+      "visible_vs_full": "Sides of the desktop screenshot are cropped; left panel text is clipped (\"pjackim\", \"ess means having...\"), right column icons are clipped; the central painting is intact.",
+      "readable_here": "Clock and painting are readable; button labels (\"Bin\", \"Books\", \"Coding\") are small but legible; terminal text is not.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A desktop rice with coloured widgets and a large abstract painting in the centre."
+    }
+  ],
+  "observer_confirms_blind": true
+}

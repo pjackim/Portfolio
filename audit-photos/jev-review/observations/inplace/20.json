@@ -1,0 +1,24 @@
+{
+  "id": 20,
+  "views": [
+    {
+      "file": "inplace/20--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with mustard-yellow screenshot filling the figure frame, caption \"FIG. 04\" below wrapping to two lines.",
+      "visible_vs_full": "Whole image visible, fills the frame edge to edge; no crop or letterbox.",
+      "readable_here": "Heading \"How Secure Is My Password?\", password field, \"53 million years\" readable; small lines \"It would take a computer about\" and \"to crack your password\" smaller and pale.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Yellow page reading \"53 million years\" for the same password; caption says a second checker calls it secure."
+    },
+    {
+      "file": "inplace/20--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width yellow screenshot with rounded corners, caption large text wrapping to three lines.",
+      "visible_vs_full": "Whole image visible edge to edge, no crop; same content as standalone.",
+      "readable_here": "Heading, tagline, password and \"53 million years\" all readable; small pale lines at top and bottom of result readable but faint.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Yellow \"How Secure Is My Password?\" page showing \"53 million years\"; caption ties it to a matching username."
+    }
+  ],
+  "observer_confirms_blind": true
+}

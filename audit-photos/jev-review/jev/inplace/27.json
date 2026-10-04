@@ -1,0 +1,353 @@
+{
+ "id": 27,
+ "views": [
+  {
+   "file": "inplace/27--desktop--1.png",
+   "page": "work--trip-planner",
+   "viewport": "desktop",
+   "role": "poster",
+   "state": {
+    "project": "trip-planner",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Trip planner app showing a large Leaflet street map of Fort Collins and the Colorado State University area, with zoom controls and a green list button at lower right.",
+     "file_pixels": "982 x 928 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "poster",
+     "context": "Video poster in a figure with a PLAY button at lower right, caption FIG. 04 below.",
+     "shown_size": "660 x 624 css px (roughly square)",
+     "fit": "contain",
+     "crop": "shown whole (nothing cropped)",
+     "shape": "roughly square slot for roughly square source",
+     "resolution": "comfortably above one source pixel per CSS pixel (crisp on standard screens, close to crisp on high-density screens); the browser loaded a 982 px wide file for a 660 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame shown; the bottom footer text and the corner of the green list button are visible, lower-right map corner and attribution partly covered by the button.",
+     "readable_here": "Street names and the green header title readable at this size; small streets and the footer URL are small; attribution text is covered.",
+     "overlays_or_intrusions": "A light rectangular 'PLAY' button overlaps the lower-right map area, the green list button and the map attribution.",
+     "at_a_glance": "A detailed street map of a campus area under a green header; a PLAY button marks it as video."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 2.03,
+     "confidence": 0.97,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.97,
+      "3": 0.03,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.64,
+     "confidence": 0.7,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.02,
+      "3": 0.33,
+      "4": 0.65
+     },
+     "decision": "review"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.03,
+     "confidence": 0.84,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.08,
+      "3": 0.81,
+      "4": 0.11
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 1.74,
+     "confidence": 0.72,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.29,
+      "2": 0.68,
+      "3": 0.03,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 2.95,
+     "confidence": 0.92,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.07,
+      "3": 0.91,
+      "4": 0.02
+     },
+     "decision": "accept"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.35,
+     "p": 0.35,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.68,
+     "p": 0.68,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "moderate",
+    "confidence": 0.2,
+    "decision": "reject",
+    "probabilities": {
+     "moderate": 0.4,
+     "minor": 0.26,
+     "severe": 0.19,
+     "none": 0.15
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.64,
+    "decision": "review",
+    "probabilities": {
+     "gentle-ai-touchup": 0,
+     "layout-fix": 0.73,
+     "replace": 0,
+     "recrop-or-recapture": 0.27
+    }
+   }
+  },
+  {
+   "file": "inplace/27--mobile--1.png",
+   "page": "work--trip-planner",
+   "viewport": "mobile",
+   "role": "poster",
+   "state": {
+    "project": "trip-planner",
+    "image": {
+     "kind": "app-ui-screenshot",
+     "depicts": "Trip planner app showing a large Leaflet street map of Fort Collins and the Colorado State University area, with zoom controls and a green list button at lower right.",
+     "file_pixels": "982 x 928 px, small (under 1000px wide)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "poster",
+     "context": "Same video poster with a large PLAY button at lower right, caption below at phone width.",
+     "shown_size": "343 x 324 css px (roughly square)",
+     "fit": "contain",
+     "crop": "shown whole (nothing cropped)",
+     "shape": "roughly square slot for roughly square source",
+     "resolution": "well above one source pixel per CSS pixel (crisp, even on high-density screens); the browser loaded a 982 px wide file for a 343 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Full frame shown, scaled down to phone width; the green list button is hidden behind PLAY and the footer bar sits below the map.",
+     "readable_here": "Main road names and header title are readable; smaller street names are very small; footer URL text is small.",
+     "overlays_or_intrusions": "Large PLAY button covers the lower-right map area, the green list button and attribution.",
+     "at_a_glance": "A dense street map with a large PLAY button; map detail reads as texture."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "text_legibility_here",
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "text_legibility_here": {
+     "type": "score",
+     "score": 1.98,
+     "confidence": 0.98,
+     "legend": {
+      "0": "None of the meaningful text can be read at this on-page size",
+      "1": "Only a few large words can be read; most meaningful text is illegible at this size",
+      "2": "The main text is readable at this size but secondary text is not",
+      "3": "All meaningful text is readable with slight effort at this size",
+      "4": "All text is crisp and effortless to read at this size"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.02,
+      "2": 0.98,
+      "3": 0,
+      "4": 0
+     },
+     "decision": "accept"
+    },
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.04,
+     "confidence": 0.46,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.03,
+      "2": 0.25,
+      "3": 0.38,
+      "4": 0.34
+     },
+     "decision": "reject"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.98,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.01,
+      "4": 0.99
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 0.96,
+     "confidence": 0.73,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0.18,
+      "1": 0.68,
+      "2": 0.14,
+      "3": 0,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 1.71,
+     "confidence": 0.63,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.36,
+      "2": 0.56,
+      "3": 0.08,
+      "4": 0
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.62,
+     "p": 0.62,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.89,
+     "p": 0.89,
+     "read": "yes"
+    }
+   },
+   "severity": {
+    "choice": "severe",
+    "confidence": 0.83,
+    "decision": "accept",
+    "probabilities": {
+     "minor": 0,
+     "none": 0,
+     "moderate": 0.12,
+     "severe": 0.88
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.85,
+    "decision": "accept",
+    "probabilities": {
+     "recrop-or-recapture": 0.1,
+     "layout-fix": 0.89,
+     "replace": 0.01,
+     "gentle-ai-touchup": 0
+    }
+   }
+  }
+ ]
+}

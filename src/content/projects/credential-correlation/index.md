@@ -5,7 +5,7 @@ summary: Scores how strongly a password correlates with its username, to show us
 year: 2023
 group: security
 featured: true
-order: 1
+order: 2
 capabilities: [data-ml, offensive-security]
 stack: [Python, tkinter, Hadoop MapReduce, Apache Spark, Machine learning]
 highlights:
@@ -15,6 +15,7 @@ highlights:
   - Built a tkinter GUI that marks every pattern, number and character a username and password share.
 cover: ./cover.webp
 coverAlt: The visualizer comparing Green86Boot! with Boot19Green86!, arrows labeling each pattern, number and character the two share.
+coverPosition: 'center top'
 media:
   - kind: image
     src: ./password-checker-search.webp

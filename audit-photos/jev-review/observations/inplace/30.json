@@ -1,0 +1,24 @@
+{
+  "id": 30,
+  "views": [
+    {
+      "file": "inplace/30--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure of a menu-panel screenshot, caption FIG. 02 and FULL SIZE link below.",
+      "visible_vs_full": "Full image visible at a smaller scale than the standalone; both panels and the dark forest background shown, no visible crop.",
+      "readable_here": "Panel headings and all button and slider labels are readable but small; slider values '100', '13', '8' readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Two dark teal-outlined menu panels over a dark forest background, with the right one highlighted."
+    },
+    {
+      "file": "inplace/30--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same screenshot at phone width, caption and FULL SIZE link below.",
+      "visible_vs_full": "Full image visible at phone width; both panels and background shown, no visible crop versus the standalone.",
+      "readable_here": "Panel headings and button labels readable; slider arrows and small values are small but visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Two dark menu panels with buttons and sliders over a dark background."
+    }
+  ],
+  "observer_confirms_blind": true
+}

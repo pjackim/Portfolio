@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "file": "reference-assets/02--cover.DoidqmIl.webp",
+  "project": "mordhau",
+  "kind": "app-ui-screenshot",
+  "depicts": "Cropped fragment of a dark game-tool settings panel: three slider rows with values 130, 315, 290 and labels, above a large empty dark area with two faint orange specks.",
+  "text_readable": "Readable: \"130\", \"315\", \"290\", \"FOV Value\", \"TurncapX\", \"TurncapY\". The top row is cut by the upper edge, so its label and box are partly clipped.",
+  "composition": "Sliders are pinned to the top edge and the first row is cut off. Roughly the lower two-thirds is near-empty dark space with two small orange specks. A thin gold border frames left, right and bottom.",
+  "tone_and_contrast": "Very dark near-black background; gold text and slider outlines are clear against it. The two orange specks are faint. Overall low brightness.",
+  "sharpness_and_artifacts": "Clean text rendering with no visible blur. Faint noise or banding in the dark area; two small orange specks of unclear origin. Panel border is baked in. No HUD, cursor or watermark visible.",
+  "scan_first_read": "A dark settings panel with numeric sliders; mostly empty black space. Little sense of what the project is.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 34,
+  "file": "reference-assets/34--yt-EdJRI.webp",
+  "project": "hardpoint",
+  "kind": "video-poster",
+  "depicts": "First-person view holding a long curved sword with gold basket hilt, in a blocky stone arena under a cloudy sky; a distant blue knight runs.",
+  "text_readable": "\"PHYSX + CPU\", \"OBJECTIVE\", \"MackDaddy has joined the server.\"; the small FPS counter at top-left is hard to read; +11 is small.",
+  "composition": "Sword blade runs diagonally from bottom centre to top right. Large sky area upper centre; dark angled walls frame both sides; the distant opponent sits small at centre-bottom.",
+  "tone_and_contrast": "Bright white-blue sky against near-black walls gives high contrast. Sword is white on sky and dark on walls; the sword blade blends into the sky at the top.",
+  "sharpness_and_artifacts": "Video-frame compression softness across the image. Debug overlays baked in: FPS counter, PhysX/CPU label, chat line, score widget and crosshair. Red debug wireframe at bottom right corner.",
+  "scan_first_read": "A first-person sword fighting game; the big sword and the sky read first, small HUD text is not legible at thumbnail size.",
+  "observer_confirms_blind": true
+}

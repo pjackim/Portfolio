@@ -170,7 +170,7 @@ test.describe('card reticle', () => {
     const labels = await page.locator(`${CARD} .card__readout`).allTextContents();
     expect(new Set(labels.map((label) => label.trim()))).toEqual(new Set(['Open project']));
     // The link's name is the title alone: the readout chip adds nothing.
-    await expect(link).toHaveAccessibleName('Credential Correlation Visualizer');
+    await expect(link).toHaveAccessibleName('BodyCam External');
   });
 
   test('the spotlight follows the pointer (CSSOM custom properties)', async ({ page }) => {

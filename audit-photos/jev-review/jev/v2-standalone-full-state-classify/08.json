@@ -1,0 +1,227 @@
+{
+ "id": 8,
+ "state": {
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "file_pixels": "1894 x 937 px, large (1600px or wider)",
+  "file_sharpness": "moderate",
+  "file_exposure": "balanced",
+  "file_contrast": "normal",
+  "empty_bands": "none",
+  "observation": {
+   "depicts": "Crossword-style trivia game: HERO TRIVIA logo at top, a grid with letters spelling SILV, SHANG-CHI and X-MEN, and a clue box below, over a blurred comic-book collage background.",
+   "text_readable": "Readable: \"HeroTrivia\" logo, \"_____ Surfer, servant of Galactus who bretrayed him to save Earth\", grid letters \"S\", \"H\", \"A\", \"N\", \"G\". Comic cover text in the background is blurred and unreadable. The clue contains the spelling \"bretrayed\".",
+   "composition": "Logo at top centre, grid centred in the upper-middle with glowing yellow cells, clue box across the lower centre. Left and right thirds are background collage only.",
+   "tone_and_contrast": "Background is saturated and busy but blurred and dimmed; dark grid cells with glowing yellow-orange letters give clear contrast. Clue box is dark translucent with light text.",
+   "sharpness_and_artifacts": "Background blurred deliberately; letters in the grid have a glow and some look smeared at native size. Grid cells are dark and semi-transparent. No watermark, cursor or HUD visible.",
+   "scan_first_read": "A comic-themed crossword game titled HeroTrivia with a Silver Surfer clue; the theme reads quickly."
+  }
+ },
+ "model": "jev-1.13.0",
+ "scoreIds": [
+  "resolution_headroom",
+  "text_legibility",
+  "subject_clarity",
+  "framing",
+  "contrast_exposure",
+  "artifact_cleanliness",
+  "scan_first_impact"
+ ],
+ "answers": {
+  "resolution_headroom": {
+   "type": "score",
+   "score": 1.5,
+   "confidence": 0.58,
+   "legend": {
+    "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+    "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+    "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+    "3": "Good: sharp at native size with reasonable headroom",
+    "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.52,
+    "2": 0.46,
+    "3": 0.02,
+    "4": 0
+   },
+   "decision": "review"
+  },
+  "text_legibility": {
+   "type": "score",
+   "score": 2.98,
+   "confidence": 0.87,
+   "legend": {
+    "0": "None of the text a viewer is meant to read can be read",
+    "1": "Only a few large words are readable; most meaningful text is illegible",
+    "2": "The main text is readable but secondary text is hard to read",
+    "3": "All meaningful text is readable with slight effort",
+    "4": "All text is crisp and effortless to read"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.09,
+    "3": 0.84,
+    "4": 0.07
+   },
+   "decision": "accept"
+  },
+  "subject_clarity": {
+   "type": "score",
+   "score": 3.8,
+   "confidence": 0.84,
+   "legend": {
+    "0": "A viewer cannot tell what the image shows",
+    "1": "Vague: the subject is faint or ambiguous",
+    "2": "The subject is identifiable with some effort",
+    "3": "The subject is clear",
+    "4": "The subject is immediately obvious and striking"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.2,
+    "4": 0.8
+   },
+   "decision": "accept"
+  },
+  "framing": {
+   "type": "score",
+   "score": 2.4,
+   "confidence": 0.38,
+   "legend": {
+    "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+    "1": "Noticeable cut-off content or large empty areas weaken the subject",
+    "2": "Acceptable: some wasted space or a slightly tight crop",
+    "3": "Well framed: the subject is complete with sensible margins",
+    "4": "Excellent framing: every part of the frame earns its place"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.17,
+    "2": 0.33,
+    "3": 0.43,
+    "4": 0.07
+   },
+   "decision": "reject"
+  },
+  "contrast_exposure": {
+   "type": "score",
+   "score": 3.65,
+   "confidence": 0.71,
+   "legend": {
+    "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+    "1": "Weak separation between subject and background; hard to distinguish parts",
+    "2": "Adequate, with some low-contrast areas",
+    "3": "Good separation between subject and background",
+    "4": "Excellent: clear, balanced tones and strong separation"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0.35,
+    "4": 0.65
+   },
+   "decision": "review"
+  },
+  "artifact_cleanliness": {
+   "type": "score",
+   "score": 2.47,
+   "confidence": 0.55,
+   "legend": {
+    "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+    "1": "Prominent artifacts that a visitor would notice immediately",
+    "2": "Minor artifacts noticeable only on a close look",
+    "3": "Nearly clean: only trace artifacts",
+    "4": "Clean: no artifacts, overlays or leftover interface residue"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0.03,
+    "2": 0.6,
+    "3": 0.24,
+    "4": 0.13
+   },
+   "decision": "review"
+  },
+  "scan_first_impact": {
+   "type": "score",
+   "score": 3.29,
+   "confidence": 0.75,
+   "legend": {
+    "0": "A two-second glance conveys nothing clear",
+    "1": "A vague impression only",
+    "2": "Some specific takeaway",
+    "3": "A clear, specific takeaway about the work",
+    "4": "An instant, specific and appealing takeaway about the work"
+   },
+   "probabilities": {
+    "0": 0,
+    "1": 0,
+    "2": 0.01,
+    "3": 0.69,
+    "4": 0.3
+   },
+   "decision": "accept"
+  },
+  "is_defective_for_showcase": {
+   "type": "noul",
+   "noul": 0.44,
+   "p": 0.44,
+   "read": "uncertain"
+  },
+  "fixable_by_gentle_ai_touchup": {
+   "type": "noul",
+   "noul": 0.7,
+   "p": 0.7,
+   "read": "uncertain"
+  },
+  "needs_new_capture_or_recrop": {
+   "type": "noul",
+   "noul": 0.19,
+   "p": 0.19,
+   "read": "no"
+  },
+  "primary_issue": {
+   "type": "choice",
+   "choice": "poor_framing_or_dead_space",
+   "confidence": 0.24,
+   "probabilities": {
+    "other": 0.13,
+    "busy_background": 0.19,
+    "poor_framing_or_dead_space": 0.34,
+    "low_contrast_or_dark": 0,
+    "artifacts_or_overlays": 0.09,
+    "unreadable_text": 0.11,
+    "none": 0.04,
+    "low_resolution": 0.1
+   },
+   "decision": "reject"
+  }
+ },
+ "severity": {
+  "choice": "moderate",
+  "confidence": 0.54,
+  "decision": "review",
+  "probabilities": {
+   "moderate": 0.67,
+   "minor": 0.25,
+   "severe": 0.07,
+   "none": 0.01
+  }
+ },
+ "remedy": {
+  "choice": "gentle-ai-touchup",
+  "confidence": 0.73,
+  "decision": "review",
+  "probabilities": {
+   "replace": 0.01,
+   "gentle-ai-touchup": 0.81,
+   "recrop-or-recapture": 0.18
+  }
+ }
+}

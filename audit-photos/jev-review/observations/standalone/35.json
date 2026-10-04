@@ -1,0 +1,13 @@
+{
+  "id": 35,
+  "file": "reference-assets/35--aes-source-code.BTJvNGRc.webp",
+  "project": "aes-256",
+  "kind": "code-screenshot",
+  "depicts": "Dark-theme C++ source: end of a hex byte table, then the Aes256 constructor, destructor and start of an encrypt function signature.",
+  "text_readable": "\"Aes256::Aes256(const ByteArray& key)\", \"m_key(ByteArray(key.size() > KEY_SIZE\", \"Aes256::~Aes256()\", hex values like \"0x54, 0x7b, 0x94, 0x32\"; all text is readable at native size.",
+  "composition": "Portrait crop of code lines filling the whole frame. Hex table occupies the top two thirds; the constructor and functions sit below. Text is left-aligned with empty space on the right; last line is cut off at the bottom edge.",
+  "tone_and_contrast": "Near-black background with pale blue hex numbers, white and purple identifiers. Contrast between text and background is clear; colours are muted.",
+  "sharpness_and_artifacts": "Text is crisp with slight compression fringing at its edges. No overlays, cursor or watermark. Bottom line truncated mid-signature; left and top lines touch the frame edge.",
+  "scan_first_read": "A screenshot of code with a wall of hex numbers; reads as low-level or cryptography source.",
+  "observer_confirms_blind": true
+}

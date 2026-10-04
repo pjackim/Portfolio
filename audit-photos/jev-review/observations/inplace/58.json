@@ -1,0 +1,24 @@
+{
+  "id": 58,
+  "views": [
+    {
+      "file": "inplace/58--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide frame filled with grey; caption FIG. 01 explains it is the first banner for zExileModz, predecessor of Paradox.",
+      "visible_vs_full": "Full standalone image shown: the banner artwork is a thin dark horizontal strip in the vertical middle, with large flat grey bands above and below.",
+      "readable_here": "Caption readable. Banner text 'THE OFFICIAL CHANNEL OF zExileModz' is tiny and dim; 'DESIGNED BY ATLASHD' barely legible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Mostly empty grey box with a dark strip holding a red-edged Z logo; the banner itself occupies a small share of the frame."
+    },
+    {
+      "file": "inplace/58--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width frame with grey above and below a dark strip; caption wraps over two lines, FULL SIZE link beneath.",
+      "visible_vs_full": "Whole image visible; the banner strip is thinner in height than on desktop relative to the frame, grey bands fill most of the frame.",
+      "readable_here": "Caption readable. Banner text is too small to read; only the red Z logo shape stands out.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Grey block with a narrow dark strip showing a red Z emblem; text in the banner not readable."
+    }
+  ],
+  "observer_confirms_blind": true
+}

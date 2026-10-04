@@ -1,53 +1,16 @@
 /**
- * Writes the site icons into public/ (spec-design-content §6), all from the shared monogram
- * geometry (src/lib/monogram.ts):
+ * Writes the site icons into public/ (spec-design-content §6), all from the master logo
+ * (src/assets/brand/logo.png): the mark on a transparent ground.
  *
- *  - favicon.svg — the monogram on a transparent ground; an internal `prefers-color-scheme`
- *    stylesheet switches it between the light and dark ink / accent.
- *  - favicon.ico — 32×32, one PNG inside an ICO container. Consumers of the ICO don't evaluate
- *    media queries, so it is the dark tile (light monogram on graphite), legible on any tab bar.
- *  - apple-touch-icon.png — 180×180, the monogram on graphite (iOS rounds the corners itself).
+ *  - favicon.ico — 32×32, one PNG inside an ICO container.
+ *  - icon-192.png — 192×192, the same artwork.
+ *  - apple-touch-icon.png — 180×180 (iOS composites it on black and rounds the corners itself).
  *
  *   npm run og
  */
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { COLOR, MONOGRAM, PUBLIC_DIR, monogramElements, rasterizeWithSharp } from './lib.ts';
-
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-/** Square viewBox around the 22×18 monogram: full width, centred vertically. */
-function faviconSvg(): string {
-  const pad = (MONOGRAM.width - MONOGRAM.height) / 2;
-  const style =
-    `svg{color:${COLOR.textLight}}.cursor{fill:${COLOR.accentLight}}` +
-    `@media (prefers-color-scheme:dark){svg{color:${COLOR.text}}.cursor{fill:${COLOR.accent}}}`;
-  return (
-    `<svg xmlns="${SVG_NS}" viewBox="0 ${-pad} ${MONOGRAM.width} ${MONOGRAM.width}">` +
-    `<style>${style}</style>` +
-    monogramElements({ ink: 'currentColor', accent: COLOR.accentLight }) +
-    '</svg>\n'
-  );
-}
-
-/**
- * The monogram at an integer `scale` (so every stem lands on whole pixels), centred on a
- * graphite `size`×`size` tile with corner radius `radius`.
- */
-function tileSvg(size: number, scale: number, radius: number): string {
-  const x = (size - MONOGRAM.width * scale) / 2;
-  const y = (size - MONOGRAM.height * scale) / 2;
-  if (!Number.isInteger(x) || !Number.isInteger(y)) {
-    throw new Error(`icon ${size}px: monogram ×${scale} is not pixel-aligned`);
-  }
-  return (
-    `<svg xmlns="${SVG_NS}" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">` +
-    `<rect width="${size}" height="${size}" rx="${radius}" fill="${COLOR.bg}"/>` +
-    `<g transform="translate(${x} ${y}) scale(${scale})">` +
-    monogramElements({ ink: COLOR.text, accent: COLOR.accent }) +
-    '</g></svg>'
-  );
-}
+import { PUBLIC_DIR, logoIcon } from './lib.ts';
 
 /** An ICO file holding a single PNG image (supported since Windows Vista and by all browsers). */
 function icoFromPng(png: Buffer, size: number): Buffer {
@@ -66,13 +29,13 @@ function icoFromPng(png: Buffer, size: number): Buffer {
   return Buffer.concat([header, png]);
 }
 
-const outputs: [name: string, data: string | Buffer][] = [
-  ['favicon.svg', faviconSvg()],
-  ['favicon.ico', icoFromPng(await rasterizeWithSharp(tileSvg(32, 1, 4), 32), 32)],
-  ['apple-touch-icon.png', await rasterizeWithSharp(tileSvg(180, 5, 0), 180)],
+const outputs: [name: string, data: Buffer][] = [
+  ['favicon.ico', icoFromPng(await logoIcon(32, 30), 32)],
+  ['icon-192.png', await logoIcon(192, 176)],
+  ['apple-touch-icon.png', await logoIcon(180, 164)],
 ];
 
 for (const [name, data] of outputs) {
   await writeFile(resolve(PUBLIC_DIR, name), data);
-  console.log(`${name} ${(Buffer.byteLength(data) / 1000).toFixed(1)} KB`);
+  console.log(`${name} ${(data.length / 1000).toFixed(1)} KB`);
 }

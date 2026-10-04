@@ -1,0 +1,24 @@
+{
+  "id": 54,
+  "views": [
+    {
+      "file": "inplace/54--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure in the ant-game case study; YouTube video facade with a centred 'PLAY | YOUTUBE' button and 'FIG. 10' caption below at left.",
+      "visible_vs_full": "Full 16:9 frame is visible without cropping; the whole standalone image shows behind the button.",
+      "readable_here": "'PLAY YOUTUBE' button readable. Small game text 'Server: port=7777', 'Stop (X)', 'Activate Windows', 'Development Build' is tiny, barely legible.",
+      "overlays_or_intrusions": "Centred white 'PLAY | YOUTUBE' button covering the middle of the mushrooms and grass area.",
+      "at_a_glance": "Very dark forest floor scene with mushrooms and a barely visible ant silhouette, and a play button."
+    },
+    {
+      "file": "inplace/54--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width video facade with a large centred 'PLAY | YOUTUBE' button and 'FIG. 10' caption below.",
+      "visible_vs_full": "Frame is slightly cropped in width compared with the standalone; 'Development Build' text at bottom right is cut off at the edge and the ant silhouette is at lower centre.",
+      "readable_here": "Button text large and clear. 'Server: port=7777' and 'Client: address=localhost' lines and 'Activate Windows' readable only as small grey text; ant is a dark silhouette.",
+      "overlays_or_intrusions": "Large pale button centred over the mushrooms, covering much of the middle of the frame.",
+      "at_a_glance": "Dark scene, big play button dominates; ant and mushrooms hard to distinguish."
+    }
+  ],
+  "observer_confirms_blind": true
+}

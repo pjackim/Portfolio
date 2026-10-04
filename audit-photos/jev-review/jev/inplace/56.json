@@ -1,0 +1,311 @@
+{
+ "id": 56,
+ "views": [
+  {
+   "file": "inplace/56--desktop--1.png",
+   "page": "work--go-green",
+   "viewport": "desktop",
+   "role": "figure",
+   "state": {
+    "project": "go-green",
+    "image": {
+     "kind": "photo",
+     "depicts": "A waterfall falling from a rock ledge into a dark green forest pool, with ferns and boulders in the foreground and evergreen trees above.",
+     "file_pixels": "2400 x 1350 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "desktop",
+     "role": "figure",
+     "context": "Wide figure inside a rounded frame, caption below reading FIG. 02 with 'FULL SIZE' link at right.",
+     "shown_size": "954 x 537 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens); the browser loaded a 956 px wide file for a 954 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Entire waterfall photo visible edge to edge, same 16:9 framing as the standalone file; nothing cropped or letterboxed.",
+     "readable_here": "Ferns, rocks, waterfall and pool detail visible. Caption text readable: 'FIG. 02 — The original reference image...'.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Green forest waterfall over a dark teal pool; a nature photo with caption about being the original reference."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.02,
+      "4": 0.98
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 3.12,
+     "confidence": 0.86,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.01,
+      "3": 0.85,
+      "4": 0.14
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.01,
+      "4": 0.99
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.58,
+     "confidence": 0.65,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.02,
+      "3": 0.39,
+      "4": 0.59
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.11,
+     "p": 0.11,
+     "read": "no"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.1,
+     "p": 0.1,
+     "read": "no"
+    }
+   },
+   "severity": {
+    "choice": "none",
+    "confidence": 0.94,
+    "decision": "accept",
+    "probabilities": {
+     "minor": 0.03,
+     "moderate": 0.01,
+     "severe": 0,
+     "none": 0.96
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.79,
+    "decision": "accept",
+    "probabilities": {
+     "replace": 0.02,
+     "gentle-ai-touchup": 0.03,
+     "layout-fix": 0.84,
+     "recrop-or-recapture": 0.11
+    }
+   }
+  },
+  {
+   "file": "inplace/56--mobile--1.png",
+   "page": "work--go-green",
+   "viewport": "mobile",
+   "role": "figure",
+   "state": {
+    "project": "go-green",
+    "image": {
+     "kind": "photo",
+     "depicts": "A waterfall falling from a rock ledge into a dark green forest pool, with ferns and boulders in the foreground and evergreen trees above.",
+     "file_pixels": "2400 x 1350 px, large (1600px or wider)"
+    },
+    "placement": {
+     "viewport": "mobile",
+     "role": "figure",
+     "context": "Frame full width of narrow column; caption FIG. 02 text wraps over three lines, FULL SIZE link beneath.",
+     "shown_size": "343 x 193 css px (landscape)",
+     "fit": "cover",
+     "crop": "cover crop hides under 1% of the image",
+     "shape": "landscape slot for landscape source",
+     "resolution": "about one source pixel per CSS pixel (crisp on standard screens; this is a 3x screen, so slightly soft); the browser loaded a 390 px wide file for a 343 CSS px wide slot"
+    },
+    "observation": {
+     "visible_vs_full": "Whole photo shown, slightly taller crop-free frame; all edges of the standalone image appear present.",
+     "readable_here": "Caption readable in large type; photo shows waterfall, ferns, rocks at small size, leaf detail on water not distinct.",
+     "overlays_or_intrusions": "none",
+     "at_a_glance": "Waterfall and pool photo with large caption; scene reads immediately as a forest nature shot."
+    }
+   },
+   "model": null,
+   "scoreIds": [
+    "crop_framing_here",
+    "resolution_here",
+    "overlay_intrusion",
+    "glance_here"
+   ],
+   "answers": {
+    "crop_framing_here": {
+     "type": "score",
+     "score": 3.91,
+     "confidence": 0.93,
+     "legend": {
+      "0": "Most of the meaningful content is cut off; what remains is an anonymous fragment",
+      "1": "A large share of meaningful content is lost or squeezed; the subject is weakened",
+      "2": "Some content is cut off or letterboxed, but the main subject remains",
+      "3": "Nearly everything important is visible; only edges are lost",
+      "4": "Everything important is visible and well framed in this slot"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.08,
+      "4": 0.92
+     },
+     "decision": "accept"
+    },
+    "resolution_here": {
+     "type": "score",
+     "score": 2.01,
+     "confidence": 0.91,
+     "legend": {
+      "0": "Visibly blurry or blocky at this size because the image is enlarged well beyond its pixels",
+      "1": "Noticeably soft at this size",
+      "2": "Slightly soft but acceptable at this size",
+      "3": "Sharp at this size",
+      "4": "Very crisp at this size with pixels to spare"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0.04,
+      "2": 0.91,
+      "3": 0.04,
+      "4": 0.01
+     },
+     "decision": "accept"
+    },
+    "overlay_intrusion": {
+     "type": "score",
+     "score": 3.98,
+     "confidence": 0.99,
+     "legend": {
+      "0": "Page elements drawn over the image hide key content",
+      "1": "Overlays cover a noticeable part of the important content",
+      "2": "Overlays are present but leave the important content readable",
+      "3": "Only minor overlays that do not touch important content",
+      "4": "No overlays, or none that matter"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0.01,
+      "4": 0.99
+     },
+     "decision": "accept"
+    },
+    "glance_here": {
+     "type": "score",
+     "score": 3.35,
+     "confidence": 0.63,
+     "legend": {
+      "0": "A two-second glance at this placement conveys nothing clear",
+      "1": "A vague impression only",
+      "2": "Some specific takeaway",
+      "3": "A clear, specific takeaway about the work",
+      "4": "An instant, specific and appealing takeaway about the work"
+     },
+     "probabilities": {
+      "0": 0,
+      "1": 0,
+      "2": 0.05,
+      "3": 0.55,
+      "4": 0.4
+     },
+     "decision": "review"
+    },
+    "is_defective_here": {
+     "type": "noul",
+     "noul": 0.31,
+     "p": 0.31,
+     "read": "uncertain"
+    },
+    "page_layout_is_the_cause": {
+     "type": "noul",
+     "noul": 0.32,
+     "p": 0.32,
+     "read": "uncertain"
+    }
+   },
+   "severity": {
+    "choice": "minor",
+    "confidence": 0.2,
+    "decision": "reject",
+    "probabilities": {
+     "minor": 0.4,
+     "moderate": 0.21,
+     "severe": 0,
+     "none": 0.39
+    }
+   },
+   "remedy": {
+    "choice": "layout-fix",
+    "confidence": 0.71,
+    "decision": "review",
+    "probabilities": {
+     "recrop-or-recapture": 0.05,
+     "replace": 0.01,
+     "gentle-ai-touchup": 0.16,
+     "layout-fix": 0.78
+    }
+   }
+  }
+ ]
+}

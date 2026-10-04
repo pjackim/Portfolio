@@ -1,0 +1,13 @@
+{
+  "id": 38,
+  "file": "reference-assets/38--bead-diagram.DiiadOaM.webp",
+  "project": "nodes",
+  "kind": "3d-render",
+  "depicts": "Three matte black spheres, each with a circular textured button face; one green-ringed, one with a lifted fingerprint disc and red ring, with text annotations and leader lines.",
+  "text_readable": "\"Button to complete task\", \"with satisfying click to reward the user\", \"Color Coding\", \"Completed\", \"In Progress\", \"To Do\", \"Unassigned\"; all readable at native size.",
+  "composition": "Spheres cluster centre and centre-right; annotation text in the top-left and top-right corners with leader lines. White empty space at the bottom and left; the front sphere is largest at lower right.",
+  "tone_and_contrast": "Black spheres on a plain white background give strong contrast. Green glow is vivid; grey and dark red annotation text is lower in contrast against white.",
+  "sharpness_and_artifacts": "Sphere edges are clean and smooth with slight banding in dark gradients. Text edges are crisp. No watermark. Top-left text sits close to the frame edge.",
+  "scan_first_read": "Black glossy-looking spheres with a green glowing ring and labelled annotations; reads as a product-style diagram.",
+  "observer_confirms_blind": true
+}

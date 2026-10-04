@@ -1,0 +1,24 @@
+{
+  "id": 44,
+  "views": [
+    {
+      "file": "inplace/44--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Tall narrow screenshot centred in a light grey frame with wide grey margins at left and right; caption 'FIG. 02' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole launcher panel visible, uncropped, shown at roughly a third of the frame width; grey frame fills the space on both sides.",
+      "readable_here": "Labels Bin, Books, Coding, Documents, Downloads, Pictures, u/pjackim and the quote 'Success means having the courage…' are readable but small. Caption readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A coloured button launcher with a round textured avatar, folder buttons and a quote."
+    },
+    {
+      "file": "inplace/44--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Figure in grey rounded frame with padding around a tall screenshot; caption 'FIG. 02' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole launcher panel visible, uncropped, inset in the grey frame. Same content as the standalone file, taller than the viewport height shown.",
+      "readable_here": "Button labels, 'u/pjackim', 'sudo', the quote and '- George Sheehan' are readable. Pattern in the round avatar visible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tall panel of pastel coloured buttons, a round avatar and a quote on a dark background."
+    }
+  ],
+  "observer_confirms_blind": true
+}

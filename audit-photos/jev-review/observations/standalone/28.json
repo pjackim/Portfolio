@@ -1,0 +1,13 @@
+{
+  "id": 28,
+  "file": "reference-assets/28--tour-optimization.poster.B.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner app with a world map covered by a dense tangle of blue route lines, a Find Place bar, and a trip named \"wwbrews.json\" showing 636,462 mi.",
+  "text_readable": "\"Find Place\"; \"wwbrews.json\"; \"636,462 mi\"; \"Leaflet | © OpenStreetMap contributors\". Continent and ocean labels are not visible.",
+  "composition": "World map takes the top three quarters, with route lines crossing the whole frame and running off the right and left edges; trip header row sits at the bottom, cut off just below.",
+  "tone_and_contrast": "Pale blue oceans and cream land with saturated blue route lines; lines are clearly separated from the map. Green buttons stand out against white below.",
+  "sharpness_and_artifacts": "Lines are smooth and aliased lightly; map tiles slightly soft. UI text is crisp. No cursor visible. Map zoom buttons at top left.",
+  "scan_first_read": "A world map with a chaotic web of blue lines and a very large distance figure.",
+  "observer_confirms_blind": true
+}

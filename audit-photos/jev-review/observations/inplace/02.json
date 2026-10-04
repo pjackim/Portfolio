@@ -1,0 +1,42 @@
+{
+  "id": 2,
+  "views": [
+    {
+      "file": "inplace/02--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Case-study image frame on light grey surround; dark image sits inside with grey margins.",
+      "visible_vs_full": "Shows the same content as the standalone file: slider rows FOV Value, TurncapX, TurncapY at the top and a large dark empty lower area with two faint orange dots.",
+      "readable_here": "Labels 'FOV Value', 'TurncapX', 'TurncapY' and values 315, 290 readable; 130 is partly cut at the top edge.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Three slider rows in gold on black with a large empty dark area beneath."
+    },
+    {
+      "file": "inplace/02--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Card image region without title in view; dark image fills the frame.",
+      "visible_vs_full": "Same content as the standalone file, filling the frame edge to edge; top row cut through at the top, gold border lines at the sides.",
+      "readable_here": "Labels 'TurncapX', 'TurncapY', values 315 and 290 readable; top row cut off.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Gold slider rows on black, most of the image empty and dark."
+    },
+    {
+      "file": "inplace/02--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Case-study image displayed inside a wider light grey block with margins around it.",
+      "visible_vs_full": "Full image shown, letterboxed with light grey on all sides; top row is cut through as in the standalone.",
+      "readable_here": "Labels 'FOV Value', 'TurncapX', 'TurncapY' and values 315, 290 readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Gold slider rows at the top of a mostly empty black image."
+    },
+    {
+      "file": "inplace/02--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Project list row: small rounded thumbnail at left, title 'Mordhau — Runtime Memory P…' truncated, '2021 · SECURITY & SYSTEMS'.",
+      "visible_vs_full": "Thumbnail is a small crop of the full image showing the slider rows and empty dark area below.",
+      "readable_here": "Title and category readable; thumbnail text (FOV Value, TurncapX, TurncapY) is too small to read.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Small dark thumbnail with gold bars next to the title Mordhau — Runtime Memory P…"
+    }
+  ],
+  "observer_confirms_blind": true
+}

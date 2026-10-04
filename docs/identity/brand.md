@@ -29,6 +29,23 @@ probably off-brand.
 | Hairline        | A 1px low-contrast line: grid, graph edge, section rule, card frame.     |
 | Glyph set       | `A–Z 0–9 / _ < > # %`: the only characters noise is drawn from.          |
 
+## Logo
+
+The mark is a paper-fold "P" in near-white with an orange "J" in its counter. It is the one asset
+here that is not built from the shared parts: it is a supplied illustration, used as given.
+
+- **Master:** `src/assets/brand/logo.png`, a transparent 1254×1254 PNG. `npm run og` crops it to
+  its shape (`logo-mark.webp`, which the header and footer serve) and renders the favicon, touch
+  icons and OG card from it. Never redraw or recolour it.
+- **Ground:** transparent on the site: `Logo.astro` draws the mark bare, so it takes the page's
+  ground in both themes. The favicon and touch icons are transparent too. The OG card keeps
+  its graphite ground.
+- **Size:** a 2.25rem box in the header, 2rem in the footer, the mark filling its height. The
+  home link carries the accessible name; the mark itself is decorative.
+- **Still.** The mark doesn't animate. The blinking accent block belongs to the typed prompt,
+  not the header.
+- **Source:** `src/components/Logo.astro`, `scripts/og/`.
+
 ## Pattern index
 
 | Pattern                             | One line                                                        | Lives in                |
@@ -36,7 +53,7 @@ probably off-brand.
 | [Signal trace](#signal-trace)       | An orange pulse hops a path through the graph and locks a node. | Hero backdrop           |
 | [Decrypt](#decrypt)                 | Text resolves out of cycling glyphs, or briefly glitches.       | Hero eyebrow, headings  |
 | [Lock-on reticle](#lock-on-reticle) | Corner brackets snap onto a target in two beats.                | Project cards, lightbox |
-| [Cursor block](#cursor-block)       | The accent block as a mark: monogram, caret, signal square.     | Logo, hero, 404         |
+| [Cursor block](#cursor-block)       | The accent block as a mark: the caret and the signal square.    | Hero, 404               |
 | [Typed prompt](#typed-prompt)       | `KEY ›` then text typed out behind a block caret.               | Hero focus line         |
 | [Readout reels](#readout-reels)     | Each digit drum turns one revolution and settles on its value.  | Hero readouts           |
 | [Rule draw](#rule-draw)             | A mono index counts up and a hairline draws out from a label.   | Section headings        |
@@ -111,20 +128,15 @@ Also called the scramble. Two modes of one function.
 
 ## Cursor block
 
-- **Signals:** a live terminal. The same solid accent block recurs as Parker's mark.
+- **Signals:** a live terminal. The same solid accent block recurs wherever input would be.
 - **Anatomy:** a solid accent rectangle, always upright, placed where input would be.
-  1. **Monogram:** lowercase `pj` in 2-unit strokes on a 22×18 grid, followed by a full-height
-     accent block 3 units wide. Used in the header, favicon, touch icon and OG card.
-  2. **Caret:** the typed prompt's accent block (below).
-  3. **Signal square:** a 0.5 rem accent square leading the hero eyebrow. The 404 line uses the
+  1. **Caret:** the typed prompt's accent block (below).
+  2. **Signal square:** a 0.5 rem accent square leading the hero eyebrow. The 404 line uses the
      same square in `--danger`, the one place the block changes colour.
-- **Values:** monogram geometry in `MONOGRAM`; caret 0.5 em wide, full line height; signal
-  square 0.5 rem.
+- **Values:** caret 0.5 em wide, full line height; signal square 0.5 rem.
 - **Rules:** the block is always the accent colour (the 404 error square excepted) and always
-  square-cornered. It blinks only
-  as the caret, and only a fixed number of times. Regenerate icons from the shared geometry
-  (`npm run og`); never hand-draw the monogram.
-- **Source:** `src/lib/monogram.ts`, `src/components/Hero.astro`, `src/pages/404.astro`.
+  square-cornered. It blinks only as the caret, and only a fixed number of times.
+- **Source:** `src/components/Hero.astro`, `src/pages/404.astro`.
 
 ## Typed prompt
 

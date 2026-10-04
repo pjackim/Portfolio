@@ -122,6 +122,12 @@ const channels = [
     background-color: var(--surface);
   }
 
+  /* The <picture> wrapper is inline by default, so the image's 100% height has nothing to fill. */
+  .contact__photo-box :global(picture) {
+    display: block;
+    block-size: 100%;
+  }
+
   .contact__photo {
     display: block;
     inline-size: 100%;

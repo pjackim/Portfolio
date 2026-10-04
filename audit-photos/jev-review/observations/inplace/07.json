@@ -1,0 +1,24 @@
+{
+  "id": 7,
+  "views": [
+    {
+      "file": "inplace/07--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Portrait frame in the about section, with a grey empty panel beneath it and a label 'PARKER JACKIM' and 'COLUMBIA, MD' below.",
+      "visible_vs_full": "Full square photo visible, cropped or fitted to a slightly narrow frame; the shoulders and the rock face at right are visible; an empty grey block sits below it.",
+      "readable_here": "Labels 'PARKER JACKIM' and 'COLUMBIA, MD' readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Smiling man in a cap in front of orange rock, with a name label below."
+    },
+    {
+      "file": "inplace/07--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Circular avatar at the left of a header row; clipped text starts at the right edge.",
+      "visible_vs_full": "Photo cropped to a circle, so the corners of the square are cut; the face and cap are visible with some rock at right.",
+      "readable_here": "Only a partial letter and one letter of next line at the right edge; no text in the photo.",
+      "overlays_or_intrusions": "Thin grey circular border around the photo.",
+      "at_a_glance": "Small round face photo of a man in a cap by orange rock."
+    }
+  ],
+  "observer_confirms_blind": true
+}

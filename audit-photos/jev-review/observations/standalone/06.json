@@ -1,0 +1,13 @@
+{
+  "id": 6,
+  "file": "reference-assets/06--cover.CvfAleX3.webp",
+  "project": "aes-256",
+  "kind": "app-ui-screenshot",
+  "depicts": "Windows desktop screenshot: File Explorer with a \"demo\" folder and Encryption.exe on the left, a terminal showing a pink directory tree in the middle, and PowerShell output on the right.",
+  "text_readable": "Readable: \"Encryption.exe\", \"demo\", \"Successfully Encrypted.\", \"Input Directory:\", \"demo\\demo3\\sub3\\demo.csv\". Taskbar icons, the terminal's small tree names and Explorer column text are tiny and hard to read.",
+  "composition": "Three panes side by side across the full screen. Explorer has a large empty area below its two file rows; terminal centre is a narrow strip; PowerShell text runs down the right. Taskbar strip along the bottom.",
+  "tone_and_contrast": "Dark windows with light text. Pink tree text and a whitish terminal background patch in the middle stand out; green-cyan PowerShell text is legible. Left pane is mostly black.",
+  "sharpness_and_artifacts": "Screen-capture softness; small text edges show compression blur. Baked in: taskbar, window title bars, mouse cursor near the tree, system tray clock, and a faded clock overlay in the terminal. Screenshot resembles a video frame.",
+  "scan_first_read": "A busy desktop with three windows: an encryption tool, a directory tree, and repeated \"Successfully Encrypted.\" lines. Shows a file-encryption demo but the detail is small.",
+  "observer_confirms_blind": true
+}

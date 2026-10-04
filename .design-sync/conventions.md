@@ -59,7 +59,7 @@ of the words, and doesn't click. Anything important must be _seen_. In priority 
    a scannable summary (what, role, outcome, media) before the narrative.
 2. **Modern, satisfying, interactive, never generic.** The hero is the quality bar. Motion rewards
    attention and points at the work (in-view project loops, card hover/focus, scroll reveals).
-3. **Easy to recognise and contact.** His photo, monogram, and name read as one identity, and the
+3. **Easy to recognise and contact.** His photo, logo, and name read as one identity, and the
    face shows up early. Contact is one step from any page: icon plus label, `mailto:` links, no forms.
 
 **Fact-only content.** Use only copy, projects, dates, links, and images that already appear in the

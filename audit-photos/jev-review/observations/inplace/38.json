@@ -1,0 +1,24 @@
+{
+  "id": 38,
+  "views": [
+    {
+      "file": "inplace/38--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure in a wide light grey panel with a \"FIG. 01\" caption and \"FULL SIZE\" link beneath; the beads sit centered in the panel.",
+      "visible_vs_full": "Full image visible on the light grey panel with margins; the standalone file shows a white background where the panel here is grey.",
+      "readable_here": "Labels \"Button to complete task\", \"Color Coding\" and status names \"Completed\", \"In Progress\", \"To Do\", \"Unassigned\" are readable; the thin subtitle is small.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Three black spheres with a green ring and labels explaining button and color coding."
+    },
+    {
+      "file": "inplace/38--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width in a light grey panel; caption text under the frame, \"FULL SIZE\" link.",
+      "visible_vs_full": "Full image visible with grey margins; content matches the standalone file.",
+      "readable_here": "\"Button to complete task\" and \"Color Coding\" headings readable; the smaller lines like \"In Progress\" and \"Unassigned\" are tiny and pale.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Black spheres with a glowing green ring and labelled callouts on a pale panel."
+    }
+  ],
+  "observer_confirms_blind": true
+}

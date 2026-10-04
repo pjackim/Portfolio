@@ -1,0 +1,13 @@
+{
+  "id": 26,
+  "file": "reference-assets/26--database-search.poster.BbI1xo22.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner app search results for \"denver\": a list of five heliports/airports with coordinates and add buttons, an empty My Trip section, and a map button at lower right.",
+  "text_readable": "\"denver\"; \"Kauffman Heliport, Denver, United States\"; \"Channel 7 Heliport\"; \"My Trip\". Coordinates in grey (e.g. 40.15, -104.89) are small but legible.",
+  "composition": "Header at top, search field and result rows filling the upper two thirds, a large empty white area below My Trip, a green map button in the lower right, green footer.",
+  "tone_and_contrast": "White background with dark text, dark green header, buttons and footer; high contrast between text and page; large flat areas of white.",
+  "sharpness_and_artifacts": "A pointing-hand cursor overlays the first add button. Text is crisp. Footer text begins with a missing-glyph box. Search field has a green focus outline.",
+  "scan_first_read": "A search box with \"denver\" and a list of results; a green trip app.",
+  "observer_confirms_blind": true
+}

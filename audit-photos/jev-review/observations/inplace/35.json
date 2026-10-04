@@ -1,0 +1,24 @@
+{
+  "id": 35,
+  "views": [
+    {
+      "file": "inplace/35--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure inside a light grey panel with padding, \"FIG. 01\" label and \"FULL SIZE\" link below; the tall image sits narrow within the panel.",
+      "visible_vs_full": "Full image visible, contained inside the panel with grey margins on all sides; nothing cropped compared with the standalone file.",
+      "readable_here": "Hex rows are legible at this size; the Aes256 constructor code is readable but small; the syntax colors can be told apart.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A tall block of dark code screenshot with rows of hex values and C++ AES code."
+    },
+    {
+      "file": "inplace/35--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Same figure at phone width in a grey panel with padding; large \"FIG. 01\" and \"FULL SIZE\" below.",
+      "visible_vs_full": "Full image visible, contained with grey margins; whole standalone content shown.",
+      "readable_here": "Hex rows and code lines are readable; small punctuation can be told apart only by looking closely.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark code listing of hex bytes and AES constructor code in a grey frame."
+    }
+  ],
+  "observer_confirms_blind": true
+}

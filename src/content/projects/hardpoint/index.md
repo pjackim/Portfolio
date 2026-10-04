@@ -6,7 +6,7 @@ role: Freelance developer
 year: 2021
 group: software
 featured: true
-order: 5
+order: 6
 capabilities: [engines-systems, engineering-practice]
 stack: [Unreal Engine 4, Server & client replication, Test-driven development, Iterative design]
 highlights:

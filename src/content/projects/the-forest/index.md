@@ -6,7 +6,7 @@ year: 2020
 period: Spring 2020
 group: security
 featured: true
-order: 4
+order: 5
 capabilities: [offensive-security, engines-systems]
 stack: [C#, Unity, Mono injection, ILSpy]
 highlights:
@@ -16,6 +16,7 @@ highlights:
   - Built an in-game ESP overlay with bone, joint, animal and world views and an adjustable draw distance.
 cover: ./cover.webp
 coverAlt: The Forest in first person, with the injected menu on the left and a red ESP skeleton drawn over a character among the trees.
+coverPosition: '50% 65%'
 media:
   - kind: image
     src: ./menus-in-game.webp

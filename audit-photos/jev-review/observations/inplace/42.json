@@ -1,0 +1,24 @@
+{
+  "id": 42,
+  "views": [
+    {
+      "file": "inplace/42--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure in a thin-bordered white frame; caption row with 'FIG. 03' and 'FULL SIZE' link below.",
+      "visible_vs_full": "Whole 16:9 image visible, no crop. Logo and 'SPECTER' wordmark sit in the upper centre; the lower third and side areas are empty white.",
+      "readable_here": "'SPECTER' wordmark readable in dark letters with smoky edges; logo detail clear. Caption labels readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A black smoke-headed octopus logo with the word SPECTER at its right, on white."
+    },
+    {
+      "file": "inplace/42--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width figure with thin rounded border on white; caption 'FIG. 03' and 'FULL SIZE' below.",
+      "visible_vs_full": "Whole image visible, uncropped. Logo and wordmark occupy the middle; wide white areas at left, right and bottom.",
+      "readable_here": "'SPECTER' is readable but small; smoke texture around letters visible at this size. Caption labels legible.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "A small black octopus logo and SPECTER text in a mostly white frame."
+    }
+  ],
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 50,
+  "file": "reference-assets/50--textured-side-dirt.BhGn1.webp",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Top-down-angled render of a glossy brown ant with long legs standing on a leaf-strewn dirt path, greenery at the corners.",
+  "text_readable": "no text",
+  "composition": "Ant spans the full width horizontally, left legs and antenna reaching the frame edges; rear leg tips cut off at the bottom and right antenna tip touches the edge. Dirt path fills the remaining space.",
+  "tone_and_contrast": "Even daylight. Dark brown subject against pale sandy dirt; strong separation. Green foliage at top left and top right.",
+  "sharpness_and_artifacts": "Body detail and leaf texture are sharp at native size; background dirt has slight softness. Mild compression grain. No overlays or watermarks.",
+  "scan_first_read": "A large brown ant on a dirt trail; reads as a realistic insect render.",
+  "observer_confirms_blind": true
+}

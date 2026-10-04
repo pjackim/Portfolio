@@ -1,0 +1,24 @@
+{
+  "id": 22,
+  "views": [
+    {
+      "file": "inplace/22--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Figure with grey rounded panel; small dark options-menu screenshot inset with grey margin; caption \"FIG. 01\" below wrapping to two lines.",
+      "visible_vs_full": "Whole image visible, smaller than the panel; content matches standalone with the right edge cut mid-word \"Ch\"; nothing else cropped.",
+      "readable_here": "Gameplay checkbox labels (AFK, Crouch Cooldown, Dodge Cooldown, Enable Dodge, FOV, Move) readable; faint background patch-note text partly readable.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Dark gold-outlined Gameplay options with checkboxes, ghost patch-note text behind; caption explains the options."
+    },
+    {
+      "file": "inplace/22--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width grey panel with dark options screenshot inset; caption in large text, four lines.",
+      "visible_vs_full": "Whole image visible with grey margin; same content as standalone including right edge cut off; nothing else hidden.",
+      "readable_here": "Checkbox labels readable; background \"Patch 24 Hotfix 3\" text visible but faint and overlapping labels; small grey text soft.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Gold-on-black list of Gameplay checkboxes with overlapping faint patch text behind."
+    }
+  ],
+  "observer_confirms_blind": true
+}

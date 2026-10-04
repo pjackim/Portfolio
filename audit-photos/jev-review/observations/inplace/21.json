@@ -1,0 +1,24 @@
+{
+  "id": 21,
+  "views": [
+    {
+      "file": "inplace/21--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Wide figure with dark visualizer image, caption \"FIG. 05\" and a \"FULL SIZE\" link on the same line below.",
+      "visible_vs_full": "Image shown at full width; the bottom text \"This capital letter occurs in both\" is cut at the lower edge, same as in the standalone file; nothing else cropped.",
+      "readable_here": "Top strings \"Green86Boot!\" and \"Boot19Green86!\" and the yellow/blue annotations readable; red and dim text small and low-contrast.",
+      "overlays_or_intrusions": "none on image; \"FULL SIZE\" link sits in the caption row, outside the image.",
+      "at_a_glance": "Dark screen with coloured letters and lines linking characters, plus labels such as \"This pattern occurs in both the username and password!\"."
+    },
+    {
+      "file": "inplace/21--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Full-width dark visualizer image with rounded corners; caption in large text and \"FULL SIZE\" link below.",
+      "visible_vs_full": "Whole image visible scaled to phone width; last annotation line still cut at bottom edge as in standalone; nothing else cropped.",
+      "readable_here": "Top strings and larger coloured labels readable; red and blue annotation text small and dim at this size.",
+      "overlays_or_intrusions": "none",
+      "at_a_glance": "Coloured password strings with connecting lines and labels; caption says it shows what a password gives away."
+    }
+  ],
+  "observer_confirms_blind": true
+}

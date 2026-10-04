@@ -1,0 +1,13 @@
+{
+  "id": 23,
+  "file": "reference-assets/23--trip-manager.BKBMRMP-.webp",
+  "project": "trip-planner",
+  "kind": "app-ui-screenshot",
+  "depicts": "Green-themed web app with a 'Trip Manager' dialog listing lakes.json, christmas_2020.json and my_vacation.json with place names and mileages, Load Trip, Save Trip and JSON/CSV/SVG buttons.",
+  "text_readable": "'Trip Manager'; 'lakes.json'; 'christmas_2020.json'; 'my_vacation.json'; 'Load Trip'; 'Save Trip'. Small mileage badges like '1,004 mi' are readable; the footer 'Connected to t22 2 Eazy' is readable; the last badge is cut off.",
+  "composition": "White dialog centred over a dimmed app, filling the middle of the frame; dark green header and footer bars; the place list is clipped at the bottom of its scroll box.",
+  "tone_and_contrast": "Dark green and white with clear separation; dialog text is dark on white; the dimmed backdrop app text is partly hidden by the dialog.",
+  "sharpness_and_artifacts": "Sharp text, mild compression. The list is truncated by its scroll area, one badge is sliced; a scrollbar is visible; no cursor or watermark.",
+  "scan_first_read": "A Trip Manager dialog listing saved trip files and their places.",
+  "observer_confirms_blind": true
+}

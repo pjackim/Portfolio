@@ -1,0 +1,13 @@
+{
+  "id": 33,
+  "file": "reference-assets/33--capture-zone-melee.Dl6v7Dfj.webp",
+  "project": "hardpoint",
+  "kind": "game-screenshot",
+  "depicts": "Third-person view of armored knights fighting in a dark blocky stone arena, a blue glowing grid floor patch, fallen bodies, blood splats and dropped weapons.",
+  "text_readable": "no text",
+  "composition": "Wide arena view; fighters cluster left and centre, bodies along the bottom, a lone knight at centre-right. Large dark block wall fills the right edge; sky occupies a small top-right area.",
+  "tone_and_contrast": "Mostly dark grey stone with a small pale-blue sky. Saturated red blood and the bright blue grid stand out strongly against the dark floor and walls.",
+  "sharpness_and_artifacts": "Edges look clean at full size; slight soft texture on stone. Some compression smoothing in dark areas. No HUD, cursor or watermark visible. Bottom-left figure is partly cut off by the frame.",
+  "scan_first_read": "A medieval knight melee with blood in a stone arena; the blue floor grid and red bodies read immediately.",
+  "observer_confirms_blind": true
+}

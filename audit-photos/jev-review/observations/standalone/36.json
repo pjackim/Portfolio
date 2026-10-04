@@ -1,0 +1,13 @@
+{
+  "id": 36,
+  "file": "reference-assets/36--gameplay.poster.Ch1KDA9n.webp",
+  "project": "hero-trivia",
+  "kind": "video-poster",
+  "depicts": "Hero Trivia crossword screen: logo at top, a vertical word BEAST in a yellow-outlined column crossing dark grid cells, and a clue bar below, over a blurred comic-book collage.",
+  "text_readable": "\"Hero Trivia\", letters B E A S T in the highlighted column, clue \"_____ Surfer, servant of Galactus who bretrayed him to save Earth\"; empty grid cells have no text.",
+  "composition": "Logo centred at top, crossword grid centred in the middle with the highlighted column near the centre, clue panel across the lower third. Small cursor and text caret visible in the grid.",
+  "tone_and_contrast": "Warm orange, red and blue blurred background; dark translucent cells and clue panel add contrast. Yellow-gold letters and white clue text separate clearly from their panels.",
+  "sharpness_and_artifacts": "Background is intentionally blurred; foreground letters are sharp. Mouse cursor arrow and text caret are baked in. The clue contains the typo \"bretrayed\". Mild compression softness on the logo glow.",
+  "scan_first_read": "A comic-themed crossword trivia game titled Hero Trivia with a clue bar; colourful backdrop and the logo read first.",
+  "observer_confirms_blind": true
+}

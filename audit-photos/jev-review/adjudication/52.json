@@ -1,0 +1,7 @@
+{
+ "id": 52,
+ "standalone": "moderate",
+ "in_place": "moderate",
+ "in_place_worst_file": "inplace/52--desktop--1.png",
+ "evidence": "Gray-on-gray Maya viewport; ant small in large empty frame, rig controls thin and faint, tiny viewport labels. Weak at small size."
+}

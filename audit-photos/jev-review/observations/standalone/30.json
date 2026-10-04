@@ -1,0 +1,13 @@
+{
+  "id": 30,
+  "file": "reference-assets/30--menu-panels.BZNx7UjB.webp",
+  "project": "the-forest",
+  "kind": "app-ui-screenshot",
+  "depicts": "Two dark translucent mod menu panels side by side over a blurred dark forest: Spawn Menu with Options on the left, Main Menu with Player options on the right.",
+  "text_readable": "\"Spawn Menu\", \"Options\", \"Despawn All\", \"Go to Closest\", \"Main Menu\", \"Player\", \"Give All Items\", \"God Mode\". Slider values \"Fly Mode: 100\", \"Speed: 13\", \"Jump: 8\" are readable.",
+  "composition": "Two panels fill the frame nearly edge to edge with small margins; right Player panel has a cyan outline. Bottom-left has a little empty background.",
+  "tone_and_contrast": "Very dark background with cyan and white text and dim button outlines; text contrasts well, but button boxes and sliders are low contrast against the dark backdrop.",
+  "sharpness_and_artifacts": "Text is crisp; background is heavily blurred. Slight colour fringing at some left edges. Cropped from a larger frame, no window chrome. Panel borders show faint banding in dark gradients.",
+  "scan_first_read": "Two dark menu panels with cyan headings; a game mod interface.",
+  "observer_confirms_blind": true
+}

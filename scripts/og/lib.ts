@@ -1,6 +1,6 @@
 /**
- * Shared pieces of the brand-asset generators (render-default.ts, render-icons.ts): palette,
- * monogram markup, embedded fonts, and SVG rasterizers.
+ * Shared pieces of the brand-asset generators (render-mark.ts, render-default.ts,
+ * render-icons.ts): palette, the logo mark, embedded fonts, and SVG rasterizers.
  *
  * Two rasterizers, on purpose:
  *  - `rasterizeWithSharp` (librsvg) for artwork without text — the icons.
@@ -16,11 +16,15 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium } from '@playwright/test';
 import sharp from 'sharp';
-import { MONOGRAM, type Rect } from '../../src/lib/monogram.ts';
 
 /** Repository root (scripts/og/ → ../../). */
 export const ROOT = resolve(import.meta.dirname, '../..');
 export const PUBLIC_DIR = resolve(ROOT, 'public');
+export const BRAND_DIR = resolve(ROOT, 'src/assets/brand');
+/** The master logo: a transparent 1254×1254 PNG, the mark centred with generous margins. */
+export const LOGO_SOURCE = resolve(BRAND_DIR, 'logo.png');
+/** The master cropped to its visible shape (render-mark.ts); what the site's header serves. */
+export const LOGO_MARK = resolve(BRAND_DIR, 'logo-mark.webp');
 
 /** Dark and light hex values of the tokens in src/styles/tokens.css (spec-design-content §1a). */
 export const COLOR = {
@@ -35,31 +39,64 @@ export const COLOR = {
   accentLight: '#aa460d',
 } as const;
 
-export interface MonogramPaint {
-  /** Paint for the letters: a colour or `currentColor`. */
-  ink: string;
-  /** Paint for the cursor block. */
-  accent: string;
+/** Alpha above which a pixel counts as part of the mark (the master's edge is anti-aliased). */
+const MARK_ALPHA = 8;
+
+/**
+ * The master logo cropped to the bounding box of its visible pixels, as a PNG. The master keeps
+ * wide transparent margins, which would make every size below depend on them.
+ */
+export async function trimmedLogo(): Promise<Buffer> {
+  const { data, info } = await sharp(LOGO_SOURCE)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let [left, top, right, bottom] = [info.width, info.height, -1, -1];
+  for (let y = 0; y < info.height; y++) {
+    for (let x = 0; x < info.width; x++) {
+      if (data[(y * info.width + x) * 4 + 3]! <= MARK_ALPHA) continue;
+      left = Math.min(left, x);
+      right = Math.max(right, x);
+      top = Math.min(top, y);
+      bottom = Math.max(bottom, y);
+    }
+  }
+  if (right < 0) throw new Error(`${LOGO_SOURCE} has no visible pixels`);
+  return sharp(LOGO_SOURCE)
+    .extract({ left, top, width: right - left + 1, height: bottom - top + 1 })
+    .png()
+    .toBuffer();
+}
+
+/** The trimmed mark at exactly `height` px tall (Lanczos), as a PNG; width follows its aspect. */
+export async function logoAtHeight(height: number): Promise<Buffer> {
+  return sharp(await trimmedLogo())
+    .resize({ height, kernel: 'lanczos3' })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
 }
 
 /**
- * The monogram's elements in its own 22×18 unit grid (src/lib/monogram.ts); position and
- * scale it with a wrapping `<g transform>` or the root `viewBox`. The cursor carries
- * `class="cursor"` so a stylesheet can repaint it.
+ * The mark centred on a transparent `size`×`size` canvas, `markHeight` px tall: the site icons.
+ * The mark's white paper vanishes on a light tab bar, but the orange J and the fold shadows
+ * still read, and the icon takes whatever ground the browser or home screen gives it.
  */
-export function monogramElements({ ink, accent }: MonogramPaint): string {
-  const rect = (r: Rect, attrs: string) =>
-    `<rect x="${r.x}" y="${r.y}" width="${r.width}" height="${r.height}" ${attrs}/>`;
-  return [
-    `<g fill="none" stroke="${ink}" stroke-width="${MONOGRAM.strokeWidth}">`,
-    ...MONOGRAM.strokes.map((d) => `<path d="${d}"/>`),
-    '</g>',
-    ...MONOGRAM.rects.map((r) => rect(r, `fill="${ink}"`)),
-    rect(MONOGRAM.cursor, `class="cursor" fill="${accent}"`),
-  ].join('');
+export async function logoIcon(size: number, markHeight: number): Promise<Buffer> {
+  const mark = await logoAtHeight(markHeight);
+  const { width, height } = await sharp(mark).metadata();
+  return sharp({
+    create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  })
+    .composite([
+      {
+        input: mark,
+        left: Math.round((size - width!) / 2),
+        top: Math.round((size - height!) / 2),
+      },
+    ])
+    .png({ compressionLevel: 9 })
+    .toBuffer();
 }
-
-export { MONOGRAM };
 
 /** `@font-face` rules embedding the self-hosted Latin variable fonts as base64 WOFF2. */
 export async function embeddedFontFaces(): Promise<string> {

@@ -1,0 +1,42 @@
+{
+  "id": 15,
+  "views": [
+    {
+      "file": "inplace/15--desktop--1.png",
+      "viewport": "desktop",
+      "context": "Large rounded card on a pale page; image fills the card.",
+      "visible_vs_full": "The full image is shown at about 1197 px width in the card, cut slightly at the sides against the standalone 16:10 file; the quote box top left and the \"Parker Jackim / Period 2\" tag bottom right are both present.",
+      "readable_here": "The quote text (\"Standing on the bare ground...\") is legible; the \"Parker Jackim Period 2\" tag at bottom right is small and hard to read.",
+      "overlays_or_intrusions": "The quote box with a translucent panel and white corner brackets sits over the top left of the image; the name tag sits over the path at bottom right.",
+      "at_a_glance": "A mossy forest with a translucent figure on a cobbled path, a quote panel at top left."
+    },
+    {
+      "file": "inplace/15--desktop--2.png",
+      "viewport": "desktop",
+      "context": "Small rounded card, thumbnail size; a small \"7\" digit at bottom right corner.",
+      "visible_vs_full": "Full image visible at a small size; the quote box and bottom-right tag are in place; a slight crop at the sides compared with standalone.",
+      "readable_here": "Quote lines are only just readable; the \"Parker Jackim Period 2\" tag is not readable; a \"7\" digit is visible at the corner.",
+      "overlays_or_intrusions": "Quote panel over top left; a small \"7\" mark near the bottom right over the name tag.",
+      "at_a_glance": "A green forest scene with a text panel; the quote is hard to read at this size."
+    },
+    {
+      "file": "inplace/15--mobile--1.png",
+      "viewport": "mobile",
+      "context": "Rounded card with thin border on a pale page.",
+      "visible_vs_full": "Full frame visible with slight side crop; quote panel top left and the name tag bottom right both inside the frame.",
+      "readable_here": "The quote is legible in bold white text; the \"Parker Jackim Period 2\" tag is small but discernible.",
+      "overlays_or_intrusions": "Quote box with translucent fill and corner brackets over the top left; name tag over the path bottom right.",
+      "at_a_glance": "A mossy forest, a translucent figure in the centre, and a quote panel at top left."
+    },
+    {
+      "file": "inplace/15--mobile--2.png",
+      "viewport": "mobile",
+      "context": "Card image without border with rounded top corners, cropped tighter; light strip at the bottom.",
+      "visible_vs_full": "Cropped more tightly than the standalone: the left edge, right pole and bottom path are cut; the quote panel is close to the left edge; name tag partly cut at the right and bottom.",
+      "readable_here": "Quote text is legible; the \"Parker Jackim Period 2\" tag is small and only partly readable.",
+      "overlays_or_intrusions": "Quote panel at top left; name tag bottom right over the path.",
+      "at_a_glance": "Forest with a figure on a path and a quote panel at top left."
+    }
+  ],
+  "observer_confirms_blind": true
+}
