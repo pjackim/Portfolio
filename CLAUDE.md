@@ -228,6 +228,13 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
   `REMOVED_LEGACY` entries (e.g. `alvin` → `work/`). GitHub Pages can't send HTTP redirects, so
   these are real documents with a zero-delay `<meta http-equiv="refresh">`, a visible fallback
   link, and `noindex`.
+- **Error screens** — one component, `ErrorScreen.astro` (status readout, headline, next step, and
+  a panel with `RequestTrace.astro` and mono readouts), fed by the copy table in
+  `src/data/errors.ts`. `src/pages/404.astro` is the only one a host serves by itself
+  (`dist/404.html`); every other status builds to `errors/<code>/` (`src/pages/errors/[code].astro`)
+  as a drop-in error document, noindex and out of the sitemap. `src/scripts/error-screen.ts`
+  fills the requested path and the 404's "Closest match" into slots the layout already reserves.
+  A new status is one entry in `ERROR_SCREENS`; `tests/errors.spec.ts` covers every entry.
 - **Scripts** — `scripts/media/{build,check,verify,migrate,lib}.ts` (the media pipeline; runs
   on Node's native TypeScript type-stripping, so erasable syntax only — no enums/namespaces/param
   properties), `scripts/check-dist.ts` (the `dist/` size gate) and `scripts/new-project.ts`

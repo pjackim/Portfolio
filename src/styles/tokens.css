@@ -32,7 +32,7 @@
   --accent-l: oklch(52% 0.145 44); /* #aa460d — burnt orange */
   --accent-hover-d: oklch(80% 0.135 63); /* #fba95a */
   --accent-hover-l: oklch(46% 0.128 41); /* #903913 */
-  --danger-d: oklch(66% 0.2 24); /* #f45152 — 404 code only: a true red, darker than the accent */
+  --danger-d: oklch(66% 0.2 24); /* #f45152 — error screens only: a true red */
   --danger-l: oklch(48% 0.18 22); /* #ac172b */
   /* Skill families: the Experience git log's lanes and chips (Portfolio.dc.html). Security is
      the accent; the others sit at the accent's lightness in each scheme, so each clears 4.5:1

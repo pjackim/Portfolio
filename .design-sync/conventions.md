@@ -41,7 +41,7 @@ each opening with a `SectionHeading` (`01 / ABOUT ────`) → `footer.sit
 
 - Colour: `--bg`, `--surface`, `--surface-2`, `--line` (decorative hairline), `--line-ui` (≥3:1 UI
   edge), `--text`, `--text-muted`, `--text-subtle`, `--accent`, `--accent-hover`, `--on-accent`,
-  `--danger` (404 only).
+  `--danger` (error screens only).
 - Type: `--font-sans` (Geist), `--font-mono` (Geist Mono); fluid steps `--step--1` … `--step-5`.
 - Space: `--space-3xs` … `--space-3xl`, `--space-section`. Layout: `--container`, `--measure`
   (66ch), `--gutter`, `--header-h`.

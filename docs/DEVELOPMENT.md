@@ -196,7 +196,7 @@ src/
   lib/{url,projects,media,seo,csp,legacy,...}.ts
   layouts/{BaseLayout,ProjectLayout}.astro
   components/                     # + components/media/*
-  pages/{index,404,work/index,work/[slug]}.astro
+  pages/{index,404,errors/[code],work/index,work/[slug]}.astro
   assets/profile/                 # profile photo (contact section)
   scripts/*.ts                    # hand-written client JS (hero, motion, theme, media, …)
   styles/{tokens,global,prose,lightbox,reticle}.css
@@ -206,7 +206,7 @@ scripts/
   og/{render-default,render-icons,lib}.ts
   check-dist.ts                    # dist/ size gate (npm run check:dist)
   new-project.ts
-tests/{smoke,a11y,links,redirects,media}.spec.ts
+tests/{smoke,a11y,links,redirects,errors,media}.spec.ts
 docs/design/   # distilled UX research behind the Goals (scanning, cards, disclosure, grids)
 .github/workflows/{ci,deploy,links}.yml
 ```
