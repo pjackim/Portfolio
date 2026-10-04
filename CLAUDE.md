@@ -7,7 +7,7 @@ repository.
 
 Astro 7 static portfolio site, deployed to GitHub Pages at
 `https://pjackim.github.io/Portfolio/`. One project collection (`src/content/projects/`), a
-home page, a `/work/` index, per-project case-study pages, and standalone `/about/`,
+home page, a `/work/` index, per-project pages, and standalone `/about/`,
 `/experience/` and `/capabilities/` pages. Phones (under 40rem) get their own layout: a
 segmented 4-item section nav in the header (scroll-spy fill, `src/scripts/nav-scroll.ts`),
 full-height scroll-snap chapter panels on the home page (`HomeMobilePanels.astro`), a sticky
@@ -26,14 +26,14 @@ link. Concretely:
 
 - **Picture first, then 2–3 sentences.** Every project a visitor can see shows a real,
   tasteful image or loop of the thing Parker built, plus a 2–3 short-sentence summary (the `summary` field caps at 180 characters) that says what
-  it is and why it's impressive. The work should land without a click; the full case study
+  it is and why it's impressive. The work should land without a click; the full project
   stays one click away for anyone who wants more depth.
 - **Layer-cake structure.** Pages should read like a stack of headings and visuals the eye can
   skip between. Keep headings short and informative, lead every block with the most important
   fact (inverted pyramid), keep paragraphs short, and pull key facts out into highlights,
   tags, and short labels rather than sentences.
 - **Progressive disclosure.** Put the essentials on the surface (image, title, one-line
-  hook, 2–3 key facts) and the detail behind the click, an expand, or the case-study page.
+  hook, 2–3 key facts) and the detail behind the click, an expand, or the project page.
   Never hide something essential behind hover-only or click-only UI, because touch and
   keyboard users must get it too.
 - **Visual hierarchy does the work.** Size, position, and contrast show what matters most:
@@ -59,7 +59,7 @@ before using any of their advice. The site's own look and voice are defined in
      abilities are high-tier, even if all they did was scroll.
    - Projects are the evidence. Lead with the strongest work and show the real artifact
      (screenshot, loop, diagram, outcome) instead of adjectives.
-   - Case studies open with a scannable summary (what it is, Parker's role, the outcome, the
+   - Featured projects open with a scannable summary (what it is, Parker's role, the outcome, the
      media) before the `Problem → Approach → What I built → Outcome` narrative.
    - The fact-only rule below still binds. "High-tier" is earned by presenting real work
      sharply, never by inflating claims.
@@ -200,7 +200,7 @@ install chromium webkit`. Single spec/project: `npx playwright test tests/smoke.
   `order` among featured projects, duplicate `legacyPaths`, or a featured count outside 3–8.
 - **Layouts/components** — `src/layouts/BaseLayout.astro` is the document shell (head/SEO,
   theme bootstrap, adaptive-image bootstrap, fonts, skip link, header/footer, inline CSP
-  hashing); `ProjectLayout.astro` is the case-study template built on it. `src/components/`
+  hashing); `ProjectLayout.astro` is the project template built on it. `src/components/`
   holds page sections; `src/components/media/{MediaFigure,LoopVideo,YouTubeFacade}.astro`
   render the three media kinds.
   **Paired paragraphs**: to tie body text to the media that shows it, wrap the Markdown block in

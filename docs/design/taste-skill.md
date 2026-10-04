@@ -169,7 +169,7 @@ are available to `/taste`; the rest need `npx skills add` and the human's go-ahe
 | `taste-skill` (v2)         | `design-taste-frontend`      | Always. It's the core skill.                                                    |
 | `redesign-skill`           | `redesign-existing-projects` | The request changes something that already exists (most requests here).         |
 | `brutalist-skill`          | `industrial-brutalist-ui`    | The work leans on the instrument side: telemetry labels, readouts, Swiss grids. |
-| `minimalist-skill`         | `minimalist-ui`              | Reading surfaces: case-study prose, the `/work/` index, typographic hierarchy.  |
+| `minimalist-skill`         | `minimalist-ui`              | Reading surfaces: project prose, the `/work/` index, typographic hierarchy.     |
 | `soft-skill`               | `high-end-visual-design`     | Spacing generosity and card restraint. Skip its shadows, pills, and glass.      |
 | `gpt-tasteskill`           | `gpt-taste`                  | A bento or grid: its gapless-cell rule. Skip GSAP and Python randomisation.     |
 | `output-skill`             | `full-output-enforcement`    | Large multi-file builds where truncation is a risk.                             |

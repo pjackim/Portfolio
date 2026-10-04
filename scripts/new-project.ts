@@ -4,7 +4,7 @@
  *   npm run new -- <slug>
  *
  * Writes src/content/projects/<slug>/index.md with a commented frontmatter template covering
- * every schema field (spec-architecture §4) and `draft: true`, plus a case-study body
+ * every schema field (spec-architecture §4) and `draft: true`, plus a project body
  * skeleton. Refuses to overwrite an existing index.md. Add media afterwards with
  * `npm run media -- <files...> --project <slug>`.
  */
@@ -73,7 +73,7 @@ links: {}
 legacyPaths: [] # e.g. ['html/Work/old_page.html'] — only for pages that existed on the old site
 ---
 
-<!-- Featured case studies use the four sections below; omit a section with no source.
+<!-- Featured projects use the four sections below; omit a section with no source.
      Archive entries can be one or two short paragraphs instead. -->
 
 ## Problem

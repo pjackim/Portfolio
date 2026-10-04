@@ -3,7 +3,7 @@
  * YouTube facade (spec-design-content §3): a link to the video on YouTube wrapping the local
  * poster (`yt-<id>.webp`), a play chip and a visually-hidden "Play video: {title}". Nothing
  * is requested from YouTube until the click — `src/scripts/youtube.ts` then swaps in the
- * youtube-nocookie player inside the same 16:9 frame. As the case-study hero (Ruling R21)
+ * youtube-nocookie player inside the same 16:9 frame. As the project hero (Ruling R21)
  * the frame carries `id="case-hero"` and the cover's `view-transition-name`.
  */
 import { Picture } from 'astro:assets';
@@ -22,7 +22,7 @@ interface Props {
   sizes: string;
   /** Above the fold (hero): the poster is the page's priority image (eager, high priority). */
   priority?: boolean;
-  /** Frame id (the case-study hero's `case-hero`). */
+  /** Frame id (the project hero's `case-hero`). */
   frameId?: string | undefined;
   /** Frame `view-transition-name` (the hero's `cover-<slug>`). */
   transitionName?: string | undefined;

@@ -40,7 +40,7 @@ const TOGGLE = '.hero [data-motion-toggle]';
 const FOCUS_TEXT = 'reverse engineering · machine learning · embedded systems';
 /** Where the hero shows its instruments (all of them hide under 40rem). */
 const WIDE = { width: 1280, height: 800 };
-/** Every built case-study page is a project. */
+/** Every built project page is a project. */
 const PROJECT_COUNT = ROUTES.filter((route) => /^work\/[^/]+\/$/.test(route)).length;
 
 /** Counts every requestAnimationFrame call the page makes, from before its scripts run. */
@@ -346,7 +346,7 @@ test.describe('motion on', () => {
     const list = page.locator('[data-readouts]');
     await expect(list.locator('.visually-hidden')).toHaveText([
       `${PROJECT_COUNT} projects`,
-      `${featured} case studies`,
+      `${featured} featured`,
     ]);
     await list.scrollIntoViewIfNeeded();
     await expect(list).toHaveAttribute('data-roll', 'done', { timeout: 10_000 });

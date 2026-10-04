@@ -142,7 +142,7 @@ function watchHeadings(headings: NodeListOf<HTMLElement>): void {
 /**
  * The cover is a cross-document morph subject (`cover-<slug>`), and the HUD sits inside it: on
  * the way out, the readout chip and scanline are dropped from the outgoing snapshot (pageswap
- * runs before it is taken), so only the brackets ride the zoom into the case study.
+ * runs before it is taken), so only the brackets ride the zoom into the project.
  */
 function dropHudOnLeave(grid: HTMLElement): void {
   addEventListener('pageswap', (event) => {

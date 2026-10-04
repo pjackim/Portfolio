@@ -1,6 +1,6 @@
 /**
  * The element a `#fragment` names — the one lookup behind in-page anchor scrolling
- * (smooth-scroll.ts) and the case-study index (case-index.ts). The id is percent-decoded, and a
+ * (smooth-scroll.ts) and the project index (case-index.ts). The id is percent-decoded, and a
  * malformed escape (`#%zz`) is looked up as written, as the browser does. (src/scripts/reveal.ts,
  * inlined and so import-free, asks the browser itself: `:target`.)
  */

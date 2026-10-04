@@ -782,7 +782,7 @@ professional, symbolic, simple, ownable, based on the brand's purpose, repeated 
 The image must look like:
 - a premium identity deck
 - a senior designer's presentation board
-- a brand-system case study
+- a brand-system project
 - a visual launch direction
 - a professional logo concept board
 

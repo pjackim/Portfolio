@@ -10,9 +10,9 @@
     },
     {
       "id": 2,
-      "name": "case-study-premium",
-      "prompt": "make the case study pages feel more premium, rn they're basically just a wall of text",
-      "expected_output": "A redesign prompt for ProjectLayout/case-study components that treats 'premium' as restraint and 'wall of text' as layer-cake/progressive disclosure, never invents media, and keeps Problem/Approach/What I built/Outcome.",
+      "name": "project-premium",
+      "prompt": "make the project pages feel more premium, rn they're basically just a wall of text",
+      "expected_output": "A redesign prompt for ProjectLayout/project components that treats 'premium' as restraint and 'wall of text' as layer-cake/progressive disclosure, never invents media, and keeps Problem/Approach/What I built/Outcome.",
       "files": []
     },
     {

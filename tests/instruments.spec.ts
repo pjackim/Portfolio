@@ -1,5 +1,5 @@
 /**
- * /work/ filter, case-study instruments, figure lightbox, footer, in-page scrolling
+ * /work/ filter, project instruments, figure lightbox, footer, in-page scrolling
  * (interactions spec §4, §5; Ruling G9).
  * - /work/ capability filter: chip counts; a chip hides exactly the rows without its capability,
  *   and a showcase it leaves empty says so; `?capability=` is kept in the URL and restores the filter on load —
@@ -9,7 +9,7 @@
  *   the change is a view transition that leaves nothing behind; each showcase's lead moves to
  *   its first project still shown; the bar appearing shifts nothing; without JS there is no bar
  *   and every row shows.
- * - Case study at 1440: the "On this page" index, whose scrollspy follows the section being read;
+ * - Project at 1440: the "On this page" index, whose scrollspy follows the section being read;
  *   below 72rem there is none. The reading-progress bar is decorative. The motion layer (footer
  *   chip, index, lightbox) is fetched only after load there.
  * - Lightbox: opens from a figure image (click) and its "Full size" link (Enter); Esc, the close
@@ -357,7 +357,7 @@ test.describe('/work/ filter, motion on', () => {
   });
 });
 
-test.describe('case study at 1440', () => {
+test.describe('project at 1440', () => {
   test.use({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
 
   test('the section index follows the section being read', async ({ page }) => {
@@ -375,7 +375,7 @@ test.describe('case study at 1440', () => {
     await expect(links.first()).toHaveAccessibleName('Problem');
     const hrefs = await links.evaluateAll((els) => els.map((el) => el.getAttribute('href')));
     expect(hrefs).toEqual(['#problem', '#approach', '#what-i-built', '#figures-title']);
-    // The spy arrives with the case-study code, after load + idle (so does the lightbox).
+    // The spy arrives with the project code, after load + idle (so does the lightbox).
     await expect(page.locator('.figure[data-zoomable]').first()).toBeAttached();
     await expect(nav.locator('[aria-current]')).toHaveCount(0);
 
@@ -438,7 +438,7 @@ test.describe('case study at 1440', () => {
   });
 });
 
-test.describe('case study below 72rem', () => {
+test.describe('project below 72rem', () => {
   test.use({ viewport: { width: 1100, height: 900 } });
 
   test('has no section index', async ({ page }) => {
@@ -719,7 +719,7 @@ test.describe('footer', () => {
   for (const [name, path] of [
     ['home', ''],
     ['work index', 'work/'],
-    ['a case study', 'work/trip-planner/'],
+    ['a project', 'work/trip-planner/'],
   ] as const) {
     test(`${name}: the copyright and a working Motion chip, on one row (stacked on phones)`, async ({
       page,

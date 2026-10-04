@@ -72,7 +72,7 @@ const FIELD_LABEL = {
   capabilities: 'Topics (capabilities)',
   stack: 'Stack',
   highlights: 'Highlights',
-  body: 'Case-study body',
+  body: 'Project body',
   links: 'Links',
   media: 'Media alt text & captions',
 };
@@ -613,7 +613,7 @@ Gate the new project ${SLUG}, then look at it rendered.
 1. \`npm run lint\` and \`npm run build:only\`; report only failures (empty strings when they pass).
 2. Link health (per ${WT}/.claude/agents/media-manager.md section 3): every links.* URL and YouTube id in ${DIR}/index.md.
 3. Media hygiene (media-manager section 4): descriptive filenames, every referenced file exists, no orphaned files in ${DIR}/.
-4. Render: start \`npx astro dev --port ${wt.port}\` in the background (drafts only render in dev), wait until it answers, then \`node .claude/skills/audit-portfolio/scripts/capture.ts --base http://localhost:${wt.port}/Portfolio/ --pages "work/,work/${SLUG}/" --widths 390,1280 --out .cache/captures/add-${SLUG}-r${round}\`. Read manifest.json (overflow, console errors, images without alt) and LOOK at the PNGs: the card on work/ and the case study at both widths, light and dark. Is the cover sharp, is its subject visible in the 16:10 crop, does every media item render, do alt text and captions match the images? Stop the dev server when done.
+4. Render: start \`npx astro dev --port ${wt.port}\` in the background (drafts only render in dev), wait until it answers, then \`node .claude/skills/audit-portfolio/scripts/capture.ts --base http://localhost:${wt.port}/Portfolio/ --pages "work/,work/${SLUG}/" --widths 390,1280 --out .cache/captures/add-${SLUG}-r${round}\`. Read manifest.json (overflow, console errors, images without alt) and LOOK at the PNGs: the card on work/ and the project at both widths, light and dark. Is the cover sharp, is its subject visible in the 16:10 crop, does every media item render, do alt text and captions match the images? Stop the dev server when done.
 5. final: read back ${DIR}/index.md as it now stands (media as refs ./<file> or yt:<id>; links as a short string) and write a 2-3 sentence abstract condensing the body, adding nothing.
 Issue severities: blocker (broken build, missing or wrong image, dead link), major (bad crop, blurry cover, mismatched alt), minor.`,
         { label: `gate:r${round}`, phase: 'Verify', schema: GATE },

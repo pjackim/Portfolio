@@ -468,12 +468,12 @@ test.describe('arrow nudges', () => {
           expect(await nudge(page, selector)).toBe('none');
         }
       };
-      // Keyboard focus: the case study's "next" link.
+      // Keyboard focus: the project's "next" link.
       await gotoRel(page, 'work/credential-correlation/');
       await page.locator('.prev-next__link--next').focus();
       await expectNudge('.prev-next__link--next');
       if (!(await finePointer(page))) return;
-      // Hover: the case study's back link, home's contact links, the 404's actions.
+      // Hover: the project's back link, home's contact links, the 404's actions.
       await page.locator('.case__back').hover();
       await expectNudge('.case__back');
       await gotoRel(page, '');
@@ -691,7 +691,7 @@ test.describe('entrance reveals, motion on', () => {
         }),
       )
       .toBe(0);
-    // Every chip is a link to a case study.
+    // Every chip is a link to a project.
     const hrefs = await groups
       .nth(2)
       .locator('a.caps__chip')

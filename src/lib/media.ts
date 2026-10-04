@@ -50,7 +50,7 @@ export type MediaItem = Project['data']['media'][number];
 export type YouTubeItem = Extract<MediaItem, { kind: 'youtube' }>;
 
 /**
- * The YouTube entry whose poster is the project's cover (Ruling R21), if any — the case study
+ * The YouTube entry whose poster is the project's cover (Ruling R21), if any — the project
  * then shows that video's facade as its hero and leaves the entry out of the figure gallery,
  * so the same frame never appears twice. Covers are `cover.webp` copies of the poster, so
  * the match is by file content, not name.

@@ -7,7 +7,7 @@
  * extra early requests cost more than the bytes. Once the page has loaded and painted, when
  * idle, it fetches the code for whatever else the page has: the hero instrument, the card
  * spotlight / section-heading decrypt, the home page's About timeline and capabilities panel, and a
- * case study's section index and figure lightbox.
+ * project's section index and figure lightbox.
  * Everything in those starts after load + idle anyway (spec §0.1), so those requests never
  * compete with first paint or LCP.
  */

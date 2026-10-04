@@ -26,8 +26,8 @@ before/after screenshots.
 <port>` instead, since drafts are only built in dev).
 2. With the Claude in Chrome tools (`mcp__claude-in-chrome__*`), open every place the project
    appears: its card on `work/`, the home page if it is featured or `showOnHome`, and its
-   case study `work/<slug>/`. Check light and dark (`localStorage.scheme`), 390 px and 1280 px
-   wide, and look closely at the cover at card size and case-study size.
+   project `work/<slug>/`. Check light and dark (`localStorage.scheme`), 390 px and 1280 px
+   wide, and look closely at the cover at card size and project size.
 3. If the Chrome tools are not available, use
    `node .claude/skills/audit-portfolio/scripts/capture.ts --base <url> --pages "<routes>" --out .cache/finder/<slug>/before`
    and Read the PNGs.
@@ -44,7 +44,7 @@ List each gap with its evidence. Typical gaps:
   its master is lossy, or was encoded from a file that was already encoded for the site.
 - The cover's style clashes with neighbouring cards (a screenshot among artwork, a light image
   among dark ones).
-- The case study has no media, or long text with nothing that shows the thing working.
+- The project has no media, or long text with nothing that shows the thing working.
 - Posters are dark, blank frames, or show a loading screen.
 
 If there is no real gap, say so and stop — do not replace media for its own sake.
@@ -111,8 +111,8 @@ Rules — all mandatory:
 Rebuild, reload the same views, and save "after" screenshots to `.cache/finder/<slug>/after/`.
 A gap is closed only when all of these hold:
 
-- It looks sharp at 2× at both card and case-study sizes, with no visible compression and no
-  bad crop, in both themes.
+- It looks sharp at 2× at both card and project sizes, with no visible compression and no bad
+  crop, in both themes.
 - `npm run check:media` passes with no cover-width warning for this project.
 - No layout shift or console errors on the project's pages.
 

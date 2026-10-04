@@ -1,6 +1,6 @@
 ---
 /**
- * One case-study figure (spec-design-content §3): `<figure>` + `<figcaption>` reading
+ * One project figure (spec-design-content §3): `<figure>` + `<figcaption>` reading
  * "FIG. nn — caption" (just "FIG. nn" without a caption). Alt text comes from the data and is
  * never repeated in the caption. Dispatches on the media kind:
  * - image → `<Picture>` (lazy, adaptive, avif/webp, widths capped at the source). Frame modes
@@ -10,9 +10,10 @@
  *   (well beyond the column, or portrait plates) get a "Full size" link to the image at its
  *   own resolution: the master file itself (up to MASTER_LINK_MAX, so it is never recompressed),
  *   else a WebP of it at source width; with JS that link, and a click on the image, open it in
- *   the case study's lightbox instead (Lightbox.astro, src/scripts/lightbox.ts), which marks
+ *   the project's lightbox instead (Lightbox.astro, src/scripts/lightbox.ts), which marks
  *   such figures `data-zoomable`.
- * - video → LoopVideo; youtube → YouTubeFacade.
+ * - video → LoopVideo (autoplay loops open a playing copy in the lightbox on click); youtube →
+ *   YouTubeFacade.
  * `wide` images and YouTube players take the wider column on desktop (ProjectLayout owns the
  * grid; this component only marks the figure `figure--wide`). An `inline` figure sits beside its
  * paragraph (MediaPair) at the normal column's size, `wide` or not.

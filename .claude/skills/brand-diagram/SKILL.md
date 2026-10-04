@@ -81,7 +81,7 @@ plain note on the left, the project name on the right.
 | Mistake                                       | Fix                                                   |
 | --------------------------------------------- | ----------------------------------------------------- |
 | Orange on several things                      | One focal item; arrows and indices are the exceptions |
-| Paragraph-length descriptions                 | Cut to a phrase; the case study holds the detail      |
+| Paragraph-length descriptions                 | Cut to a phrase; the project holds the detail         |
 | Three or more stacked sections                | Split into two diagrams                               |
 | Invented steps to make the flow look fuller   | Fewer, true steps beat a fuller, guessed flow         |
 | Adding inline `style=` colours                | Use kit classes or extend `kit.css`                   |

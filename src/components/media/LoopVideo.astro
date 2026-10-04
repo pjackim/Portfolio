@@ -96,6 +96,10 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     object-fit: cover;
   }
 
+  video[data-zoomable] {
+    cursor: zoom-in;
+  }
+
   video {
     inline-size: 100%;
     block-size: auto;
@@ -119,8 +123,9 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     }
   }
 
-  /* Toggle added by the script (no scoping attribute): a solid mono chip in the bottom-right
-     corner, 44px tall, same family as the YouTube facade's play chip. */
+  /* Toggle added by the script (no scoping attribute): a frosted mono chip in the bottom-right
+     corner, 44px tall, same family as the YouTube facade's play chip. A fixed dark glass keeps
+     the label legible over any footage in either theme; the accent icon marks it as a control. */
   .loop-video :global(.video-toggle) {
     position: absolute;
     inset-block-end: var(--space-xs);
@@ -130,21 +135,29 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     gap: 0.5rem;
     min-inline-size: 2.75rem;
     min-block-size: 2.75rem;
-    padding-inline: 0.875rem 1rem;
-    border: var(--rule-ui);
-    border-radius: var(--radius-s);
-    background-color: var(--surface);
-    color: var(--text);
+    padding-inline: 0.75rem 0.875rem;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    background-color: rgb(12 14 18 / 0.62);
+    -webkit-backdrop-filter: blur(10px) saturate(1.4);
+    backdrop-filter: blur(10px) saturate(1.4);
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+    color: #f4f5f7;
     font-family: var(--font-mono);
     font-size: var(--step--1);
     font-weight: 500;
     line-height: 1;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     transition:
       color var(--dur-fast) var(--ease-standard),
       background-color var(--dur-fast) var(--ease-standard),
-      border-color var(--dur-fast) var(--ease-standard);
+      border-color var(--dur-fast) var(--ease-standard),
+      transform var(--dur-fast) var(--ease-out);
+  }
+
+  .loop-video :global(.video-toggle:active) {
+    transform: scale(0.96);
   }
 
   .loop-video :global(.video-toggle__icon) {
@@ -153,6 +166,9 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     fill: none;
     stroke: currentColor;
     stroke-width: 2;
+    stroke-linecap: round;
+    color: var(--accent);
+    transition: color var(--dur-fast) var(--ease-standard);
   }
 
   .loop-video :global(.video-toggle__play) {
@@ -176,6 +192,19 @@ const style = pageStyle(Astro.locals, { 'aspect-ratio': `${width} / ${height}` }
     border-color: var(--accent);
     background-color: var(--accent);
     color: var(--on-accent);
+  }
+
+  .loop-video :global(.video-toggle:is(:focus-visible, :hover) .video-toggle__icon) {
+    color: currentColor;
+  }
+
+  @media (forced-colors: active) {
+    .loop-video :global(.video-toggle) {
+      background-color: ButtonFace;
+      border-color: ButtonText;
+      color: ButtonText;
+      backdrop-filter: none;
+    }
   }
 
   @media (hover: hover) {

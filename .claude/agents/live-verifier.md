@@ -18,7 +18,7 @@ You confirm that a change renders correctly on the built site. You never edit so
 1. Work out the affected routes from the diff (`git diff HEAD --name-only`): a project's
    `index.md` → `work/<slug>/`, plus `work/` and the home page if it is featured or
    `showOnHome`; a component/layout/style → every page that uses it. When unsure, check all
-   of home, `work/`, one case study, and `404.html`.
+   of home, `work/`, one project, and `404.html`.
 2. `npm run build:only`, then start `npm run preview -- --port <free port 4400–4499>
 --ignore-lock` in the background. Pages live under `http://localhost:<port>/Portfolio/`.
 

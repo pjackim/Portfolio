@@ -258,7 +258,7 @@ test.describe('header from 40rem', () => {
       { route: 'about/', id: 'about', value: 'page' },
       { route: 'experience/', id: 'experience', value: 'page' },
       { route: 'work/', id: 'work', value: 'page' },
-      // A case study is in the Work section, but isn't the Work page.
+      // A project is in the Work section, but isn't the Work page.
       { route: 'work/credential-correlation/', id: 'work', value: 'true' },
     ]) {
       await gotoRel(page, route);

@@ -39,13 +39,13 @@
 
 The site's two levels are fixed:
 
-| Level         | Where                                                       | Must contain                                                                                    |
-| ------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 1: surface    | Home page and `/work/`: project cards, hero, about, contact | Everything a scanner needs: face and name, role, the work as images plus 2–3 sentences, contact |
-| 2: case study | `/work/<slug>/` (`ProjectLayout.astro`)                     | The full story: problem, approach, what was built, outcome, all media                           |
+| Level      | Where                                                       | Must contain                                                                                    |
+| ---------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1: surface | Home page and `/work/`: project cards, hero, about, contact | Everything a scanner needs: face and name, role, the work as images plus 2–3 sentences, contact |
+| 2: project | `/work/<slug>/` (`ProjectLayout.astro`)                     | The full story: problem, approach, what was built, outcome, all media                           |
 
-- Don't add a third level (e.g. an expander inside a case study that opens a modal that links
-  elsewhere). Deeper detail goes into the case-study body.
+- Don't add a third level (e.g. an expander inside a project that opens a modal that links
+  elsewhere). Deeper detail goes into the project body.
 - The media lightbox (`Lightbox.astro`) is not a third level: it's a bigger view of media
   already on the page, not new content. Keep it that way.
 - Within level 1, small reveals (hover HUD, in-view loop playback) are **enhancements**, not
