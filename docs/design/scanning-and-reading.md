@@ -74,8 +74,9 @@ default, so the only lever is formatting. NN/g's fixes:
 - **Featured projects** (`src/layouts/ProjectLayout.astro`, body under `src/content/projects/`):
   the header block (summary, highlights, meta, cover) must stand alone for someone who reads
   nothing else. `highlights` are the spotted-pattern anchors, so make each a short, concrete
-  fact. Section headings (`## Problem`, `## Approach`, …) are generic; the first sentence
-  under each must carry the point.
+  fact. Section headings name what the section gives the visitor, and the first sentence
+  under each carries the point. Word budgets and structure options for a project page live in
+  [project-copy.md](./project-copy.md).
 - **Home page sections** (`src/pages/index.astro`): each `SectionHeading` label plus the
   visual under it should convey the section with zero body reading.
 - **Link text**: descriptive (`All work →`, project titles), never "click here" or "read

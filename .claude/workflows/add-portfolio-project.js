@@ -498,7 +498,7 @@ Decide each field:
 - role: only when a source states it, or "Solo developer" when git shows Parker as the sole author; else empty.
 - group, capabilities (1-4 ids from CAPABILITIES), stack (1-8 main technologies, named the way the project names them).
 - highlights: 3-5 items <= 160 chars, each a concrete thing he built or did that a file or commit shows.
-- body: Problem, Approach, What I built, Outcome & lessons, in Markdown, first person, short paragraphs and bullets like the examples. Use an empty string for a section with no source. Outcomes are only what happened (duration, commits, releases, stated results); never invent metrics or users.
+- body: Markdown, first person, written for a stranger with no context, to docs/design/project-copy.md (read it): about 180 words, features and outcomes not mechanisms, no commit/file/test counts, no em-dashes. Choose the structure that fits THIS work (a demo-led tour, what it does / how it works / where it stands, a before/after); do not default to Problem / Approach / What I built / Outcome. Include one short plain line on where it stands (unproven, unfinished, mocks only) when the sources show it. Only what happened is stated; never invent metrics or users.
 - links: repo URL only when public (${acq.visibility}); a private repo goes in private: [repo]. demo/video only when owner-published and live. Empty strings otherwise.
 - legacyPaths: ${ctx && ctx.legacyPaths.length ? json(ctx.legacyPaths) : 'none found'} (keep only pages about this exact project).
 - sourcesHeader: the "# Sources:" lines in the style of the examples: every file (with line ranges where useful), the git log range and commit count, URLs, author statements. Media lines are added later.
@@ -572,7 +572,7 @@ const write = await agent(
   `${IN_WT}
 Replace ${DIR}/index.md (the scaffold) with the finished entry. Model the layout on ${WT}/src/content/projects/arcexploit/index.md.
 Frontmatter, in this order: a "# Sources:" comment block (the ledger's sourcesHeader lines, then the media sourcesLines, wrapped under ~100 chars with "# " prefixes), title, summary, year, period (omit if empty), role (omit if empty), group, capabilities, stack, cover (${media.cover.ref}), coverAlt, coverPosition (omit if empty), featured: false, order: 100, showOnHome: false, draft: ${A.publish ? 'false' : 'true'}, highlights, media (images: kind/src/alt/caption/wide; videos: kind/src/alt/caption/autoplay; youtube: kind/id/title/caption — omit empty captions), links (repo/demo/video only when non-empty; private list when non-empty; \`links: {}\` if nothing), legacyPaths.
-Body: "## Problem", "## Approach", "## What I built", "## Outcome & lessons" with the ledger's text, skipping any empty section.
+Body: the ledger's body text as written (its structure was chosen per docs/design/project-copy.md; do not add a Problem / Approach skeleton or any text of your own).
 Ledger: ${json({ ...ledger, fields: undefined, openQuestions: undefined, suggestions: undefined })}
 Media: ${json(media)}
 Use the values verbatim; don't add claims. Then \`npx prettier --write ${DIR}/index.md\`.`,
@@ -855,7 +855,7 @@ const lines = [
       capabilities: F.capabilities.join(', '),
       stack: F.stack.join(', '),
       highlights: `${F.highlights.length} items`,
-      body: 'Problem / Approach / Built / Outcome',
+      body: 'plain-language body',
       links: F.links,
       media: `${included.length} assets`,
     }[c.field];

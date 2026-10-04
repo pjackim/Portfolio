@@ -77,7 +77,8 @@ Keep interviewing, round after round, until the ledger (below) has no gaps. A va
   site), `coverPosition`.
 - Placement: `featured` needs a unique `order`, and the build fails unless 3–8 projects are
   featured; archive projects can set `showOnHome`. Ask where it should appear.
-- Body: `## Problem`, `## Approach`, `## What I built`, `## Outcome & lessons` (see
+- Body: a short body in the structure that fits the work, written to
+  `docs/design/project-copy.md` (about 180 words; not a fixed Problem / Approach skeleton; see
   `bodycam-external`). Plain Markdown — never pasted legacy HTML.
 - Keep `draft: true` until the cover is real and the user asks to publish.
 - If the project evidences a skill in `CAPABILITY_GROUPS`, offer to add its slug to that

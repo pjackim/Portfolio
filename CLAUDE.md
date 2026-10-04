@@ -60,7 +60,8 @@ before using any of their advice. The site's own look and voice are defined in
    - Projects are the evidence. Lead with the strongest work and show the real artifact
      (screenshot, loop, diagram, outcome) instead of adjectives.
    - Featured projects open with a scannable summary (what it is, Parker's role, the outcome, the
-     media) before the `Problem → Approach → What I built → Outcome` narrative.
+     media) before a short body whose shape fits the work (`docs/design/project-copy.md`:
+     Problem → Approach → What I built is one option, not the template).
    - The fact-only rule below still binds. "High-tier" is earned by presenting real work
      sharply, never by inflating claims.
 2. **A modern, professional, highly satisfying and interactive experience.**
