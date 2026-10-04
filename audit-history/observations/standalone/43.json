@@ -1,0 +1,13 @@
+{
+  "id": 43,
+  "file": "reference-assets/43--correlation-visualizer--googlesearch.png",
+  "project": "correlation-visualizer",
+  "kind": "app-ui-screenshot",
+  "depicts": "Dark-mode Google search bar with query \"password checker\" and two results: security.org How Secure Is My Password and passwordmonster.com Password Strength Meter.",
+  "text_readable": "Readable: \"password checker\", \"How Secure Is My Password? | Password Strength Checker\", \"https://www.passwordmonster.com\", \"Password Strength Meter\".",
+  "composition": "Landscape strip; search bar across top, two results stacked below; cropped tight at bottom, with little margin at left and bottom.",
+  "tone_and_contrast": "Light grey and lavender text on near-black grey; lavender links stand out; small URL text grey with lower contrast.",
+  "sharpness_and_artifacts": "Crisp text; small URL lines are tiny; multi-colour mic/lens icons; no watermark noted; tight crop cuts close to text.",
+  "scan_first_read": "A Google search for \"password checker\" showing two password strength sites.",
+  "observer_confirms_blind": true
+}

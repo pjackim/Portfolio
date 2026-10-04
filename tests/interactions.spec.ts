@@ -22,7 +22,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { framesSettled, interactionsLoaded, twoFrames } from './helpers/motion.ts';
 import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
-import { gotoRel } from './helpers/routes.ts';
+import { gotoRel, VIDEO_ROUTES } from './helpers/routes.ts';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -125,6 +125,23 @@ async function scrollIntoView(page: Page, selector: string, block: ScrollLogical
     .locator(selector)
     .first()
     .evaluate((el, block) => el.scrollIntoView({ block, behavior: 'instant' }), block);
+}
+
+/**
+ * Selector of the first card below the first row (the cards that wait to be revealed) whose case
+ * study has no video loop. A test that opens the case study and goes back must not land on a video
+ * page: Windows WebKit never fires `load` there (helpers/platform.ts), so the navigation hangs.
+ * Chosen by what the card links to, not by position, so reordering the projects can't break it.
+ */
+async function revealCardWithoutVideo(page: Page): Promise<string> {
+  const hrefs = await page
+    .locator(`${CARD} .card__title a`)
+    .evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
+  const hasVideo = (href: string) =>
+    VIDEO_ROUTES.some((route) => route !== '' && href.endsWith(`/${route}`));
+  const index = hrefs.findIndex((href, i) => i >= 3 && !hasVideo(href));
+  if (index < 0) throw new Error('no revealing card links to a page without a video');
+  return `${CARD}:nth-child(${index + 1})`;
 }
 
 test.describe('card reticle', () => {
@@ -804,9 +821,10 @@ test.describe('entrance reveals, motion on', () => {
     });
     await gotoRel(page, '');
     await page.waitForLoadState('load');
-    const card = page.locator(`${CARD}:nth-child(4)`);
+    const cardSelector = await revealCardWithoutVideo(page);
+    const card = page.locator(cardSelector);
     await expect(card).toHaveAttribute('data-reveal-state', 'pending');
-    await scrollIntoView(page, `${CARD}:nth-child(4)`, 'center');
+    await scrollIntoView(page, cardSelector, 'center');
     await expect(card).not.toHaveAttribute('data-reveal-state', { timeout: 8000 });
     await card.locator('.card__title a').click();
     await page.waitForURL(/\/work\/[^/]+\/$/);

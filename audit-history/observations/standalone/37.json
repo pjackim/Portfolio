@@ -1,0 +1,13 @@
+{
+  "id": 37,
+  "file": "reference-assets/37--aes--screenshot-1.png",
+  "project": "aes",
+  "kind": "code-screenshot",
+  "depicts": "Dark-themed C++ code: a long block of hexadecimal byte values ending in a closing brace, then an Aes256 constructor, destructor and start of an encrypt function signature.",
+  "text_readable": "Readable: \"Aes256::Aes256(const ByteArray& key)\", \"m_decryptInitialized(false)\", \"0x54, 0x7b, 0x94, 0x32\", \"Aes256::~Aes256()\". Small trailing line partly cut off at bottom edge.",
+  "composition": "Portrait crop filling frame with code lines; left-aligned text with empty dark space at right; final function line cut at the bottom edge.",
+  "tone_and_contrast": "Light blue, white, purple and red text on near-black navy background; moderate contrast; hex numbers in blue.",
+  "sharpness_and_artifacts": "Text pixel-crisp monospace at native size; no blur; no overlays or cursor visible; bottom line truncated by the crop.",
+  "scan_first_read": "Dark code listing full of hex numbers; looks like cryptography code.",
+  "observer_confirms_blind": true
+}

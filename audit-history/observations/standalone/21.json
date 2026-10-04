@@ -1,0 +1,13 @@
+{
+  "id": 21,
+  "file": "reference-assets/21--go-green--original.png",
+  "project": "go-green",
+  "kind": "other",
+  "depicts": "Same garbage-versus-waterfall split composite as the other go-green images, without any text box.",
+  "text_readable": "no text",
+  "composition": "Full-frame split image divided by a curved diagonal green line; waste on the left half, waterfall and pool on the right. Subject fills the frame edge to edge; no empty margin.",
+  "tone_and_contrast": "Left half is dark brown and muted with an orange-red gradient at top; right half is saturated green and dark teal with a bright white waterfall. Strong contrast between halves.",
+  "sharpness_and_artifacts": "Fine detail throughout; soft blurred transition zone along the diagonal on the left; no watermark or HUD visible. Compression artifacts not distinguishable without zoom.",
+  "scan_first_read": "A polluted garbage heap versus a clean waterfall pool, separated by a green diagonal; a before/after nature contrast.",
+  "observer_confirms_blind": true
+}

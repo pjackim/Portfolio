@@ -1,0 +1,682 @@
+[
+  {
+    "id": 1,
+    "file": "reference-assets/01--alvin--alvin-copy.png",
+    "original": "Images/Alvin/Alvin - Copy.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 2,
+    "file": "reference-assets/02--alvin--alvin.png",
+    "original": "Images/Alvin/Alvin.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 3,
+    "file": "reference-assets/03--alvin--nug.png",
+    "original": "Images/Alvin/nug.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 4,
+    "file": "reference-assets/04--alvin--zoom.png",
+    "original": "Images/Alvin/zoom.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 5,
+    "file": "reference-assets/05--ant-game--ant1.png",
+    "original": "Images/Ant Game/Ant Model/ant1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 6,
+    "file": "reference-assets/06--ant-game--ant2.png",
+    "original": "Images/Ant Game/Ant Model/ant2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html", "index.html"]
+  },
+  {
+    "id": 7,
+    "file": "reference-assets/07--ant-game--ant3.png",
+    "original": "Images/Ant Game/Ant Model/ant3.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 8,
+    "file": "reference-assets/08--ant-game--ant4.png",
+    "original": "Images/Ant Game/Ant Model/ant4.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 9,
+    "file": "reference-assets/09--ant-game--texture1.png",
+    "original": "Images/Ant Game/Ant Model/texture1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 10,
+    "file": "reference-assets/10--ant-game--texture2.png",
+    "original": "Images/Ant Game/Ant Model/texture2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 11,
+    "file": "reference-assets/11--ant-game--texture3.png",
+    "original": "Images/Ant Game/Ant Model/texture3.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 12,
+    "file": "reference-assets/12--ant-game--texture4.png",
+    "original": "Images/Ant Game/Ant Model/texture4.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 13,
+    "file": "reference-assets/13--ant-game--ant-rig1.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 14,
+    "file": "reference-assets/14--ant-game--ant-rig2.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 15,
+    "file": "reference-assets/15--forest-hack--esp.png",
+    "original": "Images/Forest Hack/ESP.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/foresthack.html", "index.html"]
+  },
+  {
+    "id": 16,
+    "file": "reference-assets/16--forest-hack--screenshot-1.png",
+    "original": "Images/Forest Hack/Screenshot_1.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/foresthack.html"]
+  },
+  {
+    "id": 17,
+    "file": "reference-assets/17--forest-hack--ux.png",
+    "original": "Images/Forest Hack/UX.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/foresthack.html"]
+  },
+  {
+    "id": 18,
+    "file": "reference-assets/18--go-green--brochure.png",
+    "original": "Images/Go Green/Brochure.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  },
+  {
+    "id": 19,
+    "file": "reference-assets/19--go-green--brochure.png",
+    "original": "Images/Go Green/brochure.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/go_green.html"]
+  },
+  {
+    "id": 20,
+    "file": "reference-assets/20--go-green--brochure-text.png",
+    "original": "Images/Go Green/brochure_text.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/go_green.html"]
+  },
+  {
+    "id": 21,
+    "file": "reference-assets/21--go-green--original.png",
+    "original": "Images/Go Green/original.jpg",
+    "project": "go-green",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/go_green.html", "index.html"]
+  },
+  {
+    "id": 22,
+    "file": "reference-assets/22--lost-city--city-creep.png",
+    "original": "Images/Lost City/city_creep.png",
+    "project": "lost-city",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/lost_city.html", "index.html"]
+  },
+  {
+    "id": 23,
+    "file": "reference-assets/23--lost-city--forest.png",
+    "original": "Images/Lost City/forest.png",
+    "project": "lost-city",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/lost_city.html"]
+  },
+  {
+    "id": 24,
+    "file": "reference-assets/24--lost-city--website.png",
+    "original": "Images/Lost City/website.gif",
+    "project": "lost-city",
+    "format": "gif",
+    "animated": true,
+    "frames": 5552,
+    "referenced_by": []
+  },
+  {
+    "id": 25,
+    "file": "reference-assets/25--nodes--node-diagram.png",
+    "original": "Images/Nodes/node_diagram.png",
+    "project": "nodes",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/nodes.html"]
+  },
+  {
+    "id": 26,
+    "file": "reference-assets/26--nodes--transparant-bracelet.png",
+    "original": "Images/Nodes/transparant_bracelet.png",
+    "project": "nodes",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/nodes.html", "index.html"]
+  },
+  {
+    "id": 27,
+    "file": "reference-assets/27--over-the-rainbow--over-the-rainbow.png",
+    "original": "Images/Over The Rainbow/over_the_rainbow.png",
+    "project": "over-the-rainbow",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/over_the_rainbow.html", "index.html"]
+  },
+  {
+    "id": 28,
+    "file": "reference-assets/28--paradox--exilelogo.png",
+    "original": "Images/Paradox/exileLogo.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 29,
+    "file": "reference-assets/29--paradox--paradox1.png",
+    "original": "Images/Paradox/paradox1.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  },
+  {
+    "id": 30,
+    "file": "reference-assets/30--paradox--paradox2.png",
+    "original": "Images/Paradox/paradox2.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 31,
+    "file": "reference-assets/31--paradox--paradox3.png",
+    "original": "Images/Paradox/paradox3.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 32,
+    "file": "reference-assets/32--paradox--red-paradox.png",
+    "original": "Images/Paradox/red_paradox.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 33,
+    "file": "reference-assets/33--spectre--black-bg.png",
+    "original": "Images/Spectre/black_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 34,
+    "file": "reference-assets/34--spectre--centered-bg.png",
+    "original": "Images/Spectre/centered_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 35,
+    "file": "reference-assets/35--spectre--logo-white.png",
+    "original": "Images/Spectre/logo_white.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/spectre.html", "index.html"]
+  },
+  {
+    "id": 36,
+    "file": "reference-assets/36--spectre--white-bg.png",
+    "original": "Images/Spectre/white_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 37,
+    "file": "reference-assets/37--aes--screenshot-1.png",
+    "original": "Images/aes/Screenshot_1.png",
+    "project": "aes",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 38,
+    "file": "reference-assets/38--arch-linux--bottom.png",
+    "original": "Images/arch linux/bottom.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/archlinux.html"]
+  },
+  {
+    "id": 39,
+    "file": "reference-assets/39--arch-linux--screenshot1.png",
+    "original": "Images/arch linux/screenshot1.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/archlinux.html"]
+  },
+  {
+    "id": 40,
+    "file": "reference-assets/40--arch-linux--trim.png",
+    "original": "Images/arch linux/trim.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 41,
+    "file": "reference-assets/41--correlation-visualizer--software.png",
+    "original": "Images/correlation_visualizer/Software.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 42,
+    "file": "reference-assets/42--correlation-visualizer--credentials.png",
+    "original": "Images/correlation_visualizer/credentials.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 43,
+    "file": "reference-assets/43--correlation-visualizer--googlesearch.png",
+    "original": "Images/correlation_visualizer/googlesearch.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 44,
+    "file": "reference-assets/44--correlation-visualizer--trap1.png",
+    "original": "Images/correlation_visualizer/trap1.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 45,
+    "file": "reference-assets/45--correlation-visualizer--trap2.png",
+    "original": "Images/correlation_visualizer/trap2.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 46,
+    "file": "reference-assets/46--cs314--database.png",
+    "original": "Images/cs314/database.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "frames": 1811,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 47,
+    "file": "reference-assets/47--cs314--file.png",
+    "original": "Images/cs314/file.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 48,
+    "file": "reference-assets/48--cs314--interopt.png",
+    "original": "Images/cs314/interopt.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "frames": 496,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 49,
+    "file": "reference-assets/49--cs314--iterative-design.png",
+    "original": "Images/cs314/iterative_design.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "frames": 1227,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 50,
+    "file": "reference-assets/50--cs314--itinerary.png",
+    "original": "Images/cs314/itinerary.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  },
+  {
+    "id": 51,
+    "file": "reference-assets/51--cs314--map.png",
+    "original": "Images/cs314/map.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/tripsite.html", "index.html"]
+  },
+  {
+    "id": 52,
+    "file": "reference-assets/52--cs314--optimize.png",
+    "original": "Images/cs314/optimize.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "frames": 211,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 53,
+    "file": "reference-assets/53--cs314--website.png",
+    "original": "Images/cs314/website.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "frames": 5552,
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 54,
+    "file": "reference-assets/54--fovhack--fov-demo.png",
+    "original": "Images/fovhack/fov_demo.gif",
+    "project": "fovhack",
+    "format": "gif",
+    "animated": true,
+    "frames": 301,
+    "referenced_by": []
+  },
+  {
+    "id": 55,
+    "file": "reference-assets/55--fovhack--fov-preview.png",
+    "original": "Images/fovhack/fov_preview.png",
+    "project": "fovhack",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 56,
+    "file": "reference-assets/56--fovhack--screenshot-cosmetic.png",
+    "original": "Images/fovhack/screenshot-cosmetic.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhauhack.html"]
+  },
+  {
+    "id": 57,
+    "file": "reference-assets/57--fovhack--screenshot-gameplay.png",
+    "original": "Images/fovhack/screenshot-gameplay.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhauhack.html"]
+  },
+  {
+    "id": 58,
+    "file": "reference-assets/58--fovhack--screenshot-overview.png",
+    "original": "Images/fovhack/screenshot-overview.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhauhack.html", "index.html"]
+  },
+  {
+    "id": 59,
+    "file": "reference-assets/59--hardpoint--hpt-action1.png",
+    "original": "Images/hardpoint/hpt-action1.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhaumod.html"]
+  },
+  {
+    "id": 60,
+    "file": "reference-assets/60--hardpoint--hpt-action2.png",
+    "original": "Images/hardpoint/hpt-action2.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhaumod.html"]
+  },
+  {
+    "id": 61,
+    "file": "reference-assets/61--hardpoint--hpt-thumbnail.png",
+    "original": "Images/hardpoint/hpt-thumbnail.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/mordhaumod.html", "index.html"]
+  },
+  {
+    "id": 62,
+    "file": "reference-assets/62--hero-trivia--hero-trivia-1.png",
+    "original": "Images/hero_trivia/Hero_Trivia_1.png",
+    "project": "hero-trivia",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["html/Work/hero_trivia.html", "index.html"]
+  },
+  {
+    "id": 63,
+    "file": "reference-assets/63--hero-trivia--hero-trivia-2.png",
+    "original": "Images/hero_trivia/Hero_Trivia_2.png",
+    "project": "hero-trivia",
+    "format": "png",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  },
+  {
+    "id": 64,
+    "file": "reference-assets/64--hero-trivia--hero-trivia-gameplay.png",
+    "original": "Images/hero_trivia/hero_trivia_gameplay.gif",
+    "project": "hero-trivia",
+    "format": "gif",
+    "animated": true,
+    "frames": 331,
+    "referenced_by": ["html/Work/hero_trivia.html"]
+  },
+  {
+    "id": 65,
+    "file": "reference-assets/65--hero-trivia--hero-trivia-variety.png",
+    "original": "Images/hero_trivia/hero_trivia_variety.gif",
+    "project": "hero-trivia",
+    "format": "gif",
+    "animated": true,
+    "frames": 262,
+    "referenced_by": ["html/Work/hero_trivia.html"]
+  },
+  {
+    "id": 66,
+    "file": "reference-assets/66--self--img-6540.png",
+    "original": "Images/self/IMG_6540.jpg",
+    "project": "self",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  },
+  {
+    "id": 67,
+    "file": "reference-assets/67--self--canyonselfie.png",
+    "original": "Images/self/canyonSelfie.JPG",
+    "project": "self",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 68,
+    "file": "reference-assets/68--team--1.png",
+    "original": "img/team/1.jpg",
+    "project": "team",
+    "format": "jpeg",
+    "animated": false,
+    "frames": 1,
+    "referenced_by": []
+  }
+]

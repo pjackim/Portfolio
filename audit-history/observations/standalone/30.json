@@ -1,0 +1,13 @@
+{
+  "id": 30,
+  "file": "reference-assets/30--paradox--paradox2.png",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "The same wide channel banner as its teal sibling, in a red colour scheme: thin dark band on a flat grey canvas with a rock-like Z logo and red glowing fragments.",
+  "text_readable": "Readable: \"THE OFFICIAL CHANNEL OF\", \"zExileModz\". \"DESIGNED BY ATLASHD\" is small and faint but partly readable.",
+  "composition": "The banner strip occupies a narrow horizontal band at the vertical centre; large empty flat grey areas above and below; logo in the centre of the band, text to its right.",
+  "tone_and_contrast": "Very dark red-black band with dim grey and red elements; low contrast inside the band; the surrounding flat grey is slightly lighter than the band.",
+  "sharpness_and_artifacts": "Scattered particles and bokeh dots; text is soft and dim; the grey frame above and below is baked into the image.",
+  "scan_first_read": "A dark, mostly empty grey canvas with a thin dark strip showing a red logo; little is readable.",
+  "observer_confirms_blind": true
+}

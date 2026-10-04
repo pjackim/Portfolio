@@ -1,0 +1,13 @@
+{
+  "id": 23,
+  "file": "reference-assets/23--lost-city--forest.png",
+  "project": "lost-city",
+  "kind": "other",
+  "depicts": "Same mossy forest and translucent moss-textured figure with quote box top left, but without the utility pole and cobblestone path; moss-covered rocks fill the bottom and right.",
+  "text_readable": "Readable: \"Standing on the bare ground, — my head bathed by the blithe air\", \"I am nothing; I see all\", \"I am part or parcel of God.\", \"Parker Jackim Period 2\" (small, bottom right).",
+  "composition": "Full-frame forest; figure right of centre standing on a mossy mound; text box upper left; small name label bottom right corner. No empty space; subject not cropped.",
+  "tone_and_contrast": "Saturated bright green with dark shadowed trunks; figure is green like the moss, so it separates only slightly from the background.",
+  "sharpness_and_artifacts": "Sharp overall; text box background blurred with thin white border; corner-bracket name label bottom right. Figure edges look cut out.",
+  "scan_first_read": "A lush green moss forest with a quote; the ghostlike figure is hard to pick out at thumbnail size.",
+  "observer_confirms_blind": true
+}

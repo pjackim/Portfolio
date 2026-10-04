@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "file": "reference-assets/02--alvin--alvin.png",
+  "project": "alvin",
+  "kind": "other",
+  "depicts": "Wide dark canvas with the same wreath emblem ('HEMP'S EXOTICS #DBB', chipmunk in red hoodie, cannabis leaves) placed at right; left half is empty.",
+  "text_readable": "'HEMP'S', 'EXOTICS', '#DBB'; banknote text too small at displayed size.",
+  "composition": "Emblem sits in right half; roughly left 40% of the canvas is empty dark space; margins above and below; nothing cut off.",
+  "tone_and_contrast": "Near-black flat background; emblem colours (red, yellow, purple, green) strongly separated from it.",
+  "sharpness_and_artifacts": "Smooth vector edges; no noise seen; large baked-in empty dark area on the left; no watermark.",
+  "scan_first_read": "Colourful 'Hemp's Exotics' emblem off to the right with much blank dark space beside it.",
+  "observer_confirms_blind": true
+}

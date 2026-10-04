@@ -1,0 +1,13 @@
+{
+  "id": 12,
+  "file": "reference-assets/12--ant-game--texture4.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Side view of glossy brown ant with long antennae and legs, placed against a blurred autumn forest and sandy slope.",
+  "text_readable": "no text",
+  "composition": "Ant sits in center band of frame with head at right; empty background above and below; antenna tip near right edge; legs end above bottom.",
+  "tone_and_contrast": "Blurred green and orange background; ant dark brown with orange joints, moderate separation, small in frame.",
+  "sharpness_and_artifacts": "Ant sharp against depth-of-field-blurred background; no overlays or watermarks.",
+  "scan_first_read": "A brown ant in a forest scene.",
+  "observer_confirms_blind": true
+}

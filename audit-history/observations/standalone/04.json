@@ -1,0 +1,13 @@
+{
+  "id": 4,
+  "file": "reference-assets/04--alvin--zoom.png",
+  "project": "alvin",
+  "kind": "other",
+  "depicts": "Cropped top section of the wreath emblem: leaves in green, purple, blue and orange over a grey banknote pattern, coloured paint drips, top of red-and-yellow letters and chipmunk head at bottom.",
+  "text_readable": "Banknote text such as 'ONE HUNDRED DOLLARS', 'FF 98796534', 'UNITED STATES' readable; lettering at bottom cut off ('MD'S').",
+  "composition": "Leaves arc across the upper half; letters and chipmunk head cut off at bottom edge; dark band at top; left and right edges cut through the wreath.",
+  "tone_and_contrast": "Dark top; bright leaf colours and magenta and blue drips separate from the muted grey banknote area; letters bright yellow and red.",
+  "sharpness_and_artifacts": "Crisp black-outlined vector shapes; no noise visible; crop cuts elements at bottom and sides.",
+  "scan_first_read": "Colourful leaves and drips above banknotes; lettering cut off.",
+  "observer_confirms_blind": true
+}

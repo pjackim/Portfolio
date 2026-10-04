@@ -1,0 +1,13 @@
+{
+  "id": 14,
+  "file": "reference-assets/14--ant-game--ant-rig2.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Same grey ant mesh in viewport with visible skeleton: red bone lines with joints on legs, green bones along the body and head, purple controls.",
+  "text_readable": "'Symmetry: Object X' at top; 'persp' at bottom.",
+  "composition": "Ant centered in a wide viewport; large empty grey margins; skeleton overlays across body.",
+  "tone_and_contrast": "Mid-grey background; red and green bone lines high in colour separation; model light grey.",
+  "sharpness_and_artifacts": "Viewport labels and axis icon baked in; thin joint circles aliased; small subject in large frame.",
+  "scan_first_read": "A grey ant with a red and green skeleton.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 16,
+  "file": "reference-assets/16--forest-hack--screenshot-1.png",
+  "project": "forest-hack",
+  "kind": "game-screenshot",
+  "depicts": "Full-window forest game screenshot with translucent menu panel at left, held stick at centre, status ring at lower right, and a window title bar at top.",
+  "text_readable": "'TheForest', 'Spawn Menu', 'Despawn All', 'God Mode', 'Toggle Fly'; 'Successful Injection' at top left is faint.",
+  "composition": "Menu panel left third; stick vertical near centre; foliage above; title bar strip at top; HUD text lower left.",
+  "tone_and_contrast": "Dark green forest with bright patches; menu text light on dark; overall dim with high local contrast.",
+  "sharpness_and_artifacts": "Window title bar and buttons baked in; on-screen prompts and status ring; foliage aliased; menu text small.",
+  "scan_first_read": "Forest game with a cheat menu panel at left.",
+  "observer_confirms_blind": true
+}

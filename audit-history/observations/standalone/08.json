@@ -1,0 +1,13 @@
+{
+  "id": 8,
+  "file": "reference-assets/08--ant-game--ant4.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Top-down view of symmetric sculpted ant with head at top, spread legs and antennae, abdomen at bottom, in grey-bronze metal on dark grey background.",
+  "text_readable": "no text",
+  "composition": "Ant centered vertically in a portrait frame; symmetric; antennae reach near top; dark space on left and right sides.",
+  "tone_and_contrast": "Uniform dark grey background; muted grey-bronze model with moderate contrast; shading soft.",
+  "sharpness_and_artifacts": "Small image; edges smooth; no overlays; surface detail fine but small.",
+  "scan_first_read": "A symmetric ant seen from above on grey.",
+  "observer_confirms_blind": true
+}

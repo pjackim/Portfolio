@@ -1,0 +1,13 @@
+{
+  "id": 47,
+  "file": "reference-assets/47--cs314--file.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip Manager modal over the trip planner: saved files lakes.json, christmas_2020.json, my_vacation.json (selected) with place list and distances, Load/Save buttons, and JSON/CSV/SVG format choice.",
+  "text_readable": "Readable: \"Trip Manager\", \"my_vacation.json\", \"Tuolumne County, California, United States\", \"Save Trip\", \"Saving as: json\". Background list text is partly hidden behind the modal.",
+  "composition": "Centred white modal fills most of frame over dimmed page; list scrolls within modal; underlying trip list visible at edges; map button at bottom right overlaps modal edge.",
+  "tone_and_contrast": "White modal on greyed page; dark green selected button stands out; grey distance pills; overall strong contrast for text.",
+  "sharpness_and_artifacts": "Crisp text; modal list has a visible scrollbar and last item cut off by list bounds; footer glyph rendered as link icon; no watermarks.",
+  "scan_first_read": "A file manager dialog listing saved trips, with a selected vacation file and save options.",
+  "observer_confirms_blind": true
+}

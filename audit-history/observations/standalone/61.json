@@ -1,0 +1,13 @@
+{
+  "id": 61,
+  "file": "reference-assets/61--hardpoint--hpt-thumbnail.png",
+  "project": "hardpoint",
+  "kind": "game-screenshot",
+  "depicts": "Elevated view of a dark stone block arena with stepped structures, grey tiled floor, a small yellow grid patch in the centre, and pale blue cloudy sky; no characters visible.",
+  "text_readable": "no text",
+  "composition": "Blocks frame left and right; yellow grid patch sits at centre; sky occupies a thin top strip; lower half is empty floor and foreground blocks.",
+  "tone_and_contrast": "Dark grey blocks and floor with low colour variety; yellow grid patch is the only bright element; muted pale sky.",
+  "sharpness_and_artifacts": "Clean render; textured tiles visible; no HUD; soft haze on horizon.",
+  "scan_first_read": "Dark blocky arena, nothing clear beyond a small yellow patch.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 18,
+  "file": "reference-assets/18--go-green--brochure.png",
+  "project": "go-green",
+  "kind": "other",
+  "depicts": "Split composite: left a heap of garbage and plastic waste under an orange-red sky corner; right a waterfall into a dark teal pool with ferns and rocks. Diagonal green line divides the halves.",
+  "text_readable": "no text",
+  "composition": "Full-frame split image divided by a curved diagonal green line; waste on the left half, waterfall and pool on the right. Subject fills the frame edge to edge; no empty margin.",
+  "tone_and_contrast": "Left half is dark brown and muted with an orange-red gradient at top; right half is saturated green and dark teal with a bright white waterfall. Strong contrast between halves.",
+  "sharpness_and_artifacts": "Fine detail throughout; soft blurred transition zone along the diagonal on the left; no watermark or HUD visible. Compression artifacts not distinguishable without zoom.",
+  "scan_first_read": "A polluted garbage heap versus a clean waterfall pool, separated by a green diagonal; a before/after nature contrast.",
+  "observer_confirms_blind": true
+}

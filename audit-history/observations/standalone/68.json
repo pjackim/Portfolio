@@ -1,0 +1,13 @@
+{
+  "id": 68,
+  "file": "reference-assets/68--team--1.png",
+  "project": "team",
+  "kind": "logo-or-wordmark",
+  "depicts": "Small square flat grey image with the word 'UNIKA' in bold dark grey capital letters at centre.",
+  "text_readable": "Readable: 'UNIKA'. No other text.",
+  "composition": "Word centred horizontally and slightly above middle; rest of square is uniform empty grey.",
+  "tone_and_contrast": "Low contrast: dark grey text on mid-grey background; flat single tone.",
+  "sharpness_and_artifacts": "Small low-resolution image; slight softness on letter edges; no overlays.",
+  "scan_first_read": "The word UNIKA on plain grey.",
+  "observer_confirms_blind": true
+}

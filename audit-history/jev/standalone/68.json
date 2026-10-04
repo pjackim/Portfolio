@@ -1,0 +1,227 @@
+{
+  "id": 68,
+  "state": {
+    "project": "team",
+    "kind": "logo-or-wordmark",
+    "file_pixels": "300 x 300 px, tiny (under 640px wide)",
+    "file_sharpness": "very-soft",
+    "file_exposure": "balanced",
+    "file_contrast": "very-low",
+    "empty_bands": "top 42% of the height is a near-uniform empty band; bottom 50% of the height is a near-uniform empty band; left 32% of the width is a near-uniform empty band; right 33% of the width is a near-uniform empty band",
+    "observation": {
+      "depicts": "Small square flat grey image with the word 'UNIKA' in bold dark grey capital letters at centre.",
+      "text_readable": "Readable: 'UNIKA'. No other text.",
+      "composition": "Word centred horizontally and slightly above middle; rest of square is uniform empty grey.",
+      "tone_and_contrast": "Low contrast: dark grey text on mid-grey background; flat single tone.",
+      "sharpness_and_artifacts": "Small low-resolution image; slight softness on letter edges; no overlays.",
+      "scan_first_read": "The word UNIKA on plain grey."
+    }
+  },
+  "model": "jev-1.13.0",
+  "scoreIds": [
+    "resolution_headroom",
+    "text_legibility",
+    "subject_clarity",
+    "framing",
+    "contrast_exposure",
+    "artifact_cleanliness",
+    "scan_first_impact"
+  ],
+  "answers": {
+    "resolution_headroom": {
+      "type": "score",
+      "score": 0.9,
+      "confidence": 0.91,
+      "legend": {
+        "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+        "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+        "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+        "3": "Good: sharp at native size with reasonable headroom",
+        "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+      },
+      "probabilities": {
+        "0": 0.11,
+        "1": 0.89,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "decision": "accept"
+    },
+    "text_legibility": {
+      "type": "score",
+      "score": 3.15,
+      "confidence": 0.87,
+      "legend": {
+        "0": "None of the text a viewer is meant to read can be read",
+        "1": "Only a few large words are readable; most meaningful text is illegible",
+        "2": "The main text is readable but secondary text is hard to read",
+        "3": "All meaningful text is readable with slight effort",
+        "4": "All text is crisp and effortless to read"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0.85,
+        "4": 0.15
+      },
+      "decision": "accept"
+    },
+    "subject_clarity": {
+      "type": "score",
+      "score": 2.95,
+      "confidence": 0.86,
+      "legend": {
+        "0": "A viewer cannot tell what the image shows",
+        "1": "Vague: the subject is faint or ambiguous",
+        "2": "The subject is identifiable with some effort",
+        "3": "The subject is clear",
+        "4": "The subject is immediately obvious and striking"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.08,
+        "3": 0.85,
+        "4": 0.06
+      },
+      "decision": "accept"
+    },
+    "framing": {
+      "type": "score",
+      "score": 0.21,
+      "confidence": 0.83,
+      "legend": {
+        "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+        "1": "Noticeable cut-off content or large empty areas weaken the subject",
+        "2": "Acceptable: some wasted space or a slightly tight crop",
+        "3": "Well framed: the subject is complete with sensible margins",
+        "4": "Excellent framing: every part of the frame earns its place"
+      },
+      "probabilities": {
+        "0": 0.85,
+        "1": 0.13,
+        "2": 0.01,
+        "3": 0.01,
+        "4": 0
+      },
+      "decision": "accept"
+    },
+    "contrast_exposure": {
+      "type": "score",
+      "score": 1.04,
+      "confidence": 0.97,
+      "legend": {
+        "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+        "1": "Weak separation between subject and background; hard to distinguish parts",
+        "2": "Adequate, with some low-contrast areas",
+        "3": "Good separation between subject and background",
+        "4": "Excellent: clear, balanced tones and strong separation"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.96,
+        "2": 0.04,
+        "3": 0,
+        "4": 0
+      },
+      "decision": "accept"
+    },
+    "artifact_cleanliness": {
+      "type": "score",
+      "score": 2.54,
+      "confidence": 0.54,
+      "legend": {
+        "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+        "1": "Prominent artifacts that a visitor would notice immediately",
+        "2": "Minor artifacts noticeable only on a close look",
+        "3": "Nearly clean: only trace artifacts",
+        "4": "Clean: no artifacts, overlays or leftover interface residue"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.56,
+        "3": 0.31,
+        "4": 0.12
+      },
+      "decision": "review"
+    },
+    "scan_first_impact": {
+      "type": "score",
+      "score": 2.68,
+      "confidence": 0.73,
+      "legend": {
+        "0": "A two-second glance conveys nothing clear",
+        "1": "A vague impression only",
+        "2": "Some specific takeaway",
+        "3": "A clear, specific takeaway about the work",
+        "4": "An instant, specific and appealing takeaway about the work"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.29,
+        "3": 0.7,
+        "4": 0
+      },
+      "decision": "review"
+    },
+    "is_defective_for_showcase": {
+      "type": "noul",
+      "noul": 0.84,
+      "p": 0.84,
+      "read": "yes"
+    },
+    "fixable_by_gentle_ai_touchup": {
+      "type": "noul",
+      "noul": 0.73,
+      "p": 0.73,
+      "read": "uncertain"
+    },
+    "needs_new_capture_or_recrop": {
+      "type": "noul",
+      "noul": 0.49,
+      "p": 0.49,
+      "read": "uncertain"
+    },
+    "primary_issue": {
+      "type": "choice",
+      "choice": "poor_framing_or_dead_space",
+      "confidence": 0.79,
+      "probabilities": {
+        "none": 0,
+        "low_resolution": 0.1,
+        "unreadable_text": 0,
+        "poor_framing_or_dead_space": 0.81,
+        "low_contrast_or_dark": 0.09,
+        "artifacts_or_overlays": 0,
+        "busy_background": 0,
+        "other": 0
+      },
+      "decision": "accept"
+    }
+  },
+  "severity": {
+    "choice": "moderate",
+    "confidence": 0.72,
+    "decision": "review",
+    "probabilities": {
+      "minor": 0.01,
+      "none": 0,
+      "moderate": 0.8,
+      "severe": 0.19
+    }
+  },
+  "remedy": {
+    "choice": "gentle-ai-touchup",
+    "confidence": 0.75,
+    "decision": "accept",
+    "probabilities": {
+      "recrop-or-recapture": 0.04,
+      "gentle-ai-touchup": 0.84,
+      "replace": 0.12
+    }
+  }
+}

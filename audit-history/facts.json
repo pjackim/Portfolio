@@ -1,0 +1,2178 @@
+[
+  {
+    "id": 1,
+    "file": "reference-assets/01--alvin--alvin-copy.png",
+    "original": "Images/Alvin/Alvin - Copy.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 5359,
+      "h": 5359,
+      "bytes": 7127531
+    },
+    "pixels": {
+      "sharpness": 1651.52,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 59.85,
+      "luma_p5": 23,
+      "luma_p95": 223,
+      "luma_spread": 200,
+      "near_black_pct": 1.71,
+      "near_white_pct": 0.02,
+      "empty_margin_pct": {
+        "top": 13.87,
+        "bottom": 13.87,
+        "left": 10.45,
+        "right": 14.45
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 2,
+    "file": "reference-assets/02--alvin--alvin.png",
+    "original": "Images/Alvin/Alvin.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 8426,
+      "h": 4473,
+      "bytes": 8073413
+    },
+    "pixels": {
+      "sharpness": 1208.48,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 51.03,
+      "luma_p5": 23,
+      "luma_p95": 188,
+      "luma_spread": 165,
+      "near_black_pct": 0.96,
+      "near_white_pct": 0.01,
+      "empty_margin_pct": {
+        "top": 6.99,
+        "bottom": 6.8,
+        "left": 40.43,
+        "right": 11.62
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 3,
+    "file": "reference-assets/03--alvin--nug.png",
+    "original": "Images/Alvin/nug.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1364,
+      "h": 1288,
+      "bytes": 1014498
+    },
+    "pixels": {
+      "sharpness": 2288.82,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 76.94,
+      "luma_p5": 1,
+      "luma_p95": 224,
+      "luma_spread": 223,
+      "near_black_pct": 8.76,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 3.13
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 4,
+    "file": "reference-assets/04--alvin--zoom.png",
+    "original": "Images/Alvin/zoom.png",
+    "project": "alvin",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 2242,
+      "h": 1341,
+      "bytes": 1464829
+    },
+    "pixels": {
+      "sharpness": 2649.14,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 86.44,
+      "luma_p5": 18,
+      "luma_p95": 224,
+      "luma_spread": 206,
+      "near_black_pct": 4.84,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 4.74,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/alvin.html"]
+  },
+  {
+    "id": 5,
+    "file": "reference-assets/05--ant-game--ant1.png",
+    "original": "Images/Ant Game/Ant Model/ant1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1274,
+      "h": 772,
+      "bytes": 407237
+    },
+    "pixels": {
+      "sharpness": 680.09,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 56.92,
+      "luma_p5": 48,
+      "luma_p95": 131,
+      "luma_spread": 83,
+      "near_black_pct": 0.27,
+      "near_white_pct": 0.29,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 5.18,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 6,
+    "file": "reference-assets/06--ant-game--ant2.png",
+    "original": "Images/Ant Game/Ant Model/ant2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1180,
+      "h": 781,
+      "bytes": 1190175
+    },
+    "pixels": {
+      "sharpness": 1453.84,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 75.72,
+      "luma_p5": 44,
+      "luma_p95": 193,
+      "luma_spread": 149,
+      "near_black_pct": 1.37,
+      "near_white_pct": 0.62,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 4.57,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/ant_game.html", "index.html"]
+  },
+  {
+    "id": 7,
+    "file": "reference-assets/07--ant-game--ant3.png",
+    "original": "Images/Ant Game/Ant Model/ant3.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1174,
+      "h": 806,
+      "bytes": 1762427
+    },
+    "pixels": {
+      "sharpness": 1681.72,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 86.06,
+      "luma_p5": 21,
+      "luma_p95": 207,
+      "luma_spread": 186,
+      "near_black_pct": 4.26,
+      "near_white_pct": 0.37,
+      "empty_margin_pct": {
+        "top": 0.57,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 8,
+    "file": "reference-assets/08--ant-game--ant4.png",
+    "original": "Images/Ant Game/Ant Model/ant4.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 617,
+      "h": 781,
+      "bytes": 185356
+    },
+    "pixels": {
+      "sharpness": 1385.47,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 56.55,
+      "luma_p5": 48,
+      "luma_p95": 130,
+      "luma_spread": 82,
+      "near_black_pct": 0.17,
+      "near_white_pct": 0.69,
+      "empty_margin_pct": {
+        "top": 2.94,
+        "bottom": 5.38,
+        "left": 14.26,
+        "right": 9.89
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 9,
+    "file": "reference-assets/09--ant-game--texture1.png",
+    "original": "Images/Ant Game/Ant Model/texture1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1108,
+      "h": 917,
+      "bytes": 3041807
+    },
+    "pixels": {
+      "sharpness": 696.19,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 144.07,
+      "luma_p5": 29,
+      "luma_p95": 234,
+      "luma_spread": 205,
+      "near_black_pct": 2.71,
+      "near_white_pct": 2.98,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 10,
+    "file": "reference-assets/10--ant-game--texture2.png",
+    "original": "Images/Ant Game/Ant Model/texture2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1379,
+      "h": 933,
+      "bytes": 3950721
+    },
+    "pixels": {
+      "sharpness": 759.92,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 101.16,
+      "luma_p5": 25,
+      "luma_p95": 192,
+      "luma_spread": 167,
+      "near_black_pct": 2.96,
+      "near_white_pct": 0.99,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 11,
+    "file": "reference-assets/11--ant-game--texture3.png",
+    "original": "Images/Ant Game/Ant Model/texture3.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1390,
+      "h": 933,
+      "bytes": 3632325
+    },
+    "pixels": {
+      "sharpness": 620.67,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 179.93,
+      "luma_p5": 40,
+      "luma_p95": 251,
+      "luma_spread": 211,
+      "near_black_pct": 2.08,
+      "near_white_pct": 13.24,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 12,
+    "file": "reference-assets/12--ant-game--texture4.png",
+    "original": "Images/Ant Game/Ant Model/texture4.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1394,
+      "h": 934,
+      "bytes": 3593950
+    },
+    "pixels": {
+      "sharpness": 340.52,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 161.15,
+      "luma_p5": 79,
+      "luma_p95": 233,
+      "luma_spread": 154,
+      "near_black_pct": 1.4,
+      "near_white_pct": 2.83,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 13,
+    "file": "reference-assets/13--ant-game--ant-rig1.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig1.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1904,
+      "h": 980,
+      "bytes": 160392
+    },
+    "pixels": {
+      "sharpness": 93.7,
+      "sharpness_bucket": "soft",
+      "mean_luma": 95.8,
+      "luma_p5": 92,
+      "luma_p95": 112,
+      "luma_spread": 20,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 2.28,
+        "bottom": 0.57,
+        "left": 1.17,
+        "right": 18.85
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 14,
+    "file": "reference-assets/14--ant-game--ant-rig2.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig2.png",
+    "project": "ant-game",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1909,
+      "h": 977,
+      "bytes": 158074
+    },
+    "pixels": {
+      "sharpness": 139.86,
+      "sharpness_bucket": "soft",
+      "mean_luma": 95.73,
+      "luma_p5": 92,
+      "luma_p95": 111,
+      "luma_spread": 19,
+      "near_black_pct": 0.01,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 2.1,
+        "bottom": 0.57,
+        "left": 1.07,
+        "right": 19.24
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/ant_game.html"]
+  },
+  {
+    "id": 15,
+    "file": "reference-assets/15--forest-hack--esp.png",
+    "original": "Images/Forest Hack/ESP.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1709,
+      "h": 1021,
+      "bytes": 4659085
+    },
+    "pixels": {
+      "sharpness": 3386.65,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 75.55,
+      "luma_p5": 2,
+      "luma_p95": 210,
+      "luma_spread": 208,
+      "near_black_pct": 26.5,
+      "near_white_pct": 0.33,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/foresthack.html", "index.html"]
+  },
+  {
+    "id": 16,
+    "file": "reference-assets/16--forest-hack--screenshot-1.png",
+    "original": "Images/Forest Hack/Screenshot_1.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1916,
+      "h": 1075,
+      "bytes": 5577560
+    },
+    "pixels": {
+      "sharpness": 4118.37,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 63.93,
+      "luma_p5": 4,
+      "luma_p95": 195,
+      "luma_spread": 191,
+      "near_black_pct": 21.75,
+      "near_white_pct": 0.72,
+      "empty_margin_pct": {
+        "top": 0.7,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/foresthack.html"]
+  },
+  {
+    "id": 17,
+    "file": "reference-assets/17--forest-hack--ux.png",
+    "original": "Images/Forest Hack/UX.png",
+    "project": "forest-hack",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 905,
+      "h": 554,
+      "bytes": 858310
+    },
+    "pixels": {
+      "sharpness": 2230.13,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 18.95,
+      "luma_p5": 1,
+      "luma_p95": 59,
+      "luma_spread": 58,
+      "near_black_pct": 68.2,
+      "near_white_pct": 0.06,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0.9,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/foresthack.html"]
+  },
+  {
+    "id": 18,
+    "file": "reference-assets/18--go-green--brochure.png",
+    "original": "Images/Go Green/Brochure.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4979736
+    },
+    "pixels": {
+      "sharpness": 3935.94,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 80.2,
+      "luma_p5": 19,
+      "luma_p95": 199,
+      "luma_spread": 180,
+      "near_black_pct": 4.07,
+      "near_white_pct": 0.45,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 19,
+    "file": "reference-assets/19--go-green--brochure.png",
+    "original": "Images/Go Green/brochure.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4979736
+    },
+    "pixels": {
+      "sharpness": 3935.94,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 80.2,
+      "luma_p5": 19,
+      "luma_p95": 199,
+      "luma_spread": 180,
+      "near_black_pct": 4.07,
+      "near_white_pct": 0.45,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/go_green.html"]
+  },
+  {
+    "id": 20,
+    "file": "reference-assets/20--go-green--brochure-text.png",
+    "original": "Images/Go Green/brochure_text.png",
+    "project": "go-green",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4486847
+    },
+    "pixels": {
+      "sharpness": 5282.6,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 82.87,
+      "luma_p5": 19,
+      "luma_p95": 216,
+      "luma_spread": 197,
+      "near_black_pct": 4.05,
+      "near_white_pct": 2.53,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/go_green.html"]
+  },
+  {
+    "id": 21,
+    "file": "reference-assets/21--go-green--original.png",
+    "original": "Images/Go Green/original.jpg",
+    "project": "go-green",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 3840,
+      "h": 2160,
+      "bytes": 3430351
+    },
+    "pixels": {
+      "sharpness": 3265.3,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 88.52,
+      "luma_p5": 14,
+      "luma_p95": 209,
+      "luma_spread": 195,
+      "near_black_pct": 6.24,
+      "near_white_pct": 0.28,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/go_green.html", "index.html"]
+  },
+  {
+    "id": 22,
+    "file": "reference-assets/22--lost-city--city-creep.png",
+    "original": "Images/Lost City/city_creep.png",
+    "project": "lost-city",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 2880,
+      "h": 1800,
+      "bytes": 8619474
+    },
+    "pixels": {
+      "sharpness": 2847.48,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 60.06,
+      "luma_p5": 9,
+      "luma_p95": 165,
+      "luma_spread": 156,
+      "near_black_pct": 14.31,
+      "near_white_pct": 1.88,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/lost_city.html", "index.html"]
+  },
+  {
+    "id": 23,
+    "file": "reference-assets/23--lost-city--forest.png",
+    "original": "Images/Lost City/forest.png",
+    "project": "lost-city",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 2880,
+      "h": 1800,
+      "bytes": 8289141
+    },
+    "pixels": {
+      "sharpness": 3501.44,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 64.91,
+      "luma_p5": 10,
+      "luma_p95": 176,
+      "luma_spread": 166,
+      "near_black_pct": 12.81,
+      "near_white_pct": 1.82,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/lost_city.html"]
+  },
+  {
+    "id": 24,
+    "file": "reference-assets/24--lost-city--website.png",
+    "original": "Images/Lost City/website.gif",
+    "project": "lost-city",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 906,
+      "h": 948,
+      "bytes": 26173195
+    },
+    "pixels": {
+      "sharpness": 5644.32,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 191.34,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0.03,
+      "near_white_pct": 19.46,
+      "empty_margin_pct": {
+        "top": 2.22,
+        "bottom": 1.9,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 25,
+    "file": "reference-assets/25--nodes--node-diagram.png",
+    "original": "Images/Nodes/node_diagram.png",
+    "project": "nodes",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 3214630
+    },
+    "pixels": {
+      "sharpness": 681.59,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 171.88,
+      "luma_p5": 25,
+      "luma_p95": 254,
+      "luma_spread": 229,
+      "near_black_pct": 0.7,
+      "near_white_pct": 58.6,
+      "empty_margin_pct": {
+        "top": 3.65,
+        "bottom": 7.12,
+        "left": 0.39,
+        "right": 4.2
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/nodes.html"]
+  },
+  {
+    "id": 26,
+    "file": "reference-assets/26--nodes--transparant-bracelet.png",
+    "original": "Images/Nodes/transparant_bracelet.png",
+    "project": "nodes",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 1395072
+    },
+    "pixels": {
+      "sharpness": 258.3,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 216.58,
+      "luma_p5": 27,
+      "luma_p95": 254,
+      "luma_spread": 227,
+      "near_black_pct": 1.08,
+      "near_white_pct": 82.27,
+      "empty_margin_pct": {
+        "top": 3.3,
+        "bottom": 3.65,
+        "left": 26.66,
+        "right": 31.93
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/nodes.html", "index.html"]
+  },
+  {
+    "id": 27,
+    "file": "reference-assets/27--over-the-rainbow--over-the-rainbow.png",
+    "original": "Images/Over The Rainbow/over_the_rainbow.png",
+    "project": "over-the-rainbow",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 1159673
+    },
+    "pixels": {
+      "sharpness": 237.76,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 212.05,
+      "luma_p5": 118,
+      "luma_p95": 247,
+      "luma_spread": 129,
+      "near_black_pct": 0,
+      "near_white_pct": 15.55,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 13.19,
+        "left": 17.09,
+        "right": 15.72
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/over_the_rainbow.html", "index.html"]
+  },
+  {
+    "id": 28,
+    "file": "reference-assets/28--paradox--exilelogo.png",
+    "original": "Images/Paradox/exileLogo.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 800,
+      "h": 800,
+      "bytes": 711796
+    },
+    "pixels": {
+      "sharpness": 84.57,
+      "sharpness_bucket": "soft",
+      "mean_luma": 34.58,
+      "luma_p5": 15,
+      "luma_p95": 115,
+      "luma_spread": 100,
+      "near_black_pct": 15.66,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 4.5,
+        "bottom": 7.63,
+        "left": 3.5,
+        "right": 6
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 29,
+    "file": "reference-assets/29--paradox--paradox1.png",
+    "original": "Images/Paradox/paradox1.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1917,
+      "h": 1078,
+      "bytes": 642080
+    },
+    "pixels": {
+      "sharpness": 116.24,
+      "sharpness_bucket": "soft",
+      "mean_luma": 30.15,
+      "luma_p5": 7,
+      "luma_p95": 36,
+      "luma_spread": 29,
+      "near_black_pct": 20.34,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 35.42,
+        "bottom": 34.38,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 30,
+    "file": "reference-assets/30--paradox--paradox2.png",
+    "original": "Images/Paradox/paradox2.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1917,
+      "h": 1078,
+      "bytes": 633558
+    },
+    "pixels": {
+      "sharpness": 46.38,
+      "sharpness_bucket": "soft",
+      "mean_luma": 28.99,
+      "luma_p5": 4,
+      "luma_p95": 36,
+      "luma_spread": 32,
+      "near_black_pct": 22.86,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 35.42,
+        "bottom": 34.38,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 31,
+    "file": "reference-assets/31--paradox--paradox3.png",
+    "original": "Images/Paradox/paradox3.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 136130
+    },
+    "pixels": {
+      "sharpness": 363.4,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 240.34,
+      "luma_p5": 63,
+      "luma_p95": 255,
+      "luma_spread": 192,
+      "near_black_pct": 0.2,
+      "near_white_pct": 92.46,
+      "empty_margin_pct": {
+        "top": 23.26,
+        "bottom": 23.26,
+        "left": 32.71,
+        "right": 36.72
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/paradox.html"]
+  },
+  {
+    "id": 32,
+    "file": "reference-assets/32--paradox--red-paradox.png",
+    "original": "Images/Paradox/red_paradox.png",
+    "project": "paradox",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 800,
+      "h": 800,
+      "bytes": 132805
+    },
+    "pixels": {
+      "sharpness": 670.03,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 207.64,
+      "luma_p5": 40,
+      "luma_p95": 255,
+      "luma_spread": 215,
+      "near_black_pct": 0.54,
+      "near_white_pct": 76.11,
+      "empty_margin_pct": {
+        "top": 14,
+        "bottom": 14,
+        "left": 10.13,
+        "right": 16.38
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 33,
+    "file": "reference-assets/33--spectre--black-bg.png",
+    "original": "Images/Spectre/black_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 2560,
+      "h": 1440,
+      "bytes": 526017
+    },
+    "pixels": {
+      "sharpness": 193.25,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 42.57,
+      "luma_p5": 37,
+      "luma_p95": 44,
+      "luma_spread": 7,
+      "near_black_pct": 0,
+      "near_white_pct": 0.71,
+      "empty_margin_pct": {
+        "top": 37.85,
+        "bottom": 36.63,
+        "left": 34.96,
+        "right": 34.96
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 34,
+    "file": "reference-assets/34--spectre--centered-bg.png",
+    "original": "Images/Spectre/centered_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 3840,
+      "h": 2160,
+      "bytes": 1389631
+    },
+    "pixels": {
+      "sharpness": 413.72,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 54.26,
+      "luma_p5": 37,
+      "luma_p95": 240,
+      "luma_spread": 203,
+      "near_black_pct": 0,
+      "near_white_pct": 5.04,
+      "empty_margin_pct": {
+        "top": 12.5,
+        "bottom": 11.63,
+        "left": 35.25,
+        "right": 30.86
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 35,
+    "file": "reference-assets/35--spectre--logo-white.png",
+    "original": "Images/Spectre/logo_white.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 744,
+      "h": 837,
+      "bytes": 150798
+    },
+    "pixels": {
+      "sharpness": 752.49,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 216.35,
+      "luma_p5": 35,
+      "luma_p95": 255,
+      "luma_spread": 220,
+      "near_black_pct": 0.42,
+      "near_white_pct": 79.18,
+      "empty_margin_pct": {
+        "top": 5.62,
+        "bottom": 9.44,
+        "left": 11.69,
+        "right": 11.69
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/spectre.html", "index.html"]
+  },
+  {
+    "id": 36,
+    "file": "reference-assets/36--spectre--white-bg.png",
+    "original": "Images/Spectre/white_bg.png",
+    "project": "spectre",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 200260
+    },
+    "pixels": {
+      "sharpness": 570.68,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 242.01,
+      "luma_p5": 78,
+      "luma_p95": 255,
+      "luma_spread": 177,
+      "near_black_pct": 0.14,
+      "near_white_pct": 92.77,
+      "empty_margin_pct": {
+        "top": 9.9,
+        "bottom": 24.65,
+        "left": 35.16,
+        "right": 17.09
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/spectre.html"]
+  },
+  {
+    "id": 37,
+    "file": "reference-assets/37--aes--screenshot-1.png",
+    "original": "Images/aes/Screenshot_1.png",
+    "project": "aes",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 762,
+      "h": 920,
+      "bytes": 55600
+    },
+    "pixels": {
+      "sharpness": 5228.35,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 24.08,
+      "luma_p5": 17,
+      "luma_p95": 75,
+      "luma_spread": 58,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0.65,
+        "bottom": 0.43,
+        "left": 1.31,
+        "right": 6.17
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 38,
+    "file": "reference-assets/38--arch-linux--bottom.png",
+    "original": "Images/arch linux/bottom.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1077,
+      "bytes": 680663
+    },
+    "pixels": {
+      "sharpness": 528.96,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 68.24,
+      "luma_p5": 48,
+      "luma_p95": 105,
+      "luma_spread": 57,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/archlinux.html"]
+  },
+  {
+    "id": 39,
+    "file": "reference-assets/39--arch-linux--screenshot1.png",
+    "original": "Images/arch linux/screenshot1.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1919,
+      "h": 1077,
+      "bytes": 1890590
+    },
+    "pixels": {
+      "sharpness": 803.2,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 111.68,
+      "luma_p5": 63,
+      "luma_p95": 188,
+      "luma_spread": 125,
+      "near_black_pct": 0,
+      "near_white_pct": 0.01,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/archlinux.html"]
+  },
+  {
+    "id": 40,
+    "file": "reference-assets/40--arch-linux--trim.png",
+    "original": "Images/arch linux/trim.png",
+    "project": "arch-linux",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 487,
+      "h": 1009,
+      "bytes": 218325
+    },
+    "pixels": {
+      "sharpness": 891.85,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 98.73,
+      "luma_p5": 60,
+      "luma_p95": 202,
+      "luma_spread": 142,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 41,
+    "file": "reference-assets/41--correlation-visualizer--software.png",
+    "original": "Images/correlation_visualizer/Software.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1578,
+      "h": 1015,
+      "bytes": 371642
+    },
+    "pixels": {
+      "sharpness": 585.31,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 53.03,
+      "luma_p5": 39,
+      "luma_p95": 67,
+      "luma_spread": 28,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 42,
+    "file": "reference-assets/42--correlation-visualizer--credentials.png",
+    "original": "Images/correlation_visualizer/credentials.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 756,
+      "h": 206,
+      "bytes": 11062
+    },
+    "pixels": {
+      "sharpness": 1307.5,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 153.68,
+      "luma_p5": 50,
+      "luma_p95": 255,
+      "luma_spread": 205,
+      "near_black_pct": 0,
+      "near_white_pct": 49.43,
+      "empty_margin_pct": {
+        "top": 21.36,
+        "bottom": 21.36,
+        "left": 5.82,
+        "right": 5.82
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 43,
+    "file": "reference-assets/43--correlation-visualizer--googlesearch.png",
+    "original": "Images/correlation_visualizer/googlesearch.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 714,
+      "h": 219,
+      "bytes": 28204
+    },
+    "pixels": {
+      "sharpness": 1700.52,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 41.45,
+      "luma_p5": 33,
+      "luma_p95": 71,
+      "luma_spread": 38,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 6.39,
+        "bottom": 6.85,
+        "left": 2.38,
+        "right": 0.98
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 44,
+    "file": "reference-assets/44--correlation-visualizer--trap1.png",
+    "original": "Images/correlation_visualizer/trap1.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 625,
+      "h": 212,
+      "bytes": 16737
+    },
+    "pixels": {
+      "sharpness": 2373.79,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 227.66,
+      "luma_p5": 154,
+      "luma_p95": 255,
+      "luma_spread": 101,
+      "near_black_pct": 0.18,
+      "near_white_pct": 73.89,
+      "empty_margin_pct": {
+        "top": 4.25,
+        "bottom": 1.42,
+        "left": 1.76,
+        "right": 2.24
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 45,
+    "file": "reference-assets/45--correlation-visualizer--trap2.png",
+    "original": "Images/correlation_visualizer/trap2.png",
+    "project": "correlation-visualizer",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 768,
+      "h": 383,
+      "bytes": 37938
+    },
+    "pixels": {
+      "sharpness": 555.28,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 195.41,
+      "luma_p5": 181,
+      "luma_p95": 255,
+      "luma_spread": 74,
+      "near_black_pct": 0.12,
+      "near_white_pct": 19.25,
+      "empty_margin_pct": {
+        "top": 6.27,
+        "bottom": 3.92,
+        "left": 2.86,
+        "right": 3.78
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/credential_correlation.html"]
+  },
+  {
+    "id": 46,
+    "file": "reference-assets/46--cs314--database.png",
+    "original": "Images/cs314/database.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 967,
+      "h": 911,
+      "bytes": 1706701
+    },
+    "pixels": {
+      "sharpness": 557.94,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 219.72,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0,
+      "near_white_pct": 80.49,
+      "empty_margin_pct": {
+        "top": 2.31,
+        "bottom": 1.65,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 47,
+    "file": "reference-assets/47--cs314--file.png",
+    "original": "Images/cs314/file.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 135303
+    },
+    "pixels": {
+      "sharpness": 3266.28,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 182.7,
+      "luma_p5": 33,
+      "luma_p95": 255,
+      "luma_spread": 222,
+      "near_black_pct": 0,
+      "near_white_pct": 54.1,
+      "empty_margin_pct": {
+        "top": 1.88,
+        "bottom": 1.25,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 48,
+    "file": "reference-assets/48--cs314--interopt.png",
+    "original": "Images/cs314/interopt.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 982,
+      "h": 927,
+      "bytes": 2792322
+    },
+    "pixels": {
+      "sharpness": 5625.62,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 191.55,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0.04,
+      "near_white_pct": 16.92,
+      "empty_margin_pct": {
+        "top": 1.94,
+        "bottom": 2.05,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 49,
+    "file": "reference-assets/49--cs314--iterative-design.png",
+    "original": "Images/cs314/iterative_design.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 982,
+      "h": 927,
+      "bytes": 17028426
+    },
+    "pixels": {
+      "sharpness": 2345.95,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 210.23,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0,
+      "near_white_pct": 57.83,
+      "empty_margin_pct": {
+        "top": 1.94,
+        "bottom": 2.05,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 50,
+    "file": "reference-assets/50--cs314--itinerary.png",
+    "original": "Images/cs314/itinerary.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 81548
+    },
+    "pixels": {
+      "sharpness": 2200.57,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 215.35,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0,
+      "near_white_pct": 76.8,
+      "empty_margin_pct": {
+        "top": 1.88,
+        "bottom": 1.25,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "blown",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 51,
+    "file": "reference-assets/51--cs314--map.png",
+    "original": "Images/cs314/map.png",
+    "project": "cs314",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 227583
+    },
+    "pixels": {
+      "sharpness": 738.68,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 190.05,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0.01,
+      "near_white_pct": 26.78,
+      "empty_margin_pct": {
+        "top": 1.88,
+        "bottom": 1.25,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html", "index.html"]
+  },
+  {
+    "id": 52,
+    "file": "reference-assets/52--cs314--optimize.png",
+    "original": "Images/cs314/optimize.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 924,
+      "h": 627,
+      "bytes": 284185
+    },
+    "pixels": {
+      "sharpness": 759.88,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 213.31,
+      "luma_p5": 138,
+      "luma_p95": 255,
+      "luma_spread": 117,
+      "near_black_pct": 0.01,
+      "near_white_pct": 40.44,
+      "empty_margin_pct": {
+        "top": 0.64,
+        "bottom": 3.19,
+        "left": 0.22,
+        "right": 0.22
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 53,
+    "file": "reference-assets/53--cs314--website.png",
+    "original": "Images/cs314/website.gif",
+    "project": "cs314",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 906,
+      "h": 948,
+      "bytes": 26173195
+    },
+    "pixels": {
+      "sharpness": 5644.32,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 191.34,
+      "luma_p5": 68,
+      "luma_p95": 255,
+      "luma_spread": 187,
+      "near_black_pct": 0.03,
+      "near_white_pct": 19.46,
+      "empty_margin_pct": {
+        "top": 2.22,
+        "bottom": 1.9,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "bright",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/tripsite.html"]
+  },
+  {
+    "id": 54,
+    "file": "reference-assets/54--fovhack--fov-demo.png",
+    "original": "Images/fovhack/fov_demo.gif",
+    "project": "fovhack",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 1280,
+      "h": 655,
+      "bytes": 102668563
+    },
+    "pixels": {
+      "sharpness": 358.54,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 151.95,
+      "luma_p5": 50,
+      "luma_p95": 192,
+      "luma_spread": 142,
+      "near_black_pct": 2.13,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 55,
+    "file": "reference-assets/55--fovhack--fov-preview.png",
+    "original": "Images/fovhack/fov_preview.png",
+    "project": "fovhack",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1669,
+      "h": 854,
+      "bytes": 2124599
+    },
+    "pixels": {
+      "sharpness": 322.88,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 140.06,
+      "luma_p5": 20,
+      "luma_p95": 193,
+      "luma_spread": 173,
+      "near_black_pct": 4.54,
+      "near_white_pct": 0.39,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0.19,
+        "left": 0,
+        "right": 0.2
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 56,
+    "file": "reference-assets/56--fovhack--screenshot-cosmetic.png",
+    "original": "Images/fovhack/screenshot-cosmetic.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 833,
+      "h": 962,
+      "bytes": 201568
+    },
+    "pixels": {
+      "sharpness": 1778.65,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 34.41,
+      "luma_p5": 14,
+      "luma_p95": 109,
+      "luma_spread": 95,
+      "near_black_pct": 18.77,
+      "near_white_pct": 0.08,
+      "empty_margin_pct": {
+        "top": 0.31,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/mordhauhack.html"]
+  },
+  {
+    "id": 57,
+    "file": "reference-assets/57--fovhack--screenshot-gameplay.png",
+    "original": "Images/fovhack/screenshot-gameplay.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 514,
+      "h": 917,
+      "bytes": 96813
+    },
+    "pixels": {
+      "sharpness": 2847.87,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 23.61,
+      "luma_p5": 16,
+      "luma_p95": 51,
+      "luma_spread": 35,
+      "near_black_pct": 12.74,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 0.55,
+        "bottom": 0.76,
+        "left": 0.19,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": ["html/Work/mordhauhack.html"]
+  },
+  {
+    "id": 58,
+    "file": "reference-assets/58--fovhack--screenshot-overview.png",
+    "original": "Images/fovhack/screenshot-overview.jpg",
+    "project": "fovhack",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 351028
+    },
+    "pixels": {
+      "sharpness": 1640.17,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 28.33,
+      "luma_p5": 11,
+      "luma_p95": 93,
+      "luma_spread": 82,
+      "near_black_pct": 28.77,
+      "near_white_pct": 0.03,
+      "empty_margin_pct": {
+        "top": 0.35,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "very-dark",
+      "contrast_bucket": "low"
+    },
+    "referenced_by": ["html/Work/mordhauhack.html", "index.html"]
+  },
+  {
+    "id": 59,
+    "file": "reference-assets/59--hardpoint--hpt-action1.png",
+    "original": "Images/hardpoint/hpt-action1.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 356645
+    },
+    "pixels": {
+      "sharpness": 456.7,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 67.74,
+      "luma_p5": 8,
+      "luma_p95": 201,
+      "luma_spread": 193,
+      "near_black_pct": 37.84,
+      "near_white_pct": 1.51,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/mordhaumod.html"]
+  },
+  {
+    "id": 60,
+    "file": "reference-assets/60--hardpoint--hpt-action2.png",
+    "original": "Images/hardpoint/hpt-action2.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 399254
+    },
+    "pixels": {
+      "sharpness": 495.59,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 58.18,
+      "luma_p5": 8,
+      "luma_p95": 180,
+      "luma_spread": 172,
+      "near_black_pct": 24.57,
+      "near_white_pct": 0.03,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/mordhaumod.html"]
+  },
+  {
+    "id": 61,
+    "file": "reference-assets/61--hardpoint--hpt-thumbnail.png",
+    "original": "Images/hardpoint/hpt-thumbnail.jpg",
+    "project": "hardpoint",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 297273
+    },
+    "pixels": {
+      "sharpness": 346.94,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 58.73,
+      "luma_p5": 6,
+      "luma_p95": 202,
+      "luma_spread": 196,
+      "near_black_pct": 32.68,
+      "near_white_pct": 0.01,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "dark",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["html/Work/mordhaumod.html", "index.html"]
+  },
+  {
+    "id": 62,
+    "file": "reference-assets/62--hero-trivia--hero-trivia-1.png",
+    "original": "Images/hero_trivia/Hero_Trivia_1.png",
+    "project": "hero-trivia",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1894,
+      "h": 949,
+      "bytes": 4068082
+    },
+    "pixels": {
+      "sharpness": 517.4,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 99.92,
+      "luma_p5": 41,
+      "luma_p95": 170,
+      "luma_spread": 129,
+      "near_black_pct": 0.01,
+      "near_white_pct": 0.02,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0.19,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/hero_trivia.html", "index.html"]
+  },
+  {
+    "id": 63,
+    "file": "reference-assets/63--hero-trivia--hero-trivia-2.png",
+    "original": "Images/hero_trivia/Hero_Trivia_2.png",
+    "project": "hero-trivia",
+    "format": "png",
+    "animated": false,
+    "native": {
+      "w": 1894,
+      "h": 949,
+      "bytes": 4120572
+    },
+    "pixels": {
+      "sharpness": 312.92,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 102.08,
+      "luma_p5": 44,
+      "luma_p95": 170,
+      "luma_spread": 126,
+      "near_black_pct": 0.01,
+      "near_white_pct": 0.01,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0.19,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 64,
+    "file": "reference-assets/64--hero-trivia--hero-trivia-gameplay.png",
+    "original": "Images/hero_trivia/hero_trivia_gameplay.gif",
+    "project": "hero-trivia",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 1168,
+      "h": 920,
+      "bytes": 65931588
+    },
+    "pixels": {
+      "sharpness": 540.04,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 91.65,
+      "luma_p5": 44,
+      "luma_p95": 156,
+      "luma_spread": 112,
+      "near_black_pct": 0,
+      "near_white_pct": 0.1,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/hero_trivia.html"]
+  },
+  {
+    "id": 65,
+    "file": "reference-assets/65--hero-trivia--hero-trivia-variety.png",
+    "original": "Images/hero_trivia/hero_trivia_variety.gif",
+    "project": "hero-trivia",
+    "format": "gif",
+    "animated": true,
+    "native": {
+      "w": 1168,
+      "h": 920,
+      "bytes": 64728753
+    },
+    "pixels": {
+      "sharpness": 494.31,
+      "sharpness_bucket": "moderate",
+      "mean_luma": 93.92,
+      "luma_p5": 45,
+      "luma_p95": 162,
+      "luma_spread": 117,
+      "near_black_pct": 0,
+      "near_white_pct": 0.07,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": ["html/Work/hero_trivia.html"]
+  },
+  {
+    "id": 66,
+    "file": "reference-assets/66--self--img-6540.png",
+    "original": "Images/self/IMG_6540.jpg",
+    "project": "self",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 3024,
+      "h": 4032,
+      "bytes": 4935912
+    },
+    "pixels": {
+      "sharpness": 3554.4,
+      "sharpness_bucket": "crisp",
+      "mean_luma": 119.08,
+      "luma_p5": 36,
+      "luma_p95": 207,
+      "luma_spread": 171,
+      "near_black_pct": 0.37,
+      "near_white_pct": 0.69,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "normal"
+    },
+    "referenced_by": []
+  },
+  {
+    "id": 67,
+    "file": "reference-assets/67--self--canyonselfie.png",
+    "original": "Images/self/canyonSelfie.JPG",
+    "project": "self",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 1242,
+      "h": 2208,
+      "bytes": 401073
+    },
+    "pixels": {
+      "sharpness": 104.59,
+      "sharpness_bucket": "soft",
+      "mean_luma": 100.46,
+      "luma_p5": 14,
+      "luma_p95": 255,
+      "luma_spread": 241,
+      "near_black_pct": 11.96,
+      "near_white_pct": 6.95,
+      "empty_margin_pct": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "high"
+    },
+    "referenced_by": ["index.html"]
+  },
+  {
+    "id": 68,
+    "file": "reference-assets/68--team--1.png",
+    "original": "img/team/1.jpg",
+    "project": "team",
+    "format": "jpeg",
+    "animated": false,
+    "native": {
+      "w": 300,
+      "h": 300,
+      "bytes": 14826
+    },
+    "pixels": {
+      "sharpness": 20.59,
+      "sharpness_bucket": "very-soft",
+      "mean_luma": 165.02,
+      "luma_p5": 166,
+      "luma_p95": 166,
+      "luma_spread": 0,
+      "near_black_pct": 0,
+      "near_white_pct": 0,
+      "empty_margin_pct": {
+        "top": 42.33,
+        "bottom": 49.67,
+        "left": 32,
+        "right": 33
+      },
+      "exposure_bucket": "balanced",
+      "contrast_bucket": "very-low"
+    },
+    "referenced_by": []
+  }
+]

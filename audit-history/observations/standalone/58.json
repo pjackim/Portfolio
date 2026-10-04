@@ -1,0 +1,13 @@
+{
+  "id": 58,
+  "file": "reference-assets/58--fovhack--screenshot-overview.png",
+  "project": "fovhack",
+  "kind": "game-screenshot",
+  "depicts": "Three dark game menu panels side by side: Cosmetics with armor slot values beside a golden knight, Nobility toggles and sliders, and an Overview panel with usage notes, hotkeys, and helpful IDs; mouse cursor at bottom right.",
+  "text_readable": "Readable: 'Useage:', 'Hotkeys:', 'Helpful IDs:', 'Kickstarter Crown (T3)', 'Fov Value 130'. Faint patch-note text behind panels only partly readable.",
+  "composition": "Three panels span the full width with a knight at far left; large empty dark band along the bottom; ghosted armor figure fills centre background; cursor lower right.",
+  "tone_and_contrast": "Dark background with gold and cream text; bright gold header bar on Overview; overall contrast between text and dark background is strong except ghosted text.",
+  "sharpness_and_artifacts": "White mouse cursor baked in; ghost patch-note text overlapping menus; screenshot compression softness on background; panel borders thin gold lines.",
+  "scan_first_read": "Three dark medieval-styled menu panels with a golden knight at left.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 10,
+  "file": "reference-assets/10--ant-game--texture2.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Close-up of glossy maroon ant head with black eye, curved mandibles and antennae, over out-of-focus grass and stones.",
+  "text_readable": "no text",
+  "composition": "Head centered-left filling most of frame; thorax cut off at top-left; antenna crosses lower centre; mandibles at right near frame edge.",
+  "tone_and_contrast": "Glossy dark red with bright specular highlights; grass background olive-yellow; subject darker than background.",
+  "sharpness_and_artifacts": "Sharp wrinkled surface detail; background moderately blurred; no overlays.",
+  "scan_first_read": "A close-up glossy ant face.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 64,
+  "file": "reference-assets/64--hero-trivia--hero-trivia-gameplay.png",
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "depicts": "Crossword screen with 'Hero Trivia' logo over blurred comic-book collage; vertical word BEAST highlighted; clue 'Black _____, king of the Inhumans, who must remain silent'; mouse cursor near logo.",
+  "text_readable": "Readable: 'Hero Trivia', 'Black _____, king of the Inhumans, who must remain silent', letters B E A S T. Small letters partly glow-blurred.",
+  "composition": "Logo top; small grid at centre; wide clue box in lower third; empty blurred collage around; cursor top-centre.",
+  "tone_and_contrast": "Warm, saturated blurred background; gold letters on dark cells; light text on dark translucent clue box; moderate contrast.",
+  "sharpness_and_artifacts": "Mouse cursor baked in; heavy intentional background blur; glow halos on cells; mild compression softness.",
+  "scan_first_read": "A comic-themed crossword titled Hero Trivia with one clue.",
+  "observer_confirms_blind": true
+}

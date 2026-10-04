@@ -1,0 +1,13 @@
+{
+  "id": 57,
+  "file": "reference-assets/57--fovhack--screenshot-gameplay.png",
+  "project": "fovhack",
+  "kind": "game-screenshot",
+  "depicts": "Tall narrow dark menu panel 'Nobility' with Cosmetic and Gameplay lists of checkboxes (AFK, Crouch Cooldown, FOV, Parry, Turncap...) and three sliders, with faint patch-note text bleeding through behind.",
+  "text_readable": "Readable: 'Nobility', 'FOV Value 130', 'TurncapX 315', 'Super Sprint'. Patch-note text behind ('Patch 24 Hotfix 3') overlaps and is partly illegible.",
+  "composition": "Panel fills the frame in a tall portrait crop; list left-aligned, sliders at bottom; empty dark space at lower area and top edge cut with partial 'FIGHT' text.",
+  "tone_and_contrast": "Dark background with gold/cream text; text contrast reasonable, background ghost text lowers legibility where overlapping.",
+  "sharpness_and_artifacts": "Ghosted background text overlaps checkbox labels; cut-off word at top left ('FIGHT'); small ember specks; moderate compression softness.",
+  "scan_first_read": "A dark game settings list of cheat-style toggles and sliders.",
+  "observer_confirms_blind": true
+}

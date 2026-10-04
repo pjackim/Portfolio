@@ -1,0 +1,13 @@
+{
+  "id": 52,
+  "file": "reference-assets/52--cs314--optimize.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Web map app view: world map with many overlapping blue straight lines crossing continents, a 'Find Place' search bar, and a trip file row named wwbrews.json with a distance badge.",
+  "text_readable": "Readable: 'Find Place', 'wwbrews.json', '636,462 mi', 'Leaflet | © OpenStreetMap contributors'. Small toolbar icons have no readable text.",
+  "composition": "Map fills upper three quarters; blue line tangle concentrated around Europe/Africa; controls strip and file row along the bottom; lines run off the left and right edges.",
+  "tone_and_contrast": "Pale beige/light-blue map with saturated blue lines; lines stand out clearly against the light map; bottom panel white with dark green buttons.",
+  "sharpness_and_artifacts": "Crisp UI text and lines; slight aliasing on line edges; Leaflet zoom buttons and attribution visible in frame; no watermark.",
+  "scan_first_read": "A world map covered in tangled blue lines, a very large mileage number below it.",
+  "observer_confirms_blind": true
+}

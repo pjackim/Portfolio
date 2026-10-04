@@ -1,0 +1,13 @@
+{
+  "id": 5,
+  "file": "reference-assets/05--ant-game--ant1.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Grey-silver sculpted ant model with detailed textured head, thorax and thin legs in a three-quarter view on a dark grey background; small axis gizmo at top right.",
+  "text_readable": "no text",
+  "composition": "Ant spans most of frame diagonal, head lower right, antenna extends to right edge area; gizmo cluster at top right corner; dark empty space bottom right.",
+  "tone_and_contrast": "Uniform mid-dark grey background; metallic grey-silver model with bright highlights, moderate separation from background.",
+  "sharpness_and_artifacts": "Sculpt-software viewport gizmo (cube-like head icon, red/green/blue axis tips) and a thin red circle at right edge are visible; surface detail sharp; no noise.",
+  "scan_first_read": "A metallic sculpted ant.",
+  "observer_confirms_blind": true
+}

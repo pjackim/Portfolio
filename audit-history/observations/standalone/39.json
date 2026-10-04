@@ -1,0 +1,13 @@
+{
+  "id": 39,
+  "file": "reference-assets/39--arch-linux--screenshot1.png",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "Linux desktop with a start-page style dashboard: left panel with search, avatar, coloured folder buttons and quote; centre abstract painting; right panel with clock, icon grid and system info text.",
+  "text_readable": "Readable: \"u/pjackim\", \"Success means having the courage, the determination...\", \"- George Sheehan\", \"Sat 22\", \"2:27\". System info text in bottom-right is tiny and not fully legible at native size.",
+  "composition": "Full-frame; abstract blocky painting occupies centre column, with panels of rounded tiles left and right; top bar with workspace dots; balanced, dense layout with little empty space.",
+  "tone_and_contrast": "Muted slate and teal backgrounds with pastel yellow, orange, teal and green tiles; warm-cool contrast; tile labels dark on light pastel; overall moderate contrast.",
+  "sharpness_and_artifacts": "Crisp UI text; wallpaper painting shows brush texture; no compression artifacts or watermarks noted; small terminal text bottom-right is dense.",
+  "scan_first_read": "A colourful pastel dashboard desktop with an abstract painting in the middle and icon tiles at right.",
+  "observer_confirms_blind": true
+}

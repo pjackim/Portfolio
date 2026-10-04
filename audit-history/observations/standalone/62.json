@@ -1,0 +1,13 @@
+{
+  "id": 62,
+  "file": "reference-assets/62--hero-trivia--hero-trivia-1.png",
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "depicts": "Trivia crossword screen with 'Hero Trivia' logo in yellow/blue comic lettering over a blurred comic-book collage, a crossword grid with letters S-I-L-V, SHANG-CHI, X-MEN, and a clue box.",
+  "text_readable": "Readable: 'Hero Trivia', clue '_____ Surfer, servant of Galactus who bretrayed him to save Earth' (as spelled), letters 'SHANG', 'X-MEN'. Grid letters are small.",
+  "composition": "Logo top centre; crossword grid centred; clue box lower centre; sides show blurred collage; thin scrollbar at bottom edge.",
+  "tone_and_contrast": "Warm saturated blurred background; gold letters glow against dark grid cells; clue text light on dark translucent box; moderate contrast.",
+  "sharpness_and_artifacts": "Background deliberately blurred; glow around cells; horizontal scrollbar visible at bottom; slight compression softness in letters.",
+  "scan_first_read": "A comic-themed crossword puzzle titled Hero Trivia.",
+  "observer_confirms_blind": true
+}

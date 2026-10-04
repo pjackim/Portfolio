@@ -1,0 +1,13 @@
+{
+  "id": 60,
+  "file": "reference-assets/60--hardpoint--hpt-action2.png",
+  "project": "hardpoint",
+  "kind": "game-screenshot",
+  "depicts": "Third-person battle scene in a dark stone arena: several medieval fighters with spears, maces and hammers, multiple bodies covered in red blood, blood pools, and a blue glowing grid patch on the floor.",
+  "text_readable": "no text",
+  "composition": "Action cluster in centre-left and lower centre; dark walls fill top left; a large block at right foreground; sky strip top right; some fighters cut off at left edge.",
+  "tone_and_contrast": "Dark grey environment; red blood and blue grid and coloured tabards stand out clearly against it; mid-dark overall exposure.",
+  "sharpness_and_artifacts": "Clean render with fine texture detail; slight softness in distant figures; foreground block at right partly blocks scene; no HUD.",
+  "scan_first_read": "A medieval melee in a dark arena with bodies and blood.",
+  "observer_confirms_blind": true
+}

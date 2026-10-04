@@ -1,0 +1,13 @@
+{
+  "id": 46,
+  "file": "reference-assets/46--cs314--database.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Web app titled T22 2 EAZY: green header with globe logo, Find Place search bar, empty trip titled My Trip, map button bottom right, green footer with connection message.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"Find Place\", \"My Trip\", \"Connected to t22 2 eazy (http://localhost:8000).\". Search icons at right edge are tiny.",
+  "composition": "Portrait-ish; header at top, search bar, trip row, then large empty white area filling most of the frame; map button bottom right; right edge cuts off search buttons.",
+  "tone_and_contrast": "Dark green header/footer with white text against white body; strong contrast; grey placeholder text lower contrast.",
+  "sharpness_and_artifacts": "Crisp text; text cursor I-beam visible in search bar; a tofu/missing glyph box before footer text; search icons cut at right edge.",
+  "scan_first_read": "A green-themed trip planner with an empty trip list and lots of blank space.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 41,
+  "file": "reference-assets/41--correlation-visualizer--software.png",
+  "project": "correlation-visualizer",
+  "kind": "app-ui-screenshot",
+  "depicts": "Two password strings, Green86Boot! and Boot19Green86!, with coloured letters, vertical connector lines and arrows to labelled captions about repeated patterns, numbers, capitals, lowercase and specials; blurred dark background.",
+  "text_readable": "Readable: \"Green86Boot!\", \"Boot19Green86!\", \"Submit\", \"This pattern occurs in both the username and password!\", \"No correlation\". Bottom caption is cut off (\"This capital letter occurs in both\").",
+  "composition": "Landscape; two strings near top-centre, connector lines fan down through frame; captions staggered left and right; last caption truncated at bottom edge; blurred background tiles at edges.",
+  "tone_and_contrast": "Dark grey background with yellow, red, green, blue, pink and grey text; coloured text on dark; thin lines low in visual weight; background tiles blurred and dim.",
+  "sharpness_and_artifacts": "Text and thin lines crisp; background heavily blurred; some thin arrows small; caption cut off by frame; no watermark.",
+  "scan_first_read": "Colour-coded annotated password strings on a dark background; suggests matching parts between two strings.",
+  "observer_confirms_blind": true
+}

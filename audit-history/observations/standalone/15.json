@@ -1,0 +1,13 @@
+{
+  "id": 15,
+  "file": "reference-assets/15--forest-hack--esp.png",
+  "project": "forest-hack",
+  "kind": "game-screenshot",
+  "depicts": "First-person forest game scene with a shirtless humanoid outlined by red skeleton lines, held wooden stick, left panel of cheat menu buttons, and status circle at bottom right.",
+  "text_readable": "'Spawn Menu', 'Draw Distance: 500', 'Bone ESP', 'NEW ITEMS AVAILABLE TO CRAFT. PRESS B TO OPEN SURVIVAL BOOK'; menu tab 'Evironmen' partly clipped.",
+  "composition": "Menu column occupies left quarter; character right of centre; stick diagonal in right foreground; status ring at lower right; dense foliage top.",
+  "tone_and_contrast": "Dark shadowed forest with bright sunlit patches at right; menu text light on dark panel; humanoid dim against shadows apart from red lines.",
+  "sharpness_and_artifacts": "Menu overlays, HUD text and status ring baked in; menu clipped at bottom ('Cave'); foliage aliased; small menu text.",
+  "scan_first_read": "Forest game view with a cheat menu and red skeleton outline on a figure.",
+  "observer_confirms_blind": true
+}

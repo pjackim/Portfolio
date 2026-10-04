@@ -1,0 +1,13 @@
+{
+  "id": 54,
+  "file": "reference-assets/54--fovhack--fov-demo.png",
+  "project": "fovhack",
+  "kind": "game-screenshot",
+  "depicts": "First-person view holding a longsword, facing an armored knight holding a poleaxe on a white tiled floor under a blue sky, with yellow 'Experimental Level' text floating above.",
+  "text_readable": "Readable: 'Experimental Level', 'H J K I O and Num Pad Controls Dummy' (partly hard to read, low contrast against sky/knight). Small subtitle edge is fuzzy.",
+  "composition": "Knight sits centre-left of centre on horizon; sword blade crosses diagonally from bottom centre to top right; gloved hands at bottom; floor takes lower half, sky upper third.",
+  "tone_and_contrast": "Bright, pale floor and blue-gradient sky; dark armor and blade stand out against the pale floor; yellow title moderately separated from sky.",
+  "sharpness_and_artifacts": "Slight softness and GIF-like colour banding in sky gradient and floor; no HUD; floating world text partly blurred.",
+  "scan_first_read": "A first-person sword facing an armored knight on a blank white grid floor.",
+  "observer_confirms_blind": true
+}

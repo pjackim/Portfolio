@@ -1,0 +1,13 @@
+{
+  "id": 34,
+  "file": "reference-assets/34--spectre--centered-bg.png",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "A large white octopus silhouette with two eye slits and a plume of smoke rising from its head, centred on a dark charcoal textured background.",
+  "text_readable": "no text",
+  "composition": "Octopus centred horizontally and vertically, filling roughly the middle of the frame with smoke reaching near the top; dark margins left and right.",
+  "tone_and_contrast": "White on dark charcoal gives high contrast; background has faint mottled smoke texture with low contrast.",
+  "sharpness_and_artifacts": "Crisp edges on the tentacles; smoke plume soft and detailed; faint background texture; no watermark seen.",
+  "scan_first_read": "A white octopus emblem with smoke rising from its head.",
+  "observer_confirms_blind": true
+}

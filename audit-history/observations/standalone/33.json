@@ -1,0 +1,13 @@
+{
+  "id": 33,
+  "file": "reference-assets/33--spectre--black-bg.png",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "A white octopus silhouette with two eye slits and a plume of smoke rising from its head, next to the word ATLAS in spaced white letters, on a dark charcoal textured background.",
+  "text_readable": "Readable: \"ATLAS\" (wide-spaced white capitals, with smoke wisps at the A).",
+  "composition": "Logo and word sit slightly left of centre and in the vertical middle; large empty dark space around, especially above, below and to the right.",
+  "tone_and_contrast": "White on dark charcoal gives high contrast; background has faint mottled smoke texture with low contrast.",
+  "sharpness_and_artifacts": "Crisp octopus edges; smoke plume soft and wispy; faint background texture; no watermark seen.",
+  "scan_first_read": "A white smoking octopus emblem with the name ATLAS on dark.",
+  "observer_confirms_blind": true
+}

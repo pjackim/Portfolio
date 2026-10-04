@@ -1,0 +1,13 @@
+{
+  "id": 13,
+  "file": "reference-assets/13--ant-game--ant-rig1.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Grey untextured ant mesh in 3D viewport with purple circular rig controls around legs and body, on mid-grey background.",
+  "text_readable": "'Symmetry: Object X' at top; 'persp' at bottom; axis gizmo at lower left is tiny.",
+  "composition": "Ant centered with controls extending below; wide viewport with large empty grey margins left and right and below.",
+  "tone_and_contrast": "Flat mid-grey background; light grey model low separation; purple and red control lines stand out.",
+  "sharpness_and_artifacts": "Viewport labels and axis icon baked in; thin red and purple lines aliased; small model within large frame.",
+  "scan_first_read": "A grey ant model with rig controls.",
+  "observer_confirms_blind": true
+}

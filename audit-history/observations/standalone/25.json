@@ -1,0 +1,13 @@
+{
+  "id": 25,
+  "file": "reference-assets/25--nodes--node-diagram.png",
+  "project": "nodes",
+  "kind": "3d-render",
+  "depicts": "Three black glossy spheres with circular textured buttons; one lifts a fingerprint disc off its top with a red ring, one has a bright green ring; text callouts with leader lines.",
+  "text_readable": "Readable: \"Button to complete task\", \"with satisfying click to reward the user\", \"Color Coding\", \"Completed / In Progress / To Do / Unassigned\" in green, yellow, red, grey.",
+  "composition": "Spheres cluster centre and right, with labels at top left and upper right; lower left and bottom are open light grey background. Nothing cut off.",
+  "tone_and_contrast": "Very dark spheres on a light grey background give strong contrast; the grey and dark red labels are lower contrast against the background than the green and yellow ones.",
+  "sharpness_and_artifacts": "Smooth render; soft glow around the green ring; fine circular texture on the button faces; slight JPEG-like noise around text edges. No watermark seen.",
+  "scan_first_read": "Black orbs with glowing coloured rings and labels; reads as a physical button product concept with a colour-coded status.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 40,
+  "file": "reference-assets/40--arch-linux--trim.png",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "Tall narrow crop of the left dashboard panel: search bar, circular textured avatar, u/pjackim label, folder buttons, icon buttons, power buttons and a quote.",
+  "text_readable": "Readable: \"u/pjackim\", \"Documents\", \"Success means having the courage, the\", \"- George Sheehan\". All visible text legible.",
+  "composition": "Portrait crop; panels stacked top to bottom filling frame; quote panel occupies lower third with empty dark space around text; top bar partly cut at top.",
+  "tone_and_contrast": "Grey-slate background with pastel teal, green, yellow and orange buttons; text in orange/yellow on dark; moderate contrast.",
+  "sharpness_and_artifacts": "Crisp UI edges and text; smooth gradient background; avatar shows fine woven texture; no watermark or overlays noted.",
+  "scan_first_read": "A neat stack of coloured launcher buttons with a name and an inspirational quote.",
+  "observer_confirms_blind": true
+}

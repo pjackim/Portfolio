@@ -1,0 +1,13 @@
+{
+  "id": 26,
+  "file": "reference-assets/26--nodes--transparant-bracelet.png",
+  "project": "nodes",
+  "kind": "3d-render",
+  "depicts": "A ring of eleven black spheres forming a bracelet with a black clasp at the lower right; each sphere has a dark circular face with a faint red, yellow, green or grey glow.",
+  "text_readable": "no text",
+  "composition": "Bracelet sits in the left-centre of a white background; right third and margins are empty white; ring viewed at an angle; nothing cut off.",
+  "tone_and_contrast": "Black spheres against pure white give maximum contrast; the coloured glows are faint against the black and low in contrast.",
+  "sharpness_and_artifacts": "Clean, smooth render with soft shading; no visible noise; no watermark or overlay seen.",
+  "scan_first_read": "A black bead bracelet with a few faintly coloured glowing beads.",
+  "observer_confirms_blind": true
+}

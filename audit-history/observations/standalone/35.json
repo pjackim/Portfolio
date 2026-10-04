@@ -1,0 +1,13 @@
+{
+  "id": 35,
+  "file": "reference-assets/35--spectre--logo-white.png",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "Black octopus silhouette with two white eye slits; smoke wisps rise from its head toward upper left, on a white background.",
+  "text_readable": "no text",
+  "composition": "Portrait crop; octopus centred horizontally in lower two-thirds, smoke drifting up-left to near top edge; white margin on all sides, tentacle tips near left and right edges.",
+  "tone_and_contrast": "Black subject on plain white; maximum separation; smoke fades through greys into the white.",
+  "sharpness_and_artifacts": "Smooth vector-like edges on body and tentacles; smoke has soft grey gradients with fine wisps; no visible artifacts, watermark or overlays at native view.",
+  "scan_first_read": "A black octopus figure with smoke coming off its head; a dark mascot mark.",
+  "observer_confirms_blind": true
+}

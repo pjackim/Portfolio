@@ -1,0 +1,206 @@
+{
+  "id": 9,
+  "state": {
+    "project": "ant-game",
+    "kind": "3d-render",
+    "file_pixels": "1108 x 917 px, medium (1000-1600px wide)",
+    "file_sharpness": "crisp",
+    "file_exposure": "balanced",
+    "file_contrast": "high",
+    "empty_bands": "none",
+    "observation": {
+      "depicts": "Glossy dark red-brown ant model with orange-banded antenna segments in foreground, posed on a photo of dry grass hillside.",
+      "text_readable": "no text",
+      "composition": "Ant fills lower and central frame, head at right cut off by right edge, legs cut off at left and bottom; grass fills background.",
+      "tone_and_contrast": "Warm sunlit yellow-green grass background; ant is dark maroon with glossy highlights, separates through darkness; colour separation moderate.",
+      "sharpness_and_artifacts": "Sharp model; grass background slightly soft; no overlays; some legs clipped at edges.",
+      "scan_first_read": "A large glossy dark ant on a grassy field."
+    }
+  },
+  "model": "jev-1.13.0",
+  "scoreIds": [
+    "resolution_headroom",
+    "subject_clarity",
+    "framing",
+    "contrast_exposure",
+    "artifact_cleanliness",
+    "scan_first_impact"
+  ],
+  "answers": {
+    "resolution_headroom": {
+      "type": "score",
+      "score": 2.88,
+      "confidence": 0.82,
+      "legend": {
+        "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+        "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+        "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+        "3": "Good: sharp at native size with reasonable headroom",
+        "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.16,
+        "3": 0.79,
+        "4": 0.04
+      },
+      "decision": "accept"
+    },
+    "subject_clarity": {
+      "type": "score",
+      "score": 3.93,
+      "confidence": 0.94,
+      "legend": {
+        "0": "A viewer cannot tell what the image shows",
+        "1": "Vague: the subject is faint or ambiguous",
+        "2": "The subject is identifiable with some effort",
+        "3": "The subject is clear",
+        "4": "The subject is immediately obvious and striking"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0.07,
+        "4": 0.93
+      },
+      "decision": "accept"
+    },
+    "framing": {
+      "type": "score",
+      "score": 0.78,
+      "confidence": 0.8,
+      "legend": {
+        "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+        "1": "Noticeable cut-off content or large empty areas weaken the subject",
+        "2": "Acceptable: some wasted space or a slightly tight crop",
+        "3": "Well framed: the subject is complete with sensible margins",
+        "4": "Excellent framing: every part of the frame earns its place"
+      },
+      "probabilities": {
+        "0": 0.23,
+        "1": 0.76,
+        "2": 0.01,
+        "3": 0,
+        "4": 0
+      },
+      "decision": "accept"
+    },
+    "contrast_exposure": {
+      "type": "score",
+      "score": 3.02,
+      "confidence": 0.87,
+      "legend": {
+        "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+        "1": "Weak separation between subject and background; hard to distinguish parts",
+        "2": "Adequate, with some low-contrast areas",
+        "3": "Good separation between subject and background",
+        "4": "Excellent: clear, balanced tones and strong separation"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.07,
+        "3": 0.84,
+        "4": 0.09
+      },
+      "decision": "accept"
+    },
+    "artifact_cleanliness": {
+      "type": "score",
+      "score": 3.29,
+      "confidence": 0.41,
+      "legend": {
+        "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+        "1": "Prominent artifacts that a visitor would notice immediately",
+        "2": "Minor artifacts noticeable only on a close look",
+        "3": "Nearly clean: only trace artifacts",
+        "4": "Clean: no artifacts, overlays or leftover interface residue"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.2,
+        "3": 0.27,
+        "4": 0.52
+      },
+      "decision": "reject"
+    },
+    "scan_first_impact": {
+      "type": "score",
+      "score": 3.01,
+      "confidence": 0.93,
+      "legend": {
+        "0": "A two-second glance conveys nothing clear",
+        "1": "A vague impression only",
+        "2": "Some specific takeaway",
+        "3": "A clear, specific takeaway about the work",
+        "4": "An instant, specific and appealing takeaway about the work"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.04,
+        "3": 0.91,
+        "4": 0.05
+      },
+      "decision": "accept"
+    },
+    "is_defective_for_showcase": {
+      "type": "noul",
+      "noul": 0.79,
+      "p": 0.79,
+      "read": "yes"
+    },
+    "fixable_by_gentle_ai_touchup": {
+      "type": "noul",
+      "noul": 0.16,
+      "p": 0.16,
+      "read": "no"
+    },
+    "needs_new_capture_or_recrop": {
+      "type": "noul",
+      "noul": 0.82,
+      "p": 0.82,
+      "read": "yes"
+    },
+    "primary_issue": {
+      "type": "choice",
+      "choice": "poor_framing_or_dead_space",
+      "confidence": 1,
+      "probabilities": {
+        "low_contrast_or_dark": 0,
+        "low_resolution": 0,
+        "unreadable_text": 0,
+        "artifacts_or_overlays": 0,
+        "poor_framing_or_dead_space": 1,
+        "none": 0,
+        "other": 0,
+        "busy_background": 0
+      },
+      "decision": "accept"
+    }
+  },
+  "severity": {
+    "choice": "moderate",
+    "confidence": 0.38,
+    "decision": "reject",
+    "probabilities": {
+      "none": 0,
+      "minor": 0.02,
+      "moderate": 0.53,
+      "severe": 0.45
+    }
+  },
+  "remedy": {
+    "choice": "recrop-or-recapture",
+    "confidence": 0.99,
+    "decision": "accept",
+    "probabilities": {
+      "recrop-or-recapture": 1,
+      "gentle-ai-touchup": 0,
+      "replace": 0
+    }
+  }
+}

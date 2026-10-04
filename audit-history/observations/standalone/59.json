@@ -1,0 +1,13 @@
+{
+  "id": 59,
+  "file": "reference-assets/59--hardpoint--hpt-action1.png",
+  "project": "hardpoint",
+  "kind": "game-screenshot",
+  "depicts": "Low-angle view down a corridor between tall dark stone blocks, with a bright yellow grid on the floor; in the gap far away two armored fighters and a fallen body in red.",
+  "text_readable": "no text",
+  "composition": "Central gap with fighters small at centre; large dark block walls on left and right; yellow floor grid takes bottom third; sky patch visible in top centre.",
+  "tone_and_contrast": "Very dark walls and floor; bright yellow grid lines and blue sky patch stand out; distant fighters small but coloured red and blue.",
+  "sharpness_and_artifacts": "Clean render, mild soft texture on stone; thin yellow grid lines show slight aliasing; no HUD or watermark.",
+  "scan_first_read": "Dark corridor with a glowing yellow floor grid and tiny fighters far away.",
+  "observer_confirms_blind": true
+}

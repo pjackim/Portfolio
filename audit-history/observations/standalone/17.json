@@ -1,0 +1,13 @@
+{
+  "id": 17,
+  "file": "reference-assets/17--forest-hack--ux.png",
+  "project": "forest-hack",
+  "kind": "app-ui-screenshot",
+  "depicts": "Two translucent dark menu panels with cyan headings on a dark blurred forest background: Spawn Menu with Options at left, Main Menu with Player at right.",
+  "text_readable": "'Spawn Menu', 'Despawn All', 'Give All Items', 'Fly Mode: 100'; background nearly unreadable.",
+  "composition": "Two panels side by side filling frame; right panel has cyan outline; small margins; background barely visible.",
+  "tone_and_contrast": "Very dark background; white and cyan text on dark panels, clear contrast; background low visibility.",
+  "sharpness_and_artifacts": "Slight colour fringing at left edge; sliders and buttons crisp; game background blurred and dark.",
+  "scan_first_read": "Dark game menu panels with buttons and sliders.",
+  "observer_confirms_blind": true
+}

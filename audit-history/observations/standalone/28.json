@@ -1,0 +1,13 @@
+{
+  "id": 28,
+  "file": "reference-assets/28--paradox--exilelogo.png",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "An angular letter Z in the middle of two arrow-like shapes, drawn as dark scratched metal slabs with glowing red edges on a black speckled background.",
+  "text_readable": "no text",
+  "composition": "Logo fills most of the square and sits centred; a small amount of black margin on all sides; the arrow tips near the top right and left edge come close to the frame edge.",
+  "tone_and_contrast": "Bright red edges against black with dark grey faces; strong outline contrast, while the grey faces are close to the black background in value.",
+  "sharpness_and_artifacts": "Scratched metallic texture and small dust specks in the background; edges slightly soft; no watermark seen.",
+  "scan_first_read": "A bold red-edged angular Z emblem on black.",
+  "observer_confirms_blind": true
+}

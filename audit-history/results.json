@@ -1,0 +1,4997 @@
+[
+  {
+    "id": 1,
+    "file": "reference-assets/01--alvin--alvin-copy.png",
+    "original": "Images/Alvin/Alvin - Copy.png",
+    "project": "alvin",
+    "native": {
+      "w": 5359,
+      "h": 5359,
+      "bytes": 7127531
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 85.5,
+    "dims": {
+      "resolution_headroom": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "text_legibility": {
+        "level": 2.22,
+        "score100": 55.5,
+        "confidence": 0.8
+      },
+      "subject_clarity": {
+        "level": 3.91,
+        "score100": 97.8,
+        "confidence": 0.92
+      },
+      "framing": {
+        "level": 2.52,
+        "score100": 63,
+        "confidence": 0.56
+      },
+      "contrast_exposure": {
+        "level": 3.87,
+        "score100": 96.8,
+        "confidence": 0.89
+      },
+      "artifact_cleanliness": {
+        "level": 3.98,
+        "score100": 99.5,
+        "confidence": 0.98
+      },
+      "scan_first_impact": {
+        "level": 3.59,
+        "score100": 89.8,
+        "confidence": 0.66
+      }
+    },
+    "min_dim": {
+      "dim": "text_legibility",
+      "level": 2.22
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.98,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.53
+    },
+    "p_defective_at_a_glance": 0.4,
+    "p_fixable_by_gentle_ai_touchup": 0.21,
+    "p_needs_new_capture_or_recrop": 0.1,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 2,
+    "file": "reference-assets/02--alvin--alvin.png",
+    "original": "Images/Alvin/Alvin.png",
+    "project": "alvin",
+    "native": {
+      "w": 8426,
+      "h": 4473,
+      "bytes": 8073413
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/alvin.html"],
+    "composite": 72.6,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.99,
+        "score100": 99.8,
+        "confidence": 0.99
+      },
+      "text_legibility": {
+        "level": 1.79,
+        "score100": 44.8,
+        "confidence": 0.74
+      },
+      "subject_clarity": {
+        "level": 3.4,
+        "score100": 85,
+        "confidence": 0.63
+      },
+      "framing": {
+        "level": 0.9,
+        "score100": 22.5,
+        "confidence": 0.91
+      },
+      "contrast_exposure": {
+        "level": 3.94,
+        "score100": 98.5,
+        "confidence": 0.95
+      },
+      "artifact_cleanliness": {
+        "level": 3.7,
+        "score100": 92.5,
+        "confidence": 0.75
+      },
+      "scan_first_impact": {
+        "level": 2.94,
+        "score100": 73.5,
+        "confidence": 0.9
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.9
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.8,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.87,
+    "p_fixable_by_gentle_ai_touchup": 0.13,
+    "p_needs_new_capture_or_recrop": 0.75,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 3,
+    "file": "reference-assets/03--alvin--nug.png",
+    "original": "Images/Alvin/nug.png",
+    "project": "alvin",
+    "native": {
+      "w": 1364,
+      "h": 1288,
+      "bytes": 1014498
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/alvin.html"],
+    "composite": 65.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.24,
+        "score100": 81,
+        "confidence": 0.72
+      },
+      "text_legibility": {
+        "level": 0.59,
+        "score100": 14.8,
+        "confidence": 0.58
+      },
+      "subject_clarity": {
+        "level": 3.55,
+        "score100": 88.8,
+        "confidence": 0.62
+      },
+      "framing": {
+        "level": 0.98,
+        "score100": 24.5,
+        "confidence": 0.93
+      },
+      "contrast_exposure": {
+        "level": 3.31,
+        "score100": 82.8,
+        "confidence": 0.67
+      },
+      "artifact_cleanliness": {
+        "level": 3.72,
+        "score100": 93,
+        "confidence": 0.77
+      },
+      "scan_first_impact": {
+        "level": 3.1,
+        "score100": 77.5,
+        "confidence": 0.84
+      }
+    },
+    "min_dim": {
+      "dim": "text_legibility",
+      "level": 0.59
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.81,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.98,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.9
+    },
+    "p_defective_at_a_glance": 0.81,
+    "p_fixable_by_gentle_ai_touchup": 0.35,
+    "p_needs_new_capture_or_recrop": 0.8,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 4,
+    "file": "reference-assets/04--alvin--zoom.png",
+    "original": "Images/Alvin/zoom.png",
+    "project": "alvin",
+    "native": {
+      "w": 2242,
+      "h": 1341,
+      "bytes": 1464829
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/alvin.html"],
+    "composite": 72.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.95,
+        "score100": 98.8,
+        "confidence": 0.96
+      },
+      "text_legibility": {
+        "level": 2.8,
+        "score100": 70,
+        "confidence": 0.41
+      },
+      "subject_clarity": {
+        "level": 3.12,
+        "score100": 78,
+        "confidence": 0.64
+      },
+      "framing": {
+        "level": 0.51,
+        "score100": 12.8,
+        "confidence": 0.59
+      },
+      "contrast_exposure": {
+        "level": 3.39,
+        "score100": 84.8,
+        "confidence": 0.65
+      },
+      "artifact_cleanliness": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.82
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.79
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.51
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.98,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.99
+    },
+    "p_defective_at_a_glance": 0.89,
+    "p_fixable_by_gentle_ai_touchup": 0.15,
+    "p_needs_new_capture_or_recrop": 0.91,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 5,
+    "file": "reference-assets/05--ant-game--ant1.png",
+    "original": "Images/Ant Game/Ant Model/ant1.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1274,
+      "h": 772,
+      "bytes": 407237
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 59.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.92,
+        "score100": 73,
+        "confidence": 0.83
+      },
+      "subject_clarity": {
+        "level": 3.46,
+        "score100": 86.5,
+        "confidence": 0.61
+      },
+      "framing": {
+        "level": 1.7,
+        "score100": 42.5,
+        "confidence": 0.54
+      },
+      "contrast_exposure": {
+        "level": 1.93,
+        "score100": 48.3,
+        "confidence": 0.86
+      },
+      "artifact_cleanliness": {
+        "level": 1.2,
+        "score100": 30,
+        "confidence": 0.81
+      },
+      "scan_first_impact": {
+        "level": 2.99,
+        "score100": 74.8,
+        "confidence": 0.92
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.2
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.48,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.97
+    },
+    "p_defective_at_a_glance": 0.69,
+    "p_fixable_by_gentle_ai_touchup": 0.43,
+    "p_needs_new_capture_or_recrop": 0.3,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 6,
+    "file": "reference-assets/06--ant-game--ant2.png",
+    "original": "Images/Ant Game/Ant Model/ant2.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1180,
+      "h": 781,
+      "bytes": 1190175
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html", "index.html"],
+    "composite": 73.5,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.98,
+        "score100": 74.5,
+        "confidence": 0.84
+      },
+      "subject_clarity": {
+        "level": 3.98,
+        "score100": 99.5,
+        "confidence": 0.98
+      },
+      "framing": {
+        "level": 0.76,
+        "score100": 19,
+        "confidence": 0.76
+      },
+      "contrast_exposure": {
+        "level": 2.36,
+        "score100": 59,
+        "confidence": 0.5
+      },
+      "artifact_cleanliness": {
+        "level": 3.95,
+        "score100": 98.8,
+        "confidence": 0.96
+      },
+      "scan_first_impact": {
+        "level": 3.42,
+        "score100": 85.5,
+        "confidence": 0.63
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.76
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.34,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.96
+    },
+    "p_defective_at_a_glance": 0.79,
+    "p_fixable_by_gentle_ai_touchup": 0.2,
+    "p_needs_new_capture_or_recrop": 0.79,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 7,
+    "file": "reference-assets/07--ant-game--ant3.png",
+    "original": "Images/Ant Game/Ant Model/ant3.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1174,
+      "h": 806,
+      "bytes": 1762427
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 63.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.83,
+        "score100": 70.8,
+        "confidence": 0.79
+      },
+      "subject_clarity": {
+        "level": 3.56,
+        "score100": 89,
+        "confidence": 0.64
+      },
+      "framing": {
+        "level": 0.74,
+        "score100": 18.5,
+        "confidence": 0.77
+      },
+      "contrast_exposure": {
+        "level": 3.32,
+        "score100": 83,
+        "confidence": 0.64
+      },
+      "artifact_cleanliness": {
+        "level": 2.07,
+        "score100": 51.8,
+        "confidence": 0.62
+      },
+      "scan_first_impact": {
+        "level": 3.06,
+        "score100": 76.5,
+        "confidence": 0.88
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.74
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.74,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.93
+    },
+    "p_defective_at_a_glance": 0.84,
+    "p_fixable_by_gentle_ai_touchup": 0.22,
+    "p_needs_new_capture_or_recrop": 0.86,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 8,
+    "file": "reference-assets/08--ant-game--ant4.png",
+    "original": "Images/Ant Game/Ant Model/ant4.png",
+    "project": "ant-game",
+    "native": {
+      "w": 617,
+      "h": 781,
+      "bytes": 185356
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 67.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.68,
+        "score100": 42,
+        "confidence": 0.64
+      },
+      "subject_clarity": {
+        "level": 3.13,
+        "score100": 78.3,
+        "confidence": 0.85
+      },
+      "framing": {
+        "level": 2.6,
+        "score100": 65,
+        "confidence": 0.62
+      },
+      "contrast_exposure": {
+        "level": 1.65,
+        "score100": 41.3,
+        "confidence": 0.69
+      },
+      "artifact_cleanliness": {
+        "level": 3.87,
+        "score100": 96.8,
+        "confidence": 0.89
+      },
+      "scan_first_impact": {
+        "level": 2.89,
+        "score100": 72.3,
+        "confidence": 0.87
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 1.65
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.54,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.62,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "low_resolution",
+      "confidence": 0.47
+    },
+    "p_defective_at_a_glance": 0.7,
+    "p_fixable_by_gentle_ai_touchup": 0.73,
+    "p_needs_new_capture_or_recrop": 0.44,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 9,
+    "file": "reference-assets/09--ant-game--texture1.png",
+    "original": "Images/Ant Game/Ant Model/texture1.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1108,
+      "h": 917,
+      "bytes": 3041807
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 70.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.88,
+        "score100": 72,
+        "confidence": 0.82
+      },
+      "subject_clarity": {
+        "level": 3.93,
+        "score100": 98.3,
+        "confidence": 0.94
+      },
+      "framing": {
+        "level": 0.78,
+        "score100": 19.5,
+        "confidence": 0.8
+      },
+      "contrast_exposure": {
+        "level": 3.02,
+        "score100": 75.5,
+        "confidence": 0.87
+      },
+      "artifact_cleanliness": {
+        "level": 3.29,
+        "score100": 82.3,
+        "confidence": 0.41
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.93
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.78
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.38,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.79,
+    "p_fixable_by_gentle_ai_touchup": 0.16,
+    "p_needs_new_capture_or_recrop": 0.82,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 10,
+    "file": "reference-assets/10--ant-game--texture2.png",
+    "original": "Images/Ant Game/Ant Model/texture2.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1379,
+      "h": 933,
+      "bytes": 3950721
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 81.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.1,
+        "score100": 77.5,
+        "confidence": 0.83
+      },
+      "subject_clarity": {
+        "level": 3.98,
+        "score100": 99.5,
+        "confidence": 0.98
+      },
+      "framing": {
+        "level": 1.23,
+        "score100": 30.8,
+        "confidence": 0.66
+      },
+      "contrast_exposure": {
+        "level": 3.81,
+        "score100": 95.3,
+        "confidence": 0.84
+      },
+      "artifact_cleanliness": {
+        "level": 3.99,
+        "score100": 99.8,
+        "confidence": 0.99
+      },
+      "scan_first_impact": {
+        "level": 3.53,
+        "score100": 88.3,
+        "confidence": 0.6
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.23
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.31,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.88,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.93
+    },
+    "p_defective_at_a_glance": 0.37,
+    "p_fixable_by_gentle_ai_touchup": 0.16,
+    "p_needs_new_capture_or_recrop": 0.37,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 11,
+    "file": "reference-assets/11--ant-game--texture3.png",
+    "original": "Images/Ant Game/Ant Model/texture3.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1390,
+      "h": 933,
+      "bytes": 3632325
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 72.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.97,
+        "score100": 74.3,
+        "confidence": 0.84
+      },
+      "subject_clarity": {
+        "level": 3.83,
+        "score100": 95.8,
+        "confidence": 0.85
+      },
+      "framing": {
+        "level": 0.63,
+        "score100": 15.8,
+        "confidence": 0.69
+      },
+      "contrast_exposure": {
+        "level": 3.98,
+        "score100": 99.5,
+        "confidence": 0.99
+      },
+      "artifact_cleanliness": {
+        "level": 3.24,
+        "score100": 81,
+        "confidence": 0.36
+      },
+      "scan_first_impact": {
+        "level": 3.08,
+        "score100": 77,
+        "confidence": 0.89
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.63
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.44,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.83,
+    "p_fixable_by_gentle_ai_touchup": 0.12,
+    "p_needs_new_capture_or_recrop": 0.85,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 12,
+    "file": "reference-assets/12--ant-game--texture4.png",
+    "original": "Images/Ant Game/Ant Model/texture4.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1394,
+      "h": 934,
+      "bytes": 3593950
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 67.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.26,
+        "score100": 56.5,
+        "confidence": 0.7
+      },
+      "subject_clarity": {
+        "level": 3.08,
+        "score100": 77,
+        "confidence": 0.89
+      },
+      "framing": {
+        "level": 1.4,
+        "score100": 35,
+        "confidence": 0.6
+      },
+      "contrast_exposure": {
+        "level": 2.6,
+        "score100": 65,
+        "confidence": 0.65
+      },
+      "artifact_cleanliness": {
+        "level": 3.97,
+        "score100": 99.3,
+        "confidence": 0.98
+      },
+      "scan_first_impact": {
+        "level": 2.82,
+        "score100": 70.5,
+        "confidence": 0.83
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.4
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.61,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.97
+    },
+    "p_defective_at_a_glance": 0.42,
+    "p_fixable_by_gentle_ai_touchup": 0.39,
+    "p_needs_new_capture_or_recrop": 0.52,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 13,
+    "file": "reference-assets/13--ant-game--ant-rig1.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig1.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1904,
+      "h": 980,
+      "bytes": 160392
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 41.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.01,
+        "score100": 25.3,
+        "confidence": 0.97
+      },
+      "text_legibility": {
+        "level": 2.46,
+        "score100": 61.5,
+        "confidence": 0.53
+      },
+      "subject_clarity": {
+        "level": 2.96,
+        "score100": 74,
+        "confidence": 0.89
+      },
+      "framing": {
+        "level": 0.68,
+        "score100": 17,
+        "confidence": 0.73
+      },
+      "contrast_exposure": {
+        "level": 1,
+        "score100": 25,
+        "confidence": 0.98
+      },
+      "artifact_cleanliness": {
+        "level": 0.7,
+        "score100": 17.5,
+        "confidence": 0.71
+      },
+      "scan_first_impact": {
+        "level": 2.67,
+        "score100": 66.8,
+        "confidence": 0.73
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.68
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.87,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.39
+    },
+    "p_defective_at_a_glance": 0.87,
+    "p_fixable_by_gentle_ai_touchup": 0.38,
+    "p_needs_new_capture_or_recrop": 0.79,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 14,
+    "file": "reference-assets/14--ant-game--ant-rig2.png",
+    "original": "Images/Ant Game/Ant Rig/ant_rig2.png",
+    "project": "ant-game",
+    "native": {
+      "w": 1909,
+      "h": 977,
+      "bytes": 158074
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/ant_game.html"],
+    "composite": 46.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.02,
+        "score100": 25.5,
+        "confidence": 0.97
+      },
+      "text_legibility": {
+        "level": 2.91,
+        "score100": 72.8,
+        "confidence": 0.57
+      },
+      "subject_clarity": {
+        "level": 3.21,
+        "score100": 80.3,
+        "confidence": 0.8
+      },
+      "framing": {
+        "level": 0.9,
+        "score100": 22.5,
+        "confidence": 0.91
+      },
+      "contrast_exposure": {
+        "level": 1.38,
+        "score100": 34.5,
+        "confidence": 0.67
+      },
+      "artifact_cleanliness": {
+        "level": 0.51,
+        "score100": 12.8,
+        "confidence": 0.58
+      },
+      "scan_first_impact": {
+        "level": 2.85,
+        "score100": 71.3,
+        "confidence": 0.87
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 0.51
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.92,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.58
+    },
+    "p_defective_at_a_glance": 0.86,
+    "p_fixable_by_gentle_ai_touchup": 0.4,
+    "p_needs_new_capture_or_recrop": 0.77,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 15,
+    "file": "reference-assets/15--forest-hack--esp.png",
+    "original": "Images/Forest Hack/ESP.png",
+    "project": "forest-hack",
+    "native": {
+      "w": 1709,
+      "h": 1021,
+      "bytes": 4659085
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/foresthack.html", "index.html"],
+    "composite": 59.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.66,
+        "score100": 66.5,
+        "confidence": 0.6
+      },
+      "text_legibility": {
+        "level": 2.71,
+        "score100": 67.8,
+        "confidence": 0.67
+      },
+      "subject_clarity": {
+        "level": 3.82,
+        "score100": 95.5,
+        "confidence": 0.85
+      },
+      "framing": {
+        "level": 1.86,
+        "score100": 46.5,
+        "confidence": 0.28
+      },
+      "contrast_exposure": {
+        "level": 1.9,
+        "score100": 47.5,
+        "confidence": 0.48
+      },
+      "artifact_cleanliness": {
+        "level": 0.52,
+        "score100": 13,
+        "confidence": 0.58
+      },
+      "scan_first_impact": {
+        "level": 3.13,
+        "score100": 78.3,
+        "confidence": 0.88
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 0.52
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.89,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.96
+    },
+    "p_defective_at_a_glance": 0.76,
+    "p_fixable_by_gentle_ai_touchup": 0.32,
+    "p_needs_new_capture_or_recrop": 0.71,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 16,
+    "file": "reference-assets/16--forest-hack--screenshot-1.png",
+    "original": "Images/Forest Hack/Screenshot_1.png",
+    "project": "forest-hack",
+    "native": {
+      "w": 1916,
+      "h": 1075,
+      "bytes": 5577560
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/foresthack.html"],
+    "composite": 65.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.6,
+        "score100": 65,
+        "confidence": 0.53
+      },
+      "text_legibility": {
+        "level": 2.29,
+        "score100": 57.3,
+        "confidence": 0.76
+      },
+      "subject_clarity": {
+        "level": 3.56,
+        "score100": 89,
+        "confidence": 0.64
+      },
+      "framing": {
+        "level": 3.34,
+        "score100": 83.5,
+        "confidence": 0.67
+      },
+      "contrast_exposure": {
+        "level": 2.67,
+        "score100": 66.8,
+        "confidence": 0.67
+      },
+      "artifact_cleanliness": {
+        "level": 0.94,
+        "score100": 23.5,
+        "confidence": 0.73
+      },
+      "scan_first_impact": {
+        "level": 3,
+        "score100": 75,
+        "confidence": 0.94
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 0.94
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.81,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.84
+    },
+    "p_defective_at_a_glance": 0.72,
+    "p_fixable_by_gentle_ai_touchup": 0.47,
+    "p_needs_new_capture_or_recrop": 0.54,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 17,
+    "file": "reference-assets/17--forest-hack--ux.png",
+    "original": "Images/Forest Hack/UX.png",
+    "project": "forest-hack",
+    "native": {
+      "w": 905,
+      "h": 554,
+      "bytes": 858310
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/foresthack.html"],
+    "composite": 60.6,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.22,
+        "score100": 55.5,
+        "confidence": 0.68
+      },
+      "text_legibility": {
+        "level": 1.69,
+        "score100": 42.3,
+        "confidence": 0.61
+      },
+      "subject_clarity": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.86
+      },
+      "framing": {
+        "level": 3.22,
+        "score100": 80.5,
+        "confidence": 0.62
+      },
+      "contrast_exposure": {
+        "level": 2.27,
+        "score100": 56.8,
+        "confidence": 0.33
+      },
+      "artifact_cleanliness": {
+        "level": 2.17,
+        "score100": 54.3,
+        "confidence": 0.85
+      },
+      "scan_first_impact": {
+        "level": 2.33,
+        "score100": 58.3,
+        "confidence": 0.63
+      }
+    },
+    "min_dim": {
+      "dim": "text_legibility",
+      "level": 1.69
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.29,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.86,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.58
+    },
+    "p_defective_at_a_glance": 0.85,
+    "p_fixable_by_gentle_ai_touchup": 0.66,
+    "p_needs_new_capture_or_recrop": 0.27,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 18,
+    "file": "reference-assets/18--go-green--brochure.png",
+    "original": "Images/Go Green/Brochure.png",
+    "project": "go-green",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4979736
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 89.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.65,
+        "score100": 91.3,
+        "confidence": 0.71
+      },
+      "subject_clarity": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "framing": {
+        "level": 3.97,
+        "score100": 99.3,
+        "confidence": 0.98
+      },
+      "contrast_exposure": {
+        "level": 2.92,
+        "score100": 73,
+        "confidence": 0.61
+      },
+      "artifact_cleanliness": {
+        "level": 3.35,
+        "score100": 83.8,
+        "confidence": 0.46
+      },
+      "scan_first_impact": {
+        "level": 3.49,
+        "score100": 87.3,
+        "confidence": 0.59
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 2.92
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.46,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.35,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.83
+    },
+    "p_defective_at_a_glance": 0.56,
+    "p_fixable_by_gentle_ai_touchup": 0.3,
+    "p_needs_new_capture_or_recrop": 0.09,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 19,
+    "file": "reference-assets/19--go-green--brochure.png",
+    "original": "Images/Go Green/brochure.png",
+    "project": "go-green",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4979736
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/go_green.html"],
+    "composite": 90.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.68,
+        "score100": 92,
+        "confidence": 0.73
+      },
+      "subject_clarity": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "framing": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "contrast_exposure": {
+        "level": 2.94,
+        "score100": 73.5,
+        "confidence": 0.62
+      },
+      "artifact_cleanliness": {
+        "level": 3.39,
+        "score100": 84.8,
+        "confidence": 0.49
+      },
+      "scan_first_impact": {
+        "level": 3.47,
+        "score100": 86.8,
+        "confidence": 0.61
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 2.94
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.49,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.34,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.81
+    },
+    "p_defective_at_a_glance": 0.56,
+    "p_fixable_by_gentle_ai_touchup": 0.27,
+    "p_needs_new_capture_or_recrop": 0.1,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 20,
+    "file": "reference-assets/20--go-green--brochure-text.png",
+    "original": "Images/Go Green/brochure_text.png",
+    "project": "go-green",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 4486847
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/go_green.html"],
+    "composite": 84.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.52,
+        "score100": 88,
+        "confidence": 0.6
+      },
+      "text_legibility": {
+        "level": 3.65,
+        "score100": 91.3,
+        "confidence": 0.71
+      },
+      "subject_clarity": {
+        "level": 3.95,
+        "score100": 98.8,
+        "confidence": 0.96
+      },
+      "framing": {
+        "level": 3.51,
+        "score100": 87.8,
+        "confidence": 0.59
+      },
+      "contrast_exposure": {
+        "level": 3.71,
+        "score100": 92.8,
+        "confidence": 0.76
+      },
+      "artifact_cleanliness": {
+        "level": 2.18,
+        "score100": 54.5,
+        "confidence": 0.61
+      },
+      "scan_first_impact": {
+        "level": 3.14,
+        "score100": 78.5,
+        "confidence": 0.84
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 2.18
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.23,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.33,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.33
+    },
+    "p_defective_at_a_glance": 0.54,
+    "p_fixable_by_gentle_ai_touchup": 0.17,
+    "p_needs_new_capture_or_recrop": 0.13,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 21,
+    "file": "reference-assets/21--go-green--original.png",
+    "original": "Images/Go Green/original.jpg",
+    "project": "go-green",
+    "native": {
+      "w": 3840,
+      "h": 2160,
+      "bytes": 3430351
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/go_green.html", "index.html"],
+    "composite": 93.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.92,
+        "score100": 98,
+        "confidence": 0.94
+      },
+      "subject_clarity": {
+        "level": 3.98,
+        "score100": 99.5,
+        "confidence": 0.98
+      },
+      "framing": {
+        "level": 3.94,
+        "score100": 98.5,
+        "confidence": 0.95
+      },
+      "contrast_exposure": {
+        "level": 3.47,
+        "score100": 86.8,
+        "confidence": 0.56
+      },
+      "artifact_cleanliness": {
+        "level": 3.41,
+        "score100": 85.3,
+        "confidence": 0.51
+      },
+      "scan_first_impact": {
+        "level": 3.55,
+        "score100": 88.8,
+        "confidence": 0.62
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 3.41
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.54,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.38,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.76
+    },
+    "p_defective_at_a_glance": 0.49,
+    "p_fixable_by_gentle_ai_touchup": 0.22,
+    "p_needs_new_capture_or_recrop": 0.13,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 22,
+    "file": "reference-assets/22--lost-city--city-creep.png",
+    "original": "Images/Lost City/city_creep.png",
+    "project": "lost-city",
+    "native": {
+      "w": 2880,
+      "h": 1800,
+      "bytes": 8619474
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/lost_city.html", "index.html"],
+    "composite": 57.6,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.53,
+        "score100": 88.3,
+        "confidence": 0.61
+      },
+      "text_legibility": {
+        "level": 3.1,
+        "score100": 77.5,
+        "confidence": 0.54
+      },
+      "subject_clarity": {
+        "level": 1.88,
+        "score100": 47,
+        "confidence": 0.74
+      },
+      "framing": {
+        "level": 2.36,
+        "score100": 59,
+        "confidence": 0.49
+      },
+      "contrast_exposure": {
+        "level": 0.93,
+        "score100": 23.3,
+        "confidence": 0.94
+      },
+      "artifact_cleanliness": {
+        "level": 1.66,
+        "score100": 41.5,
+        "confidence": 0.57
+      },
+      "scan_first_impact": {
+        "level": 2.2,
+        "score100": 55,
+        "confidence": 0.7
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 0.93
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.6,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.28,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.97
+    },
+    "p_defective_at_a_glance": 0.67,
+    "p_fixable_by_gentle_ai_touchup": 0.36,
+    "p_needs_new_capture_or_recrop": 0.23,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 23,
+    "file": "reference-assets/23--lost-city--forest.png",
+    "original": "Images/Lost City/forest.png",
+    "project": "lost-city",
+    "native": {
+      "w": 2880,
+      "h": 1800,
+      "bytes": 8289141
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/lost_city.html"],
+    "composite": 65,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.73,
+        "score100": 93.3,
+        "confidence": 0.77
+      },
+      "text_legibility": {
+        "level": 3.32,
+        "score100": 83,
+        "confidence": 0.43
+      },
+      "subject_clarity": {
+        "level": 1.85,
+        "score100": 46.3,
+        "confidence": 0.76
+      },
+      "framing": {
+        "level": 3.69,
+        "score100": 92.3,
+        "confidence": 0.74
+      },
+      "contrast_exposure": {
+        "level": 0.94,
+        "score100": 23.5,
+        "confidence": 0.95
+      },
+      "artifact_cleanliness": {
+        "level": 1.85,
+        "score100": 46.3,
+        "confidence": 0.49
+      },
+      "scan_first_impact": {
+        "level": 2.25,
+        "score100": 56.3,
+        "confidence": 0.7
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 0.94
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.68,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.66,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.98
+    },
+    "p_defective_at_a_glance": 0.72,
+    "p_fixable_by_gentle_ai_touchup": 0.31,
+    "p_needs_new_capture_or_recrop": 0.13,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 24,
+    "file": "reference-assets/24--lost-city--website.png",
+    "original": "Images/Lost City/website.gif",
+    "project": "lost-city",
+    "native": {
+      "w": 906,
+      "h": 948,
+      "bytes": 26173195
+    },
+    "animated": true,
+    "referenced_by": [],
+    "composite": 62.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.04,
+        "score100": 51,
+        "confidence": 0.7
+      },
+      "text_legibility": {
+        "level": 2.12,
+        "score100": 53,
+        "confidence": 0.9
+      },
+      "subject_clarity": {
+        "level": 3.43,
+        "score100": 85.8,
+        "confidence": 0.64
+      },
+      "framing": {
+        "level": 3.08,
+        "score100": 77,
+        "confidence": 0.79
+      },
+      "contrast_exposure": {
+        "level": 2.47,
+        "score100": 61.8,
+        "confidence": 0.6
+      },
+      "artifact_cleanliness": {
+        "level": 1.36,
+        "score100": 34,
+        "confidence": 0.7
+      },
+      "scan_first_impact": {
+        "level": 2.91,
+        "score100": 72.8,
+        "confidence": 0.92
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.36
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.47,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.94,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.83
+    },
+    "p_defective_at_a_glance": 0.41,
+    "p_fixable_by_gentle_ai_touchup": 0.19,
+    "p_needs_new_capture_or_recrop": 0.59,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 25,
+    "file": "reference-assets/25--nodes--node-diagram.png",
+    "original": "Images/Nodes/node_diagram.png",
+    "project": "nodes",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 3214630
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/nodes.html"],
+    "composite": 72.6,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.2,
+        "score100": 80,
+        "confidence": 0.76
+      },
+      "text_legibility": {
+        "level": 3.35,
+        "score100": 83.8,
+        "confidence": 0.7
+      },
+      "subject_clarity": {
+        "level": 3.64,
+        "score100": 91,
+        "confidence": 0.7
+      },
+      "framing": {
+        "level": 1.98,
+        "score100": 49.5,
+        "confidence": 0.68
+      },
+      "contrast_exposure": {
+        "level": 2.83,
+        "score100": 70.8,
+        "confidence": 0.64
+      },
+      "artifact_cleanliness": {
+        "level": 2.07,
+        "score100": 51.8,
+        "confidence": 0.93
+      },
+      "scan_first_impact": {
+        "level": 3.22,
+        "score100": 80.5,
+        "confidence": 0.75
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.98
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.78,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "other",
+      "confidence": 0.29
+    },
+    "p_defective_at_a_glance": 0.65,
+    "p_fixable_by_gentle_ai_touchup": 0.68,
+    "p_needs_new_capture_or_recrop": 0.07,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 26,
+    "file": "reference-assets/26--nodes--transparant-bracelet.png",
+    "original": "Images/Nodes/transparant_bracelet.png",
+    "project": "nodes",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 1395072
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/nodes.html", "index.html"],
+    "composite": 69.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.77,
+        "score100": 69.3,
+        "confidence": 0.63
+      },
+      "subject_clarity": {
+        "level": 3.26,
+        "score100": 81.5,
+        "confidence": 0.75
+      },
+      "framing": {
+        "level": 0.7,
+        "score100": 17.5,
+        "confidence": 0.75
+      },
+      "contrast_exposure": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.58
+      },
+      "artifact_cleanliness": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "scan_first_impact": {
+        "level": 2.89,
+        "score100": 72.3,
+        "confidence": 0.85
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.7
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.44,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.89,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.84,
+    "p_fixable_by_gentle_ai_touchup": 0.4,
+    "p_needs_new_capture_or_recrop": 0.34,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 27,
+    "file": "reference-assets/27--over-the-rainbow--over-the-rainbow.png",
+    "original": "Images/Over The Rainbow/over_the_rainbow.png",
+    "project": "over-the-rainbow",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 1159673
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/over_the_rainbow.html", "index.html"],
+    "composite": 56.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.13,
+        "score100": 28.3,
+        "confidence": 0.89
+      },
+      "subject_clarity": {
+        "level": 3.16,
+        "score100": 79,
+        "confidence": 0.83
+      },
+      "framing": {
+        "level": 1.02,
+        "score100": 25.5,
+        "confidence": 0.92
+      },
+      "contrast_exposure": {
+        "level": 2.27,
+        "score100": 56.8,
+        "confidence": 0.76
+      },
+      "artifact_cleanliness": {
+        "level": 2.42,
+        "score100": 60.5,
+        "confidence": 0.6
+      },
+      "scan_first_impact": {
+        "level": 3.51,
+        "score100": 87.8,
+        "confidence": 0.59
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.02
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.85,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.42,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.76,
+    "p_fixable_by_gentle_ai_touchup": 0.41,
+    "p_needs_new_capture_or_recrop": 0.46,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 28,
+    "file": "reference-assets/28--paradox--exilelogo.png",
+    "original": "Images/Paradox/exileLogo.png",
+    "project": "paradox",
+    "native": {
+      "w": 800,
+      "h": 800,
+      "bytes": 711796
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/paradox.html"],
+    "composite": 66.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.03,
+        "score100": 25.8,
+        "confidence": 0.97
+      },
+      "subject_clarity": {
+        "level": 3.7,
+        "score100": 92.5,
+        "confidence": 0.75
+      },
+      "framing": {
+        "level": 3.13,
+        "score100": 78.3,
+        "confidence": 0.67
+      },
+      "contrast_exposure": {
+        "level": 2,
+        "score100": 50,
+        "confidence": 0.8
+      },
+      "artifact_cleanliness": {
+        "level": 2.36,
+        "score100": 59,
+        "confidence": 0.61
+      },
+      "scan_first_impact": {
+        "level": 3.47,
+        "score100": 86.8,
+        "confidence": 0.6
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 1.03
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.5,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.95,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.53
+    },
+    "p_defective_at_a_glance": 0.77,
+    "p_fixable_by_gentle_ai_touchup": 0.82,
+    "p_needs_new_capture_or_recrop": 0.15,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 29,
+    "file": "reference-assets/29--paradox--paradox1.png",
+    "original": "Images/Paradox/paradox1.png",
+    "project": "paradox",
+    "native": {
+      "w": 1917,
+      "h": 1078,
+      "bytes": 642080
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 30,
+    "dims": {
+      "resolution_headroom": {
+        "level": 0.95,
+        "score100": 23.8,
+        "confidence": 0.94
+      },
+      "text_legibility": {
+        "level": 2.04,
+        "score100": 51,
+        "confidence": 0.96
+      },
+      "subject_clarity": {
+        "level": 1.79,
+        "score100": 44.8,
+        "confidence": 0.79
+      },
+      "framing": {
+        "level": 0.09,
+        "score100": 2.3,
+        "confidence": 0.92
+      },
+      "contrast_exposure": {
+        "level": 0.85,
+        "score100": 21.3,
+        "confidence": 0.86
+      },
+      "artifact_cleanliness": {
+        "level": 1.21,
+        "score100": 30.3,
+        "confidence": 0.74
+      },
+      "scan_first_impact": {
+        "level": 1.34,
+        "score100": 33.5,
+        "confidence": 0.66
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.09
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.91,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.8,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.79
+    },
+    "p_defective_at_a_glance": 0.92,
+    "p_fixable_by_gentle_ai_touchup": 0.61,
+    "p_needs_new_capture_or_recrop": 0.71,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 30,
+    "file": "reference-assets/30--paradox--paradox2.png",
+    "original": "Images/Paradox/paradox2.png",
+    "project": "paradox",
+    "native": {
+      "w": 1917,
+      "h": 1078,
+      "bytes": 633558
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/paradox.html"],
+    "composite": 29.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 0.95,
+        "score100": 23.8,
+        "confidence": 0.95
+      },
+      "text_legibility": {
+        "level": 2.03,
+        "score100": 50.7,
+        "confidence": 0.97
+      },
+      "subject_clarity": {
+        "level": 1.75,
+        "score100": 43.8,
+        "confidence": 0.76
+      },
+      "framing": {
+        "level": 0.1,
+        "score100": 2.5,
+        "confidence": 0.91
+      },
+      "contrast_exposure": {
+        "level": 0.83,
+        "score100": 20.8,
+        "confidence": 0.85
+      },
+      "artifact_cleanliness": {
+        "level": 1.16,
+        "score100": 29,
+        "confidence": 0.8
+      },
+      "scan_first_impact": {
+        "level": 1.26,
+        "score100": 31.5,
+        "confidence": 0.71
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.1
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.9,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.85,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.78
+    },
+    "p_defective_at_a_glance": 0.92,
+    "p_fixable_by_gentle_ai_touchup": 0.64,
+    "p_needs_new_capture_or_recrop": 0.72,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 31,
+    "file": "reference-assets/31--paradox--paradox3.png",
+    "original": "Images/Paradox/paradox3.png",
+    "project": "paradox",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 136130
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/paradox.html"],
+    "composite": 77.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.98,
+        "score100": 74.5,
+        "confidence": 0.64
+      },
+      "text_legibility": {
+        "level": 3.58,
+        "score100": 89.5,
+        "confidence": 0.65
+      },
+      "subject_clarity": {
+        "level": 3.67,
+        "score100": 91.8,
+        "confidence": 0.73
+      },
+      "framing": {
+        "level": 0.63,
+        "score100": 15.8,
+        "confidence": 0.64
+      },
+      "contrast_exposure": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.82
+      },
+      "artifact_cleanliness": {
+        "level": 3.95,
+        "score100": 98.8,
+        "confidence": 0.96
+      },
+      "scan_first_impact": {
+        "level": 3.23,
+        "score100": 80.8,
+        "confidence": 0.78
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.63
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.73,
+    "p_fixable_by_gentle_ai_touchup": 0.39,
+    "p_needs_new_capture_or_recrop": 0.49,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 32,
+    "file": "reference-assets/32--paradox--red-paradox.png",
+    "original": "Images/Paradox/red_paradox.png",
+    "project": "paradox",
+    "native": {
+      "w": 800,
+      "h": 800,
+      "bytes": 132805
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 82.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.67,
+        "score100": 66.8,
+        "confidence": 0.6
+      },
+      "text_legibility": {
+        "level": 3.93,
+        "score100": 98.3,
+        "confidence": 0.94
+      },
+      "subject_clarity": {
+        "level": 3.92,
+        "score100": 98,
+        "confidence": 0.93
+      },
+      "framing": {
+        "level": 1.81,
+        "score100": 45.3,
+        "confidence": 0.7
+      },
+      "contrast_exposure": {
+        "level": 3.65,
+        "score100": 91.3,
+        "confidence": 0.71
+      },
+      "artifact_cleanliness": {
+        "level": 3.97,
+        "score100": 99.3,
+        "confidence": 0.97
+      },
+      "scan_first_impact": {
+        "level": 3.35,
+        "score100": 83.8,
+        "confidence": 0.7
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.81
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.71,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.21,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.91
+    },
+    "p_defective_at_a_glance": 0.54,
+    "p_fixable_by_gentle_ai_touchup": 0.38,
+    "p_needs_new_capture_or_recrop": 0.35,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 33,
+    "file": "reference-assets/33--spectre--black-bg.png",
+    "original": "Images/Spectre/black_bg.png",
+    "project": "spectre",
+    "native": {
+      "w": 2560,
+      "h": 1440,
+      "bytes": 526017
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/spectre.html"],
+    "composite": 73.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.72
+      },
+      "text_legibility": {
+        "level": 3.8,
+        "score100": 95,
+        "confidence": 0.83
+      },
+      "subject_clarity": {
+        "level": 3.12,
+        "score100": 78,
+        "confidence": 0.67
+      },
+      "framing": {
+        "level": 0.36,
+        "score100": 9,
+        "confidence": 0.7
+      },
+      "contrast_exposure": {
+        "level": 3.52,
+        "score100": 88,
+        "confidence": 0.6
+      },
+      "artifact_cleanliness": {
+        "level": 3.58,
+        "score100": 89.5,
+        "confidence": 0.65
+      },
+      "scan_first_impact": {
+        "level": 3.17,
+        "score100": 79.3,
+        "confidence": 0.76
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.36
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.31,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.91,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.99
+    },
+    "p_defective_at_a_glance": 0.78,
+    "p_fixable_by_gentle_ai_touchup": 0.36,
+    "p_needs_new_capture_or_recrop": 0.52,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 34,
+    "file": "reference-assets/34--spectre--centered-bg.png",
+    "original": "Images/Spectre/centered_bg.png",
+    "project": "spectre",
+    "native": {
+      "w": 3840,
+      "h": 2160,
+      "bytes": 1389631
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/spectre.html"],
+    "composite": 80.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.19,
+        "score100": 79.8,
+        "confidence": 0.7
+      },
+      "subject_clarity": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "framing": {
+        "level": 1.18,
+        "score100": 29.5,
+        "confidence": 0.8
+      },
+      "contrast_exposure": {
+        "level": 3.99,
+        "score100": 99.8,
+        "confidence": 0.99
+      },
+      "artifact_cleanliness": {
+        "level": 3.7,
+        "score100": 92.5,
+        "confidence": 0.75
+      },
+      "scan_first_impact": {
+        "level": 3.46,
+        "score100": 86.5,
+        "confidence": 0.6
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.18
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.4,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.52,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 1
+    },
+    "p_defective_at_a_glance": 0.75,
+    "p_fixable_by_gentle_ai_touchup": 0.32,
+    "p_needs_new_capture_or_recrop": 0.48,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 35,
+    "file": "reference-assets/35--spectre--logo-white.png",
+    "original": "Images/Spectre/logo_white.png",
+    "project": "spectre",
+    "native": {
+      "w": 744,
+      "h": 837,
+      "bytes": 150798
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/spectre.html", "index.html"],
+    "composite": 87.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.99,
+        "score100": 74.8,
+        "confidence": 0.71
+      },
+      "subject_clarity": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "framing": {
+        "level": 3.07,
+        "score100": 76.8,
+        "confidence": 0.75
+      },
+      "contrast_exposure": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.81
+      },
+      "artifact_cleanliness": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "scan_first_impact": {
+        "level": 3.23,
+        "score100": 80.8,
+        "confidence": 0.78
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 2.99
+    },
+    "severity": {
+      "label": "none",
+      "confidence": 0.72,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.39,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "other",
+      "confidence": 0.52
+    },
+    "p_defective_at_a_glance": 0.54,
+    "p_fixable_by_gentle_ai_touchup": 0.49,
+    "p_needs_new_capture_or_recrop": 0.18,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 36,
+    "file": "reference-assets/36--spectre--white-bg.png",
+    "original": "Images/Spectre/white_bg.png",
+    "project": "spectre",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 200260
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/spectre.html"],
+    "composite": 82.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.96,
+        "score100": 99,
+        "confidence": 0.97
+      },
+      "text_legibility": {
+        "level": 3.8,
+        "score100": 95,
+        "confidence": 0.83
+      },
+      "subject_clarity": {
+        "level": 3.81,
+        "score100": 95.3,
+        "confidence": 0.84
+      },
+      "framing": {
+        "level": 0.76,
+        "score100": 19,
+        "confidence": 0.79
+      },
+      "contrast_exposure": {
+        "level": 3.63,
+        "score100": 90.8,
+        "confidence": 0.69
+      },
+      "artifact_cleanliness": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "scan_first_impact": {
+        "level": 3.16,
+        "score100": 79,
+        "confidence": 0.83
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.76
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.58,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.98,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.99
+    },
+    "p_defective_at_a_glance": 0.68,
+    "p_fixable_by_gentle_ai_touchup": 0.31,
+    "p_needs_new_capture_or_recrop": 0.44,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 37,
+    "file": "reference-assets/37--aes--screenshot-1.png",
+    "original": "Images/aes/Screenshot_1.png",
+    "project": "aes",
+    "native": {
+      "w": 762,
+      "h": 920,
+      "bytes": 55600
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 68.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.52,
+        "score100": 63,
+        "confidence": 0.53
+      },
+      "text_legibility": {
+        "level": 3.5,
+        "score100": 87.5,
+        "confidence": 0.59
+      },
+      "subject_clarity": {
+        "level": 3.34,
+        "score100": 83.5,
+        "confidence": 0.7
+      },
+      "framing": {
+        "level": 1.03,
+        "score100": 25.8,
+        "confidence": 0.96
+      },
+      "contrast_exposure": {
+        "level": 2.42,
+        "score100": 60.5,
+        "confidence": 0.59
+      },
+      "artifact_cleanliness": {
+        "level": 3.62,
+        "score100": 90.5,
+        "confidence": 0.68
+      },
+      "scan_first_impact": {
+        "level": 2.75,
+        "score100": 68.8,
+        "confidence": 0.75
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.03
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.34,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.87
+    },
+    "p_defective_at_a_glance": 0.78,
+    "p_fixable_by_gentle_ai_touchup": 0.21,
+    "p_needs_new_capture_or_recrop": 0.81,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 38,
+    "file": "reference-assets/38--arch-linux--bottom.png",
+    "original": "Images/arch linux/bottom.png",
+    "project": "arch-linux",
+    "native": {
+      "w": 1920,
+      "h": 1077,
+      "bytes": 680663
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/archlinux.html"],
+    "composite": 68,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.66,
+        "score100": 91.5,
+        "confidence": 0.72
+      },
+      "text_legibility": {
+        "level": 2.4,
+        "score100": 60,
+        "confidence": 0.67
+      },
+      "subject_clarity": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.86
+      },
+      "framing": {
+        "level": 2.84,
+        "score100": 71,
+        "confidence": 0.66
+      },
+      "contrast_exposure": {
+        "level": 1.79,
+        "score100": 44.8,
+        "confidence": 0.82
+      },
+      "artifact_cleanliness": {
+        "level": 2.24,
+        "score100": 56,
+        "confidence": 0.68
+      },
+      "scan_first_impact": {
+        "level": 2.65,
+        "score100": 66.3,
+        "confidence": 0.7
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 1.79
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.61,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.7,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.95
+    },
+    "p_defective_at_a_glance": 0.63,
+    "p_fixable_by_gentle_ai_touchup": 0.59,
+    "p_needs_new_capture_or_recrop": 0.21,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 39,
+    "file": "reference-assets/39--arch-linux--screenshot1.png",
+    "original": "Images/arch linux/screenshot1.png",
+    "project": "arch-linux",
+    "native": {
+      "w": 1919,
+      "h": 1077,
+      "bytes": 1890590
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/archlinux.html"],
+    "composite": 83.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.82
+      },
+      "text_legibility": {
+        "level": 2.04,
+        "score100": 51,
+        "confidence": 0.96
+      },
+      "subject_clarity": {
+        "level": 3.55,
+        "score100": 88.8,
+        "confidence": 0.63
+      },
+      "framing": {
+        "level": 3.92,
+        "score100": 98,
+        "confidence": 0.94
+      },
+      "contrast_exposure": {
+        "level": 2.87,
+        "score100": 71.8,
+        "confidence": 0.79
+      },
+      "artifact_cleanliness": {
+        "level": 3.65,
+        "score100": 91.3,
+        "confidence": 0.71
+      },
+      "scan_first_impact": {
+        "level": 3.37,
+        "score100": 84.3,
+        "confidence": 0.66
+      }
+    },
+    "min_dim": {
+      "dim": "text_legibility",
+      "level": 2.04
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.38,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.88,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "unreadable_text",
+      "confidence": 0.83
+    },
+    "p_defective_at_a_glance": 0.21,
+    "p_fixable_by_gentle_ai_touchup": 0.24,
+    "p_needs_new_capture_or_recrop": 0.37,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 40,
+    "file": "reference-assets/40--arch-linux--trim.png",
+    "original": "Images/arch linux/trim.png",
+    "project": "arch-linux",
+    "native": {
+      "w": 487,
+      "h": 1009,
+      "bytes": 218325
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 72.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.13,
+        "score100": 53.3,
+        "confidence": 0.67
+      },
+      "text_legibility": {
+        "level": 3.88,
+        "score100": 97,
+        "confidence": 0.9
+      },
+      "subject_clarity": {
+        "level": 3.14,
+        "score100": 78.5,
+        "confidence": 0.85
+      },
+      "framing": {
+        "level": 1.31,
+        "score100": 32.8,
+        "confidence": 0.73
+      },
+      "contrast_exposure": {
+        "level": 3.08,
+        "score100": 77,
+        "confidence": 0.84
+      },
+      "artifact_cleanliness": {
+        "level": 3.97,
+        "score100": 99.3,
+        "confidence": 0.98
+      },
+      "scan_first_impact": {
+        "level": 2.94,
+        "score100": 73.5,
+        "confidence": 0.72
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.31
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.39,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.88
+    },
+    "p_defective_at_a_glance": 0.54,
+    "p_fixable_by_gentle_ai_touchup": 0.13,
+    "p_needs_new_capture_or_recrop": 0.73,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 41,
+    "file": "reference-assets/41--correlation-visualizer--software.png",
+    "original": "Images/correlation_visualizer/Software.png",
+    "project": "correlation-visualizer",
+    "native": {
+      "w": 1578,
+      "h": 1015,
+      "bytes": 371642
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/credential_correlation.html"],
+    "composite": 67.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.05,
+        "score100": 76.3,
+        "confidence": 0.82
+      },
+      "text_legibility": {
+        "level": 2.94,
+        "score100": 73.5,
+        "confidence": 0.65
+      },
+      "subject_clarity": {
+        "level": 3.27,
+        "score100": 81.8,
+        "confidence": 0.75
+      },
+      "framing": {
+        "level": 1.06,
+        "score100": 26.5,
+        "confidence": 0.94
+      },
+      "contrast_exposure": {
+        "level": 2.17,
+        "score100": 54.3,
+        "confidence": 0.61
+      },
+      "artifact_cleanliness": {
+        "level": 3.14,
+        "score100": 78.5,
+        "confidence": 0.28
+      },
+      "scan_first_impact": {
+        "level": 2.98,
+        "score100": 74.5,
+        "confidence": 0.88
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.06
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.59,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.67
+    },
+    "p_defective_at_a_glance": 0.81,
+    "p_fixable_by_gentle_ai_touchup": 0.22,
+    "p_needs_new_capture_or_recrop": 0.8,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 42,
+    "file": "reference-assets/42--correlation-visualizer--credentials.png",
+    "original": "Images/correlation_visualizer/credentials.png",
+    "project": "correlation-visualizer",
+    "native": {
+      "w": 756,
+      "h": 206,
+      "bytes": 11062
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/credential_correlation.html"],
+    "composite": 77.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.27,
+        "score100": 56.8,
+        "confidence": 0.59
+      },
+      "text_legibility": {
+        "level": 3.99,
+        "score100": 99.8,
+        "confidence": 0.99
+      },
+      "subject_clarity": {
+        "level": 3.84,
+        "score100": 96,
+        "confidence": 0.86
+      },
+      "framing": {
+        "level": 1.07,
+        "score100": 26.8,
+        "confidence": 0.77
+      },
+      "contrast_exposure": {
+        "level": 3.99,
+        "score100": 99.8,
+        "confidence": 0.99
+      },
+      "artifact_cleanliness": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "scan_first_impact": {
+        "level": 2.89,
+        "score100": 72.3,
+        "confidence": 0.74
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.07
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.96,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "replace",
+      "confidence": 0.71,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.87
+    },
+    "p_defective_at_a_glance": 0.66,
+    "p_fixable_by_gentle_ai_touchup": 0.1,
+    "p_needs_new_capture_or_recrop": 0.16,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 43,
+    "file": "reference-assets/43--correlation-visualizer--googlesearch.png",
+    "original": "Images/correlation_visualizer/googlesearch.png",
+    "project": "correlation-visualizer",
+    "native": {
+      "w": 714,
+      "h": 219,
+      "bytes": 28204
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/credential_correlation.html"],
+    "composite": 64.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.93,
+        "score100": 48.3,
+        "confidence": 0.71
+      },
+      "text_legibility": {
+        "level": 2.79,
+        "score100": 69.8,
+        "confidence": 0.34
+      },
+      "subject_clarity": {
+        "level": 3.2,
+        "score100": 80,
+        "confidence": 0.8
+      },
+      "framing": {
+        "level": 1.97,
+        "score100": 49.3,
+        "confidence": 0.69
+      },
+      "contrast_exposure": {
+        "level": 1.61,
+        "score100": 40.3,
+        "confidence": 0.66
+      },
+      "artifact_cleanliness": {
+        "level": 3.47,
+        "score100": 86.8,
+        "confidence": 0.56
+      },
+      "scan_first_impact": {
+        "level": 2.7,
+        "score100": 67.5,
+        "confidence": 0.72
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 1.61
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.61,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.86,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.83
+    },
+    "p_defective_at_a_glance": 0.75,
+    "p_fixable_by_gentle_ai_touchup": 0.49,
+    "p_needs_new_capture_or_recrop": 0.54,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 44,
+    "file": "reference-assets/44--correlation-visualizer--trap1.png",
+    "original": "Images/correlation_visualizer/trap1.png",
+    "project": "correlation-visualizer",
+    "native": {
+      "w": 625,
+      "h": 212,
+      "bytes": 16737
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/credential_correlation.html"],
+    "composite": 70.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.81,
+        "score100": 45.3,
+        "confidence": 0.71
+      },
+      "text_legibility": {
+        "level": 2.05,
+        "score100": 51.3,
+        "confidence": 0.95
+      },
+      "subject_clarity": {
+        "level": 3.8,
+        "score100": 95,
+        "confidence": 0.84
+      },
+      "framing": {
+        "level": 2.5,
+        "score100": 62.5,
+        "confidence": 0.47
+      },
+      "contrast_exposure": {
+        "level": 2.05,
+        "score100": 51.3,
+        "confidence": 0.8
+      },
+      "artifact_cleanliness": {
+        "level": 3.97,
+        "score100": 99.3,
+        "confidence": 0.98
+      },
+      "scan_first_impact": {
+        "level": 3.18,
+        "score100": 79.5,
+        "confidence": 0.76
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 1.81
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.39,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "other",
+      "confidence": 0.2
+    },
+    "p_defective_at_a_glance": 0.75,
+    "p_fixable_by_gentle_ai_touchup": 0.66,
+    "p_needs_new_capture_or_recrop": 0.41,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 45,
+    "file": "reference-assets/45--correlation-visualizer--trap2.png",
+    "original": "Images/correlation_visualizer/trap2.png",
+    "project": "correlation-visualizer",
+    "native": {
+      "w": 768,
+      "h": 383,
+      "bytes": 37938
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/credential_correlation.html"],
+    "composite": 80.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.13,
+        "score100": 53.3,
+        "confidence": 0.72
+      },
+      "text_legibility": {
+        "level": 3.03,
+        "score100": 75.8,
+        "confidence": 0.85
+      },
+      "subject_clarity": {
+        "level": 3.8,
+        "score100": 95,
+        "confidence": 0.83
+      },
+      "framing": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.81
+      },
+      "contrast_exposure": {
+        "level": 1.99,
+        "score100": 49.8,
+        "confidence": 0.95
+      },
+      "artifact_cleanliness": {
+        "level": 4,
+        "score100": 100,
+        "confidence": 1
+      },
+      "scan_first_impact": {
+        "level": 3.46,
+        "score100": 86.5,
+        "confidence": 0.59
+      }
+    },
+    "min_dim": {
+      "dim": "contrast_exposure",
+      "level": 1.99
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.32,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "replace",
+      "confidence": 0.08,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.86
+    },
+    "p_defective_at_a_glance": 0.29,
+    "p_fixable_by_gentle_ai_touchup": 0.35,
+    "p_needs_new_capture_or_recrop": 0.15,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 46,
+    "file": "reference-assets/46--cs314--database.png",
+    "original": "Images/cs314/database.gif",
+    "project": "cs314",
+    "native": {
+      "w": 967,
+      "h": 911,
+      "bytes": 1706701
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 56.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.11,
+        "score100": 52.8,
+        "confidence": 0.68
+      },
+      "text_legibility": {
+        "level": 3.17,
+        "score100": 79.3,
+        "confidence": 0.5
+      },
+      "subject_clarity": {
+        "level": 3.19,
+        "score100": 79.8,
+        "confidence": 0.83
+      },
+      "framing": {
+        "level": 0.6,
+        "score100": 15,
+        "confidence": 0.67
+      },
+      "contrast_exposure": {
+        "level": 2.43,
+        "score100": 60.8,
+        "confidence": 0.42
+      },
+      "artifact_cleanliness": {
+        "level": 1.44,
+        "score100": 36,
+        "confidence": 0.63
+      },
+      "scan_first_impact": {
+        "level": 2.82,
+        "score100": 70.5,
+        "confidence": 0.85
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.6
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.85,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.93
+    },
+    "p_defective_at_a_glance": 0.82,
+    "p_fixable_by_gentle_ai_touchup": 0.41,
+    "p_needs_new_capture_or_recrop": 0.68,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 47,
+    "file": "reference-assets/47--cs314--file.png",
+    "original": "Images/cs314/file.png",
+    "project": "cs314",
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 135303
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 66.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.27,
+        "score100": 56.8,
+        "confidence": 0.65
+      },
+      "text_legibility": {
+        "level": 2.4,
+        "score100": 60,
+        "confidence": 0.66
+      },
+      "subject_clarity": {
+        "level": 3.55,
+        "score100": 88.8,
+        "confidence": 0.63
+      },
+      "framing": {
+        "level": 1.54,
+        "score100": 38.5,
+        "confidence": 0.54
+      },
+      "contrast_exposure": {
+        "level": 2.99,
+        "score100": 74.8,
+        "confidence": 0.48
+      },
+      "artifact_cleanliness": {
+        "level": 2.9,
+        "score100": 72.5,
+        "confidence": 0.41
+      },
+      "scan_first_impact": {
+        "level": 2.96,
+        "score100": 74,
+        "confidence": 0.95
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.54
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.46,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "other",
+      "confidence": 0.17
+    },
+    "p_defective_at_a_glance": 0.77,
+    "p_fixable_by_gentle_ai_touchup": 0.57,
+    "p_needs_new_capture_or_recrop": 0.56,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 48,
+    "file": "reference-assets/48--cs314--interopt.png",
+    "original": "Images/cs314/interopt.gif",
+    "project": "cs314",
+    "native": {
+      "w": 982,
+      "h": 927,
+      "bytes": 2792322
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 67.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.4,
+        "score100": 60,
+        "confidence": 0.61
+      },
+      "text_legibility": {
+        "level": 2.49,
+        "score100": 62.3,
+        "confidence": 0.59
+      },
+      "subject_clarity": {
+        "level": 3.63,
+        "score100": 90.8,
+        "confidence": 0.69
+      },
+      "framing": {
+        "level": 3.26,
+        "score100": 81.5,
+        "confidence": 0.68
+      },
+      "contrast_exposure": {
+        "level": 3.05,
+        "score100": 76.3,
+        "confidence": 0.76
+      },
+      "artifact_cleanliness": {
+        "level": 1.21,
+        "score100": 30.3,
+        "confidence": 0.81
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.92
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.21
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.5,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.96,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.95
+    },
+    "p_defective_at_a_glance": 0.3,
+    "p_fixable_by_gentle_ai_touchup": 0.15,
+    "p_needs_new_capture_or_recrop": 0.41,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 49,
+    "file": "reference-assets/49--cs314--iterative-design.png",
+    "original": "Images/cs314/iterative_design.gif",
+    "project": "cs314",
+    "native": {
+      "w": 982,
+      "h": 927,
+      "bytes": 17028426
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 58.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.11,
+        "score100": 52.8,
+        "confidence": 0.71
+      },
+      "text_legibility": {
+        "level": 2.29,
+        "score100": 57.3,
+        "confidence": 0.76
+      },
+      "subject_clarity": {
+        "level": 3.42,
+        "score100": 85.5,
+        "confidence": 0.65
+      },
+      "framing": {
+        "level": 1.89,
+        "score100": 47.3,
+        "confidence": 0.62
+      },
+      "contrast_exposure": {
+        "level": 2.28,
+        "score100": 57,
+        "confidence": 0.29
+      },
+      "artifact_cleanliness": {
+        "level": 1.5,
+        "score100": 37.5,
+        "confidence": 0.58
+      },
+      "scan_first_impact": {
+        "level": 2.98,
+        "score100": 74.5,
+        "confidence": 0.95
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.5
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.58,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.37
+    },
+    "p_defective_at_a_glance": 0.67,
+    "p_fixable_by_gentle_ai_touchup": 0.62,
+    "p_needs_new_capture_or_recrop": 0.55,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 50,
+    "file": "reference-assets/50--cs314--itinerary.png",
+    "original": "Images/cs314/itinerary.png",
+    "project": "cs314",
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 81548
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 58.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.07,
+        "score100": 51.8,
+        "confidence": 0.73
+      },
+      "text_legibility": {
+        "level": 2.92,
+        "score100": 73,
+        "confidence": 0.7
+      },
+      "subject_clarity": {
+        "level": 3.25,
+        "score100": 81.3,
+        "confidence": 0.79
+      },
+      "framing": {
+        "level": 1.05,
+        "score100": 26.3,
+        "confidence": 0.94
+      },
+      "contrast_exposure": {
+        "level": 2.45,
+        "score100": 61.3,
+        "confidence": 0.44
+      },
+      "artifact_cleanliness": {
+        "level": 1.7,
+        "score100": 42.5,
+        "confidence": 0.41
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.93
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.05
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.61,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 1,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.47
+    },
+    "p_defective_at_a_glance": 0.78,
+    "p_fixable_by_gentle_ai_touchup": 0.4,
+    "p_needs_new_capture_or_recrop": 0.74,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 51,
+    "file": "reference-assets/51--cs314--map.png",
+    "original": "Images/cs314/map.png",
+    "project": "cs314",
+    "native": {
+      "w": 901,
+      "h": 959,
+      "bytes": 227583
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/tripsite.html", "index.html"],
+    "composite": 67.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.2,
+        "score100": 55,
+        "confidence": 0.67
+      },
+      "text_legibility": {
+        "level": 3.31,
+        "score100": 82.8,
+        "confidence": 0.56
+      },
+      "subject_clarity": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.82
+      },
+      "framing": {
+        "level": 1.33,
+        "score100": 33.3,
+        "confidence": 0.69
+      },
+      "contrast_exposure": {
+        "level": 3.93,
+        "score100": 98.3,
+        "confidence": 0.94
+      },
+      "artifact_cleanliness": {
+        "level": 1.86,
+        "score100": 46.5,
+        "confidence": 0.55
+      },
+      "scan_first_impact": {
+        "level": 3,
+        "score100": 75,
+        "confidence": 0.91
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.33
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.56,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.68
+    },
+    "p_defective_at_a_glance": 0.58,
+    "p_fixable_by_gentle_ai_touchup": 0.11,
+    "p_needs_new_capture_or_recrop": 0.71,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 52,
+    "file": "reference-assets/52--cs314--optimize.png",
+    "original": "Images/cs314/optimize.gif",
+    "project": "cs314",
+    "native": {
+      "w": 924,
+      "h": 627,
+      "bytes": 284185
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 74.5,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.24,
+        "score100": 56,
+        "confidence": 0.68
+      },
+      "text_legibility": {
+        "level": 3.38,
+        "score100": 84.5,
+        "confidence": 0.56
+      },
+      "subject_clarity": {
+        "level": 3.86,
+        "score100": 96.5,
+        "confidence": 0.88
+      },
+      "framing": {
+        "level": 2.35,
+        "score100": 58.8,
+        "confidence": 0.24
+      },
+      "contrast_exposure": {
+        "level": 3.87,
+        "score100": 96.8,
+        "confidence": 0.89
+      },
+      "artifact_cleanliness": {
+        "level": 2.55,
+        "score100": 63.8,
+        "confidence": 0.53
+      },
+      "scan_first_impact": {
+        "level": 2.91,
+        "score100": 72.8,
+        "confidence": 0.86
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 2.24
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.96,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "busy_background",
+      "confidence": 0.79
+    },
+    "p_defective_at_a_glance": 0.48,
+    "p_fixable_by_gentle_ai_touchup": 0.12,
+    "p_needs_new_capture_or_recrop": 0.3,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 53,
+    "file": "reference-assets/53--cs314--website.png",
+    "original": "Images/cs314/website.gif",
+    "project": "cs314",
+    "native": {
+      "w": 906,
+      "h": 948,
+      "bytes": 26173195
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/tripsite.html"],
+    "composite": 63.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.31,
+        "score100": 57.8,
+        "confidence": 0.64
+      },
+      "text_legibility": {
+        "level": 2.18,
+        "score100": 54.5,
+        "confidence": 0.85
+      },
+      "subject_clarity": {
+        "level": 3.57,
+        "score100": 89.3,
+        "confidence": 0.64
+      },
+      "framing": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.8
+      },
+      "contrast_exposure": {
+        "level": 2.29,
+        "score100": 57.3,
+        "confidence": 0.74
+      },
+      "artifact_cleanliness": {
+        "level": 1.15,
+        "score100": 28.8,
+        "confidence": 0.86
+      },
+      "scan_first_impact": {
+        "level": 2.97,
+        "score100": 74.3,
+        "confidence": 0.94
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.15
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.53,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.98,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.99
+    },
+    "p_defective_at_a_glance": 0.31,
+    "p_fixable_by_gentle_ai_touchup": 0.17,
+    "p_needs_new_capture_or_recrop": 0.43,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 54,
+    "file": "reference-assets/54--fovhack--fov-demo.png",
+    "original": "Images/fovhack/fov_demo.gif",
+    "project": "fovhack",
+    "native": {
+      "w": 1280,
+      "h": 655,
+      "bytes": 102668563
+    },
+    "animated": true,
+    "referenced_by": [],
+    "composite": 61.3,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.32,
+        "score100": 33,
+        "confidence": 0.73
+      },
+      "text_legibility": {
+        "level": 2,
+        "score100": 50,
+        "confidence": 1
+      },
+      "subject_clarity": {
+        "level": 3.66,
+        "score100": 91.5,
+        "confidence": 0.71
+      },
+      "framing": {
+        "level": 2.7,
+        "score100": 67.5,
+        "confidence": 0.67
+      },
+      "contrast_exposure": {
+        "level": 2.94,
+        "score100": 73.5,
+        "confidence": 0.84
+      },
+      "artifact_cleanliness": {
+        "level": 1.66,
+        "score100": 41.5,
+        "confidence": 0.69
+      },
+      "scan_first_impact": {
+        "level": 3.04,
+        "score100": 76,
+        "confidence": 0.89
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 1.32
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.78,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.52,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.64
+    },
+    "p_defective_at_a_glance": 0.56,
+    "p_fixable_by_gentle_ai_touchup": 0.74,
+    "p_needs_new_capture_or_recrop": 0.21,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 55,
+    "file": "reference-assets/55--fovhack--fov-preview.png",
+    "original": "Images/fovhack/fov_preview.png",
+    "project": "fovhack",
+    "native": {
+      "w": 1669,
+      "h": 854,
+      "bytes": 2124599
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 49.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 0.99,
+        "score100": 24.8,
+        "confidence": 0.96
+      },
+      "text_legibility": {
+        "level": 1.91,
+        "score100": 47.8,
+        "confidence": 0.93
+      },
+      "subject_clarity": {
+        "level": 3.43,
+        "score100": 85.8,
+        "confidence": 0.63
+      },
+      "framing": {
+        "level": 0.8,
+        "score100": 20,
+        "confidence": 0.77
+      },
+      "contrast_exposure": {
+        "level": 3.05,
+        "score100": 76.3,
+        "confidence": 0.69
+      },
+      "artifact_cleanliness": {
+        "level": 1.2,
+        "score100": 30,
+        "confidence": 0.83
+      },
+      "scan_first_impact": {
+        "level": 2.9,
+        "score100": 72.5,
+        "confidence": 0.84
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.8
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.65,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.26,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.75
+    },
+    "p_defective_at_a_glance": 0.73,
+    "p_fixable_by_gentle_ai_touchup": 0.8,
+    "p_needs_new_capture_or_recrop": 0.37,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 56,
+    "file": "reference-assets/56--fovhack--screenshot-cosmetic.png",
+    "original": "Images/fovhack/screenshot-cosmetic.jpg",
+    "project": "fovhack",
+    "native": {
+      "w": 833,
+      "h": 962,
+      "bytes": 201568
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhauhack.html"],
+    "composite": 65.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.05,
+        "score100": 51.3,
+        "confidence": 0.65
+      },
+      "text_legibility": {
+        "level": 2.05,
+        "score100": 51.3,
+        "confidence": 0.95
+      },
+      "subject_clarity": {
+        "level": 3.43,
+        "score100": 85.8,
+        "confidence": 0.62
+      },
+      "framing": {
+        "level": 3.38,
+        "score100": 84.5,
+        "confidence": 0.62
+      },
+      "contrast_exposure": {
+        "level": 2.35,
+        "score100": 58.8,
+        "confidence": 0.68
+      },
+      "artifact_cleanliness": {
+        "level": 2,
+        "score100": 50,
+        "confidence": 0.85
+      },
+      "scan_first_impact": {
+        "level": 3.07,
+        "score100": 76.8,
+        "confidence": 0.84
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 2
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.56,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.42,
+      "decision": "reject"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.93
+    },
+    "p_defective_at_a_glance": 0.78,
+    "p_fixable_by_gentle_ai_touchup": 0.77,
+    "p_needs_new_capture_or_recrop": 0.24,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 57,
+    "file": "reference-assets/57--fovhack--screenshot-gameplay.png",
+    "original": "Images/fovhack/screenshot-gameplay.jpg",
+    "project": "fovhack",
+    "native": {
+      "w": 514,
+      "h": 917,
+      "bytes": 96813
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhauhack.html"],
+    "composite": 46.1,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.24,
+        "score100": 31,
+        "confidence": 0.79
+      },
+      "text_legibility": {
+        "level": 2.14,
+        "score100": 53.5,
+        "confidence": 0.87
+      },
+      "subject_clarity": {
+        "level": 2.95,
+        "score100": 73.8,
+        "confidence": 0.89
+      },
+      "framing": {
+        "level": 1.05,
+        "score100": 26.3,
+        "confidence": 0.93
+      },
+      "contrast_exposure": {
+        "level": 1.62,
+        "score100": 40.5,
+        "confidence": 0.64
+      },
+      "artifact_cleanliness": {
+        "level": 1.01,
+        "score100": 25.3,
+        "confidence": 0.95
+      },
+      "scan_first_impact": {
+        "level": 2.82,
+        "score100": 70.5,
+        "confidence": 0.83
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.01
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.47,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.96,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.34
+    },
+    "p_defective_at_a_glance": 0.88,
+    "p_fixable_by_gentle_ai_touchup": 0.52,
+    "p_needs_new_capture_or_recrop": 0.7,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 58,
+    "file": "reference-assets/58--fovhack--screenshot-overview.png",
+    "original": "Images/fovhack/screenshot-overview.jpg",
+    "project": "fovhack",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 351028
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhauhack.html", "index.html"],
+    "composite": 53.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.6,
+        "score100": 65,
+        "confidence": 0.58
+      },
+      "text_legibility": {
+        "level": 2.21,
+        "score100": 55.3,
+        "confidence": 0.78
+      },
+      "subject_clarity": {
+        "level": 3.04,
+        "score100": 76,
+        "confidence": 0.86
+      },
+      "framing": {
+        "level": 1.2,
+        "score100": 30,
+        "confidence": 0.83
+      },
+      "contrast_exposure": {
+        "level": 2.25,
+        "score100": 56.3,
+        "confidence": 0.69
+      },
+      "artifact_cleanliness": {
+        "level": 0.99,
+        "score100": 24.8,
+        "confidence": 0.95
+      },
+      "scan_first_impact": {
+        "level": 2.77,
+        "score100": 69.3,
+        "confidence": 0.77
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 0.99
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.43,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.96,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.36
+    },
+    "p_defective_at_a_glance": 0.83,
+    "p_fixable_by_gentle_ai_touchup": 0.57,
+    "p_needs_new_capture_or_recrop": 0.36,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 59,
+    "file": "reference-assets/59--hardpoint--hpt-action1.png",
+    "original": "Images/hardpoint/hpt-action1.jpg",
+    "project": "hardpoint",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 356645
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhaumod.html"],
+    "composite": 65.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.5,
+        "score100": 62.5,
+        "confidence": 0.57
+      },
+      "subject_clarity": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.76
+      },
+      "framing": {
+        "level": 1.96,
+        "score100": 49,
+        "confidence": 0.04
+      },
+      "contrast_exposure": {
+        "level": 2.7,
+        "score100": 67.5,
+        "confidence": 0.55
+      },
+      "artifact_cleanliness": {
+        "level": 2.57,
+        "score100": 64.3,
+        "confidence": 0.57
+      },
+      "scan_first_impact": {
+        "level": 3.08,
+        "score100": 77,
+        "confidence": 0.81
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.96
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.16,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.94,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "low_contrast_or_dark",
+      "confidence": 0.86
+    },
+    "p_defective_at_a_glance": 0.63,
+    "p_fixable_by_gentle_ai_touchup": 0.63,
+    "p_needs_new_capture_or_recrop": 0.4,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 60,
+    "file": "reference-assets/60--hardpoint--hpt-action2.png",
+    "original": "Images/hardpoint/hpt-action2.jpg",
+    "project": "hardpoint",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 399254
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhaumod.html"],
+    "composite": 72.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.79,
+        "score100": 69.8,
+        "confidence": 0.8
+      },
+      "subject_clarity": {
+        "level": 3.92,
+        "score100": 98,
+        "confidence": 0.94
+      },
+      "framing": {
+        "level": 1.11,
+        "score100": 27.8,
+        "confidence": 0.9
+      },
+      "contrast_exposure": {
+        "level": 2.91,
+        "score100": 72.8,
+        "confidence": 0.83
+      },
+      "artifact_cleanliness": {
+        "level": 3.42,
+        "score100": 85.5,
+        "confidence": 0.52
+      },
+      "scan_first_impact": {
+        "level": 3.22,
+        "score100": 80.5,
+        "confidence": 0.79
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.11
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.56,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.99,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.76
+    },
+    "p_defective_at_a_glance": 0.77,
+    "p_fixable_by_gentle_ai_touchup": 0.5,
+    "p_needs_new_capture_or_recrop": 0.52,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 61,
+    "file": "reference-assets/61--hardpoint--hpt-thumbnail.png",
+    "original": "Images/hardpoint/hpt-thumbnail.jpg",
+    "project": "hardpoint",
+    "native": {
+      "w": 1920,
+      "h": 1080,
+      "bytes": 297273
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/mordhaumod.html", "index.html"],
+    "composite": 56.4,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.48,
+        "score100": 62,
+        "confidence": 0.55
+      },
+      "subject_clarity": {
+        "level": 2.23,
+        "score100": 55.8,
+        "confidence": 0.54
+      },
+      "framing": {
+        "level": 1.28,
+        "score100": 32,
+        "confidence": 0.6
+      },
+      "contrast_exposure": {
+        "level": 1.78,
+        "score100": 44.5,
+        "confidence": 0.25
+      },
+      "artifact_cleanliness": {
+        "level": 3.86,
+        "score100": 96.5,
+        "confidence": 0.88
+      },
+      "scan_first_impact": {
+        "level": 1.74,
+        "score100": 43.5,
+        "confidence": 0.67
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.28
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.92,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.8,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.47
+    },
+    "p_defective_at_a_glance": 0.76,
+    "p_fixable_by_gentle_ai_touchup": 0.55,
+    "p_needs_new_capture_or_recrop": 0.26,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Issue"
+  },
+  {
+    "id": 62,
+    "file": "reference-assets/62--hero-trivia--hero-trivia-1.png",
+    "original": "Images/hero_trivia/Hero_Trivia_1.png",
+    "project": "hero-trivia",
+    "native": {
+      "w": 1894,
+      "h": 949,
+      "bytes": 4068082
+    },
+    "animated": false,
+    "referenced_by": ["html/Work/hero_trivia.html", "index.html"],
+    "composite": 70.6,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.54,
+        "score100": 63.5,
+        "confidence": 0.54
+      },
+      "text_legibility": {
+        "level": 2.31,
+        "score100": 57.8,
+        "confidence": 0.74
+      },
+      "subject_clarity": {
+        "level": 3.84,
+        "score100": 96,
+        "confidence": 0.87
+      },
+      "framing": {
+        "level": 3.21,
+        "score100": 80.3,
+        "confidence": 0.75
+      },
+      "contrast_exposure": {
+        "level": 3.1,
+        "score100": 77.5,
+        "confidence": 0.84
+      },
+      "artifact_cleanliness": {
+        "level": 1.63,
+        "score100": 40.8,
+        "confidence": 0.63
+      },
+      "scan_first_impact": {
+        "level": 3.23,
+        "score100": 80.8,
+        "confidence": 0.78
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.63
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.76,
+      "decision": "accept"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.71,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.77
+    },
+    "p_defective_at_a_glance": 0.3,
+    "p_fixable_by_gentle_ai_touchup": 0.48,
+    "p_needs_new_capture_or_recrop": 0.39,
+    "scorer_flag": false,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 63,
+    "file": "reference-assets/63--hero-trivia--hero-trivia-2.png",
+    "original": "Images/hero_trivia/Hero_Trivia_2.png",
+    "project": "hero-trivia",
+    "native": {
+      "w": 1894,
+      "h": 949,
+      "bytes": 4120572
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 66.5,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.74,
+        "score100": 43.5,
+        "confidence": 0.69
+      },
+      "text_legibility": {
+        "level": 2.66,
+        "score100": 66.5,
+        "confidence": 0.64
+      },
+      "subject_clarity": {
+        "level": 3.66,
+        "score100": 91.5,
+        "confidence": 0.71
+      },
+      "framing": {
+        "level": 3.03,
+        "score100": 75.8,
+        "confidence": 0.82
+      },
+      "contrast_exposure": {
+        "level": 3.3,
+        "score100": 82.5,
+        "confidence": 0.73
+      },
+      "artifact_cleanliness": {
+        "level": 1.42,
+        "score100": 35.5,
+        "confidence": 0.65
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.84
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1.42
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.51,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.94,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.65
+    },
+    "p_defective_at_a_glance": 0.49,
+    "p_fixable_by_gentle_ai_touchup": 0.44,
+    "p_needs_new_capture_or_recrop": 0.76,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  },
+  {
+    "id": 64,
+    "file": "reference-assets/64--hero-trivia--hero-trivia-gameplay.png",
+    "original": "Images/hero_trivia/hero_trivia_gameplay.gif",
+    "project": "hero-trivia",
+    "native": {
+      "w": 1168,
+      "h": 920,
+      "bytes": 65931588
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/hero_trivia.html"],
+    "composite": 62.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 2.34,
+        "score100": 58.5,
+        "confidence": 0.56
+      },
+      "text_legibility": {
+        "level": 2.99,
+        "score100": 74.8,
+        "confidence": 0.87
+      },
+      "subject_clarity": {
+        "level": 3.72,
+        "score100": 93,
+        "confidence": 0.76
+      },
+      "framing": {
+        "level": 1.65,
+        "score100": 41.3,
+        "confidence": 0.37
+      },
+      "contrast_exposure": {
+        "level": 3.06,
+        "score100": 76.5,
+        "confidence": 0.83
+      },
+      "artifact_cleanliness": {
+        "level": 1,
+        "score100": 25,
+        "confidence": 0.97
+      },
+      "scan_first_impact": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.86
+      }
+    },
+    "min_dim": {
+      "dim": "artifact_cleanliness",
+      "level": 1
+    },
+    "severity": {
+      "label": "severe",
+      "confidence": 0.31,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.92,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "artifacts_or_overlays",
+      "confidence": 0.92
+    },
+    "p_defective_at_a_glance": 0.42,
+    "p_fixable_by_gentle_ai_touchup": 0.38,
+    "p_needs_new_capture_or_recrop": 0.42,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 65,
+    "file": "reference-assets/65--hero-trivia--hero-trivia-variety.png",
+    "original": "Images/hero_trivia/hero_trivia_variety.gif",
+    "project": "hero-trivia",
+    "native": {
+      "w": 1168,
+      "h": 920,
+      "bytes": 64728753
+    },
+    "animated": true,
+    "referenced_by": ["html/Work/hero_trivia.html"],
+    "composite": 71.9,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.62,
+        "score100": 40.5,
+        "confidence": 0.65
+      },
+      "text_legibility": {
+        "level": 3.28,
+        "score100": 82,
+        "confidence": 0.75
+      },
+      "subject_clarity": {
+        "level": 3.77,
+        "score100": 94.3,
+        "confidence": 0.81
+      },
+      "framing": {
+        "level": 3.28,
+        "score100": 82,
+        "confidence": 0.67
+      },
+      "contrast_exposure": {
+        "level": 3.03,
+        "score100": 75.8,
+        "confidence": 0.86
+      },
+      "artifact_cleanliness": {
+        "level": 2.04,
+        "score100": 51,
+        "confidence": 0.84
+      },
+      "scan_first_impact": {
+        "level": 3.17,
+        "score100": 79.3,
+        "confidence": 0.78
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 1.62
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.21,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.7,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "busy_background",
+      "confidence": 0.43
+    },
+    "p_defective_at_a_glance": 0.27,
+    "p_fixable_by_gentle_ai_touchup": 0.51,
+    "p_needs_new_capture_or_recrop": 0.16,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 66,
+    "file": "reference-assets/66--self--img-6540.png",
+    "original": "Images/self/IMG_6540.jpg",
+    "project": "self",
+    "native": {
+      "w": 3024,
+      "h": 4032,
+      "bytes": 4935912
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 75.7,
+    "dims": {
+      "resolution_headroom": {
+        "level": 3.73,
+        "score100": 93.3,
+        "confidence": 0.78
+      },
+      "subject_clarity": {
+        "level": 3.01,
+        "score100": 75.3,
+        "confidence": 0.87
+      },
+      "framing": {
+        "level": 1.84,
+        "score100": 46,
+        "confidence": 0.09
+      },
+      "contrast_exposure": {
+        "level": 2.47,
+        "score100": 61.8,
+        "confidence": 0.59
+      },
+      "artifact_cleanliness": {
+        "level": 3.78,
+        "score100": 94.5,
+        "confidence": 0.82
+      },
+      "scan_first_impact": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.83
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 1.84
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.29,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "recrop-or-recapture",
+      "confidence": 0.79,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.36
+    },
+    "p_defective_at_a_glance": 0.28,
+    "p_fixable_by_gentle_ai_touchup": 0.27,
+    "p_needs_new_capture_or_recrop": 0.24,
+    "scorer_flag": false,
+    "classifier_flag": false,
+    "tier": "Clean"
+  },
+  {
+    "id": 67,
+    "file": "reference-assets/67--self--canyonselfie.png",
+    "original": "Images/self/canyonSelfie.JPG",
+    "project": "self",
+    "native": {
+      "w": 1242,
+      "h": 2208,
+      "bytes": 401073
+    },
+    "animated": false,
+    "referenced_by": ["index.html"],
+    "composite": 68.8,
+    "dims": {
+      "resolution_headroom": {
+        "level": 1.23,
+        "score100": 30.8,
+        "confidence": 0.81
+      },
+      "subject_clarity": {
+        "level": 3.68,
+        "score100": 92,
+        "confidence": 0.73
+      },
+      "framing": {
+        "level": 2.5,
+        "score100": 62.5,
+        "confidence": 0.51
+      },
+      "contrast_exposure": {
+        "level": 3.56,
+        "score100": 89,
+        "confidence": 0.63
+      },
+      "artifact_cleanliness": {
+        "level": 2.62,
+        "score100": 65.5,
+        "confidence": 0.48
+      },
+      "scan_first_impact": {
+        "level": 3.18,
+        "score100": 79.5,
+        "confidence": 0.81
+      }
+    },
+    "min_dim": {
+      "dim": "resolution_headroom",
+      "level": 1.23
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.41,
+      "decision": "reject"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.74,
+      "decision": "review"
+    },
+    "primary_issue": {
+      "label": "low_resolution",
+      "confidence": 0.89
+    },
+    "p_defective_at_a_glance": 0.49,
+    "p_fixable_by_gentle_ai_touchup": 0.77,
+    "p_needs_new_capture_or_recrop": 0.22,
+    "scorer_flag": true,
+    "classifier_flag": false,
+    "tier": "Watch"
+  },
+  {
+    "id": 68,
+    "file": "reference-assets/68--team--1.png",
+    "original": "img/team/1.jpg",
+    "project": "team",
+    "native": {
+      "w": 300,
+      "h": 300,
+      "bytes": 14826
+    },
+    "animated": false,
+    "referenced_by": [],
+    "composite": 49.2,
+    "dims": {
+      "resolution_headroom": {
+        "level": 0.9,
+        "score100": 22.5,
+        "confidence": 0.91
+      },
+      "text_legibility": {
+        "level": 3.15,
+        "score100": 78.8,
+        "confidence": 0.87
+      },
+      "subject_clarity": {
+        "level": 2.95,
+        "score100": 73.8,
+        "confidence": 0.86
+      },
+      "framing": {
+        "level": 0.21,
+        "score100": 5.3,
+        "confidence": 0.83
+      },
+      "contrast_exposure": {
+        "level": 1.04,
+        "score100": 26,
+        "confidence": 0.97
+      },
+      "artifact_cleanliness": {
+        "level": 2.54,
+        "score100": 63.5,
+        "confidence": 0.54
+      },
+      "scan_first_impact": {
+        "level": 2.68,
+        "score100": 67,
+        "confidence": 0.73
+      }
+    },
+    "min_dim": {
+      "dim": "framing",
+      "level": 0.21
+    },
+    "severity": {
+      "label": "moderate",
+      "confidence": 0.72,
+      "decision": "review"
+    },
+    "remedy": {
+      "label": "gentle-ai-touchup",
+      "confidence": 0.75,
+      "decision": "accept"
+    },
+    "primary_issue": {
+      "label": "poor_framing_or_dead_space",
+      "confidence": 0.79
+    },
+    "p_defective_at_a_glance": 0.84,
+    "p_fixable_by_gentle_ai_touchup": 0.73,
+    "p_needs_new_capture_or_recrop": 0.49,
+    "scorer_flag": true,
+    "classifier_flag": true,
+    "tier": "Watch"
+  }
+]

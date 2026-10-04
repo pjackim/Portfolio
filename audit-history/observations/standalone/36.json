@@ -1,0 +1,13 @@
+{
+  "id": 36,
+  "file": "reference-assets/36--spectre--white-bg.png",
+  "project": "spectre",
+  "kind": "logo-or-wordmark",
+  "depicts": "Same black smoke-headed octopus emblem centred on a white 16:9 canvas, with the word SPECTER in smoky dark letters to the upper right of it.",
+  "text_readable": "Readable: \"SPECTER\" (spaced capitals, smoke fringe on first and last letters). No other text.",
+  "composition": "Landscape canvas; emblem centred, wordmark right of and above its midpoint; large empty white areas at left, right, and bottom; wordmark small relative to emblem.",
+  "tone_and_contrast": "Dark grey/black on pure white; strong separation; smoke areas fade to light grey.",
+  "sharpness_and_artifacts": "Clean edges on emblem and letters; smoke wisps soft; no visible compression artifacts, watermark or overlays at native view.",
+  "scan_first_read": "A black octopus emblem with the name SPECTER beside it on white.",
+  "observer_confirms_blind": true
+}

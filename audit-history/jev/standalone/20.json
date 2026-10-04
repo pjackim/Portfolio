@@ -1,0 +1,227 @@
+{
+  "id": 20,
+  "state": {
+    "project": "go-green",
+    "kind": "other",
+    "file_pixels": "1920 x 1080 px, large (1600px or wider)",
+    "file_sharpness": "crisp",
+    "file_exposure": "dark",
+    "file_contrast": "high",
+    "empty_bands": "none",
+    "observation": {
+      "depicts": "Same garbage-versus-waterfall split composite with a translucent grey box with green border near the bottom left holding a paragraph of white condensed text about waste and trees.",
+      "text_readable": "Readable: \"THIS COULD BE THE WORLD'S REALITY IN OUR LIFETIME\", \"OVER 900,000,000 TREES ARE CUT DOWN EVERY YEAR\", \"WE CAN SAVE THE WORLD, BUT IT TAKES EVERYONE.\" All seven lines of the paragraph are legible.",
+      "composition": "Full-frame split image; text box spans bottom-left and part of the centre, covering the lower left of the garbage side and the fern area at the diagonal. Rest matches the text-free versions.",
+      "tone_and_contrast": "White text on a darkened semi-transparent grey panel reads with high contrast; the surrounding halves are dark brown left and green-teal right.",
+      "sharpness_and_artifacts": "Text edges crisp; panel background shows blurred image behind it. Some typos visible in the text (e.g. 'planer', 'are great grand children'). No watermark seen.",
+      "scan_first_read": "Garbage-versus-waterfall split with a large green-bordered text block; message reads as an environmental awareness flyer."
+    }
+  },
+  "model": "jev-1.13.0",
+  "scoreIds": [
+    "resolution_headroom",
+    "text_legibility",
+    "subject_clarity",
+    "framing",
+    "contrast_exposure",
+    "artifact_cleanliness",
+    "scan_first_impact"
+  ],
+  "answers": {
+    "resolution_headroom": {
+      "type": "score",
+      "score": 3.52,
+      "confidence": 0.6,
+      "legend": {
+        "0": "Far too few pixels or very soft: detail is mushy or blocky even at the file's native size",
+        "1": "Small or soft: visible softness or coarse pixels at native size; would look weak enlarged or on high-density screens",
+        "2": "Adequate: acceptable at native size but with little headroom for enlargement",
+        "3": "Good: sharp at native size with reasonable headroom",
+        "4": "Excellent: crisp with ample pixels; holds up when enlarged"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.01,
+        "3": 0.46,
+        "4": 0.53
+      },
+      "decision": "review"
+    },
+    "text_legibility": {
+      "type": "score",
+      "score": 3.65,
+      "confidence": 0.71,
+      "legend": {
+        "0": "None of the text a viewer is meant to read can be read",
+        "1": "Only a few large words are readable; most meaningful text is illegible",
+        "2": "The main text is readable but secondary text is hard to read",
+        "3": "All meaningful text is readable with slight effort",
+        "4": "All text is crisp and effortless to read"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.01,
+        "3": 0.33,
+        "4": 0.66
+      },
+      "decision": "review"
+    },
+    "subject_clarity": {
+      "type": "score",
+      "score": 3.95,
+      "confidence": 0.96,
+      "legend": {
+        "0": "A viewer cannot tell what the image shows",
+        "1": "Vague: the subject is faint or ambiguous",
+        "2": "The subject is identifiable with some effort",
+        "3": "The subject is clear",
+        "4": "The subject is immediately obvious and striking"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0.05,
+        "4": 0.95
+      },
+      "decision": "accept"
+    },
+    "framing": {
+      "type": "score",
+      "score": 3.51,
+      "confidence": 0.59,
+      "legend": {
+        "0": "The subject is cut off or mostly missing, and/or most of the frame is dead space",
+        "1": "Noticeable cut-off content or large empty areas weaken the subject",
+        "2": "Acceptable: some wasted space or a slightly tight crop",
+        "3": "Well framed: the subject is complete with sensible margins",
+        "4": "Excellent framing: every part of the frame earns its place"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.01,
+        "2": 0.02,
+        "3": 0.42,
+        "4": 0.55
+      },
+      "decision": "review"
+    },
+    "contrast_exposure": {
+      "type": "score",
+      "score": 3.71,
+      "confidence": 0.76,
+      "legend": {
+        "0": "The subject merges into the background (nearly black or blown out); parts cannot be told apart",
+        "1": "Weak separation between subject and background; hard to distinguish parts",
+        "2": "Adequate, with some low-contrast areas",
+        "3": "Good separation between subject and background",
+        "4": "Excellent: clear, balanced tones and strong separation"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.01,
+        "3": 0.27,
+        "4": 0.72
+      },
+      "decision": "accept"
+    },
+    "artifact_cleanliness": {
+      "type": "score",
+      "score": 2.18,
+      "confidence": 0.61,
+      "legend": {
+        "0": "Severe artifacts dominate: debug overlays, watermarks, cursors, or heavy compression damage",
+        "1": "Prominent artifacts that a visitor would notice immediately",
+        "2": "Minor artifacts noticeable only on a close look",
+        "3": "Nearly clean: only trace artifacts",
+        "4": "Clean: no artifacts, overlays or leftover interface residue"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0.14,
+        "2": 0.62,
+        "3": 0.16,
+        "4": 0.08
+      },
+      "decision": "review"
+    },
+    "scan_first_impact": {
+      "type": "score",
+      "score": 3.14,
+      "confidence": 0.84,
+      "legend": {
+        "0": "A two-second glance conveys nothing clear",
+        "1": "A vague impression only",
+        "2": "Some specific takeaway",
+        "3": "A clear, specific takeaway about the work",
+        "4": "An instant, specific and appealing takeaway about the work"
+      },
+      "probabilities": {
+        "0": 0,
+        "1": 0,
+        "2": 0.03,
+        "3": 0.8,
+        "4": 0.17
+      },
+      "decision": "accept"
+    },
+    "is_defective_for_showcase": {
+      "type": "noul",
+      "noul": 0.54,
+      "p": 0.54,
+      "read": "uncertain"
+    },
+    "fixable_by_gentle_ai_touchup": {
+      "type": "noul",
+      "noul": 0.17,
+      "p": 0.17,
+      "read": "no"
+    },
+    "needs_new_capture_or_recrop": {
+      "type": "noul",
+      "noul": 0.13,
+      "p": 0.13,
+      "read": "no"
+    },
+    "primary_issue": {
+      "type": "choice",
+      "choice": "artifacts_or_overlays",
+      "confidence": 0.33,
+      "probabilities": {
+        "none": 0,
+        "busy_background": 0.01,
+        "poor_framing_or_dead_space": 0,
+        "other": 0.17,
+        "artifacts_or_overlays": 0.42,
+        "unreadable_text": 0,
+        "low_resolution": 0,
+        "low_contrast_or_dark": 0.4
+      },
+      "decision": "reject"
+    }
+  },
+  "severity": {
+    "choice": "moderate",
+    "confidence": 0.23,
+    "decision": "reject",
+    "probabilities": {
+      "severe": 0.35,
+      "moderate": 0.42,
+      "none": 0.03,
+      "minor": 0.2
+    }
+  },
+  "remedy": {
+    "choice": "gentle-ai-touchup",
+    "confidence": 0.33,
+    "decision": "reject",
+    "probabilities": {
+      "recrop-or-recapture": 0.16,
+      "gentle-ai-touchup": 0.55,
+      "replace": 0.29
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": 55,
+  "file": "reference-assets/55--fovhack--fov-preview.png",
+  "project": "fovhack",
+  "kind": "game-screenshot",
+  "depicts": "Wide first-person view of a longsword and two armored forearms in the foreground facing a small armored knight with poleaxe on a pale grid floor under a blue sky; yellow 'Experimental Level' text above.",
+  "text_readable": "Readable: 'Experimental Level' (yellow). Subtitle line below it is too small to read.",
+  "composition": "Knight small near centre at horizon; arms and blade occupy bottom centre and diagonal to top right; sky top third; large expanses of pale floor left and right.",
+  "tone_and_contrast": "Bright pale floor, saturated blue sky gradient; dark gauntlets and blade contrast strongly; knight small and lower in contrast.",
+  "sharpness_and_artifacts": "Soft, upscaled-looking with smeared detail and banding in sky; dark patch at right horizon edge; no HUD or watermarks.",
+  "scan_first_read": "A sword and gauntlets in first person pointing at a distant knight on a blank floor.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 53,
+  "file": "reference-assets/53--cs314--website.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Web app page with dark green header 'T22 2 EAZY' with globe logo, a street map of a university town area, a dark green add-list button lower right, and a green footer status bar.",
+  "text_readable": "Readable: 'T22 2 EAZY', 'Connected to t22 2 Eazy (http://localhost:8000).', street names like 'West Laurel Street', 'US 287'. Small map labels partly too small.",
+  "composition": "Map dominates the centre between green header and footer; button overlaps map at bottom right; a hand cursor icon sits mid-map; white margins flank the map slightly.",
+  "tone_and_contrast": "Muted pastel map with dense detail; dark green bars give strong contrast at top and bottom; map contrast low-to-medium internally.",
+  "sharpness_and_artifacts": "Crisp map tiles with fine text; a leading missing-glyph box appears before 'Connected' in footer; a hand cursor is baked in; localhost URL visible.",
+  "scan_first_read": "A detailed street map framed by dark green bars titled T22 2 Eazy.",
+  "observer_confirms_blind": true
+}

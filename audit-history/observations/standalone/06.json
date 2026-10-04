@@ -1,0 +1,13 @@
+{
+  "id": 6,
+  "file": "reference-assets/06--ant-game--ant2.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Front close-up of grey metallic ant sculpt head with large open serrated mandibles, eyes and antennae bases, legs spread to sides, on dark grey background.",
+  "text_readable": "no text",
+  "composition": "Head and mandibles centered in lower two-thirds; body and legs cut off at top and both sides; dark background at bottom corners.",
+  "tone_and_contrast": "Dark grey flat background; model has blue and copper reflective highlights, strong contrast on mandibles.",
+  "sharpness_and_artifacts": "Detailed surface texture crisp; limbs cut off at frame edges; no overlays.",
+  "scan_first_read": "A close-up ant face with big toothed jaws.",
+  "observer_confirms_blind": true
+}

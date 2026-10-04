@@ -1,0 +1,13 @@
+{
+  "id": 49,
+  "file": "reference-assets/49--cs314--iterative-design.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner page with a small campus street map centred, Find Place search bar below, and an empty My Trip row; green header and footer with white side margins.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"Find Place\", \"My Trip\", \"West Prospect Road\", \"Leaflet\". Map street labels small; some cut at map edges.",
+  "composition": "Header top; map centred in a narrower column with white margins left and right; search and trip below; empty white space beneath before footer.",
+  "tone_and_contrast": "Green header/footer with white text; pastel map with orange roads; grey placeholder text; white surrounding margins give clear separation.",
+  "sharpness_and_artifacts": "Crisp text and map tiles; hand cursor on map; tofu glyph before footer text; map labels truncated at map edges.",
+  "scan_first_read": "A green trip planner with a campus map above an empty trip list.",
+  "observer_confirms_blind": true
+}

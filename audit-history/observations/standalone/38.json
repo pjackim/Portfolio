@@ -1,0 +1,13 @@
+{
+  "id": 38,
+  "file": "reference-assets/38--arch-linux--bottom.png",
+  "project": "arch-linux",
+  "kind": "app-ui-screenshot",
+  "depicts": "Linux desktop with two code editor panes (C++ files), a terminal showing a git commit, a file manager with folders, and a top status bar with workspace dots.",
+  "text_readable": "Readable: \"git commit -am \"various changes\"\", \"class Words\", \"/home/pjackim/\", \"4.36 GiB\". Line-level code comments are small but legible; menu bar at top-left is faint.",
+  "composition": "Full-frame desktop tiled in three columns: two editors left/centre, terminal above file manager on right; top bar spans width; terminal has empty lower area.",
+  "tone_and_contrast": "Dark translucent panels with muted blue-grey wallpaper showing through; code text light on dark; syntax colours moderate; top-left menu text low in contrast with background.",
+  "sharpness_and_artifacts": "Text crisp at native size; blurred wallpaper visible behind translucent windows; no compression artifacts noted; no watermark; cursor block in terminal.",
+  "scan_first_read": "A dark tiled Linux desktop with code editors, a terminal and a file manager.",
+  "observer_confirms_blind": true
+}

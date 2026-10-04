@@ -1,0 +1,13 @@
+{
+  "id": 51,
+  "file": "reference-assets/51--cs314--map.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "World map with a thick blue route line looping across continents, a blue marker with popup Labietis 56.965000, 24.130278, zoom buttons, list-add button, green header and footer.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"Labietis\", \"56.965000, 24.130278\", \"Connected to t22 2 eazy\". Map country labels not present; attribution partly covered.",
+  "composition": "World map fills the width between header and footer; marker and popup in upper centre; route lines run off left and right edges; button at bottom-right overlaps attribution.",
+  "tone_and_contrast": "Pale blue oceans and beige land with saturated blue route lines; route clearly separated from map; green header/footer strong.",
+  "sharpness_and_artifacts": "Crisp lines and tiles; route line thick and jagged; popup shadowed; attribution text cut by button; no watermark.",
+  "scan_first_read": "A world map with a blue route zig-zagging across continents and one marked location.",
+  "observer_confirms_blind": true
+}

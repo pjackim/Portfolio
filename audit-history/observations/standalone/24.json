@@ -1,0 +1,13 @@
+{
+  "id": 24,
+  "file": "reference-assets/24--lost-city--website.png",
+  "project": "lost-city",
+  "kind": "app-ui-screenshot",
+  "depicts": "Browser app screenshot titled T22 2 EAZY: dark green header with a globe icon, an OpenStreetMap-style street map of a town centred on a campus, a dark green add-list button lower right, and a status bar below.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"West Laurel Street\", \"West Prospect Road\", \"Connected to t22 2 Eazy (http://localhost:8000).\" Small street names in the residential areas are not readable.",
+  "composition": "Map fills the centre; header band on top and status footer at bottom; zoom buttons top left, add-list button in the lower right corner covering map. Thin white margins around the map.",
+  "tone_and_contrast": "Dark green bars against a light, pastel map with many small colours; header and footer contrast strongly with the map; map internal contrast is low.",
+  "sharpness_and_artifacts": "Map text is sharp but small; a hand-shaped cursor is visible near the top centre of the map; a missing-glyph box appears before 'Connected' in the footer; Leaflet attribution bottom right partly overlapped by the button.",
+  "scan_first_read": "A street map web app with a dark green header named T22 2 EAZY.",
+  "observer_confirms_blind": true
+}

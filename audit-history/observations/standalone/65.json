@@ -1,0 +1,13 @@
+{
+  "id": 65,
+  "file": "reference-assets/65--hero-trivia--hero-trivia-variety.png",
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "depicts": "Crossword screen with 'Hero Trivia' logo over blurred comic-book collage; vertical word X-MEN highlighted in gold; clue '_____ Institute is the home of the X-Men'.",
+  "text_readable": "Readable: 'Hero Trivia', '_____ Institute is the home of the X-Men', letters X - M E N. Other cells blank.",
+  "composition": "Logo top; compact grid centred; clue box in lower third; blurred collage fills the rest; grid and clue offset towards centre.",
+  "tone_and_contrast": "Warm blurred colours; gold glowing letters on dark cells; light clue text on dark translucent box; moderate contrast.",
+  "sharpness_and_artifacts": "Intentionally blurred backdrop; glow halos; slight compression softness; no cursor visible.",
+  "scan_first_read": "A comic-themed crossword titled Hero Trivia.",
+  "observer_confirms_blind": true
+}

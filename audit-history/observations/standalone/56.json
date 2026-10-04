@@ -1,0 +1,13 @@
+{
+  "id": 56,
+  "file": "reference-assets/56--fovhack--screenshot-cosmetic.png",
+  "project": "fovhack",
+  "kind": "game-screenshot",
+  "depicts": "Dark game menu panel titled 'Cosmetics' with gold-outlined fields for Helm, Neck, Shoulder, Chest, Arm, Glove, Waist, Legs, Foot with numbers, beside a golden-armored crowned knight; faded larger armor behind.",
+  "text_readable": "Readable: 'Cosmetics', 'Helm 43', 'Legs 19', 'Chest 5'. Faint 'Leave' button and small emblem text at left are too dim to read.",
+  "composition": "Full-body knight on left; label lines fan out to value fields on right; large ghosted armor torso fills right background; panel border frames whole image.",
+  "tone_and_contrast": "Dark near-black background with gold/cream lines and text; bright knight stands out; some labels (Neck, Arm) dimmer than others.",
+  "sharpness_and_artifacts": "Sharp UI text; mild compression softness in background armor; overlapping ghosted layers behind panel; thin gold border at edges.",
+  "scan_first_read": "A golden armored king with a list of armor slot numbers.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 50,
+  "file": "reference-assets/50--cs314--itinerary.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner with search \"denver\" and five heliport/airport results with add buttons, below a trip named wwbrews.json listing Birra Korca, Mykonos Brewing Company and more with distances.",
+  "text_readable": "Readable: \"denver\", \"Kauffman Heliport, Denver, United States\", \"wwbrews.json\", \"86,942 mi\", \"Birra Korca\". Coordinates lines are small and grey but legible.",
+  "composition": "Header at top, search results list in upper half, trip list in lower half; footer at bottom; map button overlaps bottom-right of list; third trip item cut at footer.",
+  "tone_and_contrast": "Dark green header, buttons and footer on white; black bold names with grey coordinates; strong contrast; small grey text lower contrast.",
+  "sharpness_and_artifacts": "Crisp text; map button covers part of distance text (\"328 mi\", \"701 mi\"); last row cropped by footer; link icon precedes footer text.",
+  "scan_first_read": "A trip planner with search results for Denver and a long brewery trip itinerary.",
+  "observer_confirms_blind": true
+}

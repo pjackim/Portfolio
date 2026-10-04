@@ -1,0 +1,13 @@
+{
+  "id": 44,
+  "file": "reference-assets/44--correlation-visualizer--trap1.png",
+  "project": "correlation-visualizer",
+  "kind": "app-ui-screenshot",
+  "depicts": "Password strength web widget: input showing (:pjackim.1234 in a white box over a green bar labelled Strong, character-type list, and \"Time to crack your password: 1 years\".",
+  "text_readable": "Readable: \"(:pjackim.1234\", \"Strong\", \"14 characters containing:\", \"1 years\". \"Upper case\" label is pale grey and hard to read.",
+  "composition": "Landscape crop; input and green bar at top spanning full width, details row and result centred below; tight edges, little margin.",
+  "tone_and_contrast": "Bright green bar with white text; black-on-white lower half; pale grey Upper case label low in contrast; otherwise strong contrast.",
+  "sharpness_and_artifacts": "Crisp text; large \"1 years\" text; no compression artifacts, overlays or watermark noted; tight crop.",
+  "scan_first_read": "A green \"Strong\" password meter saying it takes 1 year to crack.",
+  "observer_confirms_blind": true
+}

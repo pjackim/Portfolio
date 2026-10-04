@@ -1,0 +1,13 @@
+{
+  "id": 45,
+  "file": "reference-assets/45--correlation-visualizer--trap2.png",
+  "project": "correlation-visualizer",
+  "kind": "app-ui-screenshot",
+  "depicts": "Mustard-yellow web page headed \"How Secure Is My Password?\" with tagline, input containing (:pjackim.1234, and result \"53 million years\" to crack the password.",
+  "text_readable": "Readable: \"How Secure Is My Password?\", \"#1 Password Strength Tool. Trusted and used by millions.\", \"53 million years\", \"to crack your password\". Small line \"It would take a computer about\" is thin but legible.",
+  "composition": "Landscape crop; heading at top, input band across middle, large result centred below; symmetric, tight to edges.",
+  "tone_and_contrast": "White text on mustard yellow; heading and result have moderate contrast; thin small text lower contrast; white input box with black text stands out.",
+  "sharpness_and_artifacts": "Crisp text; flat colour background; no visible artifacts, watermark or overlays.",
+  "scan_first_read": "A yellow page asking how secure a password is, answering 53 million years.",
+  "observer_confirms_blind": true
+}

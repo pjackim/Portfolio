@@ -1,0 +1,13 @@
+{
+  "id": 48,
+  "file": "reference-assets/48--cs314--interopt.png",
+  "project": "cs314",
+  "kind": "app-ui-screenshot",
+  "depicts": "Trip planner page with a large street map of a university campus area filling the width, zoom buttons, a hand cursor, a list-add button bottom right, green header and footer.",
+  "text_readable": "Readable: \"T22 2 EAZY\", \"West Mulberry Street\", \"South College Avenue\", \"Connected to t22 2 eazy (http://localhost:8000).\". Small street names are tiny but legible at native size.",
+  "composition": "Header on top, map spanning full width in middle, footer at bottom; map fills most of frame; button overlays bottom-right corner of map; thin white gaps above and below map.",
+  "tone_and_contrast": "Pastel map colours (beige, pale green, yellow roads) with green header/footer; moderate map contrast; orange major roads stand out.",
+  "sharpness_and_artifacts": "Crisp map tiles with fine street labels; hand cursor visible on map; attribution text partly covered by button; tofu glyph before footer text.",
+  "scan_first_read": "A green-headed web app showing a detailed street map of a campus.",
+  "observer_confirms_blind": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": 20,
+  "file": "reference-assets/20--go-green--brochure-text.png",
+  "project": "go-green",
+  "kind": "other",
+  "depicts": "Same garbage-versus-waterfall split composite with a translucent grey box with green border near the bottom left holding a paragraph of white condensed text about waste and trees.",
+  "text_readable": "Readable: \"THIS COULD BE THE WORLD'S REALITY IN OUR LIFETIME\", \"OVER 900,000,000 TREES ARE CUT DOWN EVERY YEAR\", \"WE CAN SAVE THE WORLD, BUT IT TAKES EVERYONE.\" All seven lines of the paragraph are legible.",
+  "composition": "Full-frame split image; text box spans bottom-left and part of the centre, covering the lower left of the garbage side and the fern area at the diagonal. Rest matches the text-free versions.",
+  "tone_and_contrast": "White text on a darkened semi-transparent grey panel reads with high contrast; the surrounding halves are dark brown left and green-teal right.",
+  "sharpness_and_artifacts": "Text edges crisp; panel background shows blurred image behind it. Some typos visible in the text (e.g. 'planer', 'are great grand children'). No watermark seen.",
+  "scan_first_read": "Garbage-versus-waterfall split with a large green-bordered text block; message reads as an environmental awareness flyer.",
+  "observer_confirms_blind": true
+}

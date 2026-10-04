@@ -1,0 +1,13 @@
+{
+  "id": 9,
+  "file": "reference-assets/09--ant-game--texture1.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Glossy dark red-brown ant model with orange-banded antenna segments in foreground, posed on a photo of dry grass hillside.",
+  "text_readable": "no text",
+  "composition": "Ant fills lower and central frame, head at right cut off by right edge, legs cut off at left and bottom; grass fills background.",
+  "tone_and_contrast": "Warm sunlit yellow-green grass background; ant is dark maroon with glossy highlights, separates through darkness; colour separation moderate.",
+  "sharpness_and_artifacts": "Sharp model; grass background slightly soft; no overlays; some legs clipped at edges.",
+  "scan_first_read": "A large glossy dark ant on a grassy field.",
+  "observer_confirms_blind": true
+}

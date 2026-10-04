@@ -1,0 +1,13 @@
+{
+  "id": 42,
+  "file": "reference-assets/42--correlation-visualizer--credentials.png",
+  "project": "correlation-visualizer",
+  "kind": "other",
+  "depicts": "Rounded dark box on white containing the text (:pjackim.1234@gmail.com : (:pjackim.1234 with the @ in teal.",
+  "text_readable": "Readable: \"(:pjackim.1234@gmail.com : (:pjackim.1234\". All text legible.",
+  "composition": "Landscape strip; dark rounded rectangle centred with white margin all around; text sits left-centre with empty dark space at right.",
+  "tone_and_contrast": "Light grey monospace on dark navy-grey box against pure white; teal @ is the only colour accent.",
+  "sharpness_and_artifacts": "Crisp text and rounded corners; no compression artifacts, overlays or watermark noted.",
+  "scan_first_read": "An email and password pair shown in a code-style box.",
+  "observer_confirms_blind": true
+}

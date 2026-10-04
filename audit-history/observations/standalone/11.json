@@ -1,0 +1,13 @@
+{
+  "id": 11,
+  "file": "reference-assets/11--ant-game--texture3.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Top-down view of glossy dark brown ant model with long legs on a forest-floor photo of sandy path and fallen leaves.",
+  "text_readable": "no text",
+  "composition": "Ant spans full width horizontally; antenna tip cut at right edge; legs cut at bottom edge; lots of ground visible; green foliage upper left.",
+  "tone_and_contrast": "Warm beige and orange background; ant dark brown with shiny highlights, clear silhouette against light ground.",
+  "sharpness_and_artifacts": "Model sharp; background photo sharp; legs clipped at bottom edge; no overlays.",
+  "scan_first_read": "A dark brown ant from above on a leafy path.",
+  "observer_confirms_blind": true
+}

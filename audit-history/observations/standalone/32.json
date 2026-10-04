@@ -1,0 +1,13 @@
+{
+  "id": 32,
+  "file": "reference-assets/32--paradox--red-paradox.png",
+  "project": "paradox",
+  "kind": "logo-or-wordmark",
+  "depicts": "The same impossible-triangle logo in dark grey with red streaks, with PARADOX.SH beneath, on a white square background.",
+  "text_readable": "Readable: \"PARADOX.SH\" (PARADOX in dark grey, .SH in red).",
+  "composition": "Square frame, logo fills most of it and is centred; wordmark below the triangle; narrow white margins.",
+  "tone_and_contrast": "Dark grey and red on white gives strong contrast; red streaks stand out on the dark grey.",
+  "sharpness_and_artifacts": "Clean vector-like edges with soft inner shadows; no noise or watermark seen.",
+  "scan_first_read": "A dark triangle logo with red streaks and the name PARADOX.SH.",
+  "observer_confirms_blind": true
+}

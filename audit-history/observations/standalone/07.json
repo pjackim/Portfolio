@@ -1,0 +1,13 @@
+{
+  "id": 7,
+  "file": "reference-assets/07--ant-game--ant3.png",
+  "project": "ant-game",
+  "kind": "3d-render",
+  "depicts": "Close-up side view of sculpted ant head, thorax and leg joints in blue-copper metallic shading, on dark grey background with a thin light line at top.",
+  "text_readable": "no text",
+  "composition": "Model fills most of frame; head at upper left, abdomen at lower right, legs cut off at left and bottom edges; thin horizontal line near top edge.",
+  "tone_and_contrast": "Dark grey backdrop; bright blue and copper highlights with dark shadowed areas.",
+  "sharpness_and_artifacts": "Fine surface ridges and pitted texture visible; a thin light horizontal line at the top edge (viewport edge) appears; subject cut off at edges.",
+  "scan_first_read": "Cropped close-up of a metallic ant body and joints.",
+  "observer_confirms_blind": true
+}

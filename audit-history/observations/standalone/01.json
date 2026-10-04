@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "file": "reference-assets/01--alvin--alvin-copy.png",
+  "project": "alvin",
+  "kind": "other",
+  "depicts": "Square illustration: circular wreath of cannabis leaves around banknote backdrop, yellow-and-red 'HEMP'S EXOTICS' lettering, cartoon chipmunk in red hoodie with cigar, '#DBB' text, on dark background.",
+  "text_readable": "'HEMP'S', 'EXOTICS', '#DBB'; small banknote text like '100' and 'ONE HUNDRED DOLLARS' partly readable; fine banknote serial text is small.",
+  "composition": "Square frame; circular emblem centered with dark margin on all sides; character at right edge of wreath; nothing cut off.",
+  "tone_and_contrast": "Dark charcoal background; saturated red, yellow, purple, green, blue elements separate strongly from it; banknote backdrop is muted grey-green.",
+  "sharpness_and_artifacts": "Smooth vector edges with black outlines; no visible noise or compression; large flat dark margin around the emblem; no watermark.",
+  "scan_first_read": "A colourful cannabis-themed badge reading 'Hemp's Exotics' with a smoking cartoon chipmunk.",
+  "observer_confirms_blind": true
+}

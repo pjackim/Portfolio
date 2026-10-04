@@ -1,0 +1,13 @@
+{
+  "id": 63,
+  "file": "reference-assets/63--hero-trivia--hero-trivia-2.png",
+  "project": "hero-trivia",
+  "kind": "game-screenshot",
+  "depicts": "Trivia crossword screen with 'Hero Trivia' logo over a blurred comic collage; grid with vertical word SHANG-CHI highlighted in gold; clue box reading 'The Beast first appeared in'.",
+  "text_readable": "Readable: 'Hero Trivia', 'The Beast first appeared in', vertical letters S H A N G - C H I. Other cells empty and unreadable.",
+  "composition": "Logo top centre; grid centred with highlighted column; clue box lower centre, narrower than other version; blurred collage at sides; scrollbar at bottom.",
+  "tone_and_contrast": "Warm blurred background; dark grid cells; gold highlighted column glows; clue text light on dark translucent box.",
+  "sharpness_and_artifacts": "Deliberate background blur; glow on cells; horizontal scrollbar baked in at bottom; slight softness in small letters.",
+  "scan_first_read": "A comic-themed crossword with a highlighted column and a clue.",
+  "observer_confirms_blind": true
+}
