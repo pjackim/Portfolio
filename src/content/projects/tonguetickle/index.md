@@ -97,7 +97,7 @@ media:
     src: ./listen-grok-expression-tags.webp
     pair: grok-auto-express
     alt: "TongueTickle's Listen screen with the Grok expression bar open: Auto-moments and Auto-delivery toggles, a preset picker and an Auto-express button, clickable moment tags such as [pause], [laugh] and [sigh] and delivery tags such as <whisper>, <emphasis> and <slow>, above a text box reading 'The report is ready for review [pause] please read it before Friday.'"
-    caption: "Grok's expression tags: 'moments' insert at the cursor and 'delivery' tags wrap the selection."
+    caption: 'Expression bar open with the Grok voice Ara selected; Auto-express not pressed. Moment tags insert at the cursor and delivery tags wrap the selection.'
     wide: true
 links:
   private: [repo]
@@ -122,7 +122,7 @@ Every TTS backend sits behind one provider interface and a priority registry, so
 
 A global hotkey (Ctrl+Shift+S by default) releases held Shift and Alt, sends a clean Ctrl+C, and reads the clipboard through `pyperclip`. `pynput` is imported lazily so the server and tests run headless.
 
-<div data-pair="provider-registry">
+<div data-pair="provider-registry" data-side="left">
 
 ### Provider registry
 
@@ -130,7 +130,7 @@ Qwen3-TTS through a self-hosted vLLM-Omni server (priority 1), Grok Voice (2), O
 
 </div>
 
-<div data-pair="web-ui">
+<div data-pair="web-ui" data-side="right">
 
 ### Web UI
 
@@ -140,7 +140,7 @@ The web UI's own wordmark reads "TongueTickler"; the project, package and repo a
 
 </div>
 
-<div data-pair="voice-library">
+<div data-pair="voice-library" data-side="left">
 
 ### Voices
 
@@ -148,7 +148,7 @@ A voice library with filters, and one-click Use to set the active voice.
 
 </div>
 
-<div data-pair="provider-settings">
+<div data-pair="provider-settings" data-side="right">
 
 ### Settings
 
@@ -156,7 +156,7 @@ Per-provider settings cards, generated from each provider's declared settings sc
 
 </div>
 
-<div data-pair="grok-auto-express">
+<div data-pair="grok-auto-express" data-side="left">
 
 ### Grok auto-express
 
@@ -164,7 +164,7 @@ A `grok-4-fast-non-reasoning` pass inserts inline tags like `[laugh]` and wrappi
 
 </div>
 
-### Under the hood
+### Internals
 
 - **Shared HTTP plumbing.** One `post_with_retry` for all three network providers: up to 3 attempts on 429, 500, 502, 503, 504 and network errors, with exponential backoff or the `Retry-After` header.
 - **Offline voice.** Windows SAPI5 through PowerShell `System.Speech`, with the text passed via a temp file rather than interpolated into a script. It is Windows-only.
