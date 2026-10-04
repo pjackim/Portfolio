@@ -20,11 +20,13 @@ coverAlt: Proof-of-concept Hardpoint map of dark stone blocks and stairs around 
 media:
   - kind: image
     src: ./capture-zone-corridor.webp
+    pair: moving-point
     alt: Low view across a glowing yellow floor grid toward armored knights fighting at the end of a stone corridor.
     caption: The objective — battle for positioning and occupation of a point that moves around the map on a timer.
     wide: true
   - kind: image
     src: ./capture-zone-melee.webp
+    pair: proof-of-concept-map
     alt: Knights fighting on and around a blue-lit floor grid in a blocky stone arena, with fallen fighters and dropped weapons.
     caption: Holding the point awards points to players and their team; the first team to 150 points wins. The map is my proof of concept.
     wide: true
@@ -44,9 +46,21 @@ I built the mode in Unreal Engine 4 with server and client replication, using te
 
 ## What I built
 
+<div data-pair="moving-point">
+
+### The moving point
+
 Hardpoint is a battle for positioning. A single point moves around the map on a timer; once a team occupies it, the point starts awarding points to that team's players and to the team as a whole, and the first team to 150 points wins.
 
+</div>
+
+<div data-pair="proof-of-concept-map">
+
+### Proof-of-concept map
+
 The client asked me to make only the mode itself; the map in these images is a proof-of-concept map I designed beyond that scope.
+
+</div>
 
 ## Outcome & lessons
 
