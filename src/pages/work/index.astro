@@ -1,7 +1,7 @@
 ---
 /**
  * Work (Portfolio.dc.html, Claude Design, Sept 2026): every published project in two sections,
- * the case studies (by `order`) and the archive (newest first), each a WorkShowcase: a rotating
+ * the projects (by `order`) and the archive (newest first), each a WorkShowcase: a rotating
  * lead over an index of rows. A capability filter (WorkFilter, interactions spec §4) narrows
  * both; `?capability=<id>` links straight to a filtered view.
  */
@@ -18,17 +18,17 @@ const written = WORDS[featured.length] ?? String(featured.length);
 
 <BaseLayout
   title="All work — Parker Jackim"
-  description="Every project by Parker Jackim: security and reverse-engineering case studies, software, and design and 3D work."
+  description="Every project by Parker Jackim: security and reverse-engineering research, software, and design and 3D work."
 >
   <div class="standalone container">
     <PageHeader
       index="03"
       title="Work"
-      intro={`Every project in one place. ${written} are written up as case studies; the rest are in the archive, newest first.`}
+      intro={`Every project in one place. ${written} are featured; the rest are in the archive, newest first.`}
     />
     <WorkFilter class="standalone__body" projects={[...featured, ...archive]} />
     <div class="work__groups" data-filter-list>
-      <WorkShowcase id="cs" label="Case studies" cta="Open case study" projects={featured} eager />
+      <WorkShowcase id="cs" label="Featured" cta="Open project" projects={featured} eager />
       <WorkShowcase
         id="ar"
         label="Archive"

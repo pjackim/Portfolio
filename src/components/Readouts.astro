@@ -1,6 +1,6 @@
 ---
 /**
- * Instrument readouts (interactions spec §2), e.g. `15 PROJECTS · 06 CASE STUDIES` — the
+ * Instrument readouts (interactions spec §2), e.g. `15 PROJECTS · 06 FEATURED` — the
  * successor to the 2021 site's counter-up.
  *
  * Every digit is a clipped reel of 0–9 twice over (one text node, wrapped one digit per line),
@@ -14,7 +14,7 @@ export interface Readout {
   /** As displayed, e.g. "06"; digits roll, other characters stay put. */
   value: string;
   label: string;
-  /** What assistive tech reads, e.g. "6 case studies". */
+  /** What assistive tech reads, e.g. "6 projects". */
   spoken: string;
 }
 

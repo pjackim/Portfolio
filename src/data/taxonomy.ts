@@ -39,7 +39,7 @@ export const GROUP_LABELS: Record<Group, string> = {
 
 /**
  * One skill in a capability group. `seenIn` names the projects whose frontmatter (`stack`,
- * `summary` or `highlights`) shows it, rendered as evidence chips linking to their case studies;
+ * `summary` or `highlights`) shows it, rendered as evidence chips linking to their projects;
  * `note` is non-project evidence stated in the résumé (a certification).
  */
 export interface CapabilityItem {

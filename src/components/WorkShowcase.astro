@@ -29,7 +29,7 @@ interface Props {
   /** Id prefix, unique on the page. */
   id: string;
   label: string;
-  /** The lead's call to action ("Open case study"). */
+  /** The lead's call to action ("Open project"). */
   cta: string;
   projects: readonly Project[];
   /** Number of the first project (rows continue the numbering across sections). */
@@ -200,7 +200,7 @@ const items = projects.map((p, i) => ({
     margin-block-start: clamp(3rem, 2rem + 3vw, 3.5rem);
   }
 
-  /* CASE STUDIES 06 ──────────────────── AUTO · 01 / 06 */
+  /* FEATURED 06 ──────────────────── AUTO · 01 / 06 */
   .showcase__head {
     display: flex;
     align-items: center;

@@ -64,7 +64,7 @@ Names worth knowing when discussing options, with how each fits here:
 | Kinetic type, text scramble                              | In use (hero focus line, `scramble.ts`). Keep it to the hero and short labels.                 |
 | Spotlight-border / reticle card                          | In use (`ProjectCard`, `reticle.css`). Hover-only enhancement; never carries information.      |
 | Loop that plays in view                                  | In use (`LoopVideo.astro`). The best motion for the scan-first goal: it shows the work itself. |
-| Animated SVG line drawing, clip-path/mask reveals        | Good fit: CSS-only, cheap, can explain a diagram in a case study.                              |
+| Animated SVG line drawing, clip-path/mask reveals        | Good fit: CSS-only, cheap, can explain a diagram in a project.                                 |
 | Scroll-pinned hero, sticky-stack sections, scroll hijack | Poor fit: they slow a scanning visitor and need heavy JS. Avoid.                               |
 | Parallax tilt, magnetic buttons, custom cursors          | Avoid: pointer-only, and cursors hurt accessibility.                                           |
 | Marquee                                                  | Avoid: listed as an AI tell ([anti-slop.md](./anti-slop.md)), and hides half its content.      |

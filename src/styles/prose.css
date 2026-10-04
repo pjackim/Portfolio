@@ -1,5 +1,5 @@
 /*
- * `.prose` — Markdown bodies on case studies (spec-design-content §2, §3). A 66ch measure,
+ * `.prose` — Markdown bodies on projects (spec-design-content §2, §3). A 66ch measure,
  * a steady flow rhythm, and h2s that read as numbered sections: a hairline rule with a mono
  * accent index (01, 02 …) above each heading.
  */
@@ -93,7 +93,7 @@
   }
 }
 
-/* Lists. Bullets are accent dashes, matching the case-study Key points ticks. A string
+/* Lists. Bullets are accent dashes, matching the project Key points ticks. A string
    marker (not `list-style: none` + a drawn tick) keeps Markdown lists announced as lists. */
 .prose :where(ul) {
   padding-inline-start: 1.25em;

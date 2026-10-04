@@ -68,14 +68,14 @@ const COMPONENTS = [
   ],
   ['ExperienceList', 'About', 'home', 'ol.experience', 'ExperienceList'],
   ['ContactBlock', 'About', 'home', 'div.contact', 'ContactBlock'],
-  ['CaseHeader', 'Case study', 'case', 'header.case__header', 'CaseHeader'],
-  ['ProjectMeta', 'Case study', 'case', 'dl.project-meta', 'ProjectMeta'],
-  ['CaseHero', 'Case study', 'case', 'figure.case-hero', 'CaseHero'],
-  ['CaseIndex', 'Case study', 'case', 'nav.case-index', 'CaseIndex'],
-  ['KeyPoints', 'Case study', 'case', 'section.case__key-points', null],
-  ['Prose', 'Case study', 'case', 'div.case__prose', null],
-  ['MediaFigure', 'Case study', 'case', 'section.case__gallery figure.figure', 'media/MediaFigure'],
-  ['PrevNext', 'Case study', 'case', 'nav.prev-next, .prev-next', 'PrevNext'],
+  ['CaseHeader', 'Project', 'case', 'header.case__header', 'CaseHeader'],
+  ['ProjectMeta', 'Project', 'case', 'dl.project-meta', 'ProjectMeta'],
+  ['CaseHero', 'Project', 'case', 'figure.case-hero', 'CaseHero'],
+  ['CaseIndex', 'Project', 'case', 'nav.case-index', 'CaseIndex'],
+  ['KeyPoints', 'Project', 'case', 'section.case__key-points', null],
+  ['Prose', 'Project', 'case', 'div.case__prose', null],
+  ['MediaFigure', 'Project', 'case', 'section.case__gallery figure.figure', 'media/MediaFigure'],
+  ['PrevNext', 'Project', 'case', 'nav.prev-next, .prev-next', 'PrevNext'],
 ];
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -357,7 +357,7 @@ cpSync(join(ROOT, 'docs/identity/brand.md'), join(OUT, 'guidelines/brand.md'));
 const DESIGN_DOCS = {
   'scanning-and-reading': 'how visitors scan; headings, copy length, link text',
   cards: 'the whole-card link pattern and what a card carries',
-  'progressive-disclosure': 'the two fixed levels (surface, case study)',
+  'progressive-disclosure': 'the two fixed levels (surface, project)',
   'bento-grid': 'varied-size showcase grid rules',
   motion: 'what motion is for, timing, reduced motion',
   'typography-and-layout': 'squint test, spacing rhythm, type roles, copy lengths',
@@ -387,7 +387,7 @@ w(
 ${Object.entries(DESIGN_DOCS)
   .map(([n, d]) => `  - \`design/${n}.md\`: ${d}`)
   .join('\n')}
-- \`screenshots/pages/\`: full-page captures of the home page, the work index, and a case study, at 1440px (light, dark) and 390px (light).
+- \`screenshots/pages/\`: full-page captures of the home page, the work index, and a project, at 1440px (light, dark) and 390px (light).
 ${shots.map((s) => `  - \`${s.replace('guidelines/', '')}\``).join('\n')}
 - \`screenshots/components/\`: each component in light and dark.
 `,

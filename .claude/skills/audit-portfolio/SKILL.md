@@ -22,9 +22,9 @@ shared with `/design-portfolio` (worktree, servers, verification, staged merge) 
 
 ## Audit mode
 
-The focus is optional (e.g. "project cards", "mobile", "motion", "contact", "case-study pages").
+The focus is optional (e.g. "project cards", "mobile", "motion", "contact", "project pages").
 Without one, audit **every page type**: home (every section), `/work/`, one or two
-representative case studies (the lowest-`order` featured one, plus a non-featured one), and
+representative projects (the lowest-`order` featured one, plus a non-featured one), and
 `404.html`.
 
 In this mode, never edit anything under `src/`, `public/`, `tests/`, or config. The only files

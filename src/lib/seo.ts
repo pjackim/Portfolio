@@ -85,7 +85,7 @@ function mentionsTerm(text: string, term: string): boolean {
 
 /**
  * JSON-LD `Person` for the home page. No email. `knowsAbout`: the capability group labels (for
- * "Languages", its items), then the featured case studies' stack terms that the capability
+ * "Languages", its items), then the featured projects' stack terms that the capability
  * groups also name — the key ones, not incidental tooling such as "CLI" or "tkinter".
  */
 export function personJsonLd(featured: readonly Project[]): object {
@@ -126,7 +126,7 @@ export function personJsonLd(featured: readonly Project[]): object {
 }
 
 /**
- * JSON-LD `CreativeWork` for a case study. `dateCreated` is the project year, left out when the
+ * JSON-LD `CreativeWork` for a project. `dateCreated` is the project year, left out when the
  * period starts with "c." — an age-derived estimate (Ruling R5), not a real year.
  */
 export function creativeWorkJsonLd(project: Project, image: OgImage): object {

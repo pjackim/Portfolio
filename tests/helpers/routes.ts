@@ -15,7 +15,7 @@ const DIST = fileURLToPath(new URL('../../dist/', import.meta.url));
 const globPosix = (pattern: string): string[] =>
   globSync(pattern, { cwd: DIST }).map((file) => file.split(sep).join('/'));
 
-/** The post-deploy (`@prod`) sample: home + one case study. */
+/** The post-deploy (`@prod`) sample: home + one project. */
 export const PROD_ROUTES: readonly string[] = ['', 'work/credential-correlation/'];
 
 /** The 404 page, as built (not an `index.html` route). */
