@@ -50,6 +50,7 @@
 #   (owner-made, only documented facts, fetched 2026-09-29)
 title: 'TongueTickle: Read Anything Aloud'
 summary: 'Highlight text in any Windows app, press a hotkey, and hear it read aloud. Needs no account: a free Windows voice is the fallback.'
+tldr: 'A Windows app that reads selected text aloud when you press a hotkey, in an AI voice you set up or a free Windows voice. Built with Claude Code; the AI voices are only tested against simulated replies, and there is no installer yet.'
 year: 2026
 period: 'July–September 2026'
 group: software
@@ -96,7 +97,7 @@ links:
 legacyPaths: []
 ---
 
-Select text in any Windows app, hit **Ctrl+Shift+S**, and it reads aloud. I'd rather listen to long docs than squint at them.
+The hotkey is **Ctrl+Shift+S**. I'd rather listen to long docs than squint at them.
 
 ## How it speaks
 

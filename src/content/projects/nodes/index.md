@@ -2,6 +2,7 @@
 # Sources: html/Work/nodes.html:70-72, :79-88, :103, :109
 title: Nodes
 summary: A team concept for a responsibility-management bracelet, shaped by iterative design around users' pain points.
+tldr: 'A bracelet that works as a wearable to-do list: each bead is a button that completes a task, and a colored ring shows whether it is done, in progress, to do or unassigned. A 2021 team design concept, shown here as 3D renders.'
 role: Team project
 year: 2021
 group: design

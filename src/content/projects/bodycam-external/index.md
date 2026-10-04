@@ -25,6 +25,7 @@
 # detach-menu and zombie-horde recordings.
 title: 'BodyCam External'
 summary: 'In the shooter Bodycam, my tool lets the host edit the level mid-match, teleport with one map click, and spawn zombies in modes that have none.'
+tldr: 'I made a mod tool for the shooter Bodycam. It runs beside the game and edits it live: as host, I can edit the level, teleport with a map click and spawn zombies. I built it in a month for one game version, so updates can break it.'
 year: 2026
 period: 'Sept – Oct 2026'
 group: security

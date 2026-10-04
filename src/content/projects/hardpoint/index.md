@@ -2,6 +2,7 @@
 # Sources: html/Work/mordhaumod.html:68-70, :77-85, :109-118, :126-135, :144-156, :163; index.html:517-519
 title: Hardpoint Game Mode
 summary: A freelance Unreal Engine 4 game mode for Mordhau, commissioned by its competitive community — a moving capture point and team scoring, open-sourced for the community.
+tldr: "Mordhau's competitive community hired me to build a new game mode for the sword-fighting game. Teams fight to hold a capture point that keeps moving around the map, and holding it scores points. I released the code as open source, and the community used it in tournaments and leagues."
 role: Freelance developer
 year: 2021
 group: software

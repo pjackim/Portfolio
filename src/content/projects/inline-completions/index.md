@@ -3,6 +3,7 @@
 # (18 commits, all m0rt).
 title: 'Inline Completion Agent Framework'
 summary: "Autocomplete for VS Code that runs on 17+ AI services, so I'm not tied to one company. Its assistant edits files, asks first by default, and can undo a run's file changes."
+tldr: "A plugin for the VS Code code editor that I wrote. It finishes your code as you type, using whichever AI provider you pick rather than being locked to one vendor. It also includes an AI assistant you can ask to edit your project's files. Early version."
 year: 2026
 period: 'February–June 2026'
 group: software
@@ -23,7 +24,7 @@ links: {}
 legacyPaths: []
 ---
 
-Type, and it suggests the next bit of code as faded text. Press **Tab** to keep it.
+Suggestions show up as faded text. Press **Tab** to keep one.
 
 - **Pick any AI.** Paste the key from your AI company's account, then choose a model from a live list.
 - **Edits your files, with a safety net.** Give the assistant a task. It asks before editing or running anything by default, and shows an estimated cost per run.

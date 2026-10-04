@@ -2,6 +2,7 @@
 # Sources: html/Work/tripsite.html:77-82, :88-110, :138-147, :155-165, :172-184, :192-205, :213-226, :234-244, :252-262; public/files/Resume_General.pdf (Trip Planner)
 title: Trip Planner
 summary: A team-built React trip planner for CSU's CS 314, developed under CMMI on an existing codebase, with database search, cross-team interoperability and trip optimization.
+tldr: 'My team built a trip-planning website for a Colorado State University computer science class (CS 314) in Fall 2021, starting from a codebase the course gave us. It let you search a places database, build a multi-stop trip on a map, and reorder the stops into a shorter route.'
 role: Team project
 year: 2021
 period: Fall 2021

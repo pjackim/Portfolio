@@ -2,6 +2,7 @@
 # Sources: html/Work/spectre.html:70-72, :79-84, :99-117
 title: Spectre
 summary: A personal brand identity inspired by James Bond — a smoke-wreathed octopus mark and wordmarks — made to practice Photoshop and give myself an online identity.
+tldr: 'My 2021 personal logo, Spectre, is an octopus with smoke rising from its head, in light and dark versions. I made it to practice Photoshop and to give myself an online identity.'
 role: Personal project
 year: 2021
 group: design

@@ -4,6 +4,7 @@
 # live agent run unverified (PLAN/STATUS.md phases 6 and 7).
 title: 'Quality: One Pass/Fail Check for AI Coding Agents'
 summary: 'AI coding agents get walls of messy tool output. My command-line tool boils style and security checks down to one pass or fail.'
+tldr: "Quality is a small command-line program that gives AI coding assistants one pass or fail on a project's style and security checks, instead of pages of messy reports. It wraps the free qlty code scanner. Early alpha, not publicly released yet."
 year: 2026
 period: 'June 2026'
 group: software

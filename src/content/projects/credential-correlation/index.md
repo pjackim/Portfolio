@@ -2,6 +2,7 @@
 # Sources: html/Work/credential_correlation.html:77-79, :86-107, :115-118, :130, :136-144, :150-159, :167-181, :186, :190
 title: Credential Correlation Visualizer
 summary: Scores how strongly a password correlates with its username, to show users a risk that online password-strength checkers miss.
+tldr: 'I built a tool that scores how much a password gives away about its username. Online checkers grade a password alone, so one that just repeats the username can still rate "Strong". It uses machine learning and about 120 million real credentials I compiled.'
 year: 2023
 group: security
 featured: true

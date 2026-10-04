@@ -2,6 +2,7 @@
 # Sources: html/Work/foresthack.html:76-83, :89-102, :126-148, :158-175, :184-195, :200; public/files/Resume_General.pdf (Game Hacking)
 title: The Forest — Mono Injection
 summary: A C# Mono-injection hack for the Unity game The Forest. I built it to learn game hacking, then made it the codebase for a beginner curriculum I created and taught.
+tldr: 'I built this hack for the game The Forest to learn game hacking: changing how a game behaves while it runs. It adds a menu and an info overlay, and I later used it to teach a beginner course to students aged 18 to 20.'
 year: 2020
 period: Spring 2020
 group: security

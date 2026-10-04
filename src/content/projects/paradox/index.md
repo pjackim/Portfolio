@@ -2,6 +2,7 @@
 # Sources: html/Work/paradox.html:70-76, :83-92, :117-126, :135-144, :153-162, :172-173, :184; index.html:176-177, :657-663
 title: Paradox
 summary: Branding, graphical user interfaces, ads and promotional videos for Paradox, a game-hacking group I joined at ten and a pillar of my technical development.
+tldr: "I joined Paradox, a video-game hacking group that offered subscriptions to its software, at ten as its designer. I made branding elements, the graphical interfaces for its software, and ads and promo videos. I couldn't program yet, so design was my part."
 role: Designer
 year: 2011
 period: c. 2011
