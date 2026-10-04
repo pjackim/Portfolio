@@ -6,7 +6,7 @@
 
 ## Result
 
-Six projects are featured, in this order: **BodyCam External, Mordhau, Credential Correlation Visualizer, ArcExploit, TongueTickle, The Forest**. Six fills the bento exactly (the lead, two large cells, one row of three), and the scores fall off a cliff after the first three and go flat after the sixth. Trip Planner, Hardpoint, AES-256 and the draft Inline Completion Agent Framework leave the featured list; they stay on `/work/` in the archive.
+Six projects are featured, in this order: **BodyCam External, Mordhau, Credential Correlation Visualizer, ArcExploit, TongueTickle, The Forest**. Six fills the bento exactly (the lead, two large cells, one row of three), and the scores fall off a cliff after the first three and go flat after the sixth. Trip Planner, Hardpoint, AES-256 and the draft Inline Completion Agent Framework leave the featured list; they stay on `/work/`.
 
 ## Method
 
@@ -25,15 +25,15 @@ Six projects are featured, in this order: **BodyCam External, Mordhau, Credentia
 |              3 | Credential Correlation Visualizer         |          5 |              5 |             5 |     5 |     **5** |    33 |   3/3 | **featured, order 3** | order 2 |
 |              4 | ArcExploit                                |        4.5 |            3.5 |           5.5 |   3.9 |   **4.7** |    29 |   2/3 | **featured, order 4** | —       |
 |              5 | TongueTickle                              |        4.5 |            3.5 |           5.5 |   3.9 |   **4.7** |    26 |   1/3 | **featured, order 5** | —       |
-|              6 | Hardpoint Game Mode                       |        3.5 |            4.5 |             5 |   4.1 |  **4.55** |    23 |   1/3 | archive               | order 6 |
+|              6 | Hardpoint Game Mode                       |        3.5 |            4.5 |             5 |   4.1 |  **4.55** |    23 |   1/3 | not featured          | order 6 |
 |              7 | The Forest — Mono Injection               |          4 |              4 |             5 |     4 |   **4.5** |    24 |   2/3 | **featured, order 6** | order 5 |
-|              8 | Trip Planner                              |        3.5 |              3 |             5 |   3.2 |   **4.1** |    16 |   0/3 | archive               | order 4 |
-|              9 | Arch Linux                                |          3 |              3 |             5 |     3 |     **4** |     9 |   0/3 | archive               | —       |
-|             10 | Hero Trivia                               |          3 |            2.8 |             5 |  2.88 |  **3.94** |     6 |   0/3 | archive               | —       |
-|             11 | Inline Completion Agent Framework (draft) |        5.5 |            4.5 |             2 |   4.9 |  **3.45** |    17 |   0/3 | archive               | order 8 |
-|             12 | AES-256 Encryptor                         |          3 |            2.5 |             4 |   2.7 |  **3.35** |     3 |   0/3 | archive               | order 7 |
-|             13 | Quality (draft)                           |          5 |              4 |             2 |   4.4 |   **3.2** |    12 |   0/3 | archive               | —       |
-|             14 | LichessApp (draft)                        |          2 |            1.8 |             4 |  1.88 |  **2.94** |     0 |   0/3 | archive               | —       |
+|              8 | Trip Planner                              |        3.5 |              3 |             5 |   3.2 |   **4.1** |    16 |   0/3 | not featured          | order 4 |
+|              9 | Arch Linux                                |          3 |              3 |             5 |     3 |     **4** |     9 |   0/3 | not featured          | —       |
+|             10 | Hero Trivia                               |          3 |            2.8 |             5 |  2.88 |  **3.94** |     6 |   0/3 | not featured          | —       |
+|             11 | Inline Completion Agent Framework (draft) |        5.5 |            4.5 |             2 |   4.9 |  **3.45** |    17 |   0/3 | not featured          | order 8 |
+|             12 | AES-256 Encryptor                         |          3 |            2.5 |             4 |   2.7 |  **3.35** |     3 |   0/3 | not featured          | order 7 |
+|             13 | Quality (draft)                           |          5 |              4 |             2 |   4.4 |   **3.2** |    12 |   0/3 | not featured          | —       |
+|             14 | LichessApp (draft)                        |          2 |            1.8 |             4 |  1.88 |  **2.94** |     0 |   0/3 | not featured          | —       |
 
 ## Decisions
 
@@ -58,7 +58,6 @@ Findings from the assessors that are content or fact decisions for Parker, outsi
 - **TongueTickle:** the core promise (highlight text in another app, hear it) is never shown in motion.
 - **The Forest:** "discovered basic network vulnerabilities" is sourced to the legacy site (`foresthack.html:97,139`), but the repo has no network code, so a reader who opens it won't find support. It also feeds `src/data/taxonomy.ts`.
 - **AI co-authorship:** commit trailers show Claude co-authorship on 36% of BodyCam External, 76% of TongueTickle and 84% of Quality commits. It was not penalised in the scores (Parker's repos are meant to go public), but first-person copy such as "I built" is worth a wording check before the repos are linked.
-- **`showOnHome` is dead:** `getHomeArchive()` has no callers, so `arch-linux` and `hero-trivia` do not appear on the home page despite the flag.
 
 ## Per-project verdicts
 
@@ -85,14 +84,14 @@ A mid-tier project: sharp security hook and a distinctive visualizer over an unv
 
 ### ArcExploit
 
-A polished, honestly presented game-dupe macro tool that is wide but shallow technically and never shows its payoff, so keep it in the archive and do not feature it ahead of research-grade work.
+A polished, honestly presented game-dupe macro tool that is wide but shallow technically and never shows its payoff, so do not feature it ahead of research-grade work.
 
 - **Best asset:** A real, finished, shipped artifact shown running over the actual game: an in-game recording with the status overlay flipping Online/NET DROP/RECONNECTED, a striking striped-wordmark control panel, and a clean, honest, fact-only page. 12K lines, a packaged exe, five routines plus record/replay.
 - **Biggest gap:** No visible result and no signal of difficulty or security framing. A skimmer sees a game-cheat control panel and a limitations note, not evidence of packet-level or timing engineering. Underneath, the technical core is thin (a Clumsy-style drop wrapper plus hard-coded timing sequences, no research into why the dupe works), and the domain is an awkward fit for a security hiring audience.
 
 ### TongueTickle
 
-A tidy, well-tested, honestly labelled consumer text-to-speech utility (complexity 4.5, impressiveness 3.5) with a competent but plain page (marketability 5.5), so it belongs in the archive and not among the featured projects.
+A tidy, well-tested, honestly labelled consumer text-to-speech utility (complexity 4.5, impressiveness 3.5) with a competent but plain page (marketability 5.5), so it should not be among the featured projects.
 
 - **Best asset:** A crisp, real dark cover of the actual app (the serif 'Hear anything on your screen, in a voice you chose.' headline with Ctrl+Shift+S key caps), a legible flow and provider-priority diagram that shows a graceful-degradation design ending in a free offline voice that needs no account, and an unusually honest 'Where it stands' section. Behind it sits a 207-test suite with a shared provider contract.
 - **Biggest gap:** The core promise, highlighting text in any other app and hearing it, is never shown anywhere. Every visual is the TongueTickle window itself, the loop is silent and sparse, and the Grok auto-express feature is unreadable at page width. On top of that, the project is AI-heavy (76% of commits), unfinished and live-untested for its AI voices, and has no security relevance for the target audience.
@@ -120,14 +119,14 @@ An honest, tidy team-coursework page with one genuinely nice proof clip, but it 
 
 ### Arch Linux
 
-A genuinely attractive self-taught Linux desktop with a striking cover, but it is configuration of third-party tools (complexity 3, impressiveness 3), and the page is plain, repetitive and archive-buried (marketability 5), so it belongs in the archive rather than the featured list.
+A genuinely attractive self-taught Linux desktop with a striking cover, but it is configuration of third-party tools (complexity 3, impressiveness 3), and the page is plain, repetitive and buried (marketability 5), so it should not be featured rather than the featured list.
 
 - **Best asset:** A real, vivid, coherent screenshot of a hand-built three-monitor desktop (custom launcher, eww widgets, polybar, one palette) on a short, clean page with the repo one click away. It signals taste, initiative and a self-taught-from-zero arc to a scanner within seconds.
 - **Biggest gap:** The page never says what was actually built: a bspwm tiling WM with sxhkd hotkeys, per-monitor eww widget panels, Python/Bash glue launching sticky widget windows, and a 3-monitor layout. It also never ties the project to Parker's later security and systems work, so a scanner leaves with 'a beginner themed Linux in 2020'. It is also invisible on /work/ and home, and the linked repo has a committed OpenWeatherMap key plus build and cache junk, which a security-focused reviewer could notice.
 
 ### Hero Trivia
 
-A polished-looking but self-declared 2022 freelance React crossword prototype with no inspectable code or live demo: low complexity (3), modest impressiveness (2.8), and an honest but thin, hedge-heavy page (5) that belongs in the archive, not among the featured work.
+A polished-looking but self-declared 2022 freelance React crossword prototype with no inspectable code or live demo: low complexity (3), modest impressiveness (2.8), and an honest but thin, hedge-heavy page (5) that should not be featured.
 
 - **Best asset:** The cover and loops are real captures of a distinctive, themed game UI (glowing hint-word crossword over a blurred comic collage with a logo). The game's concept is clear in about two seconds on desktop, and the page is candid about its scope.
 - **Biggest gap:** The page never shows what was clever or hard. It does not show how each puzzle's crossing layout is generated, what the comic data sets were or how big they were, or any outcome for the client. The visuals are one screen repeated, and there is no source or live demo to back the claims.
@@ -141,7 +140,7 @@ A well-structured but mainstream AI-tooling extension (complexity 5.5, impressiv
 
 ### AES-256 Encryptor
 
-A charming, honestly framed teenage utility that works but is thin on provable engineering. It scores about 3 / 2.5 / 4 and is the weakest of the featured set, a candidate for the archive rather than a featured slot.
+A charming, honestly framed teenage utility that works but is thin on provable engineering. It scores about 3 / 2.5 / 4 and is the weakest of the featured set, not a featured slot.
 
 - **Best asset:** A real, working end-to-end demo, in the author's own recorded run, of a recursive encryptor walking a 13-directory, 55-file tree and printing 'Successfully Encrypted' per file. It is paired with an honest 'wrote this at 15' origin story that matches the home page's Age 15 timeline node.
 - **Biggest gap:** There is no verifiable source (no repo, no tests, no history). The cipher appears vendored, key handling looks naive, and the date conflicts with the 2021 build timestamps. So the page rests on the author's age rather than on evidence of ability, and a security-literate reader will discount it.
@@ -155,7 +154,7 @@ A rigorous but thin, AI-assisted 2-day wrapper (complexity 5, impressiveness 4) 
 
 ### LichessApp (draft)
 
-A tidy, honest one-day Nativefier-plus-CSS skin whose page overstates two features and buries the product, so it belongs in the archive (or hidden) rather than featured: complexity 2.0, impressiveness 1.8, marketability 4.0.
+A tidy, honest one-day Nativefier-plus-CSS skin whose page overstates two features and buries the product, so it should not be featured (or should stay hidden): complexity 2.0, impressiveness 1.8, marketability 4.0.
 
 - **Best asset:** An honest, finished, personally used 2023 tool: a real full-resolution screenshot of the compact yellow/teal puzzle widget docked on Parker's own Arch/BSPWM desktop, with an MIT license and a straightforward description of a small hobby tool. The CSS grid and palette re-layout of a live site into a ~461x400 widget is tidy, if small, front-end craft.
 - **Biggest gap:** Technical depth. About 229 lines of CSS/JS/shell on a generated Nativefier wrapper has no security or systems content, and the page's headline features (always-on-top, edge-hover scroll) do not exist as code. Communication-wise, the page never shows a tight widget crop or a before/after of stock Lichess against the compact window, and the figures are buried at the bottom.
