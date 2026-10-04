@@ -49,8 +49,17 @@ export const LEGACY_PAGES: readonly string[] = globPosix('html/Work/*.html')
   .map((file) => file.replace(/^.*\/|\.html$/g, ''))
   .sort();
 
-/** Every built page: `''` (home), `work/`, `work/<slug>/`. */
+/** Every indexed page: `''` (home), `work/`, `work/<slug>/`. */
 export const ROUTES: readonly string[] = discoverRoutes();
+
+/**
+ * The error screens built to `errors/<code>/` (everything but the 404, which is `NOT_FOUND_PAGE`).
+ * They are noindex and have no canonical, so `ROUTES` leaves them out; errors.spec.ts covers
+ * them, and the specs that check every page's accessibility and links add them to their lists.
+ */
+export const ERROR_ROUTES: readonly string[] = globPosix('errors/*/index.html')
+  .map((file) => file.replace(/index\.html$/, ''))
+  .sort();
 
 /**
  * The HTML of the built page at base-relative `route`, as the preview server sends it, read from
@@ -74,6 +83,7 @@ export const VIDEO_ROUTES: readonly string[] = ROUTES.filter((route) => {
 
 function discoverRoutes(): string[] {
   const routes = globPosix('**/index.html')
+    .filter((file) => !file.startsWith('errors/'))
     .map((file) => file.replace(/index\.html$/, ''))
     .sort();
   if (routes.length > 0) return routes;

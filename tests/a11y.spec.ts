@@ -12,10 +12,17 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { interactionsLoaded, revealsInFlightOnScreen, twoFrames } from './helpers/motion.ts';
 import { isWindowsWebKit, WINDOWS_WEBKIT } from './helpers/platform.ts';
-import { gotoRel, NOT_FOUND_PAGE, routeName, ROUTES, VIDEO_ROUTES } from './helpers/routes.ts';
+import {
+  ERROR_ROUTES,
+  gotoRel,
+  NOT_FOUND_PAGE,
+  routeName,
+  ROUTES,
+  VIDEO_ROUTES,
+} from './helpers/routes.ts';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
-const PAGES = [...ROUTES, NOT_FOUND_PAGE];
+const PAGES = [...ROUTES, NOT_FOUND_PAGE, ...ERROR_ROUTES];
 const MOTION_PAGES = ['', 'work/', 'work/credential-correlation/'];
 
 async function axeReport(page: Page, { underHeader = false } = {}): Promise<string[]> {
