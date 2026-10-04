@@ -23,30 +23,25 @@ media:
     src: ./iterative-design.mp4
     pair: iterative-design
     alt: Screen recording of adding Fort Collins places to a trip, server logs and a Git branch checkout in a terminal, and the trip redrawn on the map.
-    caption: Iterative design — most changes came from “customer” feature requests and from external UX testers.
     autoplay: false
   - kind: video
     src: ./database-search.mp4
     pair: database-search
     alt: Screen recording of Find Place searches, then filtering results by type (airport, heliport, balloonport) and by country.
-    caption: Querying the database efficiently and applying filters to the query.
     autoplay: false
   - kind: video
     src: ./interoperability.mp4
     pair: interoperability
     alt: The Server Connection dialog switching from the t22 2 Eazy server to t23 Stuck in Beta; the footer then confirms the new connection.
-    caption: My team's front end connecting to another team's back end, following the shared protocol.
     autoplay: true
   - kind: image
     src: ./trip-manager.webp
     pair: storage
     alt: Trip Manager dialog listing saved trips (lakes.json, christmas_2020.json, my_vacation.json) with Load Trip, Save Trip and JSON, CSV, SVG options.
-    caption: Saving and loading trips. Browser storage also retains loaded trips and download preferences.
   - kind: video
     src: ./tour-optimization.mp4
     pair: trip-optimization
     alt: A tangled world trip is optimized into a single loop, and the trip total drops from 636,462 mi to 86,942 mi.
-    caption: Traveling Salesman optimization, required to handle any size trip in under a second.
     autoplay: true
   - kind: video
     src: ./full-demo.mp4
@@ -74,7 +69,7 @@ Design was iterative for the whole semester. Most changes came from feedback in 
 
 ## What I built
 
-With my team, on the existing codebase:
+With my team, on the existing codebase.
 
 <div data-pair="database-search">
 
