@@ -245,6 +245,11 @@ export function createTimeline(root: HTMLElement): void {
     const box = root.getBoundingClientRect();
     const px = client.x - box.left;
     const py = client.y - box.top;
+    if (px < 0 || py < 0 || px > box.width || py > box.height) {
+      // Scrolled out from under a pointer that never reported leaving.
+      client = null;
+      return;
+    }
     const dist = (i: number) => Math.hypot(field[i]!.x - px, field[i]!.y - py);
     let best = -1;
     let bestD = ACQUIRE;
