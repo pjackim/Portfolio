@@ -1,0 +1,114 @@
+---
+/**
+ * A body paragraph tied to the media that shows it: the text on one side, its figure on the
+ * other, so a reader sees what the sentence is about without scrolling to a gallery. ProjectLayout
+ * builds one for each `<div data-pair="…">` block in a project's Markdown (src/lib/pairs.ts) and
+ * numbers the figure in page order; the Markdown rendered inside the block is the default slot.
+ *
+ * `side` is where the media sits. From 56rem it's a two-column row — text 4fr, media 6fr, centred
+ * against each other — and the text's trailing "Fig. nn" points across at the figure. Below that
+ * the text comes first and the figure follows at full width, the arrow pointing down at it. Both
+ * halves play the shared scroll entrance (the text from its own side).
+ * ProjectLayout owns where the row sits in the body grid; this component owns what's inside it.
+ */
+import { pad2 } from '../../lib/format';
+import type { MediaItem } from '../../lib/media';
+import type { PairSide } from '../../lib/pairs';
+import Arrow from '../Arrow.astro';
+import MediaFigure from './MediaFigure.astro';
+
+interface Props {
+  projectId: string;
+  item: MediaItem;
+  /** 1-based figure number. */
+  index: number;
+  side: PairSide;
+}
+
+const { projectId, item, index, side } = Astro.props;
+---
+
+<div class="pair" data-pair-side={side}>
+  <div class="pair__text" data-reveal data-reveal-from={side === 'right' ? 'start' : 'end'}>
+    <slot />
+    <p class="pair__ref mono-label" aria-hidden="true">
+      {side === 'left' && <Arrow class="pair__arrow-side" dir="left" />}
+      {`Fig. ${pad2(index)}`}
+      {side === 'right' && <Arrow class="pair__arrow-side" dir="right" />}
+      <Arrow class="pair__arrow-down" dir="down" />
+    </p>
+  </div>
+  <div class="pair__media">
+    <MediaFigure projectId={projectId} item={item} index={index} inline />
+  </div>
+</div>
+
+<style>
+  .pair {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  /* One flow rhythm for whatever the Markdown rendered: an optional h3 label, then paragraphs. */
+  .pair__text > :global(* + *) {
+    margin-block-start: 1em;
+  }
+
+  .pair__text > :global(h3) {
+    margin-block-start: 0;
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .pair__text > :global(h3 + *) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .pair__text :global(strong) {
+    font-weight: 600;
+  }
+
+  .pair__ref {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-block-start: var(--space-s);
+    color: var(--accent);
+  }
+
+  .pair__ref :global(.pair__arrow-side) {
+    display: none;
+  }
+
+  @media (width >= 56rem) {
+    .pair__ref :global(.pair__arrow-side) {
+      display: inline;
+    }
+
+    .pair__ref :global(.pair__arrow-down) {
+      display: none;
+    }
+
+    .pair {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+      grid-template-areas: 'text media';
+      align-items: center;
+      column-gap: var(--space-l);
+    }
+
+    .pair[data-pair-side='left'] {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+      grid-template-areas: 'media text';
+    }
+
+    .pair__text {
+      grid-area: text;
+    }
+
+    .pair__media {
+      grid-area: media;
+    }
+  }
+</style>
