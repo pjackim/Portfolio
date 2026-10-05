@@ -44,7 +44,7 @@
     "@types/node": "^24",
     "prettier": "^3",
     "prettier-plugin-astro": "^1",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "typescript": "~6"
   },
   "overrides": {
